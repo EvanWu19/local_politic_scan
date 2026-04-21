@@ -76,41 +76,9 @@ Output ONLY the dialogue lines in the ALEX/JORDAN format above. No preamble."""
 VOICES = {"ALEX": "onyx", "JORDAN": "nova"}
 
 
-# ── Episode definitions ───────────────────────────────────────────────────────
-EPISODE_CONFIGS = [
-    {
-        "num": 1,
-        "title": "Federal",
-        "slug": "federal",
-        "levels": ["federal"],
-        "focus": f"federal policy on {_FED_FOCUS}",
-        "top_n": 8,
-    },
-    {
-        "num": 2,
-        "title": f"{_STATE} State Legislature",
-        "slug": "state",
-        "levels": ["state"],
-        "focus": f"what's happening in the {_STATE} legislature",
-        "top_n": 8,
-    },
-    {
-        "num": 3,
-        "title": f"{_COUNTY} and Schools",
-        "slug": "county",
-        "levels": ["county", "school", "local"],
-        "focus": f"{_COUNTY} council, school board, and local services",
-        "top_n": 10,
-    },
-    {
-        "num": 4,
-        "title": "Week in Review",
-        "slug": "review",
-        "levels": ["federal", "state", "county", "school", "local"],
-        "focus": "the week's most impactful stories across all levels of government",
-        "top_n": 6,
-    },
-]
+NUM_EPISODES = 4
+_WORDS_PER_EVENT = 350    # rough estimate for fill-threshold math
+_TARGET_WORDS_EP = 2500   # ~19 min at 130 wpm; + intro/outro ≈ 30 min per episode
 
 
 def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
@@ -154,36 +122,61 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
     openai_client = openai.OpenAI(api_key=openai_key) if not no_audio else None
     date_str = target_date.strftime("%Y-%m-%d")
 
+    # ── 2. Get politician data for fill-in segments ───────────────────────────
+    politicians_ranked = _get_politicians_ranked(db_path)
+    pol_offset = 0  # how many politicians we've already covered
+
+    # ── 3. Split events evenly across episodes (globally by relevance) ────────
+    n = len(all_events)
+    per_ep = max(1, n // NUM_EPISODES)
+    event_slices: List[List[Dict]] = []
+    for i in range(NUM_EPISODES):
+        start = i * per_ep
+        end = n if i == NUM_EPISODES - 1 else start + per_ep
+        event_slices.append(all_events[start:end])
+
     results: List[Dict] = []
 
-    for ep_cfg in EPISODE_CONFIGS:
-        ep_num = ep_cfg["num"]
-        ep_slug = ep_cfg["slug"]
-        ep_title = ep_cfg["title"]
-        log.info("=== Episode %d: %s ===", ep_num, ep_title)
+    for ep_num in range(1, NUM_EPISODES + 1):
+        ep_slug = f"ep{ep_num}"
+        ep_events = event_slices[ep_num - 1]
+        log.info("=== Episode %d: %d events ===", ep_num, len(ep_events))
 
-        # Pick events for this episode
-        ep_events = [ev for ev in all_events if ev.get("level") in ep_cfg["levels"]]
-        # For the review episode: already have all levels, just dedupe from prev episodes
-        if ep_cfg.get("slug") == "review":
-            used_urls = {ev.get("source_url") for ep in results for ev in ep.get("_events", [])}
-            ep_events = [ev for ev in ep_events if ev.get("source_url") not in used_urls]
-        ep_events = sorted(ep_events, key=lambda e: -e.get("relevance_score", 0))
-        ep_events = ep_events[: ep_cfg["top_n"]]
-        log.info("  %d stories selected for this episode", len(ep_events))
+        # Group events by level for coherent presentation within each episode
+        segments = _group_events_by_level(ep_events)
 
-        # Build segment list (one segment per level present)
-        segments = _build_episode_segments(ep_events, ep_cfg)
+        # ── Fill sparse episodes with politician deep-dives ───────────────────
+        est_words = len(ep_events) * _WORDS_PER_EVENT
+        fill_threshold = _TARGET_WORDS_EP * 0.55  # below this, add politician content
+        if est_words < fill_threshold:
+            words_still_needed = _TARGET_WORDS_EP - est_words
+            pols_to_add = max(2, int(words_still_needed // 450))
+            pol_slice = politicians_ranked[pol_offset: pol_offset + pols_to_add]
+            pol_offset += len(pol_slice)
+            if pol_slice:
+                segments.append(_make_politician_segment(pol_slice, is_final=False))
+                log.info("  Adding %d politician spotlights to fill ~%d words",
+                         len(pol_slice), words_still_needed)
+
+        # Episode 4 always closes with remaining candidates / politician recap
+        if ep_num == NUM_EPISODES:
+            remaining_pols = politicians_ranked[pol_offset: pol_offset + 6]
+            if remaining_pols:
+                segments.append(_make_politician_segment(remaining_pols, is_final=True))
+                log.info("  Final episode: added %d politician summaries",
+                         len(remaining_pols))
+
+        ep_title = _infer_episode_title(ep_num, segments)
+        log.info("  Title: %s", ep_title)
 
         # ── Write script ──────────────────────────────────────────────────────
         script_parts = []
         script_parts.append(_write_episode_intro(claude, script_model,
                                                   target_date, ep_num, ep_title, segments))
-
         for seg in segments:
             if not seg["events"]:
                 continue
-            log.info("  writing segment: %s (%d stories)…",
+            log.info("  writing segment: %s (%d items)…",
                      seg["label"], len(seg["events"]))
             script_parts.append(_write_segment(claude, script_model, seg))
 
@@ -194,7 +187,7 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         word_count = len(full_script.split())
         log.info("  Script: %d words (~%d min)", word_count, word_count // 130)
 
-        script_fname = f"podcast_{date_str}_ep{ep_num}_{ep_slug}.txt"
+        script_fname = f"podcast_{date_str}_{ep_slug}.txt"
         script_path = podcasts_dir / script_fname
         script_path.write_text(full_script, encoding="utf-8")
 
@@ -213,7 +206,7 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
             })
             continue
 
-        audio_fname = f"podcast_{date_str}_ep{ep_num}_{ep_slug}.mp3"
+        audio_fname = f"podcast_{date_str}_{ep_slug}.mp3"
         audio_path = podcasts_dir / audio_fname
         duration = _synthesize_dialogue(openai_client, full_script, audio_path, tts_model)
 
@@ -229,6 +222,20 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
             "status": "done",
             "_events": ep_events,
         })
+
+    # Save index JSON so the digest player can show episode titles
+    index = {
+        "date": date_str,
+        "episodes": [
+            {"num": ep["episode_num"], "title": ep["episode_title"],
+             "slug": ep["episode_slug"], "word_count": ep["word_count"],
+             "status": ep["status"]}
+            for ep in results
+        ],
+    }
+    (podcasts_dir / f"podcast_{date_str}_index.json").write_text(
+        json.dumps(index, indent=2), encoding="utf-8"
+    )
 
     return results
 
@@ -262,31 +269,119 @@ def generate_podcast(db_path: Path, podcasts_dir: Path,
 # Script generation helpers
 # ──────────────────────────────────────────────────────────────────────────────
 
-def _build_episode_segments(events: List[Dict], ep_cfg: Dict) -> List[Dict]:
-    """Group episode events into per-level sub-segments."""
-    level_labels = {
-        "federal": f"Federal — {_FED_FOCUS}",
-        "state":   f"{_STATE} State Legislature",
-        "county":  f"{_COUNTY} Council",
-        "school":  "School Board",
-        "local":   "Local Services — Police, Fire, Health",
-    }
-    # One bucket per level in this episode's scope
-    buckets: Dict[str, Dict] = {}
-    for lvl in ep_cfg["levels"]:
-        buckets[lvl] = {
-            "key": lvl,
-            "label": level_labels.get(lvl, lvl.title()),
-            "events": [],
-            "intro_focus": level_labels.get(lvl, lvl),
-        }
+_LEVEL_ORDER = ["federal", "state", "county", "school", "local"]
+_LEVEL_LABELS = {
+    "federal": f"Federal — {_FED_FOCUS}",
+    "state":   f"{_STATE} State Legislature",
+    "county":  f"{_COUNTY} Council",
+    "school":  "School Board",
+    "local":   "Local Services — Police, Fire, Health",
+}
+_LEVEL_SHORT = {
+    "federal": "Federal", "state": _STATE,
+    "county": _COUNTY, "school": "Schools", "local": "Local Services",
+}
 
+
+def _group_events_by_level(events: List[Dict]) -> List[Dict]:
+    """Group a flat event list into per-level segment dicts, preserving relevance order."""
+    by_level: Dict[str, List[Dict]] = {}
     for ev in events:
         lvl = ev.get("level", "county")
-        if lvl in buckets:
-            buckets[lvl]["events"].append(ev)
+        by_level.setdefault(lvl, []).append(ev)
+    return [
+        {
+            "key": lvl,
+            "label": _LEVEL_LABELS.get(lvl, lvl.title()),
+            "events": by_level[lvl],
+            "intro_focus": _LEVEL_LABELS.get(lvl, lvl),
+        }
+        for lvl in _LEVEL_ORDER
+        if lvl in by_level
+    ]
 
-    return [b for b in buckets.values() if b["events"]]
+
+def _get_politicians_ranked(db_path: Path) -> List[Dict]:
+    """Return politicians sorted by recent mention count, each with their top events."""
+    from scanner.database import get_connection
+    with get_connection(db_path) as conn:
+        rows = conn.execute(
+            """SELECT p.id, p.name, p.office, p.party, p.level,
+                      COUNT(DISTINCT pe.event_id) AS mention_count
+               FROM politicians p
+               JOIN politician_events pe ON p.id = pe.politician_id
+               GROUP BY p.id
+               ORDER BY mention_count DESC
+               LIMIT 25"""
+        ).fetchall()
+        result = []
+        for row in rows:
+            pol = dict(row)
+            pol_id = pol.pop("id")
+            ev_rows = conn.execute(
+                """SELECT e.title, e.date, pe.role, pe.stance
+                   FROM politician_events pe
+                   JOIN events e ON pe.event_id = e.id
+                   WHERE pe.politician_id = ?
+                   ORDER BY e.date DESC
+                   LIMIT 3""",
+                (pol_id,),
+            ).fetchall()
+            pol["recent_events"] = [dict(r) for r in ev_rows]
+            result.append(pol)
+    return result
+
+
+def _make_politician_segment(politicians: List[Dict],
+                              is_final: bool = False) -> Dict:
+    """Format a list of DB-enriched politician dicts as a podcast segment."""
+    events = []
+    for pol in politicians:
+        recent = pol.get("recent_events", [])
+        activity = "; ".join(
+            f"[{ev.get('role','mentioned').replace('_',' ').title()}] "
+            f"{ev.get('date','')}: {ev.get('title','')[:70]}"
+            for ev in recent[:2]
+        ) or "No recent tracked activity"
+        events.append({
+            "title": f"{pol['name']} — {pol.get('office', '')}",
+            "summary": (
+                f"{pol['name']} ({pol.get('party','?')}) has appeared "
+                f"{pol.get('mention_count', 0)} time(s) in recent news. "
+                f"Recent: {activity}"
+            ),
+            "source_name": "Politician Tracker",
+            "politicians": pol["name"],
+            "categories": ["election"],
+            "relevance_score": 0.85,
+        })
+    label = "Candidate Tracker & Wrap-Up" if is_final else "Politician Spotlight"
+    focus = (
+        "where your candidates and elected officials stand — their records, "
+        "recent votes, and what that means for you"
+        if is_final else
+        "what your local representatives have been doing recently"
+    )
+    return {
+        "key": "politicians",
+        "label": label,
+        "events": events,
+        "intro_focus": focus,
+        "is_politician_segment": True,
+    }
+
+
+def _infer_episode_title(ep_num: int, segments: List[Dict]) -> str:
+    """Infer an episode title from the segments it contains."""
+    parts = [_LEVEL_SHORT.get(s["key"], s["key"].title())
+             for s in segments if s.get("events")]
+    if not parts:
+        return f"Episode {ep_num}"
+    if len(parts) == 1:
+        return parts[0]
+    if len(parts) == 2:
+        return " & ".join(parts)
+    return f"{parts[0]} + More"
 
 
 def _write_episode_intro(client: anthropic.Anthropic, model: str,
@@ -393,35 +488,59 @@ def _write_outro(client: anthropic.Anthropic, model: str,
 
 
 def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict) -> str:
-    """Write ~20 minutes of dialogue for a segment."""
-    events_text = ""
-    for i, ev in enumerate(segment["events"], 1):
-        title = ev.get("title", "")
-        summary = ev.get("summary") or ev.get("description", "")
-        source = ev.get("source_name", "")
-        pols = ev.get("politicians", "")
-        categories = ev.get("categories", "")
-        events_text += (
-            f"\n[Story {i}] {title}\n"
-            f"  Summary: {summary}\n"
-            f"  Source: {source}\n"
-            f"  Politicians: {pols or '(none identified)'}\n"
-            f"  Tags: {categories}\n"
-        )
+    """Write dialogue for one segment — news stories or politician spotlights."""
+    is_pol = segment.get("is_politician_segment", False)
 
-    target_words = max(1500, 800 * len(segment["events"]))  # ~6min per story
-    user = (
-        f"Write the '{segment['label']}' segment of today's podcast.\n\n"
-        f"This segment focuses on {segment['intro_focus']}.\n\n"
-        f"Here are the stories to cover (in order):\n{events_text}\n\n"
-        f"GUIDELINES:\n"
-        "- Start with a transition line from the previous segment\n"
-        "- For each story: Alex presents it, Jordan asks the 'so what' questions,\n"
-        "  they explore it together, then move to the next\n"
-        f"- Total length: ~{target_words} words of dialogue\n"
-        f"- Emphasize the LOCAL ({_LOCALE}) angle even for state/federal\n"
-        "- End with a brief transition to the next segment"
-    )
+    items_text = ""
+    for i, ev in enumerate(segment["events"], 1):
+        title   = ev.get("title", "")
+        summary = ev.get("summary") or ev.get("description", "")
+        source  = ev.get("source_name", "")
+        pols    = ev.get("politicians", "")
+        cats    = ev.get("categories", "")
+        if is_pol:
+            items_text += (
+                f"\n[Person {i}] {title}\n"
+                f"  Background: {summary}\n"
+            )
+        else:
+            items_text += (
+                f"\n[Story {i}] {title}\n"
+                f"  Summary: {summary}\n"
+                f"  Source: {source}\n"
+                f"  Politicians: {pols or '(none identified)'}\n"
+                f"  Tags: {cats}\n"
+            )
+
+    if is_pol:
+        target_words = max(900, 450 * len(segment["events"]))
+        user = (
+            f"Write the '{segment['label']}' segment of today's podcast.\n\n"
+            f"Focus on {segment['intro_focus']}.\n\n"
+            f"Politicians to profile:\n{items_text}\n\n"
+            "GUIDELINES:\n"
+            "- Start with a smooth transition into this segment\n"
+            "- For each person: who they are, what they've done recently, "
+            "and what that means for residents\n"
+            "- Jordan should ask things like 'so what does their track record "
+            "tell us before the election?' or 'did they vote for or against X?'\n"
+            f"- Total: ~{target_words} words of dialogue\n"
+            "- Be factual and nonpartisan; present the record, not opinion"
+        )
+    else:
+        target_words = max(1500, 700 * len(segment["events"]))
+        user = (
+            f"Write the '{segment['label']}' segment of today's podcast.\n\n"
+            f"This segment focuses on {segment['intro_focus']}.\n\n"
+            f"Stories to cover (in order):\n{items_text}\n\n"
+            "GUIDELINES:\n"
+            "- Start with a transition line from the previous segment\n"
+            "- For each story: Alex presents it, Jordan asks the 'so what' questions,\n"
+            "  they explore it together, then move to the next\n"
+            f"- Total length: ~{target_words} words of dialogue\n"
+            f"- Emphasize the LOCAL ({_LOCALE}) angle even for state/federal stories\n"
+            "- End with a brief transition to the next segment"
+        )
     return _claude_dialogue(client, model, user)
 
 
