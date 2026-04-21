@@ -9,6 +9,12 @@ Default sources are wired for **Maryland / Montgomery County**, but the
 personal bits (city, ZIP, districts, topic-keyword filter) are read from
 `.env` so you can point it at your own address without editing code.
 
+**State bills**: the scanner uses OpenStates, which covers every U.S.
+state. Set `USER_STATE` and `USER_STATE_CODE` in `.env` (e.g. `California`
+/ `ca`) and add an OpenStates key to pull bills from your own state.
+County/school sources are still scraped from Montgomery County, MD — swap
+them out in `config.py` and `scanner/sources/` for another county.
+
 ## Features
 
 - **Multi-source ingestion**: Congress.gov, OpenStates (MD General Assembly),

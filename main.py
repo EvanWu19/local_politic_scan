@@ -45,7 +45,7 @@ from scanner.reporter import generate as gen_report, save_html_report
 from scanner.server import run_server, get_tailscale_ip
 from scanner.podcast import generate_podcast_episodes
 from scanner.sources.federal import fetch_bills
-from scanner.sources.maryland import fetch_md_bills, fetch_md_hearings
+from scanner.sources.state import fetch_state_bills, fetch_state_hearings
 from scanner.sources.montgomery import (
     fetch_county_council, fetch_county_hearings,
     fetch_mcps_board, fetch_local_services,
@@ -94,13 +94,14 @@ def cmd_scan(args):
         print(f"✗ {e}")
 
     try:
-        print("  [2/6] Maryland state bills (OpenStates/MGA)…", end=" ", flush=True)
-        md_bills = fetch_md_bills(cfg.OPENSTATES_API_KEY, days_back=cfg.SCAN_DAYS_BACK,
-                                   max_items=cfg.MAX_ITEMS_PER_SOURCE)
-        print(f"✓ {len(md_bills)} items")
-        all_raw.extend(md_bills)
+        print(f"  [2/6] {cfg.STATE or 'State'} bills (OpenStates)…", end=" ", flush=True)
+        state_bills = fetch_state_bills(cfg.OPENSTATES_API_KEY,
+                                        days_back=cfg.SCAN_DAYS_BACK,
+                                        max_items=cfg.MAX_ITEMS_PER_SOURCE)
+        print(f"✓ {len(state_bills)} items")
+        all_raw.extend(state_bills)
     except Exception as e:
-        errors.append(f"maryland: {e}")
+        errors.append(f"state: {e}")
         print(f"✗ {e}")
 
     try:
