@@ -417,6 +417,9 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/podcast/") and path.endswith(".mp3"):
                 stem = path[len("/podcast/"):-len(".mp3")]
                 return self._serve_podcast(stem)
+            if path.startswith("/podcast/") and path.endswith("-index.json"):
+                date_s = path[len("/podcast/"):-len("-index.json")]
+                return self._serve_podcast_index(date_s)
             if path == "/podcasts":
                 return self._serve_podcast_list()
             if path == "/chat":
@@ -531,6 +534,14 @@ class Handler(BaseHTTPRequestHandler):
         )
         self._send(200, "application/json",
                     json.dumps(result, ensure_ascii=False).encode())
+
+    def _serve_podcast_index(self, date_str: str):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
+            return self._send_404()
+        p = self.podcasts_dir / f"podcast_{date_str}_index.json"
+        if not p.exists():
+            return self._send(200, "application/json", b"{}")
+        self._send(200, "application/json; charset=utf-8", p.read_bytes())
 
     def _handle_digest_chat(self, body: bytes):
         """

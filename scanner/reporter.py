@@ -172,6 +172,65 @@ _CHAT_SIDEBAR = """
 </script>
 """
 
+# ── Podcast player (injected into each digest page) ───────────────────────────
+# Plain string so JS braces need no escaping. DATE_ISO replaced at render time.
+_PODCAST_PLAYER_JS = """
+<div id="pod-section" style="margin-bottom:24px;display:none">
+  <h2 style="font-size:1.1rem;color:#1a3a5c;border-bottom:2px solid #1a3a5c;
+             padding-bottom:6px;margin-bottom:12px;">🎧 Today's Episodes</h2>
+  <div id="pod-list" style="display:grid;gap:10px;"></div>
+  <p id="pod-none" style="display:none;font-size:.85rem;color:#888;padding:8px 0;">
+    No podcast generated yet — run <code>python main.py podcast</code>
+  </p>
+</div>
+<script>
+(function() {
+  var DATE = 'DATE_ISO';
+  var BASE = (window.location.protocol === 'file:') ? 'http://localhost:8765' : window.location.origin;
+  var podSection = document.getElementById('pod-section');
+  var podList    = document.getElementById('pod-list');
+  var podNone    = document.getElementById('pod-none');
+  var found = 0;
+  var checks = [];
+
+  for (var i = 1; i <= 4; i++) {
+    (function(epNum) {
+      var url = BASE + '/podcast/podcast_' + DATE + '_ep' + epNum + '.mp3';
+      checks.push(
+        fetch(url, {method: 'HEAD'})
+          .then(function(r) {
+            if (!r.ok) return;
+            found++;
+            var card = document.createElement('div');
+            card.style.cssText = 'background:white;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.07)';
+            card.innerHTML =
+              '<div style="font-weight:600;color:#1a3a5c;font-size:.9rem;margin-bottom:8px" id="ep-lbl-' + epNum + '">Episode ' + epNum + '</div>' +
+              '<audio controls preload="none" style="width:100%"><source src="' + url + '" type="audio/mpeg"></audio>';
+            podList.appendChild(card);
+          })
+          .catch(function() {})
+      );
+    })(i);
+  }
+
+  Promise.all(checks).then(function() {
+    podSection.style.display = '';
+    if (found === 0) { podNone.style.display = ''; return; }
+    // Load episode titles from index JSON if available
+    fetch(BASE + '/podcast/' + DATE + '-index.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        (data.episodes || []).forEach(function(ep) {
+          var el = document.getElementById('ep-lbl-' + ep.num);
+          if (el && ep.title) el.textContent = 'Episode ' + ep.num + ': ' + ep.title;
+        });
+      })
+      .catch(function() {});
+  });
+})();
+</script>
+"""
+
 # ── Section labels ─────────────────────────────────────────────────────────────
 LEVEL_LABELS = {
     "federal": "🇺🇸 Federal (filtered topics)",
@@ -238,6 +297,7 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
     date_iso = report_date.isoformat()
     locale = _LOCALE
     chat_sidebar = _CHAT_SIDEBAR.replace("DATE_ISO", date_iso)
+    podcast_player = _PODCAST_PLAYER_JS.replace("DATE_ISO", date_iso)
 
     sections_html = ""
     for level, label in LEVEL_LABELS.items():
@@ -322,6 +382,8 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   daily life. Each card has a plain-English explanation. Use the Politician Tracker below
   to see what your representatives have been doing.
 </div>
+
+{podcast_player}
 
 {sections_html}
 {pol_html}
