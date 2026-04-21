@@ -1,0 +1,89 @@
+LOCAL POLITICS SCANNER — Quick Start
+=============================================
+
+STEP 1: Get your API keys (free)
+──────────────────────────────────
+A) Anthropic (AI summaries — REQUIRED for plain-English explanations):
+   https://console.anthropic.com/  → API Keys → Create Key
+
+B) Congress.gov (federal bills — free, instant):
+   https://api.congress.gov/sign-up/  → check your email for the key
+
+C) OpenStates (Maryland state bills — optional, improves MD coverage):
+   https://openstates.org/accounts/signup/
+
+STEP 2: Add your keys to .env
+──────────────────────────────
+Open the .env file in the project root.
+
+Edit these three lines:
+   ANTHROPIC_API_KEY=sk-ant-...your-key-here...
+   CONGRESS_API_KEY=...your-key-here...
+   OPENSTATES_API_KEY=...your-key-here...   (optional)
+
+STEP 3: Run your first full scan
+──────────────────────────────────
+Open a terminal in this folder and run:
+
+   .venv\Scripts\python main.py scan
+
+This fetches ~100-150 items from:
+  • Maryland General Assembly (state bills)
+  • Montgomery County Council press releases & hearings
+  • MCPS Board of Education news
+  • Montgomery County Police press releases
+  • 8 local news RSS feeds (WTOP, Maryland Matters, Bethesda Magazine, etc.)
+  • Federal bills (once you add your Congress.gov key)
+
+STEP 4: Open your report
+──────────────────────────
+The HTML report is saved to:
+   reports\digest_YYYY-MM-DD.html
+
+Just double-click it to open in your browser.
+It includes:
+  • Plain-English summaries of each item
+  • Relevance score (how much it affects YOU)
+  • Politician Tracker (who voted/sponsored what)
+  • Color-coded by topic
+
+STEP 5: Daily automatic scans (already scheduled!)
+────────────────────────────────────────────────────
+The scanner runs every morning at 7:00 AM automatically.
+Fresh report will be in the reports\ folder each day.
+
+To check the schedule:
+   powershell -Command "Get-ScheduledTask -TaskName 'LocalPoliticsScan'"
+
+To remove the schedule:
+   schtasks /delete /tn LocalPoliticsScan /f
+
+
+USEFUL COMMANDS
+───────────────
+  Look up a politician:
+    .venv\Scripts\python main.py politician "Marc Elrich"
+    .venv\Scripts\python main.py politician "Wes Moore"
+
+  Re-generate report without re-scanning:
+    .venv\Scripts\python main.py report
+
+  See scan history and database stats:
+    .venv\Scripts\python main.py status
+
+  Run a fresh scan right now:
+    .venv\Scripts\python main.py scan
+
+
+WHO ARE MY REPRESENTATIVES?
+────────────────────────────
+Set USER_CITY, USER_ZIP_CODE, and the *_DISTRICT variables in your .env
+so the scanner can prioritize items from your own elected officials.
+
+To look up your districts:
+  State legislature:  https://mgaleg.maryland.gov/mgawebsite/Members/Index/senate
+  U.S. House:         https://www.house.gov/representatives/find-your-representative
+  County Council:     https://www.montgomerycountymd.gov/council/
+
+Tip: Reports automatically flag election-related news. Look for items
+     tagged with "election" in red as any election approaches.
