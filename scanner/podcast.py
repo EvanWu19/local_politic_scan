@@ -70,6 +70,12 @@ STYLE RULES:
     Do NOT spend time on individual crime incidents or accidents. If a story is about a
     statistic or trend (e.g., "crime rates up 15%") cover it; if it's about a specific
     person's arrest, death, or accident, skip it entirely.
+  - LISTENER POSITIONING: This podcast is a personalized guide for ONE specific
+    first-time voter whose district config is known to the tool. The hosts must
+    NEVER tell the listener to "figure out who your candidate is", "look up your
+    district", "find out who's on your ballot", or any equivalent. Candidate and
+    district research is the TOOL's job, not the listener's. Speak as though we
+    already know their races and are walking them through their ballot choices.
 
 Output ONLY the dialogue lines in the ALEX/JORDAN format above. No preamble."""
 
@@ -172,21 +178,16 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         ep_title = _infer_episode_title(ep_num, segments)
         log.info("  Title: %s", ep_title)
 
-        # ── Write script ──────────────────────────────────────────────────────
-        script_parts = []
-        script_parts.append(_write_episode_intro(claude, script_model,
-                                                  target_date, ep_num, ep_title, segments))
-        for seg in segments:
-            if not seg["events"]:
-                continue
-            log.info("  writing segment: %s (%d items)…",
-                     seg["label"], len(seg["events"]))
-            script_parts.append(_write_segment(claude, script_model, seg))
+        # ── Build avoid-list from PM rollup (framings/taglines to skip) ───────
+        base_avoid_items = _load_avoid_list(db_path, target_date)
+        avoid_block = _format_avoid_block(base_avoid_items)
 
-        script_parts.append(_write_episode_outro(claude, script_model,
-                                                  target_date, ep_num, ep_title, segments))
-
-        draft_script = "\n\n".join(script_parts)
+        # ── Write draft #1 ────────────────────────────────────────────────────
+        draft_script = _build_full_script(
+            claude=claude, model=script_model,
+            target_date=target_date, ep_num=ep_num, ep_title=ep_title,
+            segments=segments, avoid_block=avoid_block,
+        )
         draft_words = len(draft_script.split())
         log.info("  Draft: %d words (~%d min)", draft_words, draft_words // 130)
 
@@ -194,9 +195,11 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         draft_path = podcasts_dir / draft_fname
         draft_path.write_text(draft_script, encoding="utf-8")
 
-        # ── Editor pass ───────────────────────────────────────────────────────
+        # ── Editor pass (with optional rewrite loop, max 1 retry) ─────────────
         editor_notes = ""
         editor_changed = False
+        rewrite_attempted = False
+        rewrite_reason = ""
         if skip_editor:
             full_script = draft_script
             log.info("  Editor: skipped")
@@ -212,12 +215,47 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                 anthropic_key=anthropic_key,
                 model=script_model,
             )
+
+            if review.get("verdict") == "order_rewrite":
+                rewrite_attempted = True
+                rewrite_reason = review.get("rewrite_reason", "")
+                log.warning(
+                    "  Editor ordered REWRITE — regenerating with extended avoid list. Reason: %s",
+                    rewrite_reason,
+                )
+                extended_avoid = base_avoid_items + _parse_avoid_from_reason(rewrite_reason)
+                avoid_block_v2 = _format_avoid_block(extended_avoid, strict=True)
+
+                draft_script_v2 = _build_full_script(
+                    claude=claude, model=script_model,
+                    target_date=target_date, ep_num=ep_num, ep_title=ep_title,
+                    segments=segments, avoid_block=avoid_block_v2,
+                )
+                draft_v2_path = podcasts_dir / f"podcast_{date_str}_{ep_slug}.rewrite.txt"
+                draft_v2_path.write_text(draft_script_v2, encoding="utf-8")
+
+                review = review_script(
+                    draft=draft_script_v2,
+                    ep_num=ep_num,
+                    ep_title=ep_title,
+                    episode_date=target_date,
+                    podcasts_dir=podcasts_dir,
+                    db_path=db_path,
+                    anthropic_key=anthropic_key,
+                    model=script_model,
+                )
+                draft_script = draft_script_v2  # the rewrite becomes the baseline
+
             full_script = review["final_script"]
             editor_notes = review["notes"]
             editor_changed = review["changed"]
-            log.info("  Editor: %s — %s",
-                     "revised" if editor_changed else "approved as-is",
-                     editor_notes)
+            log.info(
+                "  Editor: verdict=%s changed=%s%s — %s",
+                review.get("verdict", "?"),
+                editor_changed,
+                " (after rewrite)" if rewrite_attempted else "",
+                editor_notes,
+            )
 
         word_count = len(full_script.split())
         script_fname = f"podcast_{date_str}_{ep_slug}.txt"
@@ -233,6 +271,9 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
             "changed": editor_changed,
             "notes": editor_notes,
             "skip_editor": skip_editor,
+            "rewrite_attempted": rewrite_attempted,
+            "rewrite_reason": rewrite_reason,
+            "avoid_list_size": len(base_avoid_items),
         }
         (podcasts_dir / f"podcast_{date_str}_{ep_slug}.editor.json").write_text(
             json.dumps(editor_meta, indent=2), encoding="utf-8"
@@ -437,9 +478,92 @@ def _infer_episode_title(ep_num: int, segments: List[Dict]) -> str:
     return f"{parts[0]} + More"
 
 
+def _load_avoid_list(db_path: Path, target_date: date) -> List[str]:
+    """
+    Pull the most recent PM rollup whose window ended STRICTLY BEFORE today
+    and return its avoid_list. Empty list if no usable rollup.
+    """
+    try:
+        from scanner.database import list_weekly_themes
+    except Exception as e:
+        log.debug("PM rollup unavailable for avoid_list: %s", e)
+        return []
+    try:
+        rollups = list_weekly_themes(db_path, limit=12)
+    except Exception as e:
+        log.warning("Could not load weekly_themes for avoid_list: %s", e)
+        return []
+    today_iso = target_date.isoformat()
+    rollup = next(
+        (r for r in rollups if (r.get("week_end") or "") < today_iso),
+        None,
+    )
+    if not rollup:
+        return []
+    items = rollup.get("avoid_list") or []
+    return [str(x).strip() for x in items if str(x).strip()]
+
+
+def _format_avoid_block(items: List[str], strict: bool = False) -> str:
+    """Render an avoid-list into a compact append-to-user-prompt block."""
+    if not items:
+        return ""
+    header = (
+        "HARD CONSTRAINT — the Editor has ordered a rewrite. You must NOT "
+        "reuse any of the following framings, taglines, anecdotes, or "
+        "phrasings that the show has already used recently. Find fresh angles."
+        if strict else
+        "AVOID — do NOT reuse these framings, taglines, anecdotes, or "
+        "phrasings; the show has already used them in the last few days:"
+    )
+    body = "\n".join(f"  - {it}" for it in items[:20])
+    return f"\n\n{header}\n{body}\n"
+
+
+def _parse_avoid_from_reason(reason: str) -> List[str]:
+    """
+    The Editor's rewrite_reason is free-form but typically ends with a
+    semicolon-separated list of things to avoid. Peel those off so we
+    can feed them explicitly to the next draft.
+    """
+    if not reason:
+        return []
+    # Take everything after the first colon or semicolon if one exists,
+    # else the whole string.
+    tail = reason
+    for sep in (":", ";"):
+        if sep in reason:
+            tail = reason.split(sep, 1)[1]
+            break
+    items = [p.strip(" .\t") for p in re.split(r"[;,]", tail) if p.strip()]
+    # also include the full sentence as a safety net
+    return [reason.strip()] + items
+
+
+def _build_full_script(claude: anthropic.Anthropic, model: str,
+                        target_date: date, ep_num: int, ep_title: str,
+                        segments: List[Dict], avoid_block: str) -> str:
+    """Intro + per-segment dialogue + outro, concatenated."""
+    parts: List[str] = []
+    parts.append(_write_episode_intro(
+        claude, model, target_date, ep_num, ep_title, segments, avoid_block,
+    ))
+    for seg in segments:
+        if not seg["events"]:
+            continue
+        log.info("  writing segment: %s (%d items)…",
+                 seg["label"], len(seg["events"]))
+        parts.append(_write_segment(claude, model, seg, avoid_block))
+    parts.append(_write_episode_outro(
+        claude, model, target_date, ep_num, ep_title, segments, avoid_block,
+    ))
+    return "\n\n".join(parts)
+
+
 def _write_episode_intro(client: anthropic.Anthropic, model: str,
                           target_date: date, ep_num: int,
-                          ep_title: str, segments: List[Dict]) -> str:
+                          ep_title: str, segments: List[Dict],
+                          avoid_block: str = "") -> str:
     date_str = target_date.strftime("%A, %B %d, %Y")
     preview = "\n".join(
         f"  - {seg['label']}: {len(seg['events'])} stories "
@@ -453,12 +577,13 @@ def _write_episode_intro(client: anthropic.Anthropic, model: str,
         "Opening should: (1) name the episode, (2) quick preview of the 2 biggest stories, "
         "(3) set expectations for what's covered. Target: ~350 words."
     )
-    return _claude_dialogue(client, model, user)
+    return _claude_dialogue(client, model, user + avoid_block)
 
 
 def _write_episode_outro(client: anthropic.Anthropic, model: str,
                           target_date: date, ep_num: int,
-                          ep_title: str, segments: List[Dict]) -> str:
+                          ep_title: str, segments: List[Dict],
+                          avoid_block: str = "") -> str:
     total = sum(len(s["events"]) for s in segments)
     user = (
         f"Write a closing for Episode {ep_num}: '{ep_title}' of {_SHOW_NAME!r}.\n\n"
@@ -467,7 +592,7 @@ def _write_episode_outro(client: anthropic.Anthropic, model: str,
         "(2) one concrete action the listener can take this week, "
         "(3) warm sign-off. Target: ~250 words."
     )
-    return _claude_dialogue(client, model, user)
+    return _claude_dialogue(client, model, user + avoid_block)
 
 
 def _group_by_segment(events: List[Dict], top_n: int) -> List[Dict]:
@@ -540,7 +665,8 @@ def _write_outro(client: anthropic.Anthropic, model: str,
     return _claude_dialogue(client, model, user)
 
 
-def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict) -> str:
+def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
+                    avoid_block: str = "") -> str:
     """Write dialogue for one segment — news stories or politician spotlights."""
     is_pol = segment.get("is_politician_segment", False)
 
@@ -580,6 +706,7 @@ def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict) -> st
             f"- Total: ~{target_words} words of dialogue\n"
             "- Be factual and nonpartisan; present the record, not opinion"
         )
+        return _claude_dialogue(client, model, user + avoid_block)
     else:
         target_words = max(1500, 700 * len(segment["events"]))
         user = (
@@ -594,7 +721,7 @@ def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict) -> st
             f"- Emphasize the LOCAL ({_LOCALE}) angle even for state/federal stories\n"
             "- End with a brief transition to the next segment"
         )
-    return _claude_dialogue(client, model, user)
+    return _claude_dialogue(client, model, user + avoid_block)
 
 
 def _claude_dialogue(client: anthropic.Anthropic, model: str, user_prompt: str) -> str:

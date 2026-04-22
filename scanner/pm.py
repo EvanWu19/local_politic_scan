@@ -28,23 +28,36 @@ _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "th
 
 DEFAULT_WINDOW_DAYS = 7
 MIN_NOTES = 2  # below this, the rollup has no useful signal — skip the LLM call
+RECENT_SCRIPTS_DAYS = 5
+MAX_SCRIPT_CHARS = 2500  # per-episode excerpt budget fed to PM
 
 PM_SYSTEM = f"""You are the Product Manager for a daily local-politics podcast
 aimed at a first-time voter in {_LOCALE}.
 
-You receive the audience's free-text daily notes from the past several
-days (the listener writes one short note per episode after listening).
-Your job is to distill them into a tight, structured rollup that the
-Editor and Author agents will use to plan future episodes.
+You receive:
+  1. the audience's free-text daily notes from the past several days
+     (the listener writes one short note per episode after listening)
+  2. excerpts from the podcast scripts the show has shipped over the
+     last 5 days — so you can detect repeated framings, taglines, or
+     anecdotes the show has leaned on too hard
+
+Your job is to distill all of this into a tight, structured rollup
+that the Editor and Author agents will use to plan the NEXT episode.
 
 Look for:
   - RECURRING THEMES — topics the listener mentions across multiple days
   - OPEN QUESTIONS — questions they've asked that future episodes should answer
   - UNDERSERVED TOPICS — areas they keep flagging interest in but the show
     hasn't covered enough
+  - RECENT COVERAGE TO AVOID — specific framings, taglines, anecdotes,
+    or phrasings that have already appeared in the last 5 days of scripts
+    and should NOT be repeated in the next episode. Be concrete: name the
+    exact tagline or story, not a vague category. Also include any
+    framings the listener has flagged as repetitive in their notes.
 
-Be conservative: do not invent themes from a single passing comment.
-If there is genuinely nothing in a category, leave it empty.
+Be conservative on themes (don't invent from one passing comment), but
+be aggressive on the avoid list — repetition is the #1 quality
+problem and the listener has called it out explicitly.
 
 OUTPUT FORMAT — five sections, exactly in this order, nothing else:
 
@@ -65,6 +78,12 @@ UNDERSERVED TOPICS:
 - <short label of a topic the listener keeps asking about>
 - ...
 (0–5 lines)
+
+RECENT COVERAGE TO AVOID:
+- <concrete tagline, framing, or story the show has already used>
+- ...
+(0–10 lines; be specific enough that the Author would recognize the
+item if they wrote it again)
 
 Plain text only — no JSON, no markdown fences, no preamble."""
 
@@ -93,7 +112,12 @@ def generate_weekly_themes(
                  len(notes), window_start, window_end)
         return None
 
-    user_prompt = _build_user_prompt(notes, window_start, window_end)
+    recent_scripts = _load_recent_scripts(
+        window_end=window_end, days=RECENT_SCRIPTS_DAYS
+    )
+    user_prompt = _build_user_prompt(
+        notes, window_start, window_end, recent_scripts
+    )
 
     try:
         client = anthropic.Anthropic(api_key=anthropic_key)
@@ -123,11 +147,15 @@ def generate_weekly_themes(
         underserved_topics=parsed["underserved_topics"],
         summary=parsed["summary"],
         note_count=len(notes),
+        avoid_list=parsed["avoid_list"],
     )
     saved = get_latest_weekly_themes(db_path)
-    log.info("PM agent: saved rollup for %s..%s (%d themes, %d open questions)",
-             window_start, window_end,
-             len(parsed["themes"]), len(parsed["open_questions"]))
+    log.info(
+        "PM agent: saved rollup for %s..%s (%d themes, %d open questions, %d avoid)",
+        window_start, window_end,
+        len(parsed["themes"]), len(parsed["open_questions"]),
+        len(parsed["avoid_list"]),
+    )
     return saved
 
 
@@ -147,20 +175,83 @@ def _load_notes_in_range(db_path: Path, start: date, end: date) -> List[Dict]:
     ]
 
 
-def _build_user_prompt(notes: List[Dict], window_start: date, window_end: date) -> str:
-    body = "\n\n".join(
+def _build_user_prompt(notes: List[Dict], window_start: date, window_end: date,
+                        recent_scripts: List[Dict]) -> str:
+    notes_body = "\n\n".join(
         f"[{r['report_date']}] {r['content'].strip()}"
         for r in sorted(notes, key=lambda x: x["report_date"])
     )
-    return (
-        f"Audience notes for {window_start.isoformat()} through {window_end.isoformat()}:\n\n"
-        f"{body}\n\n"
-        "Produce the rollup now."
-    )
+    parts = [
+        f"Audience notes for {window_start.isoformat()} through {window_end.isoformat()}:",
+        "",
+        notes_body,
+    ]
+    if recent_scripts:
+        parts += ["", "Recent shipped podcast scripts (most recent first):", ""]
+        for s in recent_scripts:
+            parts.append(f"--- {s['date']} {s['episode']} ---")
+            parts.append(s["excerpt"])
+            parts.append("")
+    else:
+        parts += ["", "(No prior shipped scripts available.)"]
+    parts += ["", "Produce the rollup now."]
+    return "\n".join(parts)
+
+
+def _load_recent_scripts(window_end: date, days: int) -> List[Dict]:
+    """
+    Load the shipped (post-editor) episode scripts for the last `days`
+    days up to (and including) window_end. Returns a list of
+    {date, episode, excerpt} dicts, newest first.
+
+    Uses the final `podcast_<date>_ep<N>.txt` artifacts written to
+    Config.PODCASTS_DIR. Excerpts are truncated to MAX_SCRIPT_CHARS to
+    keep the PM prompt bounded.
+    """
+    pdir: Path = _Cfg.PODCASTS_DIR
+    if not pdir.exists():
+        return []
+
+    start = window_end - timedelta(days=days - 1)
+    out: List[Dict] = []
+    # newest first
+    for delta in range(days):
+        d = window_end - timedelta(days=delta)
+        if d < start:
+            break
+        # ep1..ep4 in order (keep deterministic)
+        for f in sorted(pdir.glob(f"podcast_{d.isoformat()}_ep*.txt")):
+            # Skip draft/intermediate artifacts; shipped file is plain <date>_epN.txt
+            name = f.name
+            if ".draft." in name or ".editor." in name:
+                continue
+            if not name.endswith(".txt"):
+                continue
+            # files like podcast_<date>_ep1_federal.txt are segment-only
+            # legacy files — prefer the consolidated _ep1.txt. Skip the
+            # _epN_<slug>.txt variants.
+            stem = f.stem  # podcast_<date>_ep1 or podcast_<date>_ep1_federal
+            tail = stem.split(f"podcast_{d.isoformat()}_", 1)[-1]
+            if "_" in tail:
+                continue
+            try:
+                text = f.read_text(encoding="utf-8", errors="replace").strip()
+            except Exception:
+                continue
+            if not text:
+                continue
+            if len(text) > MAX_SCRIPT_CHARS:
+                text = text[:MAX_SCRIPT_CHARS] + " …[truncated]"
+            out.append({
+                "date": d.isoformat(),
+                "episode": tail,
+                "excerpt": text,
+            })
+    return out
 
 
 _SECTION_RE = re.compile(
-    r"^\s*(SUMMARY|THEMES|OPEN QUESTIONS|UNDERSERVED TOPICS)\s*:\s*(.*)$",
+    r"^\s*(SUMMARY|THEMES|OPEN QUESTIONS|UNDERSERVED TOPICS|RECENT COVERAGE TO AVOID)\s*:\s*(.*)$",
     re.IGNORECASE,
 )
 _BULLET_RE = re.compile(r"^\s*[-*•]\s+(.*?)\s*$")
@@ -176,6 +267,7 @@ def _parse_pm_output(raw: str) -> Optional[Dict]:
     sections: Dict[str, List[str]] = {
         "SUMMARY": [], "THEMES": [],
         "OPEN QUESTIONS": [], "UNDERSERVED TOPICS": [],
+        "RECENT COVERAGE TO AVOID": [],
     }
     current = None
     for line in text.splitlines():
@@ -212,6 +304,7 @@ def _parse_pm_output(raw: str) -> Optional[Dict]:
         "themes": themes,
         "open_questions": [s for s in sections["OPEN QUESTIONS"] if s],
         "underserved_topics": [s for s in sections["UNDERSERVED TOPICS"] if s],
+        "avoid_list": [s for s in sections["RECENT COVERAGE TO AVOID"] if s],
     }
 
 
@@ -240,4 +333,12 @@ def format_themes_for_prompt(rollup: Dict) -> str:
         lines.append("Topics they want more coverage of:")
         for u in under:
             lines.append(f"  - {u}")
+    avoid = rollup.get("avoid_list") or []
+    if avoid:
+        lines.append(
+            "RECENT COVERAGE TO AVOID — do NOT reuse these framings, "
+            "taglines, or anecdotes (they already shipped in the last 5 days):"
+        )
+        for a in avoid:
+            lines.append(f"  - {a}")
     return "\n".join(lines)

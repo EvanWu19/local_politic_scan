@@ -57,12 +57,29 @@ cfg = Config()
 
 
 # ──────────────────────────────────────────────────────────────────────────────
-# SCAN
+# FETCH / PUBLISH / SCAN
+#
+# Pipeline order (daily rhythm):
+#
+#   MORNING (cmd_publish): PM → Analyst → Author → Editor → TTS
+#       Uses data already in the DB — i.e. the previous night's fetch —
+#       so that yesterday's audience note can influence today's episode.
+#
+#   EVENING (cmd_fetch):   Data Collector runs LAST
+#       Fetches fresh material and primes tomorrow morning's publish.
+#
+#   cmd_scan is kept as a backward-compatible alias that does
+#   fetch-then-publish in one shot (same-day data drives same-day episode).
+#   Prefer fetch + publish on a schedule — see `main.py setup`.
 # ──────────────────────────────────────────────────────────────────────────────
 
-def cmd_scan(args):
-    """Run a full scan: fetch all sources → AI enrich → save → report."""
-    print("\n── Local Politics Scanner ──────────────────────────────")
+def cmd_fetch(args):
+    """Collector phase: fetch all sources → AI enrich → save to DB.
+
+    This is the Data Collector. It does NOT produce the report or podcast;
+    run cmd_publish for that (typically the next morning).
+    """
+    print("\n── Local Politics Scanner — FETCH ──────────────────────")
     print(f"   Location : {cfg.CITY}, {cfg.COUNTY}, {cfg.STATE}")
     print(f"   Date     : {date.today()}")
     _districts = cfg.districts_profile()
@@ -199,13 +216,78 @@ def cmd_scan(args):
     finish_scan_run(cfg.DB_PATH, run_id, total_found, new_count,
                     status="ok", error="; ".join(errors))
 
-    # ── Generate report
-    cmd_report(args, silent=True)
-    print("✅  Scan complete.\n")
+    print("✅  Fetch complete. (Run `python main.py publish` to generate "
+          "today's report + podcast.)\n")
 
-    # ── Optional: generate today's podcast
-    if getattr(args, "with_podcast", False):
-        cmd_podcast(args)
+
+def cmd_publish(args):
+    """Publish phase: PM rollup → Analyst → report → podcast.
+
+    Uses whatever is already in the DB. Designed to run in the morning
+    off the PREVIOUS night's fetch so that yesterday's audience notes
+    can influence today's podcast.
+    """
+    print("\n── Local Politics Scanner — PUBLISH ────────────────────")
+    print(f"   Date     : {date.today()}")
+    print("────────────────────────────────────────────────────────\n")
+
+    initialize_db(cfg.DB_PATH)
+
+    # ── PM rollup (non-fatal if it skips)
+    if cfg.ANTHROPIC_API_KEY:
+        try:
+            print("📊  PM agent — rolling up recent audience notes…")
+            from scanner.pm import generate_weekly_themes
+            saved = generate_weekly_themes(
+                db_path=cfg.DB_PATH,
+                anthropic_key=cfg.ANTHROPIC_API_KEY,
+                window_end=date.today(),
+            )
+            if saved:
+                print(f"   ✓ Rollup saved ({saved.get('note_count',0)} notes, "
+                      f"{len(saved.get('themes') or [])} themes, "
+                      f"{len(saved.get('avoid_list') or [])} avoid items)\n")
+            else:
+                print("   (not enough notes yet — skipped)\n")
+        except Exception as e:
+            log.warning("PM rollup failed (non-fatal): %s", e)
+            print(f"   ⚠️  PM rollup failed: {e}\n")
+    else:
+        print("⚠️  No ANTHROPIC_API_KEY — skipping PM rollup.\n")
+
+    # ── Analyst pass (non-fatal)
+    if cfg.ANTHROPIC_API_KEY:
+        try:
+            print("📊  Analyst — scoring tracked politicians on consistency…")
+            from scanner.analyst import analyze_all
+            rows = analyze_all(
+                db_path=cfg.DB_PATH,
+                anthropic_key=cfg.ANTHROPIC_API_KEY,
+                min_events=3,
+            )
+            print(f"   ✓ Scored {len(rows)} politicians\n")
+        except Exception as e:
+            log.warning("Analyst pass failed (non-fatal): %s", e)
+            print(f"   ⚠️  Analyst failed: {e}\n")
+
+    # ── Report
+    cmd_report(args, silent=True)
+
+    # ── Podcast
+    if getattr(args, "no_podcast", False):
+        print("(Skipping podcast — --no-podcast flag set.)\n")
+        return
+    cmd_podcast(args)
+
+
+def cmd_scan(args):
+    """Backward-compatible alias: run FETCH then PUBLISH in one shot.
+
+    Most users should prefer the scheduled split (see `main.py setup`)
+    so that yesterday's audience note can influence today's podcast.
+    """
+    cmd_fetch(args)
+    cmd_publish(args)
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -545,34 +627,59 @@ def cmd_pm(args):
 
 
 def cmd_setup(args):
-    """Register Windows scheduled tasks: daily scan + (optional) always-on web server."""
+    """Register Windows scheduled tasks: morning publish, evening fetch,
+    and (optional) always-on web server.
+
+    The split matters: yesterday's audience note can only influence
+    today's podcast if the Collector runs LAST and the Author uses the
+    previous day's data. See feedback_tool_positioning_and_pipeline.
+    """
     python_exe = sys.executable
     script = str(Path(__file__).resolve())
-    log_file = str(Path(__file__).parent / "scan.log")
+    publish_log = str(Path(__file__).parent / "publish.log")
+    fetch_log = str(Path(__file__).parent / "fetch.log")
     server_log = str(Path(__file__).parent / "server.log")
 
-    # ── Task 1: daily scan at 7 AM ──
-    scan_task = "LocalPoliticsScan"
-    scan_cmd = (
-        f'schtasks /create /tn "{scan_task}" /tr '
-        f'"{python_exe} {script} scan >> {log_file} 2>&1" '
+    # ── Task 1: morning publish at 07:00 (PM → Analyst → report → podcast)
+    publish_task = "LocalPoliticsPublish"
+    publish_cmd = (
+        f'schtasks /create /tn "{publish_task}" /tr '
+        f'"{python_exe} {script} publish >> {publish_log} 2>&1" '
         f'/sc daily /st 07:00 /f'
     )
-    print(f"[1/2] Creating daily scan task '{scan_task}'…")
-    r = subprocess.run(scan_cmd, shell=True, capture_output=True, text=True)
+    print(f"[1/3] Creating morning publish task '{publish_task}'…")
+    r = subprocess.run(publish_cmd, shell=True, capture_output=True, text=True)
     if r.returncode == 0:
-        print(f"      ✅  Runs daily at 07:00 · logs → {log_file}")
+        print(f"      ✅  Runs daily at 07:00 (uses last night's fetch) · logs → {publish_log}")
     else:
         print(f"      ✗  Failed: {r.stderr}")
 
-    # ── Task 2: web server auto-start via Startup folder (no admin needed) ──
+    # ── Task 2: evening fetch at 22:00 (Collector primes tomorrow)
+    fetch_task = "LocalPoliticsFetch"
+    fetch_cmd = (
+        f'schtasks /create /tn "{fetch_task}" /tr '
+        f'"{python_exe} {script} fetch >> {fetch_log} 2>&1" '
+        f'/sc daily /st 22:00 /f'
+    )
+    print(f"[2/3] Creating evening fetch task '{fetch_task}'…")
+    r = subprocess.run(fetch_cmd, shell=True, capture_output=True, text=True)
+    if r.returncode == 0:
+        print(f"      ✅  Runs daily at 22:00 (primes tomorrow morning) · logs → {fetch_log}")
+    else:
+        print(f"      ✗  Failed: {r.stderr}")
+
+    # ── Clean up the old single-shot scan task if it's still there
+    subprocess.run('schtasks /delete /tn "LocalPoliticsScan" /f',
+                   shell=True, capture_output=True, text=True)
+
+    # ── Task 3: web server auto-start via Startup folder (no admin needed) ──
     if args.no_server:
         print("\n(Skipping web server auto-start — run `python main.py serve` manually.)")
         return
 
     startup_dir = Path(os.environ["APPDATA"]) / "Microsoft/Windows/Start Menu/Programs/Startup"
     launcher_bat = startup_dir / "LocalPoliticsServer.bat"
-    print(f"\n[2/2] Creating auto-start launcher at:\n      {launcher_bat}")
+    print(f"\n[3/3] Creating auto-start launcher at:\n      {launcher_bat}")
 
     # VBS wrapper makes the cmd window stay hidden; bat calls python directly
     script_dir = Path(__file__).parent
@@ -605,8 +712,9 @@ def cmd_setup(args):
         print(f"      You can still run the server manually:")
         print(f"        .venv\\Scripts\\python main.py serve")
 
-    print(f"\nTo remove the daily-scan task later:")
-    print(f"  schtasks /delete /tn {scan_task} /f")
+    print(f"\nTo remove the scheduled tasks later:")
+    print(f"  schtasks /delete /tn {publish_task} /f")
+    print(f"  schtasks /delete /tn {fetch_task} /f")
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -620,9 +728,31 @@ def main():
     )
     sub = parser.add_subparsers(dest="command")
 
-    scan = sub.add_parser("scan", help="Fetch all sources, enrich with AI, save + generate report")
+    fetch = sub.add_parser("fetch",
+        help="Collector only: fetch all sources, enrich with AI, save to DB (no report/podcast)")
+
+    publish = sub.add_parser("publish",
+        help="Publish today's content from existing DB data: PM → Analyst → report → podcast")
+    publish.add_argument("--date", help="Target date YYYY-MM-DD for podcast (default: today)")
+    publish.add_argument("--no-audio", action="store_true",
+                         help="Skip OpenAI TTS (write script only)")
+    publish.add_argument("--skip-editor", action="store_true",
+                         help="Skip the Editor pass (draft straight to TTS)")
+    publish.add_argument("--no-podcast", action="store_true",
+                         help="Only generate the report, skip the podcast")
+
+    scan = sub.add_parser("scan",
+        help="(Legacy alias) Fetch then immediately publish in one shot — "
+             "prefer scheduled `fetch` + `publish` for day-over-day feedback loop")
     scan.add_argument("--with-podcast", action="store_true",
-                      help="Also generate today's 2-hour podcast after the scan completes")
+                      help="Also generate today's podcast (legacy flag — on by default in `publish`)")
+    scan.add_argument("--no-podcast", action="store_true",
+                      help="Skip the podcast when running in one-shot mode")
+    scan.add_argument("--no-audio", action="store_true",
+                      help="Generate scripts but skip OpenAI TTS")
+    scan.add_argument("--skip-editor", action="store_true",
+                      help="Skip the Editor pass (draft straight to TTS)")
+    scan.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
 
     pod = sub.add_parser("podcast", help="Generate a 2-hour two-host podcast from recent digest")
     pod.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
@@ -673,7 +803,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "scan":
+    if args.command == "fetch":
+        cmd_fetch(args)
+    elif args.command == "publish":
+        cmd_publish(args)
+    elif args.command == "scan":
         cmd_scan(args)
     elif args.command == "report":
         cmd_report(args)
