@@ -10,7 +10,6 @@ can't parse, we fall back to the draft unchanged.
 """
 from __future__ import annotations
 
-import json
 import logging
 import re
 from datetime import date, timedelta
@@ -56,12 +55,14 @@ HARD RULES:
   return it unchanged.
 - NEVER invent facts the draft doesn't contain.
 
-OUTPUT — a single JSON object with exactly these keys, and nothing else:
-{{
-  "notes": "<one short sentence describing what you changed and why; 'No changes needed.' if untouched>",
-  "changed": <true | false>,
-  "script": "<the full final dialogue — every line must start with ALEX: or JORDAN:>"
-}}"""
+OUTPUT FORMAT — three sections, exactly in this order, nothing else:
+
+NOTES: <one short sentence describing what you changed and why; or "No changes needed.">
+CHANGED: yes | no
+===SCRIPT===
+<if CHANGED is "yes", put the full revised dialogue here, every line starting with ALEX: or JORDAN:; if CHANGED is "no", leave this section empty>
+
+Do NOT wrap in JSON, markdown code fences, or any other envelope. Plain text only."""
 
 
 def review_script(
@@ -94,11 +95,16 @@ def review_script(
         notes_block=notes_block,
     )
 
+    # Budget enough output tokens to echo back the full script in a JSON
+    # "script" field. Rule of thumb: ~1.4 tokens per word, plus JSON overhead.
+    draft_tokens_est = int(len(draft.split()) * 1.4) + 500
+    max_out = max(8000, min(draft_tokens_est + 1500, 32000))
+
     try:
         client = anthropic.Anthropic(api_key=anthropic_key)
         resp = client.messages.create(
             model=model,
-            max_tokens=8000,
+            max_tokens=max_out,
             system=EDITOR_SYSTEM,
             messages=[{"role": "user", "content": user_prompt}],
         )
@@ -107,22 +113,24 @@ def review_script(
         log.error("Editor call failed: %s", e)
         return {"final_script": draft, "notes": f"Editor error: {e}", "changed": False}
 
-    parsed = _parse_editor_json(raw)
-    if not parsed:
-        log.warning("Editor JSON unparseable; keeping draft")
+    parsed = _parse_editor_response(raw)
+    if parsed is None:
+        log.warning("Editor output unparseable; keeping draft")
         return {"final_script": draft, "notes": "Editor output unparseable, kept draft", "changed": False}
 
-    final = _sanitize_dialogue(parsed.get("script", ""))
-    notes = (parsed.get("notes") or "").strip() or "No notes."
-    changed = bool(parsed.get("changed")) and final and final != draft.strip()
+    notes = parsed["notes"] or "No notes."
+    if not parsed["changed"]:
+        return {"final_script": draft, "notes": notes, "changed": False}
 
+    final = _sanitize_dialogue(parsed["script"])
     if not final:
-        return {"final_script": draft, "notes": "Editor returned empty script, kept draft", "changed": False}
+        return {"final_script": draft, "notes": "Editor said changed but returned empty script; kept draft",
+                "changed": False}
 
     return {
         "final_script": final,
         "notes": notes,
-        "changed": changed,
+        "changed": final != draft.strip(),
     }
 
 
@@ -207,23 +215,34 @@ def _build_user_prompt(ep_num: int, ep_title: str, episode_date: date,
 # Parsing helpers
 # ──────────────────────────────────────────────────────────────────────────────
 
-_JSON_OBJ_RE = re.compile(r"\{[\s\S]*\}")
+_SCRIPT_DELIM_RE = re.compile(r"^\s*=+\s*SCRIPT\s*=+\s*$", re.IGNORECASE | re.MULTILINE)
+_NOTES_RE = re.compile(r"^\s*NOTES\s*:\s*(.+?)\s*$", re.IGNORECASE | re.MULTILINE)
+_CHANGED_RE = re.compile(r"^\s*CHANGED\s*:\s*(yes|no|true|false)\s*$",
+                          re.IGNORECASE | re.MULTILINE)
 
 
-def _parse_editor_json(raw: str) -> Optional[Dict]:
+def _parse_editor_response(raw: str) -> Optional[Dict]:
+    """Parse the plain-text three-section editor output. Returns None on failure."""
     if not raw:
         return None
-    try:
-        return json.loads(raw)
-    except json.JSONDecodeError:
-        pass
-    m = _JSON_OBJ_RE.search(raw)
-    if not m:
+    # Strip markdown fences if the model wraps anyway
+    text = re.sub(r"^```[a-zA-Z]*\s*\n?", "", raw.strip())
+    text = re.sub(r"\n?```\s*$", "", text).strip()
+
+    m_delim = _SCRIPT_DELIM_RE.search(text)
+    head = text[: m_delim.start()] if m_delim else text
+    tail = text[m_delim.end():] if m_delim else ""
+
+    m_notes = _NOTES_RE.search(head)
+    m_changed = _CHANGED_RE.search(head)
+    if not m_notes or not m_changed:
         return None
-    try:
-        return json.loads(m.group(0))
-    except json.JSONDecodeError:
-        return None
+    changed = m_changed.group(1).lower() in ("yes", "true")
+    return {
+        "notes": m_notes.group(1).strip(),
+        "changed": changed,
+        "script": tail.strip(),
+    }
 
 
 def _sanitize_dialogue(text: str) -> str:
