@@ -26,9 +26,9 @@ _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "th
 _DISTRICTS = _Cfg.districts_profile()
 _DISTRICT_BLOCK = f"\n\nLISTENER'S VOTING DISTRICTS (keep the script tied to these offices):\n{_DISTRICTS}\n" if _DISTRICTS else ""
 
-PRIOR_DAYS = 3
+PRIOR_DAYS = 5
 NOTES_DAYS = 7
-_MAX_PRIOR_CHARS = 6000
+_MAX_PRIOR_CHARS = 8000
 _MAX_NOTES_CHARS = 2500
 _MAX_THEMES_CHARS = 2000
 
@@ -36,13 +36,21 @@ EDITOR_SYSTEM = f"""You are the Editor for a local politics podcast aimed at a f
 
 An Author agent has written today's episode script as a two-host dialogue
 (ALEX = presenter, JORDAN = curious co-host). Your job is a tight final pass
-before text-to-speech synthesis.
+before text-to-speech synthesis — AND you have authority to ORDER a full
+rewrite when a draft is beyond surgical repair.
 
 CHECK FOR:
-1. REPETITION — If today's script repeats whole framings, anecdotes, or taglines
-   verbatim from the last few days, rewrite just those lines to briefly
-   acknowledge prior coverage ("we touched on this Tuesday") and add a fresh
-   angle. Do NOT remove the story itself.
+1. REPETITION — Compare today's script against the last 5 days of shipped
+   scripts shown below. Repetition is the #1 quality problem the listener
+   has called out. Flag not just verbatim matches but also paraphrased
+   reuse: the same story framing ("imagine you're at the kitchen table…"),
+   the same tagline, the same anecdote re-told, the same metaphor.
+   • If 1–3 lines are repetitive: rewrite just those lines to acknowledge
+     prior coverage and add a fresh angle.
+   • If repetition is PERVASIVE (more than ~3 reused framings, or the
+     entire through-line mirrors a prior episode): do NOT try to patch —
+     issue an ORDER_REWRITE verdict with a concrete rewrite_reason and a
+     list of framings/taglines/anecdotes the Author must avoid.
 2. AUDIENCE QUESTIONS — The listener leaves daily notes AFTER each episode.
    The notes shown below are from earlier days (never today's). If any of
    them raise a question or topic today's script can speak to, add 1–2
@@ -50,26 +58,34 @@ CHECK FOR:
    delayed callback ("a listener asked us last week why…"). Never invent
    facts not supported by the script.
 3. RECURRING THEMES — A separate PM rollup distills the listener's recent
-   notes into themes, open questions, and underserved topics. If today's
-   script touches one of those threads, weave in a brief connecting line
-   that nods to the longer pattern. If the script doesn't touch them, do
-   NOT shoehorn them in.
-4. FORMAT DISCIPLINE — Every line must begin `ALEX:` or `JORDAN:` with no
+   notes into themes, open questions, and underserved topics, plus a
+   RECENT COVERAGE TO AVOID list. If today's script ignores a flagged
+   theme or reuses something on the avoid list, that counts toward
+   repetition severity (rule 1). If the draft is clean, do NOT shoehorn
+   themes in.
+4. LISTENER POSITIONING — The tool is a personalized guide for this
+   listener. The script must never tell them to "figure out who your
+   candidate is", "look up your district", or "find out who's on your
+   ballot" — the Collector and Analyst own that work. If you see such a
+   phrase, rewrite it (or escalate to ORDER_REWRITE if pervasive).
+5. FORMAT DISCIPLINE — Every line must begin `ALEX:` or `JORDAN:` with no
    stage directions, markdown, brackets, asterisks, or emoji. Remove any line
    that is not dialogue. Keep speakers alternating naturally.
 
 HARD RULES:
-- Preserve overall length and tone. Do not gut the script.
-- Make the SMALLEST change that fixes a real problem. If the draft is clean,
-  return it unchanged.
+- Preserve overall length and tone on surgical edits. Do not gut the script.
+- Prefer the SMALLEST change that fixes a real problem; escalate to
+  ORDER_REWRITE only when the draft has a structural problem that can't
+  be patched line-by-line.
 - NEVER invent facts the draft doesn't contain.
 
-OUTPUT FORMAT — three sections, exactly in this order, nothing else:
+OUTPUT FORMAT — four sections, exactly in this order, nothing else:
 
-NOTES: <one short sentence describing what you changed and why; or "No changes needed.">
-CHANGED: yes | no
+NOTES: <one short sentence describing what you changed, or why you ordered a rewrite, or "No changes needed.">
+VERDICT: approved | revised | order_rewrite
+REWRITE_REASON: <only when VERDICT is order_rewrite — one sentence explaining the structural problem, followed by a semicolon-separated list of specific framings/taglines/anecdotes the Author must avoid in the rewrite. Leave blank otherwise.>
 ===SCRIPT===
-<if CHANGED is "yes", put the full revised dialogue here, every line starting with ALEX: or JORDAN:; if CHANGED is "no", leave this section empty>
+<if VERDICT is "revised", put the full revised dialogue here, every line starting with ALEX: or JORDAN:; if VERDICT is "approved" or "order_rewrite", leave this section empty>
 
 Do NOT wrap in JSON, markdown code fences, or any other envelope. Plain text only."""
 
@@ -90,7 +106,13 @@ def review_script(
     Falls through to the draft unchanged on any error.
     """
     if not anthropic_key:
-        return {"final_script": draft, "notes": "Editor skipped: no API key", "changed": False}
+        return {
+            "final_script": draft,
+            "notes": "Editor skipped: no API key",
+            "changed": False,
+            "verdict": "approved",
+            "rewrite_reason": "",
+        }
 
     prior_excerpts = _load_prior_script_excerpts(podcasts_dir, episode_date, days=PRIOR_DAYS)
     notes_block = _load_recent_notes(db_path, episode_date, days=NOTES_DAYS)
@@ -122,26 +144,64 @@ def review_script(
         raw = resp.content[0].text.strip()
     except Exception as e:
         log.error("Editor call failed: %s", e)
-        return {"final_script": draft, "notes": f"Editor error: {e}", "changed": False}
+        return {
+            "final_script": draft,
+            "notes": f"Editor error: {e}",
+            "changed": False,
+            "verdict": "approved",
+            "rewrite_reason": "",
+        }
 
     parsed = _parse_editor_response(raw)
     if parsed is None:
         log.warning("Editor output unparseable; keeping draft")
-        return {"final_script": draft, "notes": "Editor output unparseable, kept draft", "changed": False}
+        return {
+            "final_script": draft,
+            "notes": "Editor output unparseable, kept draft",
+            "changed": False,
+            "verdict": "approved",
+            "rewrite_reason": "",
+        }
 
     notes = parsed["notes"] or "No notes."
-    if not parsed["changed"]:
-        return {"final_script": draft, "notes": notes, "changed": False}
+    verdict = parsed["verdict"]
 
+    if verdict == "order_rewrite":
+        reason = parsed.get("rewrite_reason") or notes
+        return {
+            "final_script": draft,
+            "notes": notes,
+            "changed": False,
+            "verdict": "order_rewrite",
+            "rewrite_reason": reason,
+        }
+
+    if verdict == "approved":
+        return {
+            "final_script": draft,
+            "notes": notes,
+            "changed": False,
+            "verdict": "approved",
+            "rewrite_reason": "",
+        }
+
+    # verdict == "revised"
     final = _sanitize_dialogue(parsed["script"])
     if not final:
-        return {"final_script": draft, "notes": "Editor said changed but returned empty script; kept draft",
-                "changed": False}
+        return {
+            "final_script": draft,
+            "notes": "Editor said revised but returned empty script; kept draft",
+            "changed": False,
+            "verdict": "approved",
+            "rewrite_reason": "",
+        }
 
     return {
         "final_script": final,
         "notes": notes,
         "changed": final != draft.strip(),
+        "verdict": "revised",
+        "rewrite_reason": "",
     }
 
 
@@ -273,15 +333,22 @@ def _build_user_prompt(ep_num: int, ep_title: str, episode_date: date,
 
 _SCRIPT_DELIM_RE = re.compile(r"^\s*=+\s*SCRIPT\s*=+\s*$", re.IGNORECASE | re.MULTILINE)
 _NOTES_RE = re.compile(r"^\s*NOTES\s*:\s*(.+?)\s*$", re.IGNORECASE | re.MULTILINE)
+_VERDICT_RE = re.compile(
+    r"^\s*VERDICT\s*:\s*(approved|revised|order[_ ]rewrite)\s*$",
+    re.IGNORECASE | re.MULTILINE,
+)
+_REWRITE_REASON_RE = re.compile(
+    r"^\s*REWRITE[_ ]REASON\s*:\s*(.*)$", re.IGNORECASE | re.MULTILINE,
+)
+# Legacy fallback — older prompt used CHANGED: yes|no
 _CHANGED_RE = re.compile(r"^\s*CHANGED\s*:\s*(yes|no|true|false)\s*$",
                           re.IGNORECASE | re.MULTILINE)
 
 
 def _parse_editor_response(raw: str) -> Optional[Dict]:
-    """Parse the plain-text three-section editor output. Returns None on failure."""
+    """Parse the editor's four-section output. Returns None on failure."""
     if not raw:
         return None
-    # Strip markdown fences if the model wraps anyway
     text = re.sub(r"^```[a-zA-Z]*\s*\n?", "", raw.strip())
     text = re.sub(r"\n?```\s*$", "", text).strip()
 
@@ -290,13 +357,27 @@ def _parse_editor_response(raw: str) -> Optional[Dict]:
     tail = text[m_delim.end():] if m_delim else ""
 
     m_notes = _NOTES_RE.search(head)
-    m_changed = _CHANGED_RE.search(head)
-    if not m_notes or not m_changed:
+    if not m_notes:
         return None
-    changed = m_changed.group(1).lower() in ("yes", "true")
+
+    m_verdict = _VERDICT_RE.search(head)
+    if m_verdict:
+        v = m_verdict.group(1).lower().replace(" ", "_")
+        verdict = "order_rewrite" if v.startswith("order") else v
+    else:
+        # Legacy fallback
+        m_changed = _CHANGED_RE.search(head)
+        if not m_changed:
+            return None
+        verdict = "revised" if m_changed.group(1).lower() in ("yes", "true") else "approved"
+
+    m_reason = _REWRITE_REASON_RE.search(head)
+    rewrite_reason = m_reason.group(1).strip() if m_reason else ""
+
     return {
         "notes": m_notes.group(1).strip(),
-        "changed": changed,
+        "verdict": verdict,
+        "rewrite_reason": rewrite_reason,
         "script": tail.strip(),
     }
 

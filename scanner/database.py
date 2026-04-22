@@ -155,6 +155,7 @@ def initialize_db(db_path: Path) -> None:
                 underserved_topics TEXT NOT NULL DEFAULT '[]',   -- JSON: [string]
                 summary            TEXT NOT NULL DEFAULT '',     -- one-paragraph human summary
                 note_count         INTEGER NOT NULL DEFAULT 0,
+                avoid_list         TEXT NOT NULL DEFAULT '[]',   -- JSON: [string] framings/taglines to avoid next episode
                 generated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
@@ -195,6 +196,17 @@ def initialize_db(db_path: Path) -> None:
             );
             CREATE INDEX IF NOT EXISTS idx_hnr_politician ON historical_news_runs(politician_id, ran_at DESC);
         """)
+
+        # Column migrations for existing DBs (ALTER TABLE ADD COLUMN is a no-op
+        # if the column already exists, but SQLite raises — swallow that).
+        for sql in [
+            "ALTER TABLE weekly_themes ADD COLUMN avoid_list TEXT NOT NULL DEFAULT '[]'",
+        ]:
+            try:
+                conn.execute(sql)
+            except sqlite3.OperationalError as e:
+                if "duplicate column name" not in str(e).lower():
+                    raise
 
 
 def seed_politicians(db_path: Path, politicians: List[Dict]) -> None:
@@ -529,15 +541,17 @@ def list_daily_notes(db_path: Path, limit: int = 60) -> List[Dict]:
 def save_weekly_themes(db_path: Path, week_start: str, week_end: str,
                         themes: List[Dict], open_questions: List[str],
                         underserved_topics: List[str], summary: str,
-                        note_count: int) -> None:
+                        note_count: int,
+                        avoid_list: Optional[List[str]] = None) -> None:
     """UPSERT a PM-rollup record. Keyed by week_start (one row per window)."""
     import json as _json
     with get_connection(db_path) as conn:
         conn.execute(
             """INSERT INTO weekly_themes
                  (week_start, week_end, themes, open_questions,
-                  underserved_topics, summary, note_count, generated_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                  underserved_topics, summary, note_count, avoid_list,
+                  generated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
                ON CONFLICT(week_start) DO UPDATE SET
                  week_end           = excluded.week_end,
                  themes             = excluded.themes,
@@ -545,26 +559,20 @@ def save_weekly_themes(db_path: Path, week_start: str, week_end: str,
                  underserved_topics = excluded.underserved_topics,
                  summary            = excluded.summary,
                  note_count         = excluded.note_count,
+                 avoid_list         = excluded.avoid_list,
                  generated_at       = CURRENT_TIMESTAMP""",
             (week_start, week_end,
              _json.dumps(themes, ensure_ascii=False),
              _json.dumps(open_questions, ensure_ascii=False),
              _json.dumps(underserved_topics, ensure_ascii=False),
-             summary, note_count),
+             summary, note_count,
+             _json.dumps(avoid_list or [], ensure_ascii=False)),
         )
 
 
-def get_latest_weekly_themes(db_path: Path) -> Optional[Dict]:
-    """Return the most recently generated PM rollup, or None."""
+def _hydrate_weekly_themes_row(d: Dict) -> Dict:
     import json as _json
-    with get_connection(db_path) as conn:
-        row = conn.execute(
-            "SELECT * FROM weekly_themes ORDER BY week_end DESC, generated_at DESC LIMIT 1"
-        ).fetchone()
-    if not row:
-        return None
-    d = dict(row)
-    for k in ("themes", "open_questions", "underserved_topics"):
+    for k in ("themes", "open_questions", "underserved_topics", "avoid_list"):
         try:
             d[k] = _json.loads(d.get(k) or "[]")
         except Exception:
@@ -572,23 +580,24 @@ def get_latest_weekly_themes(db_path: Path) -> Optional[Dict]:
     return d
 
 
+def get_latest_weekly_themes(db_path: Path) -> Optional[Dict]:
+    """Return the most recently generated PM rollup, or None."""
+    with get_connection(db_path) as conn:
+        row = conn.execute(
+            "SELECT * FROM weekly_themes ORDER BY week_end DESC, generated_at DESC LIMIT 1"
+        ).fetchone()
+    if not row:
+        return None
+    return _hydrate_weekly_themes_row(dict(row))
+
+
 def list_weekly_themes(db_path: Path, limit: int = 12) -> List[Dict]:
     """Most-recent rollups first. Used by future trend/PM dashboards."""
-    import json as _json
     with get_connection(db_path) as conn:
         rows = conn.execute(
             "SELECT * FROM weekly_themes ORDER BY week_end DESC LIMIT ?", (limit,)
         ).fetchall()
-    out = []
-    for row in rows:
-        d = dict(row)
-        for k in ("themes", "open_questions", "underserved_topics"):
-            try:
-                d[k] = _json.loads(d.get(k) or "[]")
-            except Exception:
-                d[k] = []
-        out.append(d)
-    return out
+    return [_hydrate_weekly_themes_row(dict(row)) for row in rows]
 
 
 # ── Data-Analyst: consistency scores ──────────────────────────────────────────
