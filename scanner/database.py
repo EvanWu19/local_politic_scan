@@ -143,6 +143,57 @@ def initialize_db(db_path: Path) -> None:
                 content      TEXT NOT NULL DEFAULT '',
                 updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+
+            -- PM-agent rollup of audience daily_notes into recurring themes,
+            -- open questions, and underserved topics. Editor and Author read
+            -- the most recent row to plan/revise upcoming episodes.
+            CREATE TABLE IF NOT EXISTS weekly_themes (
+                week_start         TEXT PRIMARY KEY,  -- ISO date of first day in window
+                week_end           TEXT NOT NULL,
+                themes             TEXT NOT NULL DEFAULT '[]',   -- JSON: [{title, why}]
+                open_questions     TEXT NOT NULL DEFAULT '[]',   -- JSON: [string]
+                underserved_topics TEXT NOT NULL DEFAULT '[]',   -- JSON: [string]
+                summary            TEXT NOT NULL DEFAULT '',     -- one-paragraph human summary
+                note_count         INTEGER NOT NULL DEFAULT 0,
+                generated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+
+            -- Data-Analyst output: per-politician consistency assessment.
+            -- One row per (politician, generated_at). The latest row per
+            -- politician is what reporter/podcast surface to the listener.
+            CREATE TABLE IF NOT EXISTS consistency_scores (
+                id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+                politician_id      INTEGER NOT NULL,
+                politician_name    TEXT NOT NULL,
+                window_start       TEXT NOT NULL,         -- ISO date
+                window_end         TEXT NOT NULL,
+                event_count        INTEGER NOT NULL DEFAULT 0,
+                score              REAL,                  -- 0.0 (volatile) .. 1.0 (rock-solid)
+                verdict            TEXT,                  -- one-word: consistent/mixed/inconsistent/insufficient
+                summary            TEXT,                  -- one-paragraph plain-English assessment
+                stable_positions   TEXT NOT NULL DEFAULT '[]',  -- JSON: [{topic, position, evidence_event_ids}]
+                shifts             TEXT NOT NULL DEFAULT '[]',  -- JSON: [{topic, from, to, when, evidence_event_ids}]
+                generated_at       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (politician_id) REFERENCES politicians(id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_cs_politician ON consistency_scores(politician_id, generated_at DESC);
+
+            -- One row per historical-news backfill *attempt* per politician.
+            -- Tracks coverage so we can avoid re-querying the same window.
+            CREATE TABLE IF NOT EXISTS historical_news_runs (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                politician_id   INTEGER NOT NULL,
+                politician_name TEXT NOT NULL,
+                window_start    TEXT NOT NULL,    -- ISO date
+                window_end      TEXT NOT NULL,
+                items_found     INTEGER NOT NULL DEFAULT 0,
+                items_new       INTEGER NOT NULL DEFAULT 0,
+                status          TEXT NOT NULL DEFAULT 'ok',
+                error_log       TEXT,
+                ran_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (politician_id) REFERENCES politicians(id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_hnr_politician ON historical_news_runs(politician_id, ran_at DESC);
         """)
 
 
@@ -473,3 +524,192 @@ def list_daily_notes(db_path: Path, limit: int = 60) -> List[Dict]:
             "SELECT * FROM daily_notes ORDER BY report_date DESC LIMIT ?", (limit,)
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+def save_weekly_themes(db_path: Path, week_start: str, week_end: str,
+                        themes: List[Dict], open_questions: List[str],
+                        underserved_topics: List[str], summary: str,
+                        note_count: int) -> None:
+    """UPSERT a PM-rollup record. Keyed by week_start (one row per window)."""
+    import json as _json
+    with get_connection(db_path) as conn:
+        conn.execute(
+            """INSERT INTO weekly_themes
+                 (week_start, week_end, themes, open_questions,
+                  underserved_topics, summary, note_count, generated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+               ON CONFLICT(week_start) DO UPDATE SET
+                 week_end           = excluded.week_end,
+                 themes             = excluded.themes,
+                 open_questions     = excluded.open_questions,
+                 underserved_topics = excluded.underserved_topics,
+                 summary            = excluded.summary,
+                 note_count         = excluded.note_count,
+                 generated_at       = CURRENT_TIMESTAMP""",
+            (week_start, week_end,
+             _json.dumps(themes, ensure_ascii=False),
+             _json.dumps(open_questions, ensure_ascii=False),
+             _json.dumps(underserved_topics, ensure_ascii=False),
+             summary, note_count),
+        )
+
+
+def get_latest_weekly_themes(db_path: Path) -> Optional[Dict]:
+    """Return the most recently generated PM rollup, or None."""
+    import json as _json
+    with get_connection(db_path) as conn:
+        row = conn.execute(
+            "SELECT * FROM weekly_themes ORDER BY week_end DESC, generated_at DESC LIMIT 1"
+        ).fetchone()
+    if not row:
+        return None
+    d = dict(row)
+    for k in ("themes", "open_questions", "underserved_topics"):
+        try:
+            d[k] = _json.loads(d.get(k) or "[]")
+        except Exception:
+            d[k] = []
+    return d
+
+
+def list_weekly_themes(db_path: Path, limit: int = 12) -> List[Dict]:
+    """Most-recent rollups first. Used by future trend/PM dashboards."""
+    import json as _json
+    with get_connection(db_path) as conn:
+        rows = conn.execute(
+            "SELECT * FROM weekly_themes ORDER BY week_end DESC LIMIT ?", (limit,)
+        ).fetchall()
+    out = []
+    for row in rows:
+        d = dict(row)
+        for k in ("themes", "open_questions", "underserved_topics"):
+            try:
+                d[k] = _json.loads(d.get(k) or "[]")
+            except Exception:
+                d[k] = []
+        out.append(d)
+    return out
+
+
+# ── Data-Analyst: consistency scores ──────────────────────────────────────────
+
+def list_politicians(db_path: Path, level: Optional[str] = None,
+                     min_events: int = 0) -> List[Dict]:
+    """All politicians; optionally filter by level and require ≥N tracked events."""
+    sql = (
+        "SELECT p.*, COUNT(pe.id) AS event_count FROM politicians p "
+        "LEFT JOIN politician_events pe ON pe.politician_id = p.id "
+    )
+    params: List = []
+    if level:
+        sql += " WHERE p.level = ? "
+        params.append(level)
+    sql += " GROUP BY p.id "
+    if min_events > 0:
+        sql += " HAVING event_count >= ? "
+        params.append(min_events)
+    sql += " ORDER BY p.level, p.name"
+    with get_connection(db_path) as conn:
+        rows = conn.execute(sql, tuple(params)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def save_consistency_score(db_path: Path, politician_id: int, politician_name: str,
+                            window_start: str, window_end: str,
+                            event_count: int, score: Optional[float], verdict: str,
+                            summary: str, stable_positions: List[Dict],
+                            shifts: List[Dict]) -> int:
+    """Insert a consistency-score row. Returns the new row id."""
+    import json as _json
+    with get_connection(db_path) as conn:
+        cur = conn.execute(
+            """INSERT INTO consistency_scores
+                 (politician_id, politician_name, window_start, window_end,
+                  event_count, score, verdict, summary,
+                  stable_positions, shifts, generated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)""",
+            (politician_id, politician_name, window_start, window_end,
+             event_count, score, verdict, summary,
+             _json.dumps(stable_positions, ensure_ascii=False),
+             _json.dumps(shifts, ensure_ascii=False)),
+        )
+        return cur.lastrowid
+
+
+def get_latest_consistency_score(db_path: Path, politician_id: int) -> Optional[Dict]:
+    """Most recent score for a single politician, or None."""
+    import json as _json
+    with get_connection(db_path) as conn:
+        row = conn.execute(
+            """SELECT * FROM consistency_scores
+               WHERE politician_id = ?
+               ORDER BY generated_at DESC, id DESC LIMIT 1""",
+            (politician_id,),
+        ).fetchone()
+    if not row:
+        return None
+    d = dict(row)
+    for k in ("stable_positions", "shifts"):
+        try:
+            d[k] = _json.loads(d.get(k) or "[]")
+        except Exception:
+            d[k] = []
+    return d
+
+
+def list_latest_consistency_scores(db_path: Path) -> List[Dict]:
+    """Latest score per politician (one row per politician)."""
+    import json as _json
+    with get_connection(db_path) as conn:
+        rows = conn.execute(
+            """SELECT cs.* FROM consistency_scores cs
+               JOIN (
+                 SELECT politician_id, MAX(generated_at) AS max_at
+                 FROM consistency_scores GROUP BY politician_id
+               ) latest
+                 ON latest.politician_id = cs.politician_id
+                AND latest.max_at        = cs.generated_at
+               ORDER BY cs.politician_name"""
+        ).fetchall()
+    out: List[Dict] = []
+    for row in rows:
+        d = dict(row)
+        for k in ("stable_positions", "shifts"):
+            try:
+                d[k] = _json.loads(d.get(k) or "[]")
+            except Exception:
+                d[k] = []
+        out.append(d)
+    return out
+
+
+# ── Historical news backfill: run log ─────────────────────────────────────────
+
+def save_historical_news_run(db_path: Path, politician_id: int,
+                              politician_name: str, window_start: str,
+                              window_end: str, items_found: int,
+                              items_new: int, status: str = "ok",
+                              error: str = "") -> int:
+    with get_connection(db_path) as conn:
+        cur = conn.execute(
+            """INSERT INTO historical_news_runs
+                 (politician_id, politician_name, window_start, window_end,
+                  items_found, items_new, status, error_log, ran_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)""",
+            (politician_id, politician_name, window_start, window_end,
+             items_found, items_new, status, error),
+        )
+        return cur.lastrowid
+
+
+def get_last_historical_news_run(db_path: Path,
+                                   politician_id: int) -> Optional[Dict]:
+    """Most-recent run; id DESC breaks ties when ran_at lands in the same second."""
+    with get_connection(db_path) as conn:
+        row = conn.execute(
+            """SELECT * FROM historical_news_runs
+               WHERE politician_id = ?
+               ORDER BY ran_at DESC, id DESC LIMIT 1""",
+            (politician_id,),
+        ).fetchone()
+    return dict(row) if row else None
