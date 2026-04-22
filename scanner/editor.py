@@ -42,9 +42,12 @@ CHECK FOR:
    verbatim from the last few days, rewrite just those lines to briefly
    acknowledge prior coverage ("we touched on this Tuesday") and add a fresh
    angle. Do NOT remove the story itself.
-2. AUDIENCE QUESTIONS — The listener writes daily notes. If a note raises a
-   question that today's topics can speak to, add 1–2 lines where Alex or
-   Jordan briefly answers it. Never invent facts not supported by the script.
+2. AUDIENCE QUESTIONS — The listener leaves daily notes AFTER each episode.
+   The notes shown below are from earlier days (never today's). If any of
+   them raise a question or topic today's script can speak to, add 1–2
+   lines where Alex or Jordan briefly addresses it — phrased like a
+   delayed callback ("a listener asked us last week why…"). Never invent
+   facts not supported by the script.
 3. FORMAT DISCIPLINE — Every line must begin `ALEX:` or `JORDAN:` with no
    stage directions, markdown, brackets, asterisks, or emoji. Remove any line
    that is not dialogue. Keep speakers alternating naturally.
@@ -166,7 +169,14 @@ def _load_prior_script_excerpts(podcasts_dir: Path, episode_date: date,
 
 
 def _load_recent_notes(db_path: Path, episode_date: date, days: int) -> str:
-    """Pull daily_notes rows within the past `days` (exclusive of today+1)."""
+    """
+    Pull daily_notes rows from the `days` calendar days BEFORE episode_date.
+
+    Same-day notes are deliberately excluded: the listener writes a note
+    after listening to that day's episode, so it can only inform episodes
+    on later days. Including the same day would surface answers in an
+    episode the listener has already finished.
+    """
     from scanner.database import list_daily_notes
     try:
         rows = list_daily_notes(db_path, limit=days * 2)
@@ -175,11 +185,12 @@ def _load_recent_notes(db_path: Path, episode_date: date, days: int) -> str:
         return ""
 
     cutoff = (episode_date - timedelta(days=days)).isoformat()
+    today_iso = episode_date.isoformat()
     kept: List[str] = []
     total = 0
     for row in rows:
         d = row.get("report_date", "")
-        if d < cutoff or d > episode_date.isoformat():
+        if d < cutoff or d >= today_iso:
             continue
         content = (row.get("content") or "").strip()
         if not content:
