@@ -182,11 +182,15 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         base_avoid_items = _load_avoid_list(db_path, target_date)
         avoid_block = _format_avoid_block(base_avoid_items)
 
+        # ── Build ballot block so Author frames races as "X vs Y" ─────────────
+        ballot_block = _load_ballot_block(db_path, target_date)
+
         # ── Write draft #1 ────────────────────────────────────────────────────
         draft_script = _build_full_script(
             claude=claude, model=script_model,
             target_date=target_date, ep_num=ep_num, ep_title=ep_title,
             segments=segments, avoid_block=avoid_block,
+            ballot_block=ballot_block,
         )
         draft_words = len(draft_script.split())
         log.info("  Draft: %d words (~%d min)", draft_words, draft_words // 130)
@@ -230,6 +234,7 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                     claude=claude, model=script_model,
                     target_date=target_date, ep_num=ep_num, ep_title=ep_title,
                     segments=segments, avoid_block=avoid_block_v2,
+                    ballot_block=ballot_block,
                 )
                 draft_v2_path = podcasts_dir / f"podcast_{date_str}_{ep_slug}.rewrite.txt"
                 draft_v2_path.write_text(draft_script_v2, encoding="utf-8")
@@ -504,6 +509,34 @@ def _load_avoid_list(db_path: Path, target_date: date) -> List[str]:
     return [str(x).strip() for x in items if str(x).strip()]
 
 
+def _load_ballot_block(db_path: Path, target_date: date) -> str:
+    """
+    Render the listener's known ballot candidates as a prompt block the
+    Author can use to frame races as "Candidate A vs Candidate B". Empty
+    string if nothing has been discovered yet for the current ballot year.
+    """
+    try:
+        from scanner.ballot import build_ballot_block
+    except Exception as e:
+        log.debug("Ballot block unavailable: %s", e)
+        return ""
+    try:
+        return build_ballot_block(db_path, ballot_year=target_date.year)
+    except Exception as e:
+        log.warning("Could not build ballot block: %s", e)
+        return ""
+
+
+def _ctx(ballot_block: str, avoid_block: str) -> str:
+    """Join the ballot + avoid blocks into a single suffix for user prompts."""
+    parts: List[str] = []
+    if ballot_block:
+        parts.append("\n\n" + ballot_block + "\n")
+    if avoid_block:
+        parts.append(avoid_block)
+    return "".join(parts)
+
+
 def _format_avoid_block(items: List[str], strict: bool = False) -> str:
     """Render an avoid-list into a compact append-to-user-prompt block."""
     if not items:
@@ -542,20 +575,23 @@ def _parse_avoid_from_reason(reason: str) -> List[str]:
 
 def _build_full_script(claude: anthropic.Anthropic, model: str,
                         target_date: date, ep_num: int, ep_title: str,
-                        segments: List[Dict], avoid_block: str) -> str:
+                        segments: List[Dict], avoid_block: str,
+                        ballot_block: str = "") -> str:
     """Intro + per-segment dialogue + outro, concatenated."""
     parts: List[str] = []
     parts.append(_write_episode_intro(
-        claude, model, target_date, ep_num, ep_title, segments, avoid_block,
+        claude, model, target_date, ep_num, ep_title, segments,
+        avoid_block, ballot_block,
     ))
     for seg in segments:
         if not seg["events"]:
             continue
         log.info("  writing segment: %s (%d items)…",
                  seg["label"], len(seg["events"]))
-        parts.append(_write_segment(claude, model, seg, avoid_block))
+        parts.append(_write_segment(claude, model, seg, avoid_block, ballot_block))
     parts.append(_write_episode_outro(
-        claude, model, target_date, ep_num, ep_title, segments, avoid_block,
+        claude, model, target_date, ep_num, ep_title, segments,
+        avoid_block, ballot_block,
     ))
     return "\n\n".join(parts)
 
@@ -563,7 +599,8 @@ def _build_full_script(claude: anthropic.Anthropic, model: str,
 def _write_episode_intro(client: anthropic.Anthropic, model: str,
                           target_date: date, ep_num: int,
                           ep_title: str, segments: List[Dict],
-                          avoid_block: str = "") -> str:
+                          avoid_block: str = "",
+                          ballot_block: str = "") -> str:
     date_str = target_date.strftime("%A, %B %d, %Y")
     preview = "\n".join(
         f"  - {seg['label']}: {len(seg['events'])} stories "
@@ -577,13 +614,14 @@ def _write_episode_intro(client: anthropic.Anthropic, model: str,
         "Opening should: (1) name the episode, (2) quick preview of the 2 biggest stories, "
         "(3) set expectations for what's covered. Target: ~350 words."
     )
-    return _claude_dialogue(client, model, user + avoid_block)
+    return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
 
 
 def _write_episode_outro(client: anthropic.Anthropic, model: str,
                           target_date: date, ep_num: int,
                           ep_title: str, segments: List[Dict],
-                          avoid_block: str = "") -> str:
+                          avoid_block: str = "",
+                          ballot_block: str = "") -> str:
     total = sum(len(s["events"]) for s in segments)
     user = (
         f"Write a closing for Episode {ep_num}: '{ep_title}' of {_SHOW_NAME!r}.\n\n"
@@ -592,7 +630,7 @@ def _write_episode_outro(client: anthropic.Anthropic, model: str,
         "(2) one concrete action the listener can take this week, "
         "(3) warm sign-off. Target: ~250 words."
     )
-    return _claude_dialogue(client, model, user + avoid_block)
+    return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
 
 
 def _group_by_segment(events: List[Dict], top_n: int) -> List[Dict]:
@@ -666,7 +704,8 @@ def _write_outro(client: anthropic.Anthropic, model: str,
 
 
 def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
-                    avoid_block: str = "") -> str:
+                    avoid_block: str = "",
+                    ballot_block: str = "") -> str:
     """Write dialogue for one segment — news stories or politician spotlights."""
     is_pol = segment.get("is_politician_segment", False)
 
@@ -706,7 +745,7 @@ def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
             f"- Total: ~{target_words} words of dialogue\n"
             "- Be factual and nonpartisan; present the record, not opinion"
         )
-        return _claude_dialogue(client, model, user + avoid_block)
+        return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
     else:
         target_words = max(1500, 700 * len(segment["events"]))
         user = (
@@ -721,7 +760,7 @@ def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
             f"- Emphasize the LOCAL ({_LOCALE}) angle even for state/federal stories\n"
             "- End with a brief transition to the next segment"
         )
-    return _claude_dialogue(client, model, user + avoid_block)
+    return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
 
 
 def _claude_dialogue(client: anthropic.Anthropic, model: str, user_prompt: str) -> str:
