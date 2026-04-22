@@ -36,53 +36,25 @@ _CHAT_SIDEBAR = """
   .cp-header span { font-weight:600; font-size:.95rem; }
   .cp-close { background:none; border:none; color:white; font-size:1.2rem;
     cursor:pointer; padding:0 4px; line-height:1; }
-  .cp-tabs { display:flex; border-bottom:1px solid #eee; }
-  .cp-tab { flex:1; padding:9px; border:none; background:none; cursor:pointer;
-    font-size:.85rem; color:#666; border-bottom:2px solid transparent; }
-  .cp-tab.active { color:#1a3a5c; border-bottom-color:#1a3a5c; font-weight:600; }
   .cp-body { flex:1; overflow-y:auto; padding:12px; }
-  #notes-area { width:100%; min-height:220px; border:1px solid #ddd;
+  #notes-area { width:100%; min-height:260px; border:1px solid #ddd;
     border-radius:6px; padding:10px; font-size:.88rem; font-family:inherit;
     resize:vertical; line-height:1.5; }
   #notes-status { font-size:.75rem; color:#888; margin-top:6px; display:block; }
-  #ask-log { min-height:160px; max-height:240px; overflow-y:auto;
-    margin-bottom:8px; font-size:.85rem; }
-  .ask-bubble { padding:8px 10px; border-radius:8px; margin-bottom:6px;
-    line-height:1.45; white-space:pre-wrap; }
-  .ask-bubble.user { background:#1a3a5c; color:white; text-align:right; }
-  .ask-bubble.bot { background:#f0f4f8; color:#222; }
-  .ask-bubble.err { background:#fdecea; color:#c0392b; }
-  .cp-input-row { display:flex; gap:6px; }
-  #ask-input { flex:1; border:1px solid #ddd; border-radius:6px;
-    padding:8px 10px; font-size:.85rem; font-family:inherit; }
-  #ask-btn { background:#1a3a5c; color:white; border:none; border-radius:6px;
-    padding:8px 12px; cursor:pointer; font-size:.85rem; white-space:nowrap; }
-  #ask-btn:disabled { background:#aaa; }
   @media (max-width:400px) {
     #chat-panel { right:8px; left:8px; width:auto; }
   }
 </style>
 
-<button id="chat-fab" title="Notes & Ask" onclick="toggleChat()">💬</button>
+<button id="chat-fab" title="Daily Notes" onclick="toggleChat()">📝</button>
 <div id="chat-panel">
   <div class="cp-header">
-    <span>💬 Notes &amp; Ask</span>
+    <span>📝 Daily Notes</span>
     <button class="cp-close" onclick="toggleChat()">✕</button>
   </div>
-  <div class="cp-tabs">
-    <button class="cp-tab active" id="tab-notes-btn" onclick="switchTab('notes')">📝 Notes</button>
-    <button class="cp-tab" id="tab-ask-btn" onclick="switchTab('ask')">🤖 Ask</button>
-  </div>
-  <div class="cp-body" id="pane-notes">
-    <textarea id="notes-area" placeholder="Take notes about today's digest..."></textarea>
+  <div class="cp-body">
+    <textarea id="notes-area" placeholder="What did you think about today's digest? Questions, reactions, topics you want covered more..."></textarea>
     <span id="notes-status"></span>
-  </div>
-  <div class="cp-body" id="pane-ask" style="display:none">
-    <div id="ask-log"></div>
-    <div class="cp-input-row">
-      <input id="ask-input" placeholder="Ask about today's news..." />
-      <button id="ask-btn" onclick="sendQuestion()">Ask</button>
-    </div>
   </div>
 </div>
 
@@ -90,86 +62,55 @@ _CHAT_SIDEBAR = """
 (function() {
   var REPORT_DATE = 'DATE_ISO';
   var STORAGE_KEY = 'notes-' + REPORT_DATE;
-  // Use current origin when served over HTTP/HTTPS (works on Tailscale IP too);
-  // fall back to localhost only when the HTML was opened as a local file://.
-  var CHAT_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8080' : window.location.origin;
+  var API_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8080' : window.location.origin;
+  var NOTES_URL = API_BASE + '/api/daily-notes/' + REPORT_DATE;
 
-  // ── Panel toggle ──────────────────────────────────────────────────────────
   window.toggleChat = function() {
     var p = document.getElementById('chat-panel');
     p.classList.toggle('open');
     if (p.classList.contains('open')) { loadNotes(); }
   };
 
-  // ── Tab switching ─────────────────────────────────────────────────────────
-  window.switchTab = function(tab) {
-    document.getElementById('pane-notes').style.display = tab === 'notes' ? '' : 'none';
-    document.getElementById('pane-ask').style.display  = tab === 'ask'   ? '' : 'none';
-    document.getElementById('tab-notes-btn').className = 'cp-tab' + (tab === 'notes' ? ' active' : '');
-    document.getElementById('tab-ask-btn').className   = 'cp-tab' + (tab === 'ask'   ? ' active' : '');
-    if (tab === 'ask') { document.getElementById('ask-input').focus(); }
-  };
+  function setStatus(msg) {
+    var s = document.getElementById('notes-status');
+    s.textContent = msg;
+    clearTimeout(window._notesFadeTimer);
+    if (msg) {
+      window._notesFadeTimer = setTimeout(function() { s.textContent = ''; }, 3000);
+    }
+  }
 
-  // ── Notes (localStorage) ──────────────────────────────────────────────────
   function loadNotes() {
     var el = document.getElementById('notes-area');
     el.value = localStorage.getItem(STORAGE_KEY) || '';
+    fetch(NOTES_URL)
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (data && typeof data.text === 'string' && data.text.length >= el.value.length) {
+          el.value = data.text;
+          localStorage.setItem(STORAGE_KEY, data.text);
+        }
+      })
+      .catch(function() {});
   }
 
   function saveNotes() {
-    localStorage.setItem(STORAGE_KEY, document.getElementById('notes-area').value);
-    var s = document.getElementById('notes-status');
-    s.textContent = 'Saved ' + new Date().toLocaleTimeString();
-    clearTimeout(window._notesFadeTimer);
-    window._notesFadeTimer = setTimeout(function() { s.textContent = ''; }, 3000);
+    var text = document.getElementById('notes-area').value;
+    localStorage.setItem(STORAGE_KEY, text);
+    setStatus('Saving…');
+    fetch(NOTES_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: text })
+    })
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function() { setStatus('Saved ' + new Date().toLocaleTimeString()); })
+    .catch(function() { setStatus('Saved locally (server unreachable)'); });
   }
 
   document.getElementById('notes-area').addEventListener('input', function() {
     clearTimeout(window._notesTimer);
     window._notesTimer = setTimeout(saveNotes, 800);
-  });
-
-  // ── Ask (calls POST /chat) ────────────────────────────────────────────────
-  function appendBubble(text, cls) {
-    var log = document.getElementById('ask-log');
-    var d = document.createElement('div');
-    d.className = 'ask-bubble ' + cls;
-    d.textContent = text;
-    log.appendChild(d);
-    log.scrollTop = log.scrollHeight;
-    return d;
-  }
-
-  window.sendQuestion = function() {
-    var inp = document.getElementById('ask-input');
-    var q = inp.value.trim();
-    if (!q) return;
-    inp.value = '';
-    appendBubble(q, 'user');
-    var thinking = appendBubble('Thinking\u2026', 'bot');
-    var btn = document.getElementById('ask-btn');
-    btn.disabled = true;
-
-    fetch(CHAT_BASE + '/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question: q, date: REPORT_DATE })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      thinking.remove();
-      if (data.error) { appendBubble('Error: ' + data.error, 'err'); }
-      else            { appendBubble(data.answer, 'bot'); }
-    })
-    .catch(function(e) {
-      thinking.remove();
-      appendBubble('Could not reach server. Is `python main.py serve` running? (' + e.message + ')', 'err');
-    })
-    .finally(function() { btn.disabled = false; inp.focus(); });
-  };
-
-  document.getElementById('ask-input').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') { e.preventDefault(); sendQuestion(); }
   });
 })();
 </script>
@@ -327,10 +268,14 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
           background: #f5f5f0; color: #222; line-height: 1.6; }}
-  .header {{ background: #1a3a5c; color: white; padding: 24px 32px; }}
+  .header {{ background: #1a3a5c; color: white; padding: 24px 32px; position:relative; }}
   .header h1 {{ font-size: 1.6rem; }}
   .header .subtitle {{ opacity: .8; font-size: .9rem; margin-top: 4px; }}
   .header .stats {{ margin-top: 12px; font-size: .85rem; opacity: .7; }}
+  .home-btn {{ position:absolute; top:20px; right:20px; background:rgba(255,255,255,.15);
+               color:white; text-decoration:none; padding:8px 14px; border-radius:6px;
+               font-size:.85rem; font-weight:500; }}
+  .home-btn:hover {{ background:rgba(255,255,255,.25); }}
   .container {{ max-width: 960px; margin: 0 auto; padding: 24px 16px; }}
   .level-section {{ margin-bottom: 36px; }}
   .level-section h2 {{ font-size: 1.2rem; color: #1a3a5c; border-bottom: 2px solid #1a3a5c;
@@ -373,6 +318,7 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
 </head>
 <body>
 <div class="header">
+  <a class="home-btn" href="/">← Home</a>
   <h1>Local Politics Digest</h1>
   <div class="subtitle">{locale} &nbsp;·&nbsp; {date_str}</div>
   <div class="stats">{total} items tracked today</div>

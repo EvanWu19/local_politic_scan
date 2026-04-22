@@ -29,6 +29,55 @@ class Config:
     STATE_HOUSE_DISTRICT = os.getenv("STATE_HOUSE_DISTRICT", "")
     COUNTY_COUNCIL_DISTRICT = os.getenv("COUNTY_COUNCIL_DISTRICT", "")
 
+    # Ballot-level districts (optional; surfaced to AI prompts so the
+    # generated digest/podcast/chat prioritizes contests and offices the
+    # user actually votes on). Blank = unknown / not applicable.
+    PRECINCT = os.getenv("PRECINCT", "")
+    LEGISLATIVE_DISTRICT = os.getenv("LEGISLATIVE_DISTRICT", "")
+    COUNCILMANIC_DISTRICT = os.getenv("COUNCILMANIC_DISTRICT", "")
+    CIRCUIT_COURT_DISTRICT = os.getenv("CIRCUIT_COURT_DISTRICT", "")
+    APPELLATE_CIRCUIT_COURT = os.getenv("APPELLATE_CIRCUIT_COURT", "")
+    CENTRAL_COMMITTEE = os.getenv("CENTRAL_COMMITTEE", "")
+    ELECTION_DISTRICT = os.getenv("ELECTION_DISTRICT", "")
+    SCHOOL_DISTRICT = os.getenv("SCHOOL_DISTRICT", "")
+    SENATORIAL_DISTRICT = os.getenv("SENATORIAL_DISTRICT", "")
+
+    @classmethod
+    def districts_profile(cls) -> str:
+        """Human-readable bullet list of the user's voting districts.
+
+        Returns an empty string if no district fields are configured.
+        Used by the AI content generators (processor, podcast, editor,
+        chat) so their output prioritizes the contests and offices the
+        user actually votes on.
+        """
+        rows = [
+            ("U.S. Congressional District", cls.US_HOUSE_DISTRICT),
+            ("MD Legislative District", cls.LEGISLATIVE_DISTRICT),
+            ("MD State Senate District", cls.STATE_SENATE_DISTRICT),
+            ("MD House of Delegates District", cls.STATE_HOUSE_DISTRICT),
+            ("Senatorial District", cls.SENATORIAL_DISTRICT),
+            ("County Councilmanic District", cls.COUNCILMANIC_DISTRICT or cls.COUNTY_COUNCIL_DISTRICT),
+            ("Election District", cls.ELECTION_DISTRICT),
+            ("Precinct", cls.PRECINCT),
+            ("Circuit Court District", cls.CIRCUIT_COURT_DISTRICT),
+            ("Appellate Circuit Court", cls.APPELLATE_CIRCUIT_COURT),
+            ("School District", cls.SCHOOL_DISTRICT),
+            ("Party Central Committee", cls.CENTRAL_COMMITTEE),
+        ]
+        # De-dupe identical (label, value) when STATE_SENATE == LEGISLATIVE, etc.
+        seen = set()
+        lines = []
+        for label, value in rows:
+            if not value:
+                continue
+            key = (label, str(value))
+            if key in seen:
+                continue
+            seen.add(key)
+            lines.append(f"  - {label}: {value}")
+        return "\n".join(lines)
+
     # ── API Keys ───────────────────────────────────────────────────────────────
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
     CONGRESS_API_KEY: str = os.getenv("CONGRESS_API_KEY", "")

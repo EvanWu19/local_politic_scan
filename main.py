@@ -65,6 +65,11 @@ def cmd_scan(args):
     print("\n── Local Politics Scanner ──────────────────────────────")
     print(f"   Location : {cfg.CITY}, {cfg.COUNTY}, {cfg.STATE}")
     print(f"   Date     : {date.today()}")
+    _districts = cfg.districts_profile()
+    if _districts:
+        print("   Districts:")
+        for line in _districts.splitlines():
+            print(f"   {line}")
     print("────────────────────────────────────────────────────────\n")
 
     # ── Init DB
@@ -361,6 +366,7 @@ def cmd_podcast(args):
             jordan_voice=cfg.PODCAST_HOST_JORDAN_VOICE,
             no_audio=no_audio,
             filter_incidents=cfg.PODCAST_FILTER_INDIVIDUAL_INCIDENTS,
+            skip_editor=getattr(args, "skip_editor", False),
         )
     except Exception as e:
         log.exception("Podcast generation failed")
@@ -390,6 +396,10 @@ def cmd_podcast(args):
             print(f"   {ep_label}: {ep['audio_path']}  (~{mins_approx} min)")
         else:
             print(f"   {ep_label}: {ep.get('script_path','')}  (~{mins_approx} min, script only)")
+        editor_notes = ep.get("editor_notes") or ""
+        if editor_notes:
+            tag = "revised" if ep.get("editor_changed") else "approved"
+            print(f"       ✏️  Editor {tag}: {editor_notes}")
 
     if ts_ip and not no_audio:
         slug = target.strftime('%Y-%m-%d')
@@ -500,6 +510,8 @@ def main():
     pod.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
     pod.add_argument("--no-audio", action="store_true",
                      help="Write the script to .txt but skip OpenAI TTS (no audio cost)")
+    pod.add_argument("--skip-editor", action="store_true",
+                     help="Skip the Editor pass (go straight from draft to TTS)")
 
     rep = sub.add_parser("report", help="Generate report from existing DB data")
     rep.add_argument("--days", type=int, default=7, help="Days of history to include (default: 7)")

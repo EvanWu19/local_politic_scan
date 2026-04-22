@@ -135,6 +135,14 @@ def initialize_db(db_path: Path) -> None:
 
             CREATE INDEX IF NOT EXISTS idx_msg_conv ON messages(conversation_id);
             CREATE INDEX IF NOT EXISTS idx_notes_conv ON knowledge_notes(conversation_id);
+
+            -- Audience-authored notes per daily digest. One row per date;
+            -- read by the PM/Editor agents to inform future content.
+            CREATE TABLE IF NOT EXISTS daily_notes (
+                report_date  TEXT PRIMARY KEY,     -- YYYY-MM-DD
+                content      TEXT NOT NULL DEFAULT '',
+                updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
         """)
 
 
@@ -433,5 +441,35 @@ def search_knowledge_notes(db_path: Path, query: str, limit: int = 20) -> List[D
                WHERE title LIKE ? OR content LIKE ? OR topics LIKE ?
                ORDER BY created_at DESC LIMIT ?""",
             (q, q, q, limit),
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def save_daily_note(db_path: Path, report_date: str, content: str) -> None:
+    """UPSERT the audience's note for a given digest date."""
+    with get_connection(db_path) as conn:
+        conn.execute(
+            """INSERT INTO daily_notes (report_date, content, updated_at)
+               VALUES (?, ?, CURRENT_TIMESTAMP)
+               ON CONFLICT(report_date) DO UPDATE SET
+                 content    = excluded.content,
+                 updated_at = CURRENT_TIMESTAMP""",
+            (report_date, content),
+        )
+
+
+def get_daily_note(db_path: Path, report_date: str) -> Optional[Dict]:
+    with get_connection(db_path) as conn:
+        row = conn.execute(
+            "SELECT * FROM daily_notes WHERE report_date = ?", (report_date,)
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def list_daily_notes(db_path: Path, limit: int = 60) -> List[Dict]:
+    """Most-recent first. Used by PM/Editor agents to review audience feedback."""
+    with get_connection(db_path) as conn:
+        rows = conn.execute(
+            "SELECT * FROM daily_notes ORDER BY report_date DESC LIMIT ?", (limit,)
         ).fetchall()
     return [dict(r) for r in rows]

@@ -97,34 +97,6 @@ def _list_podcast_files(podcasts_dir: Path) -> List[Tuple[str, Path]]:
 def _render_index(reports: List[Tuple[str, Path]],
                    podcasts: List[Tuple[str, Path]]) -> str:
     today = date.today().isoformat()
-    today_podcast = next((p for d, p in podcasts if d == today), None)
-    podcast_card = ""
-    if today_podcast:
-        size_mb = today_podcast.stat().st_size / 1_048_576
-        podcast_card = f"""
-        <div class="podcast-card">
-          <div class="podcast-emoji">🎧</div>
-          <div class="podcast-body">
-            <div class="podcast-title">Today's Podcast</div>
-            <div class="podcast-sub">2-hour two-host digest · {size_mb:.1f} MB</div>
-          </div>
-          <audio controls preload="none" style="width:100%;margin-top:10px;">
-            <source src="/podcast/{today}.mp3" type="audio/mpeg">
-          </audio>
-        </div>"""
-    elif podcasts:
-        latest_d, _ = podcasts[0]
-        podcast_card = f"""
-        <div class="podcast-card">
-          <div class="podcast-emoji">🎧</div>
-          <div class="podcast-body">
-            <div class="podcast-title">Latest Podcast — {latest_d}</div>
-            <div class="podcast-sub">Today's episode not ready yet. Play latest:</div>
-          </div>
-          <audio controls preload="none" style="width:100%;margin-top:10px;">
-            <source src="/podcast/{latest_d}.mp3" type="audio/mpeg">
-          </audio>
-        </div>"""
 
     if not reports:
         rows_html = """
@@ -199,10 +171,8 @@ def _render_index(reports: List[Tuple[str, Path]],
 <div class="container">
   <div class="quick-actions">
     <a class="primary" href="/latest">Latest Digest</a>
-    <a href="/chat">💬 Ask Agent</a>
     <a href="/api/events.json?days=3">JSON</a>
   </div>
-  {podcast_card}
   <div class="section-title">Recent Digests</div>
   {rows_html}
 </div>
@@ -442,6 +412,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._serve_conv(cid)
             if path == "/api/notes":
                 return self._serve_notes()
+            if path.startswith("/api/daily-notes/"):
+                return self._serve_daily_note(path[len("/api/daily-notes/"):])
+            if path == "/api/daily-notes":
+                return self._serve_daily_notes_list()
             if path.startswith("/api/events.json"):
                 return self._serve_events_json()
             if path.startswith("/knowledge/"):
@@ -512,6 +486,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._handle_chat(body)
             if path == "/chat":
                 return self._handle_digest_chat(body)
+            if path.startswith("/api/daily-notes/"):
+                return self._handle_daily_note_save(path[len("/api/daily-notes/"):], body)
             return self._send_404()
         except Exception as e:
             log.exception("POST %s failed", path)
@@ -666,6 +642,43 @@ class Handler(BaseHTTPRequestHandler):
         notes = list_knowledge_notes(self.db_path, limit=100)
         self._send(200, "application/json",
                     json.dumps({"notes": notes}, default=str).encode())
+
+    def _serve_daily_note(self, date_str: str):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
+            return self._send_404()
+        from scanner.database import get_daily_note
+        row = get_daily_note(self.db_path, date_str)
+        payload = {
+            "date": date_str,
+            "text": (row or {}).get("content", ""),
+            "updated_at": (row or {}).get("updated_at"),
+        }
+        self._send(200, "application/json; charset=utf-8",
+                    json.dumps(payload, default=str).encode())
+
+    def _serve_daily_notes_list(self):
+        from scanner.database import list_daily_notes
+        rows = list_daily_notes(self.db_path, limit=60)
+        self._send(200, "application/json; charset=utf-8",
+                    json.dumps({"notes": rows}, default=str).encode())
+
+    def _handle_daily_note_save(self, date_str: str, body: bytes):
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
+            return self._send(400, "application/json",
+                               json.dumps({"error": "bad date"}).encode())
+        try:
+            data = json.loads(body.decode() or "{}")
+        except Exception:
+            return self._send(400, "application/json",
+                               json.dumps({"error": "bad json"}).encode())
+        text = data.get("text", "")
+        if not isinstance(text, str):
+            return self._send(400, "application/json",
+                               json.dumps({"error": "text must be string"}).encode())
+        from scanner.database import save_daily_note
+        save_daily_note(self.db_path, date_str, text)
+        self._send(200, "application/json; charset=utf-8",
+                    json.dumps({"ok": True, "date": date_str, "length": len(text)}).encode())
 
     def _serve_knowledge(self, rel_path: str):
         # Prevent directory traversal
