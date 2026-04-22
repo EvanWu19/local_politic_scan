@@ -453,6 +453,54 @@ class Handler(BaseHTTPRequestHandler):
             log.exception("GET %s failed", path)
             self._send(500, "text/plain", f"Server error: {e}".encode())
 
+    # ── HEAD (existence checks for podcast player) ────────────────────────
+
+    def do_HEAD(self):  # noqa: N802
+        path = urlparse(self.path).path
+        try:
+            if path.startswith("/podcast/") and path.endswith(".mp3"):
+                stem = path[len("/podcast/"):-len(".mp3")]
+                if not re.match(r"^podcast_[\w-]+$", stem):
+                    return self._head(404)
+                fpath = self.podcasts_dir / f"{stem}.mp3"
+                if not fpath.exists():
+                    return self._head(404)
+                return self._head(200, "audio/mpeg", fpath.stat().st_size)
+            if path.startswith("/podcast/") and path.endswith("-index.json"):
+                date_s = path[len("/podcast/"):-len("-index.json")]
+                fpath = self.podcasts_dir / f"podcast_{date_s}_index.json"
+                if not fpath.exists():
+                    return self._head(404)
+                return self._head(200, "application/json", fpath.stat().st_size)
+            if path.startswith("/report/") and path.endswith(".html"):
+                stem = path[len("/report/"):-len(".html")]
+                fpath = self.reports_dir / f"digest_{stem}.html"
+                if not fpath.exists():
+                    return self._head(404)
+                return self._head(200, "text/html; charset=utf-8", fpath.stat().st_size)
+            return self._head(404)
+        except Exception as e:
+            log.exception("HEAD %s failed", path)
+            return self._head(500)
+
+    def _head(self, status: int, content_type: str = "text/plain", length: int = 0):
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        if length:
+            self.send_header("Content-Length", str(length))
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+
+    # ── OPTIONS (CORS preflight for cross-origin POSTs like Ask sidebar) ──
+
+    def do_OPTIONS(self):  # noqa: N802
+        self.send_response(204)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.send_header("Access-Control-Max-Age", "86400")
+        self.end_headers()
+
     # ── POST ───────────────────────────────────────────────────────────────
 
     def do_POST(self):  # noqa: N802
@@ -695,6 +743,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-cache")
+        self.send_header("Access-Control-Allow-Origin", "*")
         for k, v in (extra or {}).items():
             self.send_header(k, v)
         self.end_headers()
@@ -717,7 +766,7 @@ def run_server(reports_dir: Path, db_path: Path,
                podcasts_dir: Path = None, knowledge_dir: Path = None,
                anthropic_key: str = "",
                chat_model: str = "claude-sonnet-4-5-20250929",
-               host: str = "0.0.0.0", port: int = 8765):
+               host: str = "0.0.0.0", port: int = 8080):
     Handler.reports_dir = reports_dir
     Handler.podcasts_dir = podcasts_dir or (reports_dir.parent / "podcasts")
     Handler.knowledge_dir = knowledge_dir or (reports_dir.parent / "knowledge")

@@ -90,6 +90,9 @@ _CHAT_SIDEBAR = """
 (function() {
   var REPORT_DATE = 'DATE_ISO';
   var STORAGE_KEY = 'notes-' + REPORT_DATE;
+  // Use current origin when served over HTTP/HTTPS (works on Tailscale IP too);
+  // fall back to localhost only when the HTML was opened as a local file://.
+  var CHAT_BASE = (window.location.protocol === 'file:') ? 'http://localhost:8080' : window.location.origin;
 
   // ── Panel toggle ──────────────────────────────────────────────────────────
   window.toggleChat = function() {
@@ -147,7 +150,7 @@ _CHAT_SIDEBAR = """
     var btn = document.getElementById('ask-btn');
     btn.disabled = true;
 
-    fetch('http://localhost:8765/chat', {
+    fetch(CHAT_BASE + '/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ question: q, date: REPORT_DATE })
@@ -186,7 +189,7 @@ _PODCAST_PLAYER_JS = """
 <script>
 (function() {
   var DATE = 'DATE_ISO';
-  var BASE = (window.location.protocol === 'file:') ? 'http://localhost:8765' : window.location.origin;
+  var BASE = (window.location.protocol === 'file:') ? 'http://localhost:8080' : window.location.origin;
   var podSection = document.getElementById('pod-section');
   var podList    = document.getElementById('pod-list');
   var podNone    = document.getElementById('pod-none');
