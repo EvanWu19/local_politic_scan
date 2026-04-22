@@ -33,6 +33,8 @@ _STATE = _Cfg.STATE or "the state"
 _COUNTY = _Cfg.COUNTY or "the county"
 _SHOW_NAME = f"{_Cfg.CITY or _Cfg.COUNTY or 'Local'} Politics Today"
 _FED_FOCUS = ", ".join(_Cfg.FEDERAL_KEYWORDS[:6]) if _Cfg.FEDERAL_KEYWORDS else "federal legislation that affects daily life"
+_DISTRICTS = _Cfg.districts_profile()
+_DISTRICT_BLOCK = f"\n\nLISTENER'S VOTING DISTRICTS — prioritize stories touching these offices:\n{_DISTRICTS}\n" if _DISTRICTS else ""
 
 # ── Speaker/voice mapping ─────────────────────────────────────────────────────
 ALEX = "ALEX"
@@ -40,7 +42,7 @@ JORDAN = "JORDAN"
 
 # ── System prompt for dialogue generation (cached) ────────────────────────────
 DIALOGUE_SYSTEM = f"""You are writing a natural two-host podcast conversation about
-local politics for a first-time voter in {_LOCALE}.
+local politics for a first-time voter in {_LOCALE}.{_DISTRICT_BLOCK}
 
 HOSTS:
   • ALEX   — The news presenter. Reads the facts, provides context, explains the issue.
@@ -89,7 +91,8 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                                alex_voice: str = "onyx",
                                jordan_voice: str = "nova",
                                no_audio: bool = False,
-                               filter_incidents: bool = True) -> List[Dict]:
+                               filter_incidents: bool = True,
+                               skip_editor: bool = False) -> List[Dict]:
     """
     Produce 4 separate ~30-min episode files.
     Returns a list of result dicts, one per episode.
@@ -183,13 +186,57 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         script_parts.append(_write_episode_outro(claude, script_model,
                                                   target_date, ep_num, ep_title, segments))
 
-        full_script = "\n\n".join(script_parts)
-        word_count = len(full_script.split())
-        log.info("  Script: %d words (~%d min)", word_count, word_count // 130)
+        draft_script = "\n\n".join(script_parts)
+        draft_words = len(draft_script.split())
+        log.info("  Draft: %d words (~%d min)", draft_words, draft_words // 130)
 
+        draft_fname = f"podcast_{date_str}_{ep_slug}.draft.txt"
+        draft_path = podcasts_dir / draft_fname
+        draft_path.write_text(draft_script, encoding="utf-8")
+
+        # ── Editor pass ───────────────────────────────────────────────────────
+        editor_notes = ""
+        editor_changed = False
+        if skip_editor:
+            full_script = draft_script
+            log.info("  Editor: skipped")
+        else:
+            from scanner.editor import review_script
+            review = review_script(
+                draft=draft_script,
+                ep_num=ep_num,
+                ep_title=ep_title,
+                episode_date=target_date,
+                podcasts_dir=podcasts_dir,
+                db_path=db_path,
+                anthropic_key=anthropic_key,
+                model=script_model,
+            )
+            full_script = review["final_script"]
+            editor_notes = review["notes"]
+            editor_changed = review["changed"]
+            log.info("  Editor: %s — %s",
+                     "revised" if editor_changed else "approved as-is",
+                     editor_notes)
+
+        word_count = len(full_script.split())
         script_fname = f"podcast_{date_str}_{ep_slug}.txt"
         script_path = podcasts_dir / script_fname
         script_path.write_text(full_script, encoding="utf-8")
+
+        editor_meta = {
+            "episode_num": ep_num,
+            "episode_title": ep_title,
+            "date": date_str,
+            "draft_words": draft_words,
+            "final_words": word_count,
+            "changed": editor_changed,
+            "notes": editor_notes,
+            "skip_editor": skip_editor,
+        }
+        (podcasts_dir / f"podcast_{date_str}_{ep_slug}.editor.json").write_text(
+            json.dumps(editor_meta, indent=2), encoding="utf-8"
+        )
 
         if no_audio:
             results.append({
@@ -198,6 +245,9 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                 "episode_slug": ep_slug,
                 "script": full_script,
                 "script_path": str(script_path),
+                "draft_path": str(draft_path),
+                "editor_notes": editor_notes,
+                "editor_changed": editor_changed,
                 "audio_path": "",
                 "duration_seconds": 0,
                 "word_count": word_count,
@@ -216,6 +266,9 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
             "episode_slug": ep_slug,
             "script": full_script,
             "script_path": str(script_path),
+            "draft_path": str(draft_path),
+            "editor_notes": editor_notes,
+            "editor_changed": editor_changed,
             "audio_path": str(audio_path),
             "duration_seconds": duration,
             "word_count": word_count,

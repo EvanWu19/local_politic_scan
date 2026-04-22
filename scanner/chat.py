@@ -24,6 +24,8 @@ log = logging.getLogger(__name__)
 from config import Config as _Cfg
 
 _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "their locale"
+_DISTRICTS = _Cfg.districts_profile()
+_DISTRICT_BLOCK = f"\n\nTHE USER'S VOTING DISTRICTS — ground your answers in these specific contests/offices whenever relevant:\n{_DISTRICTS}\n" if _DISTRICTS else ""
 
 # ── System prompt (cached) ────────────────────────────────────────────────────
 CHAT_SYSTEM = f"""You are the user's personal political knowledge coach.
@@ -31,7 +33,7 @@ CHAT_SYSTEM = f"""You are the user's personal political knowledge coach.
 The user lives in {_LOCALE}. They are new to voting and use a daily digest of
 local/state/federal political news to prepare for future elections. After
 listening to the daily podcast, they ask you follow-up questions to deepen
-understanding.
+understanding.{_DISTRICT_BLOCK}
 
 YOUR JOB:
   1. Answer questions clearly and concisely (2–5 paragraphs; use lists for 3+ items)

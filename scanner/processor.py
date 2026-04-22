@@ -23,11 +23,12 @@ MODEL = "claude-haiku-4-5-20251001"   # Fast + cheap for daily batch processing
 
 _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "the configured locale"
 _FED_KW = ", ".join(_Cfg.FEDERAL_KEYWORDS[:12]) if _Cfg.FEDERAL_KEYWORDS else "budget, healthcare, education, housing, transportation"
+_DISTRICTS = _Cfg.districts_profile()
+_DISTRICT_BLOCK = f"\n\nThe resident's voting districts are:\n{_DISTRICTS}\nGive HIGHER relevance scores to items touching the offices, legislators, or contests in those specific districts.\n" if _DISTRICTS else ""
 
 # ── System prompt (cached) ────────────────────────────────────────────────────
 SYSTEM_PROMPT = f"""You are a nonpartisan political analyst helping a resident of
-{_LOCALE} understand local, state, and federal politics.
-
+{_LOCALE} understand local, state, and federal politics.{_DISTRICT_BLOCK}
 The resident is new to voting and wants clear, jargon-free explanations.
 Their key interests are:
   - FEDERAL: topics matching these keywords — {_FED_KW}
