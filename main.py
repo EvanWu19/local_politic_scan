@@ -394,10 +394,10 @@ def cmd_podcast(args):
     if ts_ip and not no_audio:
         slug = target.strftime('%Y-%m-%d')
         print(f"\n📱  Listen on phone (Tailscale):")
-        print(f"      http://{ts_ip}:8765/podcasts")
+        print(f"      http://{ts_ip}:8080/podcasts")
         for ep in results:
-            fname = f"podcast_{slug}_ep{ep['episode_num']}_{ep['episode_slug']}.mp3"
-            print(f"      http://{ts_ip}:8765/podcast/{fname}")
+            fname = f"podcast_{slug}_ep{ep['episode_num']}.mp3"
+            print(f"      http://{ts_ip}:8080/podcast/{fname}")
     print()
 
 
@@ -513,10 +513,10 @@ def main():
 
     srv = sub.add_parser("serve", help="Start HTTP server for phone/Tailscale access")
     srv.add_argument("--host", default="0.0.0.0", help="Bind host (default: 0.0.0.0)")
-    srv.add_argument("--port", type=int, default=8765, help="Port (default: 8765)")
+    srv.add_argument("--port", type=int, default=8080, help="Port (default: 8080)")
 
     setup = sub.add_parser("setup", help="Register daily-scan + web-server scheduled tasks")
-    setup.add_argument("--port", type=int, default=8765, help="Server port (default: 8765)")
+    setup.add_argument("--port", type=int, default=8080, help="Server port (default: 8080)")
     setup.add_argument("--no-server", action="store_true",
                        help="Only schedule the daily scan, not the web server")
 
