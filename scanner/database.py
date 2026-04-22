@@ -201,6 +201,10 @@ def initialize_db(db_path: Path) -> None:
         # if the column already exists, but SQLite raises — swallow that).
         for sql in [
             "ALTER TABLE weekly_themes ADD COLUMN avoid_list TEXT NOT NULL DEFAULT '[]'",
+            "ALTER TABLE weekly_themes ADD COLUMN listener_candidate_interest TEXT NOT NULL DEFAULT '[]'",
+            "ALTER TABLE politicians ADD COLUMN ballot_year INTEGER",
+            "ALTER TABLE politicians ADD COLUMN candidate_status TEXT",
+            "ALTER TABLE politicians ADD COLUMN discovered_via TEXT",
         ]:
             try:
                 conn.execute(sql)
@@ -542,7 +546,8 @@ def save_weekly_themes(db_path: Path, week_start: str, week_end: str,
                         themes: List[Dict], open_questions: List[str],
                         underserved_topics: List[str], summary: str,
                         note_count: int,
-                        avoid_list: Optional[List[str]] = None) -> None:
+                        avoid_list: Optional[List[str]] = None,
+                        listener_candidate_interest: Optional[List[str]] = None) -> None:
     """UPSERT a PM-rollup record. Keyed by week_start (one row per window)."""
     import json as _json
     with get_connection(db_path) as conn:
@@ -550,29 +555,32 @@ def save_weekly_themes(db_path: Path, week_start: str, week_end: str,
             """INSERT INTO weekly_themes
                  (week_start, week_end, themes, open_questions,
                   underserved_topics, summary, note_count, avoid_list,
-                  generated_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                  listener_candidate_interest, generated_at)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
                ON CONFLICT(week_start) DO UPDATE SET
-                 week_end           = excluded.week_end,
-                 themes             = excluded.themes,
-                 open_questions     = excluded.open_questions,
-                 underserved_topics = excluded.underserved_topics,
-                 summary            = excluded.summary,
-                 note_count         = excluded.note_count,
-                 avoid_list         = excluded.avoid_list,
-                 generated_at       = CURRENT_TIMESTAMP""",
+                 week_end                    = excluded.week_end,
+                 themes                      = excluded.themes,
+                 open_questions              = excluded.open_questions,
+                 underserved_topics          = excluded.underserved_topics,
+                 summary                     = excluded.summary,
+                 note_count                  = excluded.note_count,
+                 avoid_list                  = excluded.avoid_list,
+                 listener_candidate_interest = excluded.listener_candidate_interest,
+                 generated_at                = CURRENT_TIMESTAMP""",
             (week_start, week_end,
              _json.dumps(themes, ensure_ascii=False),
              _json.dumps(open_questions, ensure_ascii=False),
              _json.dumps(underserved_topics, ensure_ascii=False),
              summary, note_count,
-             _json.dumps(avoid_list or [], ensure_ascii=False)),
+             _json.dumps(avoid_list or [], ensure_ascii=False),
+             _json.dumps(listener_candidate_interest or [], ensure_ascii=False)),
         )
 
 
 def _hydrate_weekly_themes_row(d: Dict) -> Dict:
     import json as _json
-    for k in ("themes", "open_questions", "underserved_topics", "avoid_list"):
+    for k in ("themes", "open_questions", "underserved_topics", "avoid_list",
+              "listener_candidate_interest"):
         try:
             d[k] = _json.loads(d.get(k) or "[]")
         except Exception:
@@ -618,6 +626,72 @@ def list_politicians(db_path: Path, level: Optional[str] = None,
         sql += " HAVING event_count >= ? "
         params.append(min_events)
     sql += " ORDER BY p.level, p.name"
+    with get_connection(db_path) as conn:
+        rows = conn.execute(sql, tuple(params)).fetchall()
+    return [dict(r) for r in rows]
+
+
+def upsert_candidate(db_path: Path, name: str, office: str, party: str,
+                     level: str, district: str, ballot_year: int,
+                     candidate_status: str = "candidate",
+                     discovered_via: str = "ai_discovery") -> int:
+    """
+    UPSERT a candidate into politicians. Matches on UNIQUE(name) — if the
+    name already exists we fill in the missing ballot metadata rather
+    than overwriting good data (e.g. a seeded incumbent who's now
+    running again keeps their office but gains ballot_year).
+
+    Returns the politician id.
+    """
+    with get_connection(db_path) as conn:
+        row = conn.execute(
+            "SELECT id, office, party, level, district, ballot_year "
+            "FROM politicians WHERE name = ?", (name,),
+        ).fetchone()
+        if row:
+            d = dict(row)
+            conn.execute(
+                """UPDATE politicians SET
+                     office           = COALESCE(NULLIF(?, ''), office),
+                     party            = COALESCE(NULLIF(?, ''), party),
+                     level            = COALESCE(NULLIF(?, ''), level),
+                     district         = COALESCE(NULLIF(?, ''), district),
+                     ballot_year      = COALESCE(?, ballot_year),
+                     candidate_status = COALESCE(NULLIF(?, ''), candidate_status),
+                     discovered_via   = COALESCE(NULLIF(?, ''), discovered_via),
+                     last_updated     = CURRENT_DATE
+                   WHERE id = ?""",
+                (office, party, level, district, ballot_year,
+                 candidate_status, discovered_via, d["id"]),
+            )
+            return d["id"]
+        cur = conn.execute(
+            """INSERT INTO politicians
+                 (name, office, party, level, district, ballot_year,
+                  candidate_status, discovered_via, last_updated)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_DATE)""",
+            (name, office, party, level, district, ballot_year,
+             candidate_status, discovered_via),
+        )
+        return cur.lastrowid
+
+
+def list_ballot_candidates(db_path: Path, ballot_year: Optional[int] = None,
+                           level: Optional[str] = None) -> List[Dict]:
+    """
+    Return politicians on the listener's ballot (ballot_year IS NOT NULL).
+    Sorted by office then party then name so rendered output is stable.
+    """
+    sql = ("SELECT * FROM politicians "
+           "WHERE ballot_year IS NOT NULL ")
+    params: List = []
+    if ballot_year is not None:
+        sql += " AND ballot_year = ?"
+        params.append(ballot_year)
+    if level:
+        sql += " AND level = ?"
+        params.append(level)
+    sql += " ORDER BY level, office, party, name"
     with get_connection(db_path) as conn:
         rows = conn.execute(sql, tuple(params)).fetchall()
     return [dict(r) for r in rows]

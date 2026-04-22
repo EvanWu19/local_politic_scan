@@ -216,8 +216,45 @@ def cmd_fetch(args):
     finish_scan_run(cfg.DB_PATH, run_id, total_found, new_count,
                     status="ok", error="; ".join(errors))
 
+    # ── Candidate discovery (refresh weekly so the Author has current ballot info)
+    if cfg.ANTHROPIC_API_KEY and _should_refresh_candidates(cfg.DB_PATH):
+        try:
+            print("🗳️   Candidate discovery (weekly refresh)…")
+            from scanner.sources.candidate_discover import discover_all
+            runs = discover_all(
+                db_path=cfg.DB_PATH,
+                anthropic_key=cfg.ANTHROPIC_API_KEY,
+                ballot_year=date.today().year,
+            )
+            saved = sum(r.get("candidates_saved", 0) for r in runs)
+            print(f"   ✓ Refreshed {len(runs)} contests, {saved} candidate rows touched\n")
+        except Exception as e:
+            log.warning("Candidate discovery failed (non-fatal): %s", e)
+            print(f"   ⚠️  Discovery failed: {e}\n")
+
     print("✅  Fetch complete. (Run `python main.py publish` to generate "
           "today's report + podcast.)\n")
+
+
+def _should_refresh_candidates(db_path: Path, max_age_days: int = 7) -> bool:
+    """True if we haven't touched any ai_discovery candidate row in N days."""
+    from scanner.database import get_connection
+    try:
+        with get_connection(db_path) as conn:
+            row = conn.execute(
+                "SELECT MAX(last_updated) AS last FROM politicians "
+                "WHERE discovered_via = 'ai_discovery'"
+            ).fetchone()
+    except Exception:
+        return True
+    last = (row["last"] if row else None) or ""
+    if not last:
+        return True
+    try:
+        last_d = datetime.strptime(last, "%Y-%m-%d").date()
+    except Exception:
+        return True
+    return (date.today() - last_d).days >= max_age_days
 
 
 def cmd_publish(args):
@@ -278,6 +315,59 @@ def cmd_publish(args):
         print("(Skipping podcast — --no-podcast flag set.)\n")
         return
     cmd_podcast(args)
+
+    # ── Deep-dive (专题) episodes for any candidate the listener named
+    _maybe_run_deepdives(args)
+
+
+def _maybe_run_deepdives(args) -> None:
+    """Auto-trigger one deep-dive episode per candidate the PM flagged
+    in `listener_candidate_interest`. Bounded to 2 per publish so we
+    don't blow up the daily run."""
+    from scanner.database import get_latest_weekly_themes
+    try:
+        rollup = get_latest_weekly_themes(cfg.DB_PATH)
+    except Exception as e:
+        log.debug("No PM rollup for deep-dive trigger: %s", e)
+        return
+    if not rollup:
+        return
+    names = rollup.get("listener_candidate_interest") or []
+    if not names:
+        return
+
+    from scanner.deepdive import generate_deep_dive
+    no_audio = bool(getattr(args, "no_audio", False))
+    skip_editor = bool(getattr(args, "skip_editor", False))
+    openai_key = "" if no_audio else cfg.OPENAI_API_KEY
+
+    target_date = date.today()
+    if getattr(args, "date", None):
+        target_date = datetime.strptime(args.date, "%Y-%m-%d").date()
+
+    print(f"🎙️   Deep-dive trigger — listener named {len(names)} candidate(s): "
+          f"{', '.join(names[:5])}")
+    for name in names[:2]:  # cap per day
+        try:
+            result = generate_deep_dive(
+                db_path=cfg.DB_PATH,
+                podcasts_dir=cfg.PODCASTS_DIR,
+                anthropic_key=cfg.ANTHROPIC_API_KEY,
+                openai_key=openai_key,
+                candidate_name=name,
+                target_date=target_date,
+                no_audio=no_audio,
+                skip_editor=skip_editor,
+            )
+        except Exception as e:
+            log.warning("Deep dive for %s failed (non-fatal): %s", name, e)
+            print(f"   ⚠️  {name}: failed — {e}")
+            continue
+        if result:
+            print(f"   ✓ {name}: {result['word_count']} words → {result['script_path']}")
+        else:
+            print(f"   (skipped {name}: no record on file yet)")
+    print()
 
 
 def cmd_scan(args):
@@ -597,6 +687,81 @@ def cmd_backfill(args):
     print()
 
 
+def cmd_discover(args):
+    """Discover candidates running for each configured-district contest."""
+    initialize_db(cfg.DB_PATH)
+    if not cfg.ANTHROPIC_API_KEY:
+        print("✗  ANTHROPIC_API_KEY missing — add to .env and retry.")
+        return
+
+    from scanner.sources.candidate_discover import discover_all
+
+    ballot_year = int(getattr(args, "year", None) or date.today().year)
+    window = getattr(args, "window", None) or "1y"
+
+    print(f"\n🗳️   Candidate discovery — ballot year {ballot_year}, window {window}\n")
+    runs = discover_all(
+        db_path=cfg.DB_PATH,
+        anthropic_key=cfg.ANTHROPIC_API_KEY,
+        ballot_year=ballot_year,
+        window=window,
+    )
+    if not runs:
+        print("(No contests derived — set your district fields in .env.)\n")
+        return
+    for r in runs:
+        office = r.get("contest", {}).get("office", "?")
+        found = r.get("candidates_found", 0)
+        saved = r.get("candidates_saved", 0)
+        err = r.get("error")
+        if err:
+            print(f"  ⚠️  {office}: error — {err}")
+        else:
+            print(f"  • {office}: found={found}, saved={saved}")
+    print()
+
+
+def cmd_deepdive(args):
+    """Generate a ~30-min single-candidate deep-dive (专题) episode."""
+    initialize_db(cfg.DB_PATH)
+    if not cfg.ANTHROPIC_API_KEY:
+        print("✗  ANTHROPIC_API_KEY missing — add to .env and retry.")
+        return
+
+    from scanner.deepdive import generate_deep_dive
+
+    name = " ".join(args.name).strip() if getattr(args, "name", None) else ""
+    if not name:
+        print("✗  Please provide a candidate name.")
+        return
+
+    target_date = date.today()
+    if getattr(args, "date", None):
+        target_date = datetime.strptime(args.date, "%Y-%m-%d").date()
+
+    no_audio = bool(getattr(args, "no_audio", False))
+    openai_key = "" if no_audio else cfg.OPENAI_API_KEY
+    print(f"\n🎙️   Deep dive — {name} ({target_date})\n")
+    result = generate_deep_dive(
+        db_path=cfg.DB_PATH,
+        podcasts_dir=cfg.PODCASTS_DIR,
+        anthropic_key=cfg.ANTHROPIC_API_KEY,
+        openai_key=openai_key,
+        candidate_name=name,
+        target_date=target_date,
+        no_audio=no_audio,
+        skip_editor=bool(getattr(args, "skip_editor", False)),
+    )
+    if not result:
+        print("(No episode produced — candidate not found or no record on file.)\n")
+        return
+    print(f"   ✓ {result['word_count']} words → {result['script_path']}")
+    if result.get("audio_path"):
+        print(f"   ✓ audio → {result['audio_path']} "
+              f"(~{result['duration_seconds']//60}:{result['duration_seconds']%60:02d})")
+    print()
+
+
 def cmd_pm(args):
     """Roll up recent daily_notes into themes/open-questions/underserved-topics."""
     initialize_db(cfg.DB_PATH)
@@ -786,6 +951,21 @@ def main():
     an.add_argument("--min-events", type=int, default=3,
                     help="Skip politicians with fewer linked events (default: 3)")
 
+    disc = sub.add_parser("discover",
+        help="Discover ballot candidates from Google News per configured district")
+    disc.add_argument("--year", type=int, help="Ballot year (default: current year)")
+    disc.add_argument("--window", default="1y",
+                       help="Google News time window: '90d', '6m', '1y', '2y' (default: 1y)")
+
+    dd = sub.add_parser("deepdive",
+        help="Generate a ~30-min deep-dive (专题) episode for one candidate")
+    dd.add_argument("name", nargs="+", help="Candidate name (can be partial)")
+    dd.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
+    dd.add_argument("--no-audio", action="store_true",
+                     help="Write the script only; skip OpenAI TTS")
+    dd.add_argument("--skip-editor", action="store_true",
+                     help="Skip the Editor pass")
+
     bf = sub.add_parser("backfill", help="Fetch historical news per politician (Google News deep search)")
     bf.add_argument("--name", help="Backfill just this politician (LIKE match)")
     bf.add_argument("--level", choices=["federal", "state", "county", "school", "local"],
@@ -829,6 +1009,10 @@ def main():
         cmd_analyst(args)
     elif args.command == "backfill":
         cmd_backfill(args)
+    elif args.command == "discover":
+        cmd_discover(args)
+    elif args.command == "deepdive":
+        cmd_deepdive(args)
     else:
         parser.print_help()
 

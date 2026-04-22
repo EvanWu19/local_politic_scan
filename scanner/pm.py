@@ -137,6 +137,10 @@ def generate_weekly_themes(
         log.warning("PM agent: output unparseable, not saving")
         return None
 
+    listener_candidate_interest = _extract_listener_candidate_interest(
+        db_path=db_path, notes=notes,
+    )
+
     from scanner.database import save_weekly_themes, get_latest_weekly_themes
     save_weekly_themes(
         db_path=db_path,
@@ -148,15 +152,54 @@ def generate_weekly_themes(
         summary=parsed["summary"],
         note_count=len(notes),
         avoid_list=parsed["avoid_list"],
+        listener_candidate_interest=listener_candidate_interest,
     )
     saved = get_latest_weekly_themes(db_path)
     log.info(
-        "PM agent: saved rollup for %s..%s (%d themes, %d open questions, %d avoid)",
+        "PM agent: saved rollup for %s..%s (%d themes, %d open questions, "
+        "%d avoid, %d listener-candidate mentions)",
         window_start, window_end,
         len(parsed["themes"]), len(parsed["open_questions"]),
-        len(parsed["avoid_list"]),
+        len(parsed["avoid_list"]), len(listener_candidate_interest),
     )
     return saved
+
+
+def _extract_listener_candidate_interest(db_path: Path,
+                                         notes: List[Dict]) -> List[str]:
+    """
+    Scan the audience notes for mentions of any ballot candidate's name
+    (first+last substring match, case-insensitive) and return the unique
+    set of names the listener has named. This is what downstream deep-dive
+    (专题) episodes are triggered off of.
+    """
+    try:
+        from scanner.ballot import candidate_names_for_match
+    except Exception:
+        return []
+    try:
+        names = candidate_names_for_match(db_path)
+    except Exception as e:
+        log.debug("Could not load ballot candidate names: %s", e)
+        return []
+    if not names:
+        return []
+
+    joined = " \n ".join((r.get("content") or "") for r in notes).lower()
+    hits: List[str] = []
+    seen = set()
+    for name in names:
+        n = name.strip()
+        if not n:
+            continue
+        parts = n.split()
+        # Require BOTH first and last name tokens to appear in the notes
+        # to avoid matching common first names by accident ("Sidney" etc.).
+        tokens = [parts[0].lower(), parts[-1].lower()] if len(parts) >= 2 else [n.lower()]
+        if all(t in joined for t in tokens) and n not in seen:
+            seen.add(n)
+            hits.append(n)
+    return hits
 
 
 # ──────────────────────────────────────────────────────────────────────────────
