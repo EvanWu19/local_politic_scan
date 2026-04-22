@@ -426,6 +426,124 @@ def cmd_candidates(args):
     print_candidates_table(cfg.DB_PATH)
 
 
+def cmd_analyst(args):
+    """Score every tracked politician on the consistency of their positions."""
+    initialize_db(cfg.DB_PATH)
+    if not cfg.ANTHROPIC_API_KEY:
+        print("✗  ANTHROPIC_API_KEY missing — add to .env and retry.")
+        return
+
+    from scanner.analyst import analyze_all, analyze_one, format_score_for_prompt
+    from scanner.database import get_connection
+
+    target = (args.name or "").strip() if getattr(args, "name", None) else ""
+    level = getattr(args, "level", None)
+    min_events = getattr(args, "min_events", None) or 3
+
+    if target:
+        with get_connection(cfg.DB_PATH) as conn:
+            row = conn.execute(
+                "SELECT id, name FROM politicians WHERE name LIKE ?",
+                (f"%{target}%",),
+            ).fetchone()
+        if not row:
+            print(f"No politician matches '{target}'. Run `scan` first.")
+            return
+        print(f"\n📊  Analyst — scoring {row['name']}…\n")
+        saved = analyze_one(
+            db_path=cfg.DB_PATH,
+            anthropic_key=cfg.ANTHROPIC_API_KEY,
+            politician_id=row["id"],
+            politician_name=row["name"],
+            min_events=min_events,
+        )
+        if saved:
+            print(format_score_for_prompt(saved))
+        else:
+            print("(No score produced — see logs.)")
+        print()
+        return
+
+    print(f"\n📊  Analyst — scoring all politicians "
+          f"(min {min_events} events"
+          f"{', level=' + level if level else ''})…\n")
+    rows = analyze_all(
+        db_path=cfg.DB_PATH,
+        anthropic_key=cfg.ANTHROPIC_API_KEY,
+        level=level,
+        min_events=min_events,
+    )
+    if not rows:
+        print("(No scores produced.)\n")
+        return
+    for r in rows:
+        print(format_score_for_prompt(r))
+        print()
+
+
+def cmd_backfill(args):
+    """Pull historical news for tracked politicians (Google News, deeper window)."""
+    initialize_db(cfg.DB_PATH)
+    from scanner.sources.news_backfill import backfill_all
+
+    locale_hint = getattr(args, "locale_hint", None) or cfg.STATE or "Maryland"
+    window = getattr(args, "window", None) or "2y"
+    level = getattr(args, "level", None)
+    name = getattr(args, "name", None)
+    max_items = getattr(args, "max_items", None) or 40
+
+    print(f"\n📚  Historical news backfill — window={window}, "
+          f"locale_hint={locale_hint}"
+          f"{', level=' + level if level else ''}"
+          f"{', name~=' + name if name else ''}\n")
+    runs = backfill_all(
+        db_path=cfg.DB_PATH,
+        locale_hint=locale_hint,
+        window=window,
+        level=level,
+        name_filter=name,
+        max_items=max_items,
+    )
+    if not runs:
+        print("(No politicians matched, or no items returned.)\n")
+        return
+    for r in runs:
+        status = r.get("status", "?")
+        print(f"  {r['politician_name']:30s}  found={r['items_found']:3d}  "
+              f"new={r['items_new']:3d}  status={status}  "
+              f"({r['window_start']}..{r['window_end']})")
+    print()
+
+
+def cmd_pm(args):
+    """Roll up recent daily_notes into themes/open-questions/underserved-topics."""
+    initialize_db(cfg.DB_PATH)
+    if not cfg.ANTHROPIC_API_KEY:
+        print("✗  ANTHROPIC_API_KEY missing — add to .env and retry.")
+        return
+
+    from scanner.pm import generate_weekly_themes, format_themes_for_prompt
+
+    end = date.today()
+    if getattr(args, "date", None):
+        end = datetime.strptime(args.date, "%Y-%m-%d").date()
+    days = getattr(args, "days", None) or 7
+
+    print(f"\n📊  PM rollup — window ending {end} ({days} days back)…\n")
+    saved = generate_weekly_themes(
+        db_path=cfg.DB_PATH,
+        anthropic_key=cfg.ANTHROPIC_API_KEY,
+        window_end=end,
+        window_days=days,
+    )
+    if not saved:
+        print("(No rollup produced — too few notes in window, or LLM call failed.)\n")
+        return
+
+    print(format_themes_for_prompt(saved))
+    print()
+
+
 def cmd_setup(args):
     """Register Windows scheduled tasks: daily scan + (optional) always-on web server."""
     python_exe = sys.executable
@@ -527,6 +645,27 @@ def main():
     srv.add_argument("--host", default="0.0.0.0", help="Bind host (default: 0.0.0.0)")
     srv.add_argument("--port", type=int, default=8080, help="Port (default: 8080)")
 
+    pm = sub.add_parser("pm", help="Roll up recent audience daily_notes into themes")
+    pm.add_argument("--date", help="Window end date YYYY-MM-DD (default: today)")
+    pm.add_argument("--days", type=int, default=7, help="Window length in days (default: 7)")
+
+    an = sub.add_parser("analyst", help="Score politicians' position consistency from tracked events")
+    an.add_argument("--name", help="Score just this politician (LIKE match)")
+    an.add_argument("--level", choices=["federal", "state", "county", "school", "local"],
+                    help="Limit to politicians at this level")
+    an.add_argument("--min-events", type=int, default=3,
+                    help="Skip politicians with fewer linked events (default: 3)")
+
+    bf = sub.add_parser("backfill", help="Fetch historical news per politician (Google News deep search)")
+    bf.add_argument("--name", help="Backfill just this politician (LIKE match)")
+    bf.add_argument("--level", choices=["federal", "state", "county", "school", "local"],
+                    help="Limit to politicians at this level")
+    bf.add_argument("--window", default="2y",
+                    help="Google News time window: e.g. '90d', '6m', '2y' (default: 2y)")
+    bf.add_argument("--locale-hint", help="Extra search keyword (default: USER_STATE)")
+    bf.add_argument("--max-items", type=int, default=40,
+                    help="Max items per politician (default: 40)")
+
     setup = sub.add_parser("setup", help="Register daily-scan + web-server scheduled tasks")
     setup.add_argument("--port", type=int, default=8080, help="Server port (default: 8080)")
     setup.add_argument("--no-server", action="store_true",
@@ -550,6 +689,12 @@ def main():
         cmd_setup(args)
     elif args.command == "candidates":
         cmd_candidates(args)
+    elif args.command == "pm":
+        cmd_pm(args)
+    elif args.command == "analyst":
+        cmd_analyst(args)
+    elif args.command == "backfill":
+        cmd_backfill(args)
     else:
         parser.print_help()
 

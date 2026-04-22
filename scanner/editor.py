@@ -30,6 +30,7 @@ PRIOR_DAYS = 3
 NOTES_DAYS = 7
 _MAX_PRIOR_CHARS = 6000
 _MAX_NOTES_CHARS = 2500
+_MAX_THEMES_CHARS = 2000
 
 EDITOR_SYSTEM = f"""You are the Editor for a local politics podcast aimed at a first-time voter in {_LOCALE}.{_DISTRICT_BLOCK}
 
@@ -48,7 +49,12 @@ CHECK FOR:
    lines where Alex or Jordan briefly addresses it — phrased like a
    delayed callback ("a listener asked us last week why…"). Never invent
    facts not supported by the script.
-3. FORMAT DISCIPLINE — Every line must begin `ALEX:` or `JORDAN:` with no
+3. RECURRING THEMES — A separate PM rollup distills the listener's recent
+   notes into themes, open questions, and underserved topics. If today's
+   script touches one of those threads, weave in a brief connecting line
+   that nods to the longer pattern. If the script doesn't touch them, do
+   NOT shoehorn them in.
+4. FORMAT DISCIPLINE — Every line must begin `ALEX:` or `JORDAN:` with no
    stage directions, markdown, brackets, asterisks, or emoji. Remove any line
    that is not dialogue. Keep speakers alternating naturally.
 
@@ -88,6 +94,7 @@ def review_script(
 
     prior_excerpts = _load_prior_script_excerpts(podcasts_dir, episode_date, days=PRIOR_DAYS)
     notes_block = _load_recent_notes(db_path, episode_date, days=NOTES_DAYS)
+    themes_block = _load_latest_themes_block(db_path, episode_date)
 
     user_prompt = _build_user_prompt(
         ep_num=ep_num,
@@ -96,6 +103,7 @@ def review_script(
         draft=draft,
         prior_excerpts=prior_excerpts,
         notes_block=notes_block,
+        themes_block=themes_block,
     )
 
     # Budget enough output tokens to echo back the full script in a JSON
@@ -205,20 +213,57 @@ def _load_recent_notes(db_path: Path, episode_date: date, days: int) -> str:
     return "\n\n".join(kept)
 
 
+def _load_latest_themes_block(db_path: Path, episode_date: date) -> str:
+    """
+    Pull the most recent PM rollup whose window ended STRICTLY BEFORE today.
+    Same-day rule applies here too: a rollup that includes today's note
+    would leak post-listen feedback back into today's episode.
+    """
+    try:
+        from scanner.database import list_weekly_themes
+        from scanner.pm import format_themes_for_prompt
+    except Exception as e:
+        log.debug("PM rollup unavailable: %s", e)
+        return ""
+
+    try:
+        rollups = list_weekly_themes(db_path, limit=12)
+    except Exception as e:
+        log.warning("Could not load weekly_themes: %s", e)
+        return ""
+
+    today_iso = episode_date.isoformat()
+    rollup = next(
+        (r for r in rollups if (r.get("week_end") or "") < today_iso),
+        None,
+    )
+    if not rollup:
+        return ""
+
+    block = format_themes_for_prompt(rollup)
+    if len(block) > _MAX_THEMES_CHARS:
+        block = block[:_MAX_THEMES_CHARS]
+    return block
+
+
 def _build_user_prompt(ep_num: int, ep_title: str, episode_date: date,
-                        draft: str, prior_excerpts: str, notes_block: str) -> str:
+                        draft: str, prior_excerpts: str, notes_block: str,
+                        themes_block: str = "") -> str:
     date_str = episode_date.strftime("%A, %B %d, %Y")
     prior_section = prior_excerpts or "(no prior scripts available)"
     notes_section = notes_block or "(no audience notes in range)"
+    themes_section = themes_block or "(no PM rollup available yet)"
     return (
         f"Episode {ep_num}: {ep_title} — {date_str}\n\n"
         "=== PRIOR EPISODE EXCERPTS (for repetition check) ===\n"
         f"{prior_section}\n\n"
-        "=== AUDIENCE DAILY NOTES ===\n"
+        "=== AUDIENCE DAILY NOTES (raw, recent) ===\n"
         f"{notes_section}\n\n"
+        "=== PM ROLLUP (recurring themes, open questions, underserved topics) ===\n"
+        f"{themes_section}\n\n"
         "=== DRAFT SCRIPT TO REVIEW ===\n"
         f"{draft}\n\n"
-        "Return your JSON response now."
+        "Return your response in the three-section format now."
     )
 
 
