@@ -275,9 +275,13 @@ def _load_recent_notes(db_path: Path, episode_date: date, days: int) -> str:
 
 def _load_latest_themes_block(db_path: Path, episode_date: date) -> str:
     """
-    Pull the most recent PM rollup whose window ended STRICTLY BEFORE today.
-    Same-day rule applies here too: a rollup that includes today's note
-    would leak post-listen feedback back into today's episode.
+    Pull the most recent PM rollup whose window ends ON OR BEFORE today.
+
+    PM runs before the Editor in the publish pipeline, so today's rollup
+    is the freshest summary of the listener's recent feedback and should
+    be the one we feed in. The same-day note exclusion (notes from day N
+    do not leak into day N's episode) is enforced upstream in
+    `scanner.pm._load_notes_in_range` / `_load_recent_notes`, not here.
     """
     try:
         from scanner.database import list_weekly_themes
@@ -294,7 +298,7 @@ def _load_latest_themes_block(db_path: Path, episode_date: date) -> str:
 
     today_iso = episode_date.isoformat()
     rollup = next(
-        (r for r in rollups if (r.get("week_end") or "") < today_iso),
+        (r for r in rollups if (r.get("week_end") or "") <= today_iso),
         None,
     )
     if not rollup:

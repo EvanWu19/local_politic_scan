@@ -185,12 +185,20 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         # ── Build ballot block so Author frames races as "X vs Y" ─────────────
         ballot_block = _load_ballot_block(db_path, target_date)
 
+        # ── Build themes block so Author knows what the listener cares about ──
+        themes_block = _load_themes_block(db_path, target_date)
+        if themes_block:
+            log.info("  Themes block: %d chars of listener signal injected",
+                     len(themes_block))
+        else:
+            log.info("  Themes block: empty (no rollup yet)")
+
         # ── Write draft #1 ────────────────────────────────────────────────────
         draft_script = _build_full_script(
             claude=claude, model=script_model,
             target_date=target_date, ep_num=ep_num, ep_title=ep_title,
             segments=segments, avoid_block=avoid_block,
-            ballot_block=ballot_block,
+            ballot_block=ballot_block, themes_block=themes_block,
         )
         draft_words = len(draft_script.split())
         log.info("  Draft: %d words (~%d min)", draft_words, draft_words // 130)
@@ -234,7 +242,7 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                     claude=claude, model=script_model,
                     target_date=target_date, ep_num=ep_num, ep_title=ep_title,
                     segments=segments, avoid_block=avoid_block_v2,
-                    ballot_block=ballot_block,
+                    ballot_block=ballot_block, themes_block=themes_block,
                 )
                 draft_v2_path = podcasts_dir / f"podcast_{date_str}_{ep_slug}.rewrite.txt"
                 draft_v2_path.write_text(draft_script_v2, encoding="utf-8")
@@ -485,8 +493,14 @@ def _infer_episode_title(ep_num: int, segments: List[Dict]) -> str:
 
 def _load_avoid_list(db_path: Path, target_date: date) -> List[str]:
     """
-    Pull the most recent PM rollup whose window ended STRICTLY BEFORE today
-    and return its avoid_list. Empty list if no usable rollup.
+    Pull the most recent PM rollup whose window ends ON OR BEFORE today and
+    return its avoid_list. Empty list if no usable rollup.
+
+    Note: PM runs BEFORE the Author in the publish pipeline, so today's
+    rollup is built from notes the listener wrote yesterday or earlier and
+    is safe to feed into today's draft. Same-day note exclusion happens
+    inside `pm._load_recent_notes`, not here — this filter must let the
+    fresh rollup through, otherwise the Author always reads stale data.
     """
     try:
         from scanner.database import list_weekly_themes
@@ -500,13 +514,45 @@ def _load_avoid_list(db_path: Path, target_date: date) -> List[str]:
         return []
     today_iso = target_date.isoformat()
     rollup = next(
-        (r for r in rollups if (r.get("week_end") or "") < today_iso),
+        (r for r in rollups if (r.get("week_end") or "") <= today_iso),
         None,
     )
     if not rollup:
         return []
     items = rollup.get("avoid_list") or []
     return [str(x).strip() for x in items if str(x).strip()]
+
+
+def _load_themes_block(db_path: Path, target_date: date) -> str:
+    """
+    Pull the most recent PM rollup (week_end <= today) and render its
+    summary / themes / open questions / underserved topics as a positive
+    signal block the Author injects into each prompt.
+
+    This is the counterpart to `_load_avoid_list`: that one tells the
+    Author what NOT to say; this one tells the Author what the listener
+    actually wants to hear about. Without this block, the Author has been
+    flying blind on positive signal — only knowing what to avoid.
+    """
+    try:
+        from scanner.database import list_weekly_themes
+        from scanner.pm import format_themes_for_prompt
+    except Exception as e:
+        log.debug("PM rollup unavailable for themes_block: %s", e)
+        return ""
+    try:
+        rollups = list_weekly_themes(db_path, limit=12)
+    except Exception as e:
+        log.warning("Could not load weekly_themes for themes_block: %s", e)
+        return ""
+    today_iso = target_date.isoformat()
+    rollup = next(
+        (r for r in rollups if (r.get("week_end") or "") <= today_iso),
+        None,
+    )
+    if not rollup:
+        return ""
+    return format_themes_for_prompt(rollup)
 
 
 def _load_ballot_block(db_path: Path, target_date: date) -> str:
@@ -527,11 +573,26 @@ def _load_ballot_block(db_path: Path, target_date: date) -> str:
         return ""
 
 
-def _ctx(ballot_block: str, avoid_block: str) -> str:
-    """Join the ballot + avoid blocks into a single suffix for user prompts."""
+def _ctx(ballot_block: str, avoid_block: str, themes_block: str = "") -> str:
+    """
+    Join the ballot + themes + avoid blocks into a single suffix for user
+    prompts. Order matters: ballot first (who's running), then listener
+    signal (what they care about / what's been underserved), then the
+    avoid list (what NOT to repeat). The Author should read the positive
+    signal before the negative constraint.
+    """
     parts: List[str] = []
     if ballot_block:
         parts.append("\n\n" + ballot_block + "\n")
+    if themes_block:
+        parts.append(
+            "\n\nLISTENER SIGNAL — recurring themes, open questions, and "
+            "underserved topics from this listener's recent notes. Weave "
+            "answers into the dialogue where it fits naturally; do NOT "
+            "shoehorn an unrelated topic in:\n"
+            + themes_block
+            + "\n"
+        )
     if avoid_block:
         parts.append(avoid_block)
     return "".join(parts)
@@ -576,22 +637,25 @@ def _parse_avoid_from_reason(reason: str) -> List[str]:
 def _build_full_script(claude: anthropic.Anthropic, model: str,
                         target_date: date, ep_num: int, ep_title: str,
                         segments: List[Dict], avoid_block: str,
-                        ballot_block: str = "") -> str:
+                        ballot_block: str = "",
+                        themes_block: str = "") -> str:
     """Intro + per-segment dialogue + outro, concatenated."""
     parts: List[str] = []
     parts.append(_write_episode_intro(
         claude, model, target_date, ep_num, ep_title, segments,
-        avoid_block, ballot_block,
+        avoid_block, ballot_block, themes_block,
     ))
     for seg in segments:
         if not seg["events"]:
             continue
         log.info("  writing segment: %s (%d items)…",
                  seg["label"], len(seg["events"]))
-        parts.append(_write_segment(claude, model, seg, avoid_block, ballot_block))
+        parts.append(_write_segment(
+            claude, model, seg, avoid_block, ballot_block, themes_block,
+        ))
     parts.append(_write_episode_outro(
         claude, model, target_date, ep_num, ep_title, segments,
-        avoid_block, ballot_block,
+        avoid_block, ballot_block, themes_block,
     ))
     return "\n\n".join(parts)
 
@@ -600,7 +664,8 @@ def _write_episode_intro(client: anthropic.Anthropic, model: str,
                           target_date: date, ep_num: int,
                           ep_title: str, segments: List[Dict],
                           avoid_block: str = "",
-                          ballot_block: str = "") -> str:
+                          ballot_block: str = "",
+                          themes_block: str = "") -> str:
     date_str = target_date.strftime("%A, %B %d, %Y")
     preview = "\n".join(
         f"  - {seg['label']}: {len(seg['events'])} stories "
@@ -614,14 +679,17 @@ def _write_episode_intro(client: anthropic.Anthropic, model: str,
         "Opening should: (1) name the episode, (2) quick preview of the 2 biggest stories, "
         "(3) set expectations for what's covered. Target: ~350 words."
     )
-    return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
+    return _claude_dialogue(
+        client, model, user + _ctx(ballot_block, avoid_block, themes_block),
+    )
 
 
 def _write_episode_outro(client: anthropic.Anthropic, model: str,
                           target_date: date, ep_num: int,
                           ep_title: str, segments: List[Dict],
                           avoid_block: str = "",
-                          ballot_block: str = "") -> str:
+                          ballot_block: str = "",
+                          themes_block: str = "") -> str:
     total = sum(len(s["events"]) for s in segments)
     user = (
         f"Write a closing for Episode {ep_num}: '{ep_title}' of {_SHOW_NAME!r}.\n\n"
@@ -630,7 +698,9 @@ def _write_episode_outro(client: anthropic.Anthropic, model: str,
         "(2) one concrete action the listener can take this week, "
         "(3) warm sign-off. Target: ~250 words."
     )
-    return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
+    return _claude_dialogue(
+        client, model, user + _ctx(ballot_block, avoid_block, themes_block),
+    )
 
 
 def _group_by_segment(events: List[Dict], top_n: int) -> List[Dict]:
@@ -705,7 +775,8 @@ def _write_outro(client: anthropic.Anthropic, model: str,
 
 def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
                     avoid_block: str = "",
-                    ballot_block: str = "") -> str:
+                    ballot_block: str = "",
+                    themes_block: str = "") -> str:
     """Write dialogue for one segment — news stories or politician spotlights."""
     is_pol = segment.get("is_politician_segment", False)
 
@@ -745,7 +816,9 @@ def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
             f"- Total: ~{target_words} words of dialogue\n"
             "- Be factual and nonpartisan; present the record, not opinion"
         )
-        return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
+        return _claude_dialogue(
+            client, model, user + _ctx(ballot_block, avoid_block, themes_block),
+        )
     else:
         target_words = max(1500, 700 * len(segment["events"]))
         user = (
@@ -760,11 +833,26 @@ def _write_segment(client: anthropic.Anthropic, model: str, segment: Dict,
             f"- Emphasize the LOCAL ({_LOCALE}) angle even for state/federal stories\n"
             "- End with a brief transition to the next segment"
         )
-    return _claude_dialogue(client, model, user + _ctx(ballot_block, avoid_block))
+    return _claude_dialogue(
+        client, model, user + _ctx(ballot_block, avoid_block, themes_block),
+    )
 
 
 def _claude_dialogue(client: anthropic.Anthropic, model: str, user_prompt: str) -> str:
-    """Call Claude to produce ALEX:/JORDAN: dialogue."""
+    """
+    Call Claude to produce ALEX:/JORDAN: dialogue.
+
+    The Author has the Anthropic-hosted `web_search` tool available so it
+    can answer factual questions a curious co-host would ask (vote totals,
+    recent statements, who endorsed whom) instead of punting them as
+    homework for the listener. The tool is capped at 3 uses per call to
+    keep latency and cost bounded; most segments will not invoke it.
+
+    When web_search runs, the response contains tool_use / web_search_tool_result
+    blocks ahead of the final assistant text — we collect every text block
+    in order and concatenate them so the dialogue parser sees the full
+    final answer regardless of how the model interleaved tool calls.
+    """
     try:
         resp = client.messages.create(
             model=model,
@@ -773,13 +861,41 @@ def _claude_dialogue(client: anthropic.Anthropic, model: str, user_prompt: str) 
                 {"type": "text", "text": DIALOGUE_SYSTEM,
                  "cache_control": {"type": "ephemeral"}},
             ],
+            tools=[{
+                "type": "web_search_20250305",
+                "name": "web_search",
+                "max_uses": 3,
+            }],
             messages=[{"role": "user", "content": user_prompt}],
         )
-        text = resp.content[0].text.strip()
+        text = _extract_text_from_response(resp).strip()
+        if not text:
+            log.warning("Claude dialogue returned no text content "
+                        "(stop_reason=%s)", getattr(resp, "stop_reason", "?"))
         return _clean_dialogue(text)
     except Exception as e:
         log.error("Claude dialogue generation failed: %s", e)
         return f"ALEX: Sorry, I couldn't generate this segment due to an error.\nJORDAN: We'll try again next episode.\n"
+
+
+def _extract_text_from_response(resp) -> str:
+    """
+    Pull the assistant's textual output out of an anthropic.Message,
+    skipping tool_use / tool_result / server_tool_use / web_search_tool_result
+    blocks that appear when the model invokes the web_search tool.
+
+    Returns "" if the response somehow has no text block at all (e.g. the
+    model only emitted tool calls and was cut off — unusual but possible
+    if max_tokens is hit mid-search).
+    """
+    pieces: List[str] = []
+    for block in getattr(resp, "content", None) or []:
+        # SDK objects have a .type attribute; tool blocks lack .text
+        if getattr(block, "type", None) == "text":
+            t = getattr(block, "text", "") or ""
+            if t:
+                pieces.append(t)
+    return "\n".join(pieces)
 
 
 def _clean_dialogue(text: str) -> str:
