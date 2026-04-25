@@ -16,7 +16,7 @@ import logging
 import re
 from datetime import date, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 import anthropic
 
@@ -165,13 +165,54 @@ def generate_weekly_themes(
     return saved
 
 
+_MAX_AUTO_DEEPDIVE_PICKS = 3
+_DEEPDIVE_RECENT_DAYS = 14
+_AUTO_DEEPDIVE_TOTAL_CAP = 4
+
+# Generic phrases that signal "I want a candidate primer" without naming
+# anyone specific. Both English and Mandarin Chinese — the listener writes
+# in both languages and has used "primer election" as a typo for "primary".
+_GENERIC_CANDIDATE_INTEREST_PATTERNS = (
+    "candidates",
+    "candidate profile",
+    "candidate guide",
+    "candidate primer",
+    "primary candidate",
+    "primary election",
+    "primer election",  # observed typo of "primary"
+    "ballot",
+    "who's running",
+    "whos running",
+    "who is running",
+    "deep dive",
+    "deep-dive",
+    "deepdive",
+    "专题",
+    "候选人",
+    "初选",
+    "初选候选",
+)
+
+
 def _extract_listener_candidate_interest(db_path: Path,
                                          notes: List[Dict]) -> List[str]:
     """
-    Scan the audience notes for mentions of any ballot candidate's name
-    (first+last substring match, case-insensitive) and return the unique
-    set of names the listener has named. This is what downstream deep-dive
-    (专题) episodes are triggered off of.
+    Build the list of ballot candidates the show should deep-dive next.
+
+    Two signals feed in:
+      1. EXPLICIT — listener wrote a candidate's first AND last name in
+         their notes (case-insensitive substring match). Conservative on
+         purpose so a stray "Sidney" doesn't trigger a Sidney Katz episode.
+      2. GENERIC — listener wrote a candidate-interest phrase like
+         "primary candidates", "ballot", "专题", "deep dive" etc. without
+         naming anyone. We auto-pick ballot candidates that the show has
+         NOT covered with a deep-dive in the last ~2 weeks, so the
+         listener gets fresh primers instead of being told to go look
+         them up themselves.
+
+    Explicit names always come first in the returned list (they are the
+    listener's stated priority); auto-picks fill any remaining slots up
+    to a small total cap.
     """
     try:
         from scanner.ballot import candidate_names_for_match
@@ -186,20 +227,113 @@ def _extract_listener_candidate_interest(db_path: Path,
         return []
 
     joined = " \n ".join((r.get("content") or "") for r in notes).lower()
-    hits: List[str] = []
+
+    # 1. Explicit name matches — require both first AND last name tokens
+    explicit: List[str] = []
     seen = set()
     for name in names:
         n = name.strip()
         if not n:
             continue
         parts = n.split()
-        # Require BOTH first and last name tokens to appear in the notes
-        # to avoid matching common first names by accident ("Sidney" etc.).
         tokens = [parts[0].lower(), parts[-1].lower()] if len(parts) >= 2 else [n.lower()]
         if all(t in joined for t in tokens) and n not in seen:
             seen.add(n)
-            hits.append(n)
-    return hits
+            explicit.append(n)
+
+    # 2. Generic interest — top up with auto-picks if the listener has
+    # asked for "candidates" / "primary" / "专题" without naming anyone.
+    has_generic = any(p in joined for p in _GENERIC_CANDIDATE_INTEREST_PATTERNS)
+    if not has_generic:
+        return explicit
+
+    if len(explicit) >= _AUTO_DEEPDIVE_TOTAL_CAP:
+        return explicit[:_AUTO_DEEPDIVE_TOTAL_CAP]
+
+    auto_picks = _autopick_uncovered_candidates(
+        all_names=names,
+        exclude_names=set(explicit),
+        max_picks=min(
+            _MAX_AUTO_DEEPDIVE_PICKS,
+            _AUTO_DEEPDIVE_TOTAL_CAP - len(explicit),
+        ),
+    )
+    if auto_picks:
+        log.info(
+            "PM agent: generic candidate interest detected — "
+            "auto-picked %d uncovered candidate(s): %s",
+            len(auto_picks), ", ".join(auto_picks),
+        )
+    combined = explicit + [n for n in auto_picks if n not in seen]
+    return combined[:_AUTO_DEEPDIVE_TOTAL_CAP]
+
+
+def _autopick_uncovered_candidates(all_names: List[str],
+                                    exclude_names: Set[str],
+                                    max_picks: int) -> List[str]:
+    """
+    Pick up to `max_picks` ballot candidates whose deep-dive episode has
+    NOT shipped in the last `_DEEPDIVE_RECENT_DAYS` days. Order is
+    whatever `candidate_names_for_match` returned (sorted by office /
+    party / name in `list_ballot_candidates`).
+    """
+    if max_picks <= 0:
+        return []
+    try:
+        from scanner.deepdive import _slugify
+    except Exception as e:
+        log.debug("deepdive._slugify unavailable for auto-pick: %s", e)
+        return []
+
+    covered = _recently_dived_slugs(_Cfg.PODCASTS_DIR, _DEEPDIVE_RECENT_DAYS)
+    excluded_slugs = {_slugify(n) for n in exclude_names}
+
+    picks: List[str] = []
+    for name in all_names:
+        n = (name or "").strip()
+        if not n:
+            continue
+        slug = _slugify(n)
+        if slug in covered or slug in excluded_slugs:
+            continue
+        picks.append(n)
+        if len(picks) >= max_picks:
+            break
+    return picks
+
+
+def _recently_dived_slugs(podcasts_dir: Path, days: int) -> Set[str]:
+    """
+    Scan the podcasts directory for `podcast_<YYYY-MM-DD>_deepdive_<slug>.txt`
+    files dated within the last `days` days. Return the set of slugs.
+
+    Slug recovery: anything after `_deepdive_` in the stem is the slug
+    (slugs may contain underscores from multi-word names).
+    """
+    covered: Set[str] = set()
+    if not podcasts_dir or not podcasts_dir.exists():
+        return covered
+    cutoff = date.today() - timedelta(days=days)
+    for f in podcasts_dir.glob("podcast_*_deepdive_*.txt"):
+        # filenames like podcast_2026-04-25_deepdive_sidney_katz.txt
+        # also skip .draft.txt / .rewrite.txt artifacts
+        name = f.name
+        if ".draft." in name or ".rewrite." in name or ".editor." in name:
+            continue
+        stem = f.stem  # podcast_2026-04-25_deepdive_sidney_katz
+        try:
+            _, datestr, _, slug = stem.split("_", 3)
+        except ValueError:
+            continue
+        try:
+            d = date.fromisoformat(datestr)
+        except ValueError:
+            continue
+        if d < cutoff:
+            continue
+        if slug:
+            covered.add(slug)
+    return covered
 
 
 # ──────────────────────────────────────────────────────────────────────────────
