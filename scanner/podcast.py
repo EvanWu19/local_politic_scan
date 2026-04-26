@@ -842,16 +842,17 @@ def _claude_dialogue(client: anthropic.Anthropic, model: str, user_prompt: str) 
     """
     Call Claude to produce ALEX:/JORDAN: dialogue.
 
-    The Author has the Anthropic-hosted `web_search` tool available so it
-    can answer factual questions a curious co-host would ask (vote totals,
-    recent statements, who endorsed whom) instead of punting them as
-    homework for the listener. The tool is capped at 3 uses per call to
-    keep latency and cost bounded; most segments will not invoke it.
-
-    When web_search runs, the response contains tool_use / web_search_tool_result
-    blocks ahead of the final assistant text — we collect every text block
-    in order and concatenate them so the dialogue parser sees the full
-    final answer regardless of how the model interleaved tool calls.
+    NOTE — the Anthropic web_search tool was tried here in a previous
+    iteration so the Author could answer factual questions ("did they
+    vote for or against X?") inline. It broke the script: the model
+    emitted stub `ALEX:` lines around each tool call and never finished
+    them after the search returned, leaving ~30 truncated/empty ALEX
+    turns per episode. Confirmed by comparing episode scripts (with the
+    tool, 16–54 empty ALEX lines each) vs deep-dive scripts (different
+    code path, no tool, zero empty lines). The tool is no longer wired
+    in here. Future research support belongs in a separate pre-call that
+    answers the segment's factual questions and bakes the answers into
+    this prompt — keeping dialogue generation tool-free and unbroken.
     """
     try:
         resp = client.messages.create(
@@ -861,41 +862,13 @@ def _claude_dialogue(client: anthropic.Anthropic, model: str, user_prompt: str) 
                 {"type": "text", "text": DIALOGUE_SYSTEM,
                  "cache_control": {"type": "ephemeral"}},
             ],
-            tools=[{
-                "type": "web_search_20250305",
-                "name": "web_search",
-                "max_uses": 3,
-            }],
             messages=[{"role": "user", "content": user_prompt}],
         )
-        text = _extract_text_from_response(resp).strip()
-        if not text:
-            log.warning("Claude dialogue returned no text content "
-                        "(stop_reason=%s)", getattr(resp, "stop_reason", "?"))
+        text = resp.content[0].text.strip()
         return _clean_dialogue(text)
     except Exception as e:
         log.error("Claude dialogue generation failed: %s", e)
         return f"ALEX: Sorry, I couldn't generate this segment due to an error.\nJORDAN: We'll try again next episode.\n"
-
-
-def _extract_text_from_response(resp) -> str:
-    """
-    Pull the assistant's textual output out of an anthropic.Message,
-    skipping tool_use / tool_result / server_tool_use / web_search_tool_result
-    blocks that appear when the model invokes the web_search tool.
-
-    Returns "" if the response somehow has no text block at all (e.g. the
-    model only emitted tool calls and was cut off — unusual but possible
-    if max_tokens is hit mid-search).
-    """
-    pieces: List[str] = []
-    for block in getattr(resp, "content", None) or []:
-        # SDK objects have a .type attribute; tool blocks lack .text
-        if getattr(block, "type", None) == "text":
-            t = getattr(block, "text", "") or ""
-            if t:
-                pieces.append(t)
-    return "\n".join(pieces)
 
 
 def _clean_dialogue(text: str) -> str:
