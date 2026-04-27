@@ -17,7 +17,7 @@ import json
 import logging
 import re
 import time
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import List, Dict, Tuple, Optional
 
@@ -88,6 +88,105 @@ NUM_EPISODES = 4
 _WORDS_PER_EVENT = 350    # rough estimate for fill-threshold math
 _TARGET_WORDS_EP = 2500   # ~19 min at 130 wpm; + intro/outro ≈ 30 min per episode
 
+# ── Multi-day overflow / event budget ─────────────────────────────────────────
+# A heavy news day can produce far more events than 4 × 30-min episodes can
+# absorb. Rather than truncate (the script gets cut off at TTS time) or
+# balloon to 90+ minutes, we cap how many events are pulled into today's run
+# and queue the rest into `deferred_events` so they roll forward to the next
+# day's podcast. defer_count guards against indefinite punting on a story
+# that keeps losing the relevance race.
+EVENTS_PER_EPISODE = 4
+MAX_EVENTS_PER_DAY = NUM_EPISODES * EVENTS_PER_EPISODE   # 16
+MAX_DEFER_COUNT    = 3   # after 3 deferrals, force-include regardless of relevance
+
+
+def _apply_event_budget(db_path: Path, all_events: List[Dict],
+                         target_date: date,
+                         no_defer: bool = False) -> Tuple[List[Dict], List[int], List[int]]:
+    """
+    Decide which of `all_events` go into today's podcast and which roll
+    forward to tomorrow.
+
+    Rules:
+      • Events already in `deferred_events` whose `defer_until` <= today are
+        eligible today.
+      • Events whose `defer_count` has hit MAX_DEFER_COUNT are FORCE-included
+        regardless of relevance (anti-starvation).
+      • Otherwise, sort the eligible pool by relevance_score DESC and take
+        the top MAX_EVENTS_PER_DAY.
+      • Events that didn't make today's cut get queued (or re-queued) for
+        target_date + 1.
+      • Events whose deferral row was consumed (i.e. they made it into today)
+        get cleared from the queue.
+
+    Returns:
+      (selected_events, ids_to_clear, ids_to_defer_until_tomorrow)
+
+    If no_defer=True, the input is returned unchanged and both id lists are
+    empty (caller should not touch the queue). Useful for dry-runs and tests.
+    """
+    if no_defer:
+        return all_events, [], []
+
+    from scanner.database import list_deferred_events
+
+    deferred = list_deferred_events(db_path)
+    today_iso = target_date.isoformat()
+
+    # Forced (deferred too many times) — these jump the queue
+    forced_ids: List[int] = []
+    # Eligible (not deferred, OR deferred and now past their defer_until)
+    # vs held-back (deferred but still in the future)
+    eligible: List[Dict] = []
+    held_back_ids: List[int] = []
+
+    for ev in all_events:
+        eid = ev.get("id")
+        if eid is None:
+            eligible.append(ev)
+            continue
+        d = deferred.get(eid)
+        if d is None:
+            eligible.append(ev)
+            continue
+        if d["defer_count"] >= MAX_DEFER_COUNT:
+            forced_ids.append(eid)
+            eligible.append(ev)
+        elif d["defer_until"] <= today_iso:
+            eligible.append(ev)
+        else:
+            # Defer window hasn't opened yet — skip today
+            held_back_ids.append(eid)
+
+    # Sort eligible by relevance, but pin forced events to the top so they
+    # cannot be bumped out by fresh high-relevance news.
+    forced_set = set(forced_ids)
+    forced_events = [e for e in eligible if e.get("id") in forced_set]
+    rest = [e for e in eligible if e.get("id") not in forced_set]
+    rest.sort(key=lambda e: float(e.get("relevance_score") or 0), reverse=True)
+
+    budget = MAX_EVENTS_PER_DAY
+    selected = forced_events[:budget]
+    remaining_budget = max(0, budget - len(selected))
+    selected.extend(rest[:remaining_budget])
+    overflow = rest[remaining_budget:]
+
+    # Deferral bookkeeping
+    selected_ids = {e.get("id") for e in selected if e.get("id") is not None}
+    ids_to_clear = [eid for eid in deferred.keys() if eid in selected_ids]
+    ids_to_defer = [e["id"] for e in overflow if e.get("id") is not None]
+
+    if forced_events:
+        log.info("Event budget: %d forced (defer_count >= %d) included",
+                 len(forced_events), MAX_DEFER_COUNT)
+    if held_back_ids:
+        log.info("Event budget: %d events still in defer-window, held back",
+                 len(held_back_ids))
+    log.info("Event budget: %d/%d events selected, %d overflow → defer to next day",
+             len(selected), len(all_events), len(overflow))
+
+    return selected, ids_to_clear, ids_to_defer
+
 
 def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                                anthropic_key: str, openai_key: str,
@@ -98,7 +197,8 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                                jordan_voice: str = "nova",
                                no_audio: bool = False,
                                filter_incidents: bool = True,
-                               skip_editor: bool = False) -> List[Dict]:
+                               skip_editor: bool = False,
+                               no_defer: bool = False) -> List[Dict]:
     """
     Produce 4 separate ~30-min episode files.
     Returns a list of result dicts, one per episode.
@@ -135,14 +235,24 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
     politicians_ranked = _get_politicians_ranked(db_path)
     pol_offset = 0  # how many politicians we've already covered
 
-    # ── 3. Split events evenly across episodes (globally by relevance) ────────
-    n = len(all_events)
+    # ── 3. Apply multi-day event budget (overflow → tomorrow's queue) ─────────
+    selected_events, ids_to_clear, ids_to_defer = _apply_event_budget(
+        db_path, all_events, target_date, no_defer=no_defer,
+    )
+    if not selected_events:
+        # Edge case: all eligible events held back. Fall through with the raw
+        # list so we don't ship an empty podcast.
+        log.warning("Event budget produced no events — falling back to raw list")
+        selected_events = all_events
+
+    # ── 4. Split selected events evenly across episodes (globally by relevance) ──
+    n = len(selected_events)
     per_ep = max(1, n // NUM_EPISODES)
     event_slices: List[List[Dict]] = []
     for i in range(NUM_EPISODES):
         start = i * per_ep
         end = n if i == NUM_EPISODES - 1 else start + per_ep
-        event_slices.append(all_events[start:end])
+        event_slices.append(selected_events[start:end])
 
     results: List[Dict] = []
 
@@ -343,6 +453,18 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
     (podcasts_dir / f"podcast_{date_str}_index.json").write_text(
         json.dumps(index, indent=2), encoding="utf-8"
     )
+
+    # ── Commit deferral bookkeeping (after a successful run) ──────────────────
+    if not no_defer and (ids_to_clear or ids_to_defer):
+        from scanner.database import clear_deferred_events, defer_events
+        if ids_to_clear:
+            clear_deferred_events(db_path, ids_to_clear)
+            log.info("Deferral queue: cleared %d consumed events", len(ids_to_clear))
+        if ids_to_defer:
+            tomorrow = (target_date + timedelta(days=1)).isoformat()
+            defer_events(db_path, ids_to_defer, tomorrow)
+            log.info("Deferral queue: queued %d overflow events for %s",
+                     len(ids_to_defer), tomorrow)
 
     return results
 
@@ -938,8 +1060,8 @@ def _synthesize_dialogue(client: openai.OpenAI, script: str,
                     log.warning("TTS chunk %d failed (%s), retrying…", i, e)
                     time.sleep(2 * retry)
 
-    # Rough duration: MP3 at 32kbps ≈ 4 KB/sec (OpenAI's default)
-    duration = total_bytes // 4000
+    # Rough duration: OpenAI tts-1 outputs MP3 at ~160 kbps ≈ 20 KB/sec
+    duration = total_bytes // 20000
     log.info("Audio: %.1f MB, ~%d:%02d",
              total_bytes / 1_048_576, duration // 60, duration % 60)
     return duration
