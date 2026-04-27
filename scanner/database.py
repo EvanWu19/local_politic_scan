@@ -195,6 +195,22 @@ def initialize_db(db_path: Path) -> None:
                 FOREIGN KEY (politician_id) REFERENCES politicians(id)
             );
             CREATE INDEX IF NOT EXISTS idx_hnr_politician ON historical_news_runs(politician_id, ran_at DESC);
+
+            -- Multi-day overflow: events that didn't fit in today's podcast budget
+            -- and are queued for a later episode. The podcast generator reads
+            -- these on every run and force-includes any whose defer_until <= today
+            -- (or whose defer_count has hit the cap). After the episode is built,
+            -- consumed-deferred entries are cleared and any new overflow is queued
+            -- for tomorrow.
+            CREATE TABLE IF NOT EXISTS deferred_events (
+                event_id          INTEGER PRIMARY KEY,
+                defer_until       TEXT NOT NULL,         -- ISO date (YYYY-MM-DD)
+                defer_count       INTEGER NOT NULL DEFAULT 0,
+                created_at        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                last_deferred_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (event_id) REFERENCES events(id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_deferred_until ON deferred_events(defer_until);
         """)
 
         # Column migrations for existing DBs (ALTER TABLE ADD COLUMN is a no-op
@@ -796,3 +812,49 @@ def get_last_historical_news_run(db_path: Path,
             (politician_id,),
         ).fetchone()
     return dict(row) if row else None
+
+
+# ── Deferred events (multi-day overflow queue) ────────────────────────────────
+
+def list_deferred_events(db_path: Path) -> Dict[int, Dict]:
+    """
+    Return {event_id: {defer_until, defer_count, created_at, last_deferred_at}}
+    for every queued event. Used by the podcast generator to know which events
+    must be force-included today and which fresh ones must be held back.
+    """
+    with get_connection(db_path) as conn:
+        rows = conn.execute("SELECT * FROM deferred_events").fetchall()
+    return {r["event_id"]: dict(r) for r in rows}
+
+
+def defer_events(db_path: Path, event_ids: List[int], defer_until: str) -> None:
+    """
+    Queue events for a later podcast date. New rows start at defer_count=1;
+    re-deferring an existing row increments defer_count and pushes defer_until.
+    """
+    if not event_ids:
+        return
+    with get_connection(db_path) as conn:
+        for eid in event_ids:
+            conn.execute(
+                """INSERT INTO deferred_events
+                     (event_id, defer_until, defer_count,
+                      created_at, last_deferred_at)
+                   VALUES (?, ?, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+                   ON CONFLICT(event_id) DO UPDATE SET
+                     defer_until      = excluded.defer_until,
+                     defer_count      = defer_count + 1,
+                     last_deferred_at = CURRENT_TIMESTAMP""",
+                (eid, defer_until),
+            )
+
+
+def clear_deferred_events(db_path: Path, event_ids: List[int]) -> None:
+    """Remove rows whose events were consumed by today's podcast."""
+    if not event_ids:
+        return
+    with get_connection(db_path) as conn:
+        conn.executemany(
+            "DELETE FROM deferred_events WHERE event_id = ?",
+            [(eid,) for eid in event_ids],
+        )
