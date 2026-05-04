@@ -36,7 +36,7 @@ _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "th
 
 MIN_EVENTS = 3        # below this, we record verdict=insufficient and skip Claude
 MAX_EVENTS = 60       # cap context size — most-recent first
-DEFAULT_MODEL = "claude-haiku-4-5-20251001"
+DEFAULT_MODEL = "claude-sonnet-4-6"   # judgment work — distinguishing real position shifts from rhetorical drift
 
 ANALYST_SYSTEM = f"""You are a Data Analyst working for a daily local-politics
 podcast aimed at a first-time voter in {_LOCALE}. Your job is to assess how
@@ -101,8 +101,40 @@ def analyze_all(db_path: Path, anthropic_key: str,
                 model: str = DEFAULT_MODEL) -> List[Dict]:
     """
     Score every politician with at least `min_events` linked events.
-    Returns a list of saved score rows.
+
+    When `Config.USE_COWORK_FOR_AI` is True (default), this queues ONE Cowork
+    brief listing every politician id that needs a score, and returns []. The
+    Cowork agent inserts the rows into `consistency_scores` overnight. The
+    deep-dive and dossier paths read those rows on the next run.
+
+    When False, falls back to the per-politician Anthropic API path.
     """
+    try:
+        from config import Config as _Cfg2
+        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
+    except Exception:
+        cowork_mode = False
+
+    if cowork_mode:
+        from datetime import date
+        from scanner.cowork_bridge import build_consistency_brief, write_brief
+        from scanner.database import list_politicians
+        pols = list_politicians(db_path, level=level, min_events=1)
+        ids = [int(p["id"]) for p in pols if p.get("id")]
+        if not ids:
+            log.info("analyst: no politicians to score (Cowork mode)")
+            return []
+        brief = build_consistency_brief(
+            target_date=date.today().isoformat(),
+            db_path=db_path,
+            politician_ids=ids,
+            locale=_LOCALE,
+        )
+        write_brief(brief)
+        log.info("analyst: queued score_consistency brief for %d politician(s) "
+                 "— Cowork inserts rows overnight.", len(ids))
+        return []
+
     if not anthropic_key:
         log.warning("Analyst: no anthropic_key, skipping")
         return []

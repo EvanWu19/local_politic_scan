@@ -93,12 +93,32 @@ def generate_weekly_themes(
     anthropic_key: str,
     window_end: Optional[date] = None,
     window_days: int = DEFAULT_WINDOW_DAYS,
-    model: str = "claude-haiku-4-5-20251001",
+    model: str = "claude-sonnet-4-6",   # PM enforces listener feedback — needs reasoning headroom over Haiku
 ) -> Optional[Dict]:
     """
     Roll up daily_notes in [window_end - window_days + 1 .. window_end].
     Returns the saved rollup dict, or None if not enough notes / no key.
     """
+    # ── Cowork mode: queue a brief, return None ────────────────────────────
+    try:
+        from config import Config as _Cfg2
+        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
+    except Exception:
+        cowork_mode = False
+
+    if cowork_mode:
+        from scanner.cowork_bridge import build_themes_brief, write_brief
+        window_end = window_end or date.today()
+        brief = build_themes_brief(
+            target_date=window_end.isoformat(),
+            db_path=db_path,
+            window_days=window_days,
+            locale=_LOCALE,
+        )
+        write_brief(brief)
+        log.info("pm: queued weekly_themes brief — Cowork upserts row overnight.")
+        return None
+
     if not anthropic_key:
         log.warning("PM agent: no anthropic_key, skipping")
         return None

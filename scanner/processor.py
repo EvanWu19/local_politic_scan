@@ -10,6 +10,7 @@ Uses prompt caching for the system prompt to save tokens on daily runs.
 """
 import json
 import logging
+import os
 import re
 from typing import List, Dict, Tuple
 
@@ -56,9 +57,83 @@ def process_batch(api_key: str, events: List[Dict],
                   batch_size: int = 8) -> List[Dict]:
     """
     Enrich a list of raw events with AI-generated fields.
-    Processes in batches to stay within token limits.
-    Returns enriched events (modifies in-place and returns them).
+
+    When `Config.USE_COWORK_FOR_AI` is True (default), this does NOT hit the
+    Anthropic API. It queues ONE Cowork brief listing every event id that
+    needs enrichment; the Cowork agent (Opus 4.7) drains the inbox at night
+    and writes summaries / relevance scores / categories / politicians
+    directly back into the SQLite rows. Returns the events unchanged with
+    a `_pending_cowork: True` marker.
+
+    When False, falls back to the in-process Anthropic batch path.
     """
+    try:
+        from config import Config as _Cfg2
+        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
+    except Exception:
+        cowork_mode = False
+
+    if cowork_mode:
+        from datetime import date
+        from pathlib import Path
+        from scanner.cowork_bridge import build_enrich_events_brief, write_brief
+
+        # ── Candidate-news filter ───────────────────────────────────────────
+        # While the 2026-primary series is running and the candidate list
+        # isn't finalized, ONLY enrich events whose text mentions a
+        # candidate the listener can vote on. Untagged news is skipped
+        # (cheaper Cowork drain, no off-topic noise in the dossiers).
+        # Switched off by setting RESTRICT_TO_REGISTRANTS=0 in env.
+        try:
+            registry_path = Path(__file__).resolve().parent.parent / "data" / "candidate_series.json"
+            if registry_path.exists() and os.getenv("RESTRICT_TO_REGISTRANTS", "1") not in ("0", "false", "False", ""):
+                from scanner.series import all_candidate_names
+                names = [n for n in all_candidate_names() if n]
+                if names:
+                    name_lc = [n.lower() for n in names]
+                    before = len(events)
+                    kept = []
+                    for ev in events:
+                        text = " ".join(str(ev.get(k, "")) for k in
+                                        ("title", "description", "raw_content", "summary")).lower()
+                        for nlc in name_lc:
+                            if nlc in text:
+                                ev["_matched_candidate"] = next(
+                                    n for n in names if n.lower() == nlc)
+                                kept.append(ev)
+                                break
+                    log.info("processor: candidate-news filter kept %d/%d events "
+                             "(matching %d registered candidates)",
+                             len(kept), before, len(names))
+                    events = kept
+        except Exception as e:
+            log.warning("processor: candidate filter failed (proceeding unfiltered): %s", e)
+
+        event_ids = [int(e["id"]) for e in events if e.get("id")]
+        if not event_ids:
+            log.info("processor: no DB-backed events to queue (Cowork mode)")
+            return events
+
+        try:
+            districts = _Cfg2.districts_profile()
+        except Exception:
+            districts = ""
+
+        brief = build_enrich_events_brief(
+            target_date=date.today().isoformat(),
+            db_path=Path(getattr(_Cfg2, "DB_PATH", "data/politics.db")),
+            event_ids=event_ids,
+            locale=_LOCALE,
+            federal_keywords=list(getattr(_Cfg2, "FEDERAL_KEYWORDS", [])),
+            districts_profile=districts,
+        )
+        write_brief(brief)
+        log.info("processor: queued enrich_events brief for %d event(s) "
+                 "— Cowork drains overnight.", len(event_ids))
+        for e in events:
+            e.setdefault("_pending_cowork", True)
+        return events
+
     if not api_key:
         log.warning("No ANTHROPIC_API_KEY — skipping AI enrichment")
         return events

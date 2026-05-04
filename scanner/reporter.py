@@ -120,8 +120,14 @@ _CHAT_SIDEBAR = """
 # Plain string so JS braces need no escaping. DATE_ISO replaced at render time.
 _PODCAST_PLAYER_JS = """
 <div id="pod-section" style="margin-bottom:24px;display:none">
-  <h2 style="font-size:1.1rem;color:#1a3a5c;border-bottom:2px solid #1a3a5c;
-             padding-bottom:6px;margin-bottom:12px;">🎧 Today's Episodes</h2>
+  <div style="display:flex;align-items:center;justify-content:space-between;
+              border-bottom:2px solid #1a3a5c;padding-bottom:6px;margin-bottom:12px;">
+    <h2 style="font-size:1.1rem;color:#1a3a5c;margin:0;">🎧 Today's Episodes</h2>
+    <label style="font-size:.8rem;color:#1a3a5c;display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;">
+      <input type="checkbox" id="pod-autoplay-toggle" style="cursor:pointer;">
+      Auto-play next
+    </label>
+  </div>
   <div id="pod-list" style="display:grid;gap:10px;"></div>
   <p id="pod-none" style="display:none;font-size:.85rem;color:#888;padding:8px 0;">
     No podcast generated yet — run <code>python main.py podcast</code>
@@ -134,43 +140,88 @@ _PODCAST_PLAYER_JS = """
   var podSection = document.getElementById('pod-section');
   var podList    = document.getElementById('pod-list');
   var podNone    = document.getElementById('pod-none');
-  var found = 0;
-  var checks = [];
+  var toggle     = document.getElementById('pod-autoplay-toggle');
 
-  for (var i = 1; i <= 4; i++) {
-    (function(epNum) {
-      var url = BASE + '/podcast/podcast_' + DATE + '_ep' + epNum + '.mp3';
-      checks.push(
-        fetch(url, {method: 'HEAD'})
-          .then(function(r) {
-            if (!r.ok) return;
-            found++;
-            var card = document.createElement('div');
-            card.style.cssText = 'background:white;border-radius:8px;padding:14px;box-shadow:0 1px 3px rgba(0,0,0,.07)';
-            card.innerHTML =
-              '<div style="font-weight:600;color:#1a3a5c;font-size:.9rem;margin-bottom:8px" id="ep-lbl-' + epNum + '">Episode ' + epNum + '</div>' +
-              '<audio controls preload="none" style="width:100%"><source src="' + url + '" type="audio/mpeg"></audio>';
-            podList.appendChild(card);
-          })
-          .catch(function() {})
-      );
-    })(i);
+  var AUTOPLAY_KEY = 'podAutoplayNext';
+  var stored = null;
+  try { stored = localStorage.getItem(AUTOPLAY_KEY); } catch (e) {}
+  toggle.checked = (stored === null) ? true : (stored === '1');
+  toggle.addEventListener('change', function() {
+    try { localStorage.setItem(AUTOPLAY_KEY, toggle.checked ? '1' : '0'); } catch (e) {}
+  });
+
+  // entries[i] = {item, card, audio}; populated from server discovery.
+  var entries = [];
+
+  function setActive(idx) {
+    entries.forEach(function(e, i) {
+      var on = (i === idx);
+      e.card.style.borderLeftColor = on ? '#1a3a5c' : 'transparent';
+      e.card.style.background      = on ? '#f4f8fc' : 'white';
+    });
+  }
+  function clearActive(idx) {
+    var e = entries[idx]; if (!e) return;
+    e.card.style.borderLeftColor = 'transparent';
+    e.card.style.background = 'white';
   }
 
-  Promise.all(checks).then(function() {
-    podSection.style.display = '';
-    if (found === 0) { podNone.style.display = ''; return; }
-    // Load episode titles from index JSON if available
-    fetch(BASE + '/podcast/' + DATE + '-index.json')
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        (data.episodes || []).forEach(function(ep) {
-          var el = document.getElementById('ep-lbl-' + ep.num);
-          if (el && ep.title) el.textContent = 'Episode ' + ep.num + ': ' + ep.title;
+  function fmtMB(bytes) {
+    if (!bytes || bytes < 0) return '';
+    return ' · ' + (bytes / 1048576).toFixed(1) + ' MB';
+  }
+
+  function buildCard(item) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:white;border-radius:8px;padding:14px;' +
+                          'box-shadow:0 1px 3px rgba(0,0,0,.07);' +
+                          'border-left:4px solid transparent;transition:all .2s;';
+    var label = item.display_title || item.title || 'Episode';
+    card.innerHTML =
+      '<div style="font-weight:600;color:#1a3a5c;font-size:.9rem;margin-bottom:8px">' +
+        label.replace(/&/g,'&amp;').replace(/</g,'&lt;') +
+        '<span style="font-weight:400;color:#888;font-size:.75rem">' + fmtMB(item.size) + '</span>' +
+      '</div>' +
+      '<audio controls preload="none" style="width:100%">' +
+        '<source src="' + BASE + item.url + '" type="audio/mpeg"></audio>';
+    return card;
+  }
+
+  fetch(BASE + '/api/podcast-files/' + DATE)
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var items = (data && data.items) || [];
+      podSection.style.display = '';
+      if (items.length === 0) { podNone.style.display = ''; return; }
+
+      items.forEach(function(item) {
+        var card = buildCard(item);
+        var audio = card.querySelector('audio');
+        podList.appendChild(card);
+        entries.push({item: item, card: card, audio: audio});
+      });
+
+      entries.forEach(function(e, idx) {
+        e.audio.addEventListener('play',  function() { setActive(idx); });
+        e.audio.addEventListener('pause', function() {
+          if (!e.audio.ended) clearActive(idx);
         });
-      })
-      .catch(function() {});
-  });
+        e.audio.addEventListener('ended', function() {
+          if (!toggle.checked) { clearActive(idx); return; }
+          var next = entries[idx + 1];
+          if (!next) { clearActive(idx); return; }
+          next.card.scrollIntoView({behavior: 'smooth', block: 'center'});
+          var p = next.audio.play();
+          if (p && typeof p.catch === 'function') {
+            p.catch(function() { setActive(idx + 1); });
+          }
+        });
+      });
+    })
+    .catch(function() {
+      podSection.style.display = '';
+      podNone.style.display = '';
+    });
 })();
 </script>
 """
