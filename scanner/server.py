@@ -21,6 +21,7 @@ import logging
 import os
 import re
 import socket
+import time
 from datetime import date
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -368,7 +369,7 @@ class Handler(BaseHTTPRequestHandler):
     knowledge_dir: Path = Path("knowledge")
     db_path: Path = Path("data/politics.db")
     anthropic_key: str = ""
-    chat_model: str = "claude-sonnet-4-5-20250929"
+    chat_model: str = "claude-sonnet-4-6"
 
     def log_message(self, fmt, *args):
         log.info("%s - %s", self.address_string(), fmt % args)
@@ -390,6 +391,8 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/podcast/") and path.endswith("-index.json"):
                 date_s = path[len("/podcast/"):-len("-index.json")]
                 return self._serve_podcast_index(date_s)
+            if path.startswith("/api/podcast-files/"):
+                return self._serve_podcast_files(path[len("/api/podcast-files/"):])
             if path == "/podcasts":
                 return self._serve_podcast_list()
             if path == "/chat":
@@ -446,6 +449,9 @@ class Handler(BaseHTTPRequestHandler):
                 if not fpath.exists():
                     return self._head(404)
                 return self._head(200, "application/json", fpath.stat().st_size)
+            if path.startswith("/api/podcast-files/"):
+                # Endpoint always responds 200 with a (possibly empty) list.
+                return self._head(200, "application/json")
             if path.startswith("/report/") and path.endswith(".html"):
                 stem = path[len("/report/"):-len(".html")]
                 fpath = self.reports_dir / f"digest_{stem}.html"
@@ -567,6 +573,96 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, "application/json", b"{}")
         self._send(200, "application/json; charset=utf-8", p.read_bytes())
 
+    def _serve_podcast_files(self, date_str: str):
+        """List every MP3 we have for a date, with display metadata.
+
+        Player JS calls this to discover which audio files exist — including
+        legacy `_epN`, `_series_<slug>_epN`, and `_deepdive_<slug>` variants —
+        without having to hardcode filenames in the browser.
+        """
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
+            return self._send_404()
+
+        # Patterns we know how to label, in display order.
+        prefix = f"podcast_{date_str}_"
+        SERIES_EP_TITLES = {1: "Origins", 2: "Career", 3: "Political Record", 4: "This Race"}
+        LEGACY_EP_TITLES = {1: "Episode 1", 2: "Episode 2", 3: "Episode 3", 4: "Episode 4"}
+
+        # Pull series-registry candidate names so slugs become real names.
+        slug_to_name: dict = {}
+        try:
+            from scanner.series import load_registry, _slug
+            reg = load_registry()
+            for c in reg.get("candidates", []):
+                nm = c.get("name") or ""
+                if nm:
+                    slug_to_name[_slug(nm)] = nm
+        except Exception:
+            pass
+
+        items = []
+        if self.podcasts_dir.exists():
+            for mp3 in sorted(self.podcasts_dir.glob(f"{prefix}*.mp3")):
+                stem = mp3.stem            # podcast_<date>_<rest>
+                rest = stem[len(prefix):]  # e.g. "ep1", "series_dawn-luedtke_ep2", "deepdive_friedson"
+                size = mp3.stat().st_size
+                url  = f"/podcast/{stem}.mp3"
+
+                m = re.fullmatch(r"series_(.+)_ep(\d+)", rest)
+                if m:
+                    slug, n = m.group(1), int(m.group(2))
+                    cand = slug_to_name.get(slug) or slug.replace("-", " ").title()
+                    title = SERIES_EP_TITLES.get(n, f"Part {n}")
+                    items.append({
+                        "kind": "series", "candidate": cand, "candidate_slug": slug,
+                        "ep_num": n, "title": title,
+                        "display_title": f"{cand} — {title}",
+                        "url": url, "size": size,
+                    })
+                    continue
+
+                m = re.fullmatch(r"ep(\d+)", rest)
+                if m:
+                    n = int(m.group(1))
+                    items.append({
+                        "kind": "ep", "ep_num": n,
+                        "title": LEGACY_EP_TITLES.get(n, f"Episode {n}"),
+                        "display_title": f"Episode {n}",
+                        "url": url, "size": size,
+                    })
+                    continue
+
+                m = re.fullmatch(r"deepdive_(.+)", rest)
+                if m:
+                    slug = m.group(1)
+                    cand = slug_to_name.get(slug) or slug.replace("-", " ").title()
+                    items.append({
+                        "kind": "deepdive", "candidate": cand, "candidate_slug": slug,
+                        "title": "Deep Dive",
+                        "display_title": f"{cand} — Deep Dive",
+                        "url": url, "size": size,
+                    })
+                    continue
+
+                # Unknown shape — still show it so the user can play it.
+                items.append({
+                    "kind": "other", "title": rest,
+                    "display_title": rest, "url": url, "size": size,
+                })
+
+        # Stable display ordering: series grouped by candidate (ep1..ep4 within),
+        # then legacy ep1..ep4, then deepdives, then unknowns.
+        kind_rank = {"series": 0, "ep": 1, "deepdive": 2, "other": 3}
+        items.sort(key=lambda it: (
+            kind_rank.get(it["kind"], 9),
+            it.get("candidate_slug", ""),
+            it.get("ep_num", 0),
+            it.get("title", ""),
+        ))
+
+        body = json.dumps({"date": date_str, "items": items}, ensure_ascii=False).encode()
+        self._send(200, "application/json; charset=utf-8", body)
+
     def _handle_digest_chat(self, body: bytes):
         """
         POST /chat  — sidebar Q&A tied to a specific day's digest.
@@ -595,6 +691,41 @@ class Handler(BaseHTTPRequestHandler):
             md_path = self.reports_dir / f"digest_{today}.md"
             if md_path.exists():
                 context = md_path.read_text(encoding="utf-8")
+
+        # Cowork mode: queue a chat brief, return a placeholder.
+        try:
+            from config import Config as _Cfg2
+            cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
+        except Exception:
+            cowork_mode = False
+
+        if cowork_mode:
+            try:
+                from scanner.cowork_bridge import build_chat_brief, write_brief
+                brief = build_chat_brief(
+                    db_path=self.db_path,
+                    conversation_id=0,        # ad-hoc digest chat — no conv id
+                    message_id=int(time.time() * 1000) % 2_000_000_000,
+                    question=question,
+                    digest_excerpt=(context or "")[:8000],
+                    locale=_LOCALE,
+                )
+                write_brief(brief)
+                placeholder = (
+                    "Your question is queued for the Cowork research run. "
+                    "Answers land in the next 24–48 hours. Refresh this page "
+                    "tomorrow morning."
+                )
+                self._send(200, "application/json; charset=utf-8",
+                            json.dumps({"answer": placeholder,
+                                        "queued_for_cowork": True},
+                                       ensure_ascii=False).encode())
+                return
+            except Exception as e:
+                log.exception("digest_chat cowork queue failed: %s", e)
+                self._send(500, "application/json",
+                            json.dumps({"error": f"queue failed: {e}"}).encode())
+                return
 
         import anthropic as _anthropic
         client = _anthropic.Anthropic(api_key=self.anthropic_key)
@@ -778,7 +909,7 @@ class Handler(BaseHTTPRequestHandler):
 def run_server(reports_dir: Path, db_path: Path,
                podcasts_dir: Path = None, knowledge_dir: Path = None,
                anthropic_key: str = "",
-               chat_model: str = "claude-sonnet-4-5-20250929",
+               chat_model: str = "claude-sonnet-4-6",
                host: str = "0.0.0.0", port: int = 8080):
     Handler.reports_dir = reports_dir
     Handler.podcasts_dir = podcasts_dir or (reports_dir.parent / "podcasts")

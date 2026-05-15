@@ -86,7 +86,7 @@ EXTRACT_SYSTEM = (
 def handle_message(db_path: Path, knowledge_dir: Path,
                    anthropic_key: str, user_message: str,
                    conversation_id: Optional[int] = None,
-                   chat_model: str = "claude-sonnet-4-5-20250929",
+                   chat_model: str = "claude-sonnet-4-6",
                    context_days: int = 3,
                    max_context_events: int = 30) -> Dict:
     """
@@ -98,7 +98,14 @@ def handle_message(db_path: Path, knowledge_dir: Path,
         update_conversation_title, get_recent_events,
     )
 
-    client = anthropic.Anthropic(api_key=anthropic_key)
+    # ── Cowork mode short-circuit ────────────────────────────────────────────
+    try:
+        from config import Config as _Cfg2
+        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
+    except Exception:
+        cowork_mode = False
+
+    client = None if cowork_mode else anthropic.Anthropic(api_key=anthropic_key)
 
     # ── 1. Ensure conversation exists ────────────────────────────────────────
     if conversation_id is None:
@@ -115,7 +122,38 @@ def handle_message(db_path: Path, knowledge_dir: Path,
     context_text = _format_events_for_context(events)
 
     # ── 3. Append user message ───────────────────────────────────────────────
-    add_message(db_path, conversation_id, "user", user_message)
+    user_msg_id = add_message(db_path, conversation_id, "user", user_message)
+
+    # ── Cowork mode: queue brief, save a placeholder reply, return ──────────
+    if cowork_mode:
+        from scanner.cowork_bridge import build_chat_brief, write_brief
+        # Insert the assistant placeholder row first so we have an id to
+        # update later; Cowork will overwrite content + status.
+        placeholder = (
+            "Your question is queued for the Cowork research run. "
+            "It will be answered by tomorrow morning's sync (typical "
+            "lag: 24–48 hrs). The answer will appear here automatically."
+        )
+        asst_msg_id = add_message(db_path, conversation_id, "assistant", placeholder)
+        try:
+            brief = build_chat_brief(
+                db_path=db_path,
+                conversation_id=conversation_id,
+                message_id=asst_msg_id,
+                question=user_message,
+                digest_excerpt=context_text,
+                locale=_LOCALE if "_LOCALE" in globals() else "your area",
+            )
+            write_brief(brief)
+            log.info("chat: queued chat_question brief (msg %d).", asst_msg_id)
+        except Exception as e:
+            log.exception("chat: failed to queue Cowork brief: %s", e)
+        return {
+            "conversation_id": conversation_id,
+            "reply": placeholder,
+            "note_saved": False,
+            "queued_for_cowork": True,
+        }
 
     # ── 4. Build message history for Claude ──────────────────────────────────
     history = [

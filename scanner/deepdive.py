@@ -76,10 +76,29 @@ def generate_deep_dive(db_path: Path, podcasts_dir: Path, anthropic_key: str,
                  pol["name"])
         return None
 
-    claude = anthropic.Anthropic(api_key=anthropic_key)
     date_str = target_date.strftime("%Y-%m-%d")
     ep_slug = f"deepdive_{_slugify(pol['name'])}"
     ep_title = f"Deep Dive: {pol['name']}"
+
+    # ── Cowork hand-off path ─────────────────────────────────────────────────
+    # When USE_COWORK_FOR_OPUS is on, we don't burn an Anthropic API call —
+    # we queue a brief for the Cowork agent (Opus 4.7) and let it produce
+    # the script overnight. If a Cowork-produced script is already present
+    # for today, we use it directly (and run TTS). Otherwise we queue for
+    # tomorrow and signal `status: queued` so cmd_publish can skip TTS.
+    if getattr(_Cfg, "USE_COWORK_FOR_OPUS", False):
+        result = _handle_via_cowork(
+            db_path=db_path, podcasts_dir=podcasts_dir,
+            pol=pol, events=events, score=score,
+            date_str=date_str, ep_slug=ep_slug, ep_title=ep_title,
+            target_date=target_date,
+            openai_key=openai_key, tts_model=tts_model, no_audio=no_audio,
+        )
+        if result is not None:
+            return result
+        # Fall through to in-process Sonnet path only if explicitly disabled.
+
+    claude = anthropic.Anthropic(api_key=anthropic_key)
 
     # Draft #1 — whole script in one Claude call (single focus, manageable
     # size; we don't need intro/segment/outro split for a one-topic show).
@@ -353,3 +372,155 @@ _SLUG_RE = re.compile(r"[^a-z0-9]+")
 
 def _slugify(name: str) -> str:
     return _SLUG_RE.sub("_", (name or "").lower()).strip("_") or "candidate"
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Cowork hand-off path
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _handle_via_cowork(
+    *, db_path: Path, podcasts_dir: Path,
+    pol: Dict, events: List[Dict], score: Optional[Dict],
+    date_str: str, ep_slug: str, ep_title: str,
+    target_date: date,
+    openai_key: str, tts_model: str, no_audio: bool,
+) -> Optional[Dict]:
+    """
+    If the Cowork agent has already produced today's deep-dive script, use it
+    (run TTS, return a normal result dict). Otherwise queue a brief for the
+    next Cowork run and return a `status=queued` placeholder so cmd_publish
+    knows there's nothing to publish today.
+    """
+    from scanner.cowork_bridge import build_deep_dive_brief, write_brief
+    import sqlite3
+
+    script_path = podcasts_dir / f"podcast_{date_str}_{ep_slug}.txt"
+
+    # Already produced by Cowork? Use it.
+    if script_path.exists() and script_path.stat().st_size > 500:
+        full_script = script_path.read_text(encoding="utf-8")
+        word_count = len(full_script.split())
+        log.info("Deep dive: using Cowork-produced script %s (%d words)",
+                 script_path.name, word_count)
+
+        audio_path = ""
+        duration = 0
+        if not no_audio and openai_key:
+            import openai
+            from scanner.podcast import _synthesize_dialogue
+            audio_path_p = podcasts_dir / f"podcast_{date_str}_{ep_slug}.mp3"
+            openai_client = openai.OpenAI(api_key=openai_key)
+            duration = _synthesize_dialogue(
+                openai_client, full_script, audio_path_p, tts_model,
+            )
+            audio_path = str(audio_path_p)
+
+        return {
+            "episode_num": 0,
+            "episode_title": ep_title,
+            "episode_slug": ep_slug,
+            "candidate": pol["name"],
+            "script": full_script,
+            "script_path": str(script_path),
+            "draft_path": "",
+            "editor_notes": "Authored by Cowork (Opus 4.7).",
+            "editor_changed": False,
+            "audio_path": audio_path,
+            "duration_seconds": duration,
+            "word_count": word_count,
+            "status": "done" if audio_path else "script_only",
+            "authored_by": "cowork",
+        }
+
+    # Otherwise: queue a brief for the next Cowork run.
+    avoid_list = _load_recent_avoid_list(db_path)
+    listener_notes = _load_recent_listener_notes(db_path, target_date)
+    dossier_path = _Cfg.CANDIDATE_DOSSIER_DIR / f"{_slugify(pol['name'])}.md"
+    dossier_path = dossier_path if dossier_path.exists() else None
+
+    brief = build_deep_dive_brief(
+        candidate_name=pol["name"],
+        target_date=date_str,
+        politician_row={
+            "id": pol["id"],
+            "name": pol["name"],
+            "office": pol.get("office", ""),
+            "party": pol.get("party", ""),
+            "district": pol.get("district", ""),
+            "level": pol.get("level", ""),
+            "bio": (pol.get("bio") or "")[:1500],
+        },
+        events=events,
+        consistency=score,
+        listener_notes=listener_notes,
+        avoid_list=avoid_list,
+        dossier_path=dossier_path,
+        output_file=script_path,
+    )
+    write_brief(brief)
+    log.info("Deep dive: queued Cowork brief for %s — script will land at %s",
+             pol["name"], script_path)
+
+    return {
+        "episode_num": 0,
+        "episode_title": ep_title,
+        "episode_slug": ep_slug,
+        "candidate": pol["name"],
+        "script": "",
+        "script_path": str(script_path),
+        "draft_path": "",
+        "editor_notes": "Queued for Cowork (Opus 4.7) — pick up next morning.",
+        "editor_changed": False,
+        "audio_path": "",
+        "duration_seconds": 0,
+        "word_count": 0,
+        "status": "queued",
+        "authored_by": "cowork-pending",
+    }
+
+
+def _load_recent_avoid_list(db_path: Path, limit_lines: int = 30) -> List[str]:
+    import sqlite3
+    con = sqlite3.connect(str(db_path))
+    con.row_factory = sqlite3.Row
+    try:
+        row = con.execute(
+            "select avoid_list from weekly_themes "
+            "order by week_end desc limit 1").fetchone()
+    finally:
+        con.close()
+    if not row or not row["avoid_list"]:
+        return []
+    raw = row["avoid_list"]
+    try:
+        data = json.loads(raw) if raw.strip().startswith("[") else None
+    except Exception:
+        data = None
+    if isinstance(data, list):
+        return [str(x) for x in data[:limit_lines]]
+    out: List[str] = []
+    for line in raw.splitlines():
+        line = line.strip("-• ").strip()
+        if line:
+            out.append(line)
+        if len(out) >= limit_lines:
+            break
+    return out
+
+
+def _load_recent_listener_notes(db_path: Path, target_date: date,
+                                  days: int = 10) -> List[Dict]:
+    import sqlite3
+    from datetime import timedelta
+    con = sqlite3.connect(str(db_path))
+    con.row_factory = sqlite3.Row
+    try:
+        start = (target_date - timedelta(days=days)).isoformat()
+        rows = list(con.execute(
+            "select report_date, content from daily_notes "
+            "where report_date >= ? and report_date < ? "
+            "order by report_date desc",
+            (start, target_date.isoformat())))
+    finally:
+        con.close()
+    return [{"date": r["report_date"], "note": r["content"]} for r in rows]

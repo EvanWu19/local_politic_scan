@@ -91,13 +91,30 @@ class Config:
     PODCAST_FILTER_INDIVIDUAL_INCIDENTS = True   # exclude crime/incident stories
     PODCAST_HOST_ALEX_VOICE = "onyx"      # OpenAI voices: alloy/echo/fable/onyx/nova/shimmer
     PODCAST_HOST_JORDAN_VOICE = "nova"
-    PODCAST_TTS_MODEL = "tts-1"           # tts-1 ($15/1M chars) or tts-1-hd ($30/1M chars)
-    PODCAST_SCRIPT_MODEL = "claude-sonnet-4-5-20250929"   # Claude model for dialogue writing
+    PODCAST_TTS_MODEL = "gpt-4o-mini-tts"   # upgraded from tts-1 — better naturalness, similar cost
+    PODCAST_SCRIPT_MODEL = "claude-sonnet-4-6"   # Author / Editor / deep-dive default
     PODCASTS_DIR = BASE_DIR / "podcasts"
+
+    # ── Cowork hand-off ────────────────────────────────────────────────────────
+    # When True, the Opus-grade work (candidate dossiers, single-candidate deep
+    # dives, editor rewrite escalations) is queued as a brief in cowork_inbox/
+    # for the user's Cowork desktop agent to handle, rather than calling the
+    # Anthropic API. The Cowork agent runs on Opus 4.7 (no separate billing)
+    # and has web search; both matter for these stages. Set to False to fall
+    # back to the original API path.
+    # USE_COWORK_FOR_AI replaces USE_COWORK_FOR_OPUS — when true, EVERY Anthropic
+    # API call site (processor enrichment, analyst, PM, editor, author, chat,
+    # dossier, deep-dive, editor rewrite) emits a Cowork brief instead. Only
+    # OpenAI TTS still talks to a paid API. Default: on.
+    USE_COWORK_FOR_AI: bool = os.getenv("USE_COWORK_FOR_AI", os.getenv("USE_COWORK_FOR_OPUS", "1")) not in ("0", "false", "False", "")
+    USE_COWORK_FOR_OPUS: bool = USE_COWORK_FOR_AI   # back-compat alias
+    COWORK_INBOX_DIR = BASE_DIR / "cowork_inbox"
+    COWORK_OUTBOX_DIR = BASE_DIR / "cowork_outbox"
+    CANDIDATE_DOSSIER_DIR = BASE_DIR / "data" / "candidate_dossiers"
 
     # ── Knowledge & chat ───────────────────────────────────────────────────────
     KNOWLEDGE_DIR = BASE_DIR / "knowledge"
-    CHAT_MODEL = "claude-sonnet-4-5-20250929"
+    CHAT_MODEL = "claude-sonnet-4-6"
 
     # ── Federal Filter: ONLY these topics ─────────────────────────────────────
     # Federal news is massive — only items matching one of these keywords are

@@ -191,7 +191,7 @@ def _apply_event_budget(db_path: Path, all_events: List[Dict],
 def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                                anthropic_key: str, openai_key: str,
                                target_date: Optional[date] = None,
-                               script_model: str = "claude-sonnet-4-5-20250929",
+                               script_model: str = "claude-sonnet-4-6",
                                tts_model: str = "tts-1",
                                alex_voice: str = "onyx",
                                jordan_voice: str = "nova",
@@ -227,8 +227,10 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         log.info("Incident filter: dropped %d individual-incident stories",
                  before - len(all_events))
 
-    claude = anthropic.Anthropic(api_key=anthropic_key)
-    openai_client = openai.OpenAI(api_key=openai_key) if not no_audio else None
+    # In Cowork mode the anthropic client is unused, but the SDK accepts an
+    # empty key fine — no network call until .messages.create().
+    claude = anthropic.Anthropic(api_key=anthropic_key or "unused-cowork-mode")
+    openai_client = openai.OpenAI(api_key=openai_key) if (not no_audio and openai_key) else None
     date_str = target_date.strftime("%Y-%m-%d")
 
     # ── 2. Get politician data for fill-in segments ───────────────────────────
@@ -304,6 +306,69 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
             log.info("  Themes block: empty (no rollup yet)")
 
         # ── Write draft #1 ────────────────────────────────────────────────────
+        # Cowork mode: queue an author_episode brief and skip the in-process
+        # API write. Returns a tiny placeholder; the morning TTS pass picks
+        # up whatever Cowork wrote overnight.
+        if getattr(_Cfg, "USE_COWORK_FOR_AI", False):
+            length_calibration = _compute_length_calibration(
+                podcasts_dir, target_date, ep_num=ep_num,
+            )
+            from scanner.cowork_bridge import (
+                build_author_episode_brief, write_brief,
+            )
+            listener_notes_payload = _load_listener_notes_payload(
+                db_path, target_date,
+            )
+            out_file = podcasts_dir / f"podcast_{date_str}_{ep_slug}.txt"
+            brief = build_author_episode_brief(
+                target_date=date_str,
+                ep_num=ep_num,
+                ep_title=ep_title,
+                segments=segments,
+                avoid_list=base_avoid_items,
+                listener_notes=listener_notes_payload,
+                ballot_block=ballot_block,
+                themes_block=themes_block,
+                locale=_LOCALE,
+                districts_profile=_Cfg.districts_profile() if hasattr(_Cfg, "districts_profile") else "",
+                output_file=out_file,
+                length_calibration=length_calibration,
+            )
+            write_brief(brief)
+            log.info("  Author: queued author_episode brief for ep%d "
+                     "(target %d words, recent avg %d) — Cowork drafts overnight.",
+                     ep_num,
+                     length_calibration.get("target_words", 0),
+                     length_calibration.get("recent_avg_words", 0))
+            # Write a tiny placeholder so the rest of the pipeline doesn't
+            # crash if it tries to TTS today's run before Cowork drained.
+            placeholder = (
+                f"ALEX: Today's episode {ep_num} ({ep_title}) is queued for "
+                "the Cowork research run. The full script will be ready by "
+                "tomorrow morning's TTS pass.\n"
+                "JORDAN: We'll come back to it then.\n"
+            )
+            (podcasts_dir / f"podcast_{date_str}_{ep_slug}.draft.txt").write_text(
+                placeholder, encoding="utf-8"
+            )
+            (podcasts_dir / f"podcast_{date_str}_{ep_slug}.txt").write_text(
+                placeholder, encoding="utf-8"
+            )
+            results.append({
+                "episode_num": ep_num,
+                "episode_title": ep_title,
+                "episode_slug": ep_slug,
+                "script": placeholder,
+                "status": "queued_cowork",
+                "script_path": str(out_file),
+                "audio_path": "",
+                "duration_seconds": 0,
+                "word_count": 0,
+                "editor_notes": "queued for Cowork",
+                "editor_changed": False,
+            })
+            continue   # skip the rest of the loop body
+
         draft_script = _build_full_script(
             claude=claude, model=script_model,
             target_date=target_date, ep_num=ep_num, ep_title=ep_title,
@@ -368,6 +433,41 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
                     model=script_model,
                 )
                 draft_script = draft_script_v2  # the rewrite becomes the baseline
+
+                # ── Escalate to Cowork (Opus 4.7) if Sonnet rewrite still fails ──
+                # Two consecutive Sonnet drafts failing the Editor is a model-
+                # ceiling problem, not a prompt problem. Queue a Cowork brief
+                # so the next morning's run lands a stronger rewrite.
+                if (review.get("verdict") == "order_rewrite"
+                        and getattr(_Cfg, "USE_COWORK_FOR_OPUS", False)):
+                    try:
+                        from scanner.cowork_bridge import (
+                            build_rewrite_brief, write_brief,
+                        )
+                        listener_notes_payload = _load_listener_notes_payload(
+                            db_path, target_date,
+                        )
+                        out_file = podcasts_dir / f"podcast_{date_str}_{ep_slug}.txt"
+                        brief = build_rewrite_brief(
+                            target_date=date_str,
+                            ep_num=ep_num,
+                            ep_title=ep_title,
+                            failed_draft=draft_script_v2,
+                            rewrite_reason=review.get("rewrite_reason")
+                                            or rewrite_reason
+                                            or review.get("notes", ""),
+                            avoid_list=extended_avoid,
+                            listener_notes=listener_notes_payload,
+                            output_file=out_file,
+                        )
+                        write_brief(brief)
+                        log.warning(
+                            "  Editor still ordered rewrite — escalated to Cowork. "
+                            "Tomorrow's run will pick up Opus-rewritten script at %s",
+                            out_file,
+                        )
+                    except Exception as e:
+                        log.error("  Failed to queue Cowork rewrite: %s", e)
 
             full_script = review["final_script"]
             editor_notes = review["notes"]
@@ -472,7 +572,7 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
 def generate_podcast(db_path: Path, podcasts_dir: Path,
                      anthropic_key: str, openai_key: str,
                      target_date: Optional[date] = None,
-                     script_model: str = "claude-sonnet-4-5-20250929",
+                     script_model: str = "claude-sonnet-4-6",
                      tts_model: str = "tts-1",
                      top_n: int = 8,
                      alex_voice: str = "onyx",
@@ -1022,7 +1122,7 @@ _TTS_MAX_CHARS = 4000
 
 
 def _synthesize_dialogue(client: openai.OpenAI, script: str,
-                          out_path: Path, model: str = "tts-1") -> int:
+                          out_path: Path, model: str = "gpt-4o-mini-tts") -> int:
     """
     Synthesize the full dialogue → single MP3 at `out_path`.
     Returns approximate duration in seconds.
@@ -1112,3 +1212,161 @@ def _chunk_dialogue_for_tts(script: str) -> List[Tuple[str, str]]:
         if buf:
             final.append((speaker, buf.strip()))
     return final
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Cowork rewrite escalation helper (used by the Editor-rewrite path above)
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _load_listener_notes_payload(db_path: Path, target_date,
+                                  days: int = 10) -> List[Dict]:
+    """
+    Pull the listener's daily_notes from the days BEFORE target_date.
+
+    Used when escalating an Editor-rejected episode to Cowork: the Opus-side
+    rewrite needs to see what the listener has actually been asking for, in
+    their own words, not the PM's paraphrase of it.
+    """
+    import sqlite3
+    from datetime import timedelta
+
+    con = sqlite3.connect(str(db_path))
+    con.row_factory = sqlite3.Row
+    try:
+        start = (target_date - timedelta(days=days)).isoformat()
+        rows = list(con.execute(
+            "select report_date, content from daily_notes "
+            "where report_date >= ? and report_date < ? "
+            "order by report_date desc",
+            (start, target_date.isoformat())))
+    finally:
+        con.close()
+    return [{"date": r["report_date"], "note": r["content"]} for r in rows]
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Episode-length calibration — compares last N days of script word counts
+# against the 30-min target and tells the Author how much to pad/trim.
+# Wired into the author_episode brief so the next day's draft self-corrects.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# 30 min × ~130 words-per-minute = ~3900 words per episode (range 3500–4500)
+_TARGET_WORDS_PER_EP = 3900
+_TARGET_WPM = 130
+_CAL_WINDOW_DAYS = 5
+
+
+def _compute_length_calibration(podcasts_dir, target_date, *,
+                                  ep_num: int = None,
+                                  window_days: int = _CAL_WINDOW_DAYS,
+                                  target_words: int = _TARGET_WORDS_PER_EP) -> Dict:
+    """
+    Walk back `window_days` days from `target_date - 1` and read the actual
+    word counts of shipped scripts. Returns a calibration dict the author
+    brief uses to nudge the next draft toward the target.
+
+    Strategy: prefer `*_ep<n>.editor.json` `final_words` field; fall back to
+    counting words in the `.txt` file when no editor.json exists (Cowork-
+    authored episodes don't run the in-process Editor pass, so they never
+    write editor.json — we still want to learn from them).
+
+    Returns a dict like:
+        {
+            "target_words":     3900,
+            "target_minutes":   30,
+            "recent_avg_words": 1900,
+            "recent_min":       1628,
+            "recent_max":       2280,
+            "trend":            [...word counts in recent order...],
+            "gap_words":        2000,            # +N → pad; -N → trim
+            "calibration_note": "...natural-language nudge for the brief..."
+        }
+    """
+    samples: List[int] = []
+    d = target_date - timedelta(days=1)
+    for _ in range(window_days):
+        d_iso = d.strftime("%Y-%m-%d")
+        # Prefer editor.json for the matching ep_num; if not specified, take
+        # ep1..ep4 to compute a daily average.
+        ep_range = [ep_num] if ep_num else [1, 2, 3, 4]
+        for n in ep_range:
+            words = None
+            ed_path = podcasts_dir / f"podcast_{d_iso}_ep{n}.editor.json"
+            if ed_path.exists():
+                try:
+                    with open(ed_path, "r", encoding="utf-8") as f:
+                        ed = json.load(f)
+                    fw = ed.get("final_words")
+                    if isinstance(fw, int) and fw > 0:
+                        words = fw
+                except Exception:
+                    words = None
+            if words is None:
+                txt_path = podcasts_dir / f"podcast_{d_iso}_ep{n}.txt"
+                if txt_path.exists():
+                    try:
+                        with open(txt_path, "r", encoding="utf-8") as f:
+                            txt = f.read()
+                        # Count only spoken words (ALEX:/JORDAN: lines)
+                        spoken = []
+                        for line in txt.split("\n"):
+                            m = re.match(r"^(ALEX|JORDAN)\s*:\s*(.+)$",
+                                         line.strip(), re.IGNORECASE)
+                            if m:
+                                spoken.append(m.group(2))
+                        wc = sum(len(s.split()) for s in spoken)
+                        if wc > 0:
+                            words = wc
+                    except Exception:
+                        words = None
+            if words is not None:
+                samples.append(words)
+        d = d - timedelta(days=1)
+
+    if not samples:
+        return {
+            "target_words": target_words,
+            "target_minutes": target_words // _TARGET_WPM,
+            "recent_avg_words": 0,
+            "recent_min": 0,
+            "recent_max": 0,
+            "trend": [],
+            "gap_words": target_words,
+            "calibration_note": (
+                f"No prior scripts to calibrate against. Aim for "
+                f"~{target_words} words (~{target_words // _TARGET_WPM} min)."
+            ),
+        }
+
+    avg = sum(samples) // len(samples)
+    gap = target_words - avg
+    minutes = target_words // _TARGET_WPM
+    if gap > 400:
+        note = (
+            f"You have been running short by ~{gap} words "
+            f"(~{gap // _TARGET_WPM} min). Target is {target_words} words "
+            f"(~{minutes} min); recent avg is {avg}. EXTEND segments — "
+            f"deeper candidate-history reads, more JORDAN pushback, more "
+            f"specific votes/dates. Do NOT pad with filler."
+        )
+    elif gap < -400:
+        note = (
+            f"You have been running long by ~{-gap} words. Target is "
+            f"{target_words} words (~{minutes} min); recent avg is {avg}. "
+            f"Tighten segments — cut redundant framings and trim summaries."
+        )
+    else:
+        note = (
+            f"Length is on target. Recent avg {avg} vs target "
+            f"{target_words} (~{minutes} min). Hold the line."
+        )
+    return {
+        "target_words": target_words,
+        "target_minutes": minutes,
+        "recent_avg_words": avg,
+        "recent_min": min(samples),
+        "recent_max": max(samples),
+        "trend": samples,
+        "gap_words": gap,
+        "calibration_note": note,
+    }
