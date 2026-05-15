@@ -539,6 +539,7 @@ def cmd_podcast(args):
             no_audio=no_audio,
             filter_incidents=cfg.PODCAST_FILTER_INDIVIDUAL_INCIDENTS,
             skip_editor=getattr(args, "skip_editor", False),
+            no_defer=getattr(args, "no_defer", False),
         )
     except Exception as e:
         log.exception("Podcast generation failed")
@@ -905,6 +906,8 @@ def main():
                          help="Skip the Editor pass (draft straight to TTS)")
     publish.add_argument("--no-podcast", action="store_true",
                          help="Only generate the report, skip the podcast")
+    publish.add_argument("--no-defer", action="store_true",
+                         help="Disable multi-day overflow queue (process every event today)")
 
     scan = sub.add_parser("scan",
         help="(Legacy alias) Fetch then immediately publish in one shot — "
@@ -925,6 +928,8 @@ def main():
                      help="Write the script to .txt but skip OpenAI TTS (no audio cost)")
     pod.add_argument("--skip-editor", action="store_true",
                      help="Skip the Editor pass (go straight from draft to TTS)")
+    pod.add_argument("--no-defer", action="store_true",
+                     help="Disable multi-day overflow queue (process every event today)")
 
     rep = sub.add_parser("report", help="Generate report from existing DB data")
     rep.add_argument("--days", type=int, default=7, help="Days of history to include (default: 7)")
