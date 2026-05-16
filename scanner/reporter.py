@@ -2,8 +2,10 @@
 Report generator: produces a daily HTML + Markdown voter digest.
 Designed for someone new to elections — plain English, no jargon.
 """
+import html as _html
 import json
 import logging
+import re
 from datetime import date, datetime
 from pathlib import Path
 from typing import List, Dict, Optional
@@ -231,8 +233,8 @@ LEVEL_LABELS = {
     "federal": "🇺🇸 Federal (filtered topics)",
     "state": f"🏛️ {_STATE} State Legislature",
     "county": f"🏘️ {_COUNTY}",
-    "school": "🎓 School Board",
-    "local": "🚑 Local Services (Police / Fire / Health)",
+    "school": "🎓 MCPS Board & School Cluster",
+    "local": "📍 Near You — Rockville / 20853 Hearings",
 }
 
 TYPE_LABELS = {
@@ -285,6 +287,199 @@ def generate(events: List[Dict], politician_summaries: List[Dict],
 
 # ── HTML renderer ──────────────────────────────────────────────────────────────
 
+def _load_candidate_spotlight(report_date: date) -> Dict:
+    """Look up the registry entry scheduled for `report_date` and assemble
+    the data the spotlight panel needs (dossier excerpt + per-episode file
+    state). Returns {} when no candidate is scheduled or the registry is
+    missing — `_render_html` then renders no panel."""
+    try:
+        from scanner.series import candidate_for_date, _slug
+    except Exception:
+        return {}
+
+    cand = candidate_for_date(report_date)
+    if not cand:
+        return {}
+
+    # Dossier excerpt — first ~700 chars, paragraph-broken, plain-text
+    dossier_text = ""
+    dossier_path = cand.get("dossier_path")
+    if dossier_path:
+        p = Path(dossier_path)
+        if not p.is_absolute():
+            from config import BASE_DIR
+            p = BASE_DIR / p
+        if p.exists():
+            try:
+                raw = p.read_text(encoding="utf-8")
+                # Strip front-matter and YAML if present
+                if raw.startswith("---"):
+                    parts = raw.split("---", 2)
+                    if len(parts) >= 3:
+                        raw = parts[2].lstrip()
+                # Strip leading markdown headers so the excerpt starts with prose
+                lines = [ln for ln in raw.splitlines()
+                         if not ln.lstrip().startswith("#") or len(ln.strip()) > 80]
+                cleaned = "\n".join(lines).strip()
+                dossier_text = cleaned[:800]
+                if len(cleaned) > 800:
+                    # Trim to last sentence boundary inside the window
+                    cut = max(dossier_text.rfind(". "),
+                              dossier_text.rfind("? "),
+                              dossier_text.rfind("! "))
+                    if cut > 300:
+                        dossier_text = dossier_text[:cut + 1]
+                    dossier_text += " …"
+            except Exception as e:
+                log.warning("Spotlight: failed to read %s — %s", p, e)
+
+    # Per-episode on-disk state
+    podcasts_dir = _Cfg.PODCASTS_DIR
+    slug = _slug(cand.get("name", ""))
+    date_iso = report_date.isoformat()
+    EP_TITLES = {1: "Origins", 2: "Career", 3: "Political Record", 4: "This Race"}
+    episodes = []
+    for n in (1, 2, 3, 4):
+        stem = f"podcast_{date_iso}_series_{slug}_ep{n}"
+        mp3 = podcasts_dir / f"{stem}.mp3"
+        txt = podcasts_dir / f"{stem}.txt"
+        if mp3.exists() and mp3.stat().st_size > 1024:
+            state = "ready"
+        elif txt.exists() and txt.stat().st_size > 200:
+            state = "drafted"
+        else:
+            state = "pending"
+        episodes.append({
+            "num": n,
+            "title": EP_TITLES.get(n, f"Episode {n}"),
+            "state": state,
+            "url":   f"/podcast/{stem}.mp3" if state == "ready" else "",
+        })
+
+    # Recent events for this candidate — used by the fallback when no dossier
+    # file is on disk yet, so the panel still says something concrete.
+    recent_events: list = []
+    try:
+        from scanner.database import recent_events_for_politician
+        recent_events = recent_events_for_politician(
+            _Cfg.DB_PATH, cand.get("name", ""), limit=6
+        )
+    except Exception as e:
+        log.debug("Spotlight: recent_events_for_politician failed — %s", e)
+
+    return {
+        "candidate": cand,
+        "dossier_excerpt": dossier_text,
+        "episodes": episodes,
+        "recent_events": recent_events,
+    }
+
+
+def _render_candidate_spotlight(spot: Dict) -> str:
+    """Render the spotlight panel HTML. Returns '' when `spot` is empty."""
+    if not spot:
+        return ""
+    cand = spot["candidate"]
+    name   = _html.escape(cand.get("name", "Unknown"))
+    office = _html.escape(cand.get("office", ""))
+    party  = _html.escape(cand.get("party", "") or "")
+    dist   = _html.escape(cand.get("district", "") or "")
+
+    badges = []
+    if cand.get("incumbent"):
+        badges.append('<span class="spot-badge spot-badge-inc">Incumbent</span>')
+    else:
+        badges.append('<span class="spot-badge">Challenger</span>')
+    if cand.get("uncontested"):
+        badges.append('<span class="spot-badge spot-badge-warn">Uncontested</span>')
+    tier = cand.get("tier")
+    if tier:
+        badges.append(f'<span class="spot-badge">Tier&nbsp;{tier}</span>')
+
+    sub_bits = [b for b in (office, party, dist) if b]
+    subline = "&nbsp;·&nbsp;".join(sub_bits)
+
+    excerpt = spot.get("dossier_excerpt") or ""
+    if excerpt:
+        paragraphs = [p.strip() for p in re.split(r"\n\s*\n", excerpt) if p.strip()]
+        body_html = "".join(
+            f'<p>{_html.escape(p).replace(chr(10), "<br>")}</p>' for p in paragraphs
+        )
+    else:
+        # ── Fallback path: dossier file missing. Show whatever we DO know
+        #   (DB row + recent events) and surface the actual brief status so
+        #   the listener can tell a stuck brief from one still in flight.
+        from scanner.dossier import describe_dossier_status  # local import to avoid cycle
+        status = describe_dossier_status(cand.get("name", ""))
+        recent_events = spot.get("recent_events") or []
+        bits = []
+        if recent_events:
+            evs = "".join(
+                f'<li><a href="{_html.escape(e.get("source_url","#"))}" '
+                f'target="_blank">{_html.escape(e.get("title","")[:120])}</a> '
+                f'<span style="color:#777;font-size:.8rem;">'
+                f'{_html.escape(e.get("date",""))}</span></li>'
+                for e in recent_events[:4]
+            )
+            bits.append(
+                f'<p>Recent activity we already have on file:</p>'
+                f'<ul style="margin:6px 0 10px 18px;">{evs}</ul>'
+            )
+        if status["state"] == "error":
+            bits.append(
+                f'<p class="spot-empty">⚠️ Last dossier research attempt '
+                f'failed on {_html.escape(status["when"])}. A fresh '
+                f'Opus 4.7 brief has been queued — check back tomorrow.</p>'
+            )
+        elif status["state"] == "queued":
+            bits.append(
+                f'<p class="spot-empty">Dossier research queued '
+                f'{_html.escape(status["when"])} — Cowork will run it on '
+                f'its next scheduled pass.</p>'
+            )
+        elif status["state"] == "missing":
+            bits.append(
+                '<p class="spot-empty">No dossier brief on file yet. '
+                'Run <code>python main.py dossier --only "'
+                f'{_html.escape(cand.get("name",""))}"</code> to queue one.</p>'
+            )
+        else:
+            bits.append(
+                '<p class="spot-empty">Dossier in progress — full research '
+                'expected by tomorrow morning.</p>'
+            )
+        body_html = "".join(bits)
+
+    return f"""
+<style>
+  .spot-panel {{ background: linear-gradient(135deg,#fdf6e3 0%,#fef9ed 100%);
+                  border:1px solid #e6d9b4; border-radius:10px;
+                  padding:18px 22px; margin-bottom:24px;
+                  box-shadow:0 1px 3px rgba(0,0,0,.06); }}
+  .spot-panel h2 {{ font-size:.85rem; color:#7a6633; letter-spacing:.06em;
+                     text-transform:uppercase; font-weight:600; margin-bottom:6px; }}
+  .spot-name {{ font-size:1.5rem; color:#1a3a5c; font-weight:700; line-height:1.2; }}
+  .spot-sub  {{ font-size:.9rem; color:#555; margin-top:4px; }}
+  .spot-badges {{ margin-top:8px; display:flex; flex-wrap:wrap; gap:6px; }}
+  .spot-badge {{ background:#1a3a5c; color:#fff; font-size:.7rem; font-weight:600;
+                  padding:3px 9px; border-radius:11px; letter-spacing:.02em; }}
+  .spot-badge-inc  {{ background:#3a7a3a; }}
+  .spot-badge-warn {{ background:#a05a1a; }}
+  .spot-body {{ margin-top:14px; font-size:.9rem; color:#333; }}
+  .spot-body p {{ margin-bottom:8px; }}
+  .spot-body p:last-child {{ margin-bottom:0; }}
+  .spot-empty {{ color:#7a6633; font-style:italic; }}
+</style>
+<div class="spot-panel">
+  <h2>🎙️ Today's Candidate Spotlight</h2>
+  <div class="spot-name">{name}</div>
+  <div class="spot-sub">{subline}</div>
+  <div class="spot-badges">{"".join(badges)}</div>
+  <div class="spot-body">{body_html}</div>
+</div>
+"""
+
+
 def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
                  politicians: List[Dict]) -> str:
     total = sum(len(v) for v in by_level.values())
@@ -293,6 +488,9 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
     locale = _LOCALE
     chat_sidebar = _CHAT_SIDEBAR.replace("DATE_ISO", date_iso)
     podcast_player = _PODCAST_PLAYER_JS.replace("DATE_ISO", date_iso)
+    candidate_spotlight = _render_candidate_spotlight(
+        _load_candidate_spotlight(report_date)
+    )
 
     sections_html = ""
     for level, label in LEVEL_LABELS.items():
@@ -307,6 +505,7 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
         </section>"""
 
     pol_html = _politician_tracker_html(politicians)
+    refs_html = _references_section_html(by_level)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -354,6 +553,18 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   .pol-section {{ background: white; border-radius: 8px; padding: 20px;
                   margin-bottom: 32px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }}
   .pol-section h2 {{ font-size: 1.2rem; color: #1a3a5c; margin-bottom: 14px; }}
+  /* References section */
+  .ref-section {{ background: white; border-radius: 8px; padding: 20px;
+                  margin-bottom: 32px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }}
+  .ref-section h2 {{ font-size: 1.2rem; color: #1a3a5c; border-bottom: 2px solid #1a3a5c;
+                     padding-bottom: 6px; margin-bottom: 14px; }}
+  .ref-list {{ padding-left: 0; list-style: none; }}
+  .ref-list li {{ padding: 6px 0; border-bottom: 1px solid #f0f0f0;
+                  font-size: .88rem; display: flex; gap: 8px; align-items: baseline; }}
+  .ref-list li:last-child {{ border-bottom: none; }}
+  .ref-num {{ color: #1a3a5c; font-weight: 700; min-width: 24px; flex-shrink: 0; }}
+  .ref-list a {{ color: #1a3a5c; text-decoration: none; }}
+  .ref-list a:hover {{ text-decoration: underline; }}
   .pol-row {{ display: flex; justify-content: space-between; align-items: flex-start;
               padding: 10px 0; border-bottom: 1px solid #f0f0f0; }}
   .pol-row:last-child {{ border-bottom: none; }}
@@ -370,6 +581,7 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
 <body>
 <div class="header">
   <a class="home-btn" href="/">← Home</a>
+  <a class="home-btn" href="/playlist" style="right:90px;">🎵 Playlist</a>
   <h1>Local Politics Digest</h1>
   <div class="subtitle">{locale} &nbsp;·&nbsp; {date_str}</div>
   <div class="stats">{total} items tracked today</div>
@@ -383,10 +595,12 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   to see what your representatives have been doing.
 </div>
 
+{candidate_spotlight}
 {podcast_player}
 
 {sections_html}
 {pol_html}
+{refs_html}
 </div>
 <div class="footer">
   Generated {datetime.now().strftime("%Y-%m-%d %H:%M")} &nbsp;·&nbsp;
@@ -441,9 +655,95 @@ def _event_card_html(ev: Dict) -> str:
     </div>"""
 
 
+def _references_section_html(by_level: Dict[str, List[Dict]]) -> str:
+    """Render references split into 'new today' and 'seen earlier this week'.
+
+    Uses a small SQLite-backed table `digest_references` so URLs that have
+    been showing up for days don't keep dominating the section. New URLs
+    are highlighted; everything else is collapsed."""
+    seen_urls: set = set()
+    refs: List[tuple] = []
+    for level in LEVEL_LABELS:
+        for ev in by_level.get(level, []):
+            url = ev.get("source_url", "").strip()
+            title = ev.get("title", "").strip()
+            if url and url != "#" and url not in seen_urls:
+                seen_urls.add(url)
+                refs.append((title or url, url))
+
+    if not refs:
+        return ""
+
+    # Bucket new vs. recurring using the digest_references table.
+    new_today: List[tuple] = []
+    recurring: List[tuple] = []
+    try:
+        from scanner.database import record_digest_references
+        first_seen_map = record_digest_references(
+            _Cfg.DB_PATH, [u for _, u in refs]
+        )
+    except Exception as e:
+        log.debug("References: record_digest_references failed — %s", e)
+        first_seen_map = {}
+
+    today_iso = date.today().isoformat()
+    for title, url in refs:
+        if first_seen_map.get(url) == today_iso or url not in first_seen_map:
+            new_today.append((title, url))
+        else:
+            recurring.append((title, url))
+
+    def _items(group: List[tuple], offset: int = 0) -> str:
+        return "".join(
+            f'<li id="ref-{offset + i}">'
+            f'<span class="ref-num">{offset + i}.</span> '
+            f'<a href="{_html.escape(url)}" target="_blank">'
+            f'{_html.escape(title)}</a></li>'
+            for i, (title, url) in enumerate(group, 1)
+        )
+
+    new_block = (
+        f"""<h3 style="font-size:.95rem;color:#1a3a5c;margin-top:8px;">
+              🆕 New today ({len(new_today)})</h3>
+            <ol class="ref-list">{_items(new_today)}</ol>"""
+        if new_today else
+        '<p style="color:#888;font-style:italic;">'
+        'No new source URLs surfaced today.</p>'
+    )
+
+    recur_block = ""
+    if recurring:
+        recur_block = (
+            f"""<details style="margin-top:14px;">
+                  <summary style="cursor:pointer;color:#666;font-size:.9rem;">
+                    Seen earlier this week ({len(recurring)})
+                  </summary>
+                  <ol class="ref-list" start="{len(new_today) + 1}">
+                    {_items(recurring, offset=len(new_today))}
+                  </ol>
+                </details>"""
+        )
+
+    return f"""
+    <div class="ref-section">
+      <h2>📎 References</h2>
+      <p style="font-size:.85rem;color:#666;margin-bottom:12px;">
+        Source articles linked in today's digest — new items highlighted,
+        long-running ones collapsed below.
+      </p>
+      {new_block}
+      {recur_block}
+    </div>"""
+
+
 def _politician_tracker_html(politicians: List[Dict]) -> str:
     if not politicians:
         return ""
+
+    from datetime import date as _date, timedelta as _td
+    # Only show events first seen in the last 24 hours. Anything older
+    # belongs in the dossier, not the daily "what changed" tracker.
+    fresh_cutoff = (_date.today() - _td(days=1)).isoformat()
 
     rows = ""
     for pol in politicians[:20]:
@@ -452,13 +752,28 @@ def _politician_tracker_html(politicians: List[Dict]) -> str:
         party = pol.get("party", "")
         party = party or ""
         party_color = "#003da5" if "Democrat" in party else ("#c8102e" if "Republican" in party else "#666")
-        recent_events = pol.get("events", [])[:3]
-        event_text = " &nbsp;|&nbsp; ".join(
-            f'<a href="{e.get("source_url","#")}" target="_blank">'
-            f'{e.get("role","mentioned").replace("_"," ").title()}: {e.get("title","")[:60]}'
-            f'</a>'
-            for e in recent_events
-        ) or "No recent activity tracked"
+        all_events = pol.get("events", []) or []
+        fresh = [
+            e for e in all_events
+            if (e.get("first_seen") or e.get("date") or "") >= fresh_cutoff
+        ][:3]
+        if fresh:
+            event_text = " &nbsp;|&nbsp; ".join(
+                f'<a href="{e.get("source_url","#")}" target="_blank">'
+                f'{e.get("role","mentioned").replace("_"," ").title()}: '
+                f'{e.get("title","")[:60]}</a>'
+                for e in fresh
+            )
+        elif all_events:
+            last = all_events[0]
+            event_text = (
+                f'<span style="color:#888;font-style:italic;">'
+                f'Quiet today — last activity {_html.escape(last.get("date",""))}: '
+                f'<a href="{last.get("source_url","#")}" target="_blank">'
+                f'{_html.escape(last.get("title","")[:70])}</a></span>'
+            )
+        else:
+            event_text = "No tracked activity yet"
 
         rows += f"""
         <div class="pol-row">

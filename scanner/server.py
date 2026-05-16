@@ -172,6 +172,7 @@ def _render_index(reports: List[Tuple[str, Path]],
 <div class="container">
   <div class="quick-actions">
     <a class="primary" href="/latest">Latest Digest</a>
+    <a href="/playlist">🎵 Playlist</a>
     <a href="/api/events.json?days=3">JSON</a>
   </div>
   <div class="section-title">Recent Digests</div>
@@ -393,6 +394,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._serve_podcast_index(date_s)
             if path.startswith("/api/podcast-files/"):
                 return self._serve_podcast_files(path[len("/api/podcast-files/"):])
+            if path == "/playlist":
+                return self._serve_playlist_page()
+            if path == "/api/playlist-index":
+                return self._serve_playlist_index()
             if path == "/podcasts":
                 return self._serve_podcast_list()
             if path == "/chat":
@@ -451,6 +456,10 @@ class Handler(BaseHTTPRequestHandler):
                 return self._head(200, "application/json", fpath.stat().st_size)
             if path.startswith("/api/podcast-files/"):
                 # Endpoint always responds 200 with a (possibly empty) list.
+                return self._head(200, "application/json")
+            if path == "/playlist":
+                return self._head(200, "text/html; charset=utf-8")
+            if path == "/api/playlist-index":
                 return self._head(200, "application/json")
             if path.startswith("/report/") and path.endswith(".html"):
                 stem = path[len("/report/"):-len(".html")]
@@ -663,6 +672,23 @@ class Handler(BaseHTTPRequestHandler):
         body = json.dumps({"date": date_str, "items": items}, ensure_ascii=False).encode()
         self._send(200, "application/json; charset=utf-8", body)
 
+    def _serve_playlist_page(self):
+        """GET /playlist — the multi-day queue player UI."""
+        from scanner.playlist import render_playlist_page
+        self._send(200, "text/html; charset=utf-8",
+                    render_playlist_page().encode("utf-8"))
+
+    def _serve_playlist_index(self):
+        """GET /api/playlist-index — JSON of every date that has ≥1 ready MP3.
+
+        Returned ascending by date; the frontend reverses for descending sort.
+        Each entry: {date, label, episodes:[{ep_num,title,display_title,url,size,...}]}.
+        """
+        from scanner.playlist import build_playlist_index
+        data = build_playlist_index(self.podcasts_dir)
+        body = json.dumps(data, ensure_ascii=False).encode()
+        self._send(200, "application/json; charset=utf-8", body)
+
     def _handle_digest_chat(self, body: bytes):
         """
         POST /chat  — sidebar Q&A tied to a specific day's digest.
@@ -692,43 +718,39 @@ class Handler(BaseHTTPRequestHandler):
             if md_path.exists():
                 context = md_path.read_text(encoding="utf-8")
 
-        # Cowork mode: queue a chat brief, return a placeholder.
+        # Cowork-only — direct API path disabled 2026-05-15. Every chat
+        # question becomes a brief; drain-cowork-inbox answers it.
         try:
-            from config import Config as _Cfg2
-            cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
-        except Exception:
-            cowork_mode = False
+            from scanner.cowork_bridge import build_chat_brief, write_brief
+            brief = build_chat_brief(
+                db_path=self.db_path,
+                conversation_id=0,        # ad-hoc digest chat — no conv id
+                message_id=int(time.time() * 1000) % 2_000_000_000,
+                question=question,
+                digest_excerpt=(context or "")[:8000],
+                locale=_LOCALE,
+            )
+            write_brief(brief)
+            placeholder = (
+                "Your question is queued for the Cowork research run. "
+                "Answers land in the next 24–48 hours. Refresh this page "
+                "tomorrow morning."
+            )
+            self._send(200, "application/json; charset=utf-8",
+                        json.dumps({"answer": placeholder,
+                                    "queued_for_cowork": True},
+                                   ensure_ascii=False).encode())
+            return
+        except Exception as e:
+            from scanner.notifications import notify
+            notify("server.chat", f"queue failed: {e}", severity="error")
+            self._send(500, "application/json",
+                        json.dumps({"error": f"queue failed: {e}"}).encode())
+            return
 
-        if cowork_mode:
-            try:
-                from scanner.cowork_bridge import build_chat_brief, write_brief
-                brief = build_chat_brief(
-                    db_path=self.db_path,
-                    conversation_id=0,        # ad-hoc digest chat — no conv id
-                    message_id=int(time.time() * 1000) % 2_000_000_000,
-                    question=question,
-                    digest_excerpt=(context or "")[:8000],
-                    locale=_LOCALE,
-                )
-                write_brief(brief)
-                placeholder = (
-                    "Your question is queued for the Cowork research run. "
-                    "Answers land in the next 24–48 hours. Refresh this page "
-                    "tomorrow morning."
-                )
-                self._send(200, "application/json; charset=utf-8",
-                            json.dumps({"answer": placeholder,
-                                        "queued_for_cowork": True},
-                                       ensure_ascii=False).encode())
-                return
-            except Exception as e:
-                log.exception("digest_chat cowork queue failed: %s", e)
-                self._send(500, "application/json",
-                            json.dumps({"error": f"queue failed: {e}"}).encode())
-                return
-
-        import anthropic as _anthropic
-        client = _anthropic.Anthropic(api_key=self.anthropic_key)
+        # ── Unreachable: direct API path retained inert for reference ────────
+        import anthropic as _anthropic  # noqa: F401
+        client = None  # noqa: F841
 
         system = (
             f"You are a political analyst assistant for a voter in {_LOCALE}. "
