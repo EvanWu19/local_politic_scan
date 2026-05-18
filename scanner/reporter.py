@@ -301,7 +301,10 @@ def _load_candidate_spotlight(report_date: date) -> Dict:
     if not cand:
         return {}
 
-    # Dossier excerpt — first ~700 chars, paragraph-broken, plain-text
+    # Full dossier text (no truncation). The renderer formats it into a
+    # dedicated card below the politician tracker with clickable [src: URL]
+    # footnotes — so we want everything the dossier author wrote, not an
+    # excerpt.
     dossier_text = ""
     dossier_path = cand.get("dossier_path")
     if dossier_path:
@@ -312,24 +315,14 @@ def _load_candidate_spotlight(report_date: date) -> Dict:
         if p.exists():
             try:
                 raw = p.read_text(encoding="utf-8")
-                # Strip front-matter and YAML if present
-                if raw.startswith("---"):
+                # Strip a YAML front-matter block if present (between two `---`
+                # lines at the top of the file). DO NOT strip `---` dividers
+                # later in the body — those get rendered as <hr>.
+                if raw.startswith("---\n") or raw.startswith("---\r\n"):
                     parts = raw.split("---", 2)
                     if len(parts) >= 3:
                         raw = parts[2].lstrip()
-                # Strip leading markdown headers so the excerpt starts with prose
-                lines = [ln for ln in raw.splitlines()
-                         if not ln.lstrip().startswith("#") or len(ln.strip()) > 80]
-                cleaned = "\n".join(lines).strip()
-                dossier_text = cleaned[:800]
-                if len(cleaned) > 800:
-                    # Trim to last sentence boundary inside the window
-                    cut = max(dossier_text.rfind(". "),
-                              dossier_text.rfind("? "),
-                              dossier_text.rfind("! "))
-                    if cut > 300:
-                        dossier_text = dossier_text[:cut + 1]
-                    dossier_text += " …"
+                dossier_text = raw.strip()
             except Exception as e:
                 log.warning("Spotlight: failed to read %s — %s", p, e)
 
@@ -375,8 +368,18 @@ def _load_candidate_spotlight(report_date: date) -> Dict:
     }
 
 
-def _render_candidate_spotlight(spot: Dict) -> str:
-    """Render the spotlight panel HTML. Returns '' when `spot` is empty."""
+# Captures `[src: URL]` citation tokens in dossier markdown. The URL ends
+# at the closing bracket; we don't try to URL-decode or validate beyond that.
+_SRC_RE = re.compile(r"\[src:\s*(https?://[^\]\s]+)\s*\]")
+# Markdown bold — non-greedy, doesn't cross paragraph breaks.
+_BOLD_RE = re.compile(r"\*\*(.+?)\*\*", re.DOTALL)
+
+
+def _render_spotlight_header(spot: Dict) -> str:
+    """Top-of-page header card: name, office/party/district subline, badges.
+    Returns '' when no candidate is scheduled for the report date.
+    The dossier body is rendered separately by `_render_dossier_body()` and
+    placed lower on the page."""
     if not spot:
         return ""
     cand = spot["candidate"]
@@ -399,18 +402,99 @@ def _render_candidate_spotlight(spot: Dict) -> str:
     sub_bits = [b for b in (office, party, dist) if b]
     subline = "&nbsp;·&nbsp;".join(sub_bits)
 
-    excerpt = spot.get("dossier_excerpt") or ""
-    if excerpt:
-        paragraphs = [p.strip() for p in re.split(r"\n\s*\n", excerpt) if p.strip()]
-        body_html = "".join(
-            f'<p>{_html.escape(p).replace(chr(10), "<br>")}</p>' for p in paragraphs
-        )
-    else:
-        # ── Fallback path: dossier file missing. Show whatever we DO know
-        #   (DB row + recent events) and surface the actual brief status so
-        #   the listener can tell a stuck brief from one still in flight.
-        from scanner.dossier import describe_dossier_status  # local import to avoid cycle
-        status = describe_dossier_status(cand.get("name", ""))
+    return f"""
+<div class="spot-panel">
+  <h2>🎙️ Today's Candidate Spotlight</h2>
+  <div class="spot-name">{name}</div>
+  <div class="spot-sub">{subline}</div>
+  <div class="spot-badges">{"".join(badges)}</div>
+</div>
+"""
+
+
+def _format_dossier_markdown(text: str):
+    """Convert dossier markdown → HTML body + numbered sources list.
+
+    Citation handling: every `[src: URL]` token in the source text becomes
+    a superscript footnote `<sup><a>[N]</a></sup>` linking to the URL.
+    First-occurrence ordering — the same URL repeats get the same number.
+
+    Returns (body_html, ordered_urls). The body_html is safe to inject
+    inside a div; ordered_urls is the deduplicated URL list in footnote
+    order (caller renders the Sources sub-panel).
+    """
+    # 1. Walk citations and assign numbers (first occurrence wins).
+    url_to_num: Dict[str, int] = {}
+    ordered_urls: list = []
+    for m in _SRC_RE.finditer(text):
+        u = m.group(1)
+        if u not in url_to_num:
+            url_to_num[u] = len(ordered_urls) + 1
+            ordered_urls.append(u)
+
+    # 2. Replace citations with sentinel tokens (use chars that survive
+    #    html.escape unchanged so we can substitute real <sup> tags after).
+    #    We pick a token shape that's vanishingly unlikely in real text.
+    def _to_sentinel(m):
+        return f"\x00CITE{url_to_num[m.group(1)]}\x00"
+    work = _SRC_RE.sub(_to_sentinel, text)
+
+    # 3. Substitute `---` horizontal-rule lines (--- alone on a line) BEFORE
+    #    escaping, so the sentinel `\x00HR\x00` survives unescaped. Match
+    #    only horizontal whitespace around the dashes — `\s*` would greedily
+    #    eat surrounding `\n` and collapse paragraph breaks.
+    work = re.sub(r"(?m)^[ \t]*---+[ \t]*$", "\x00HR\x00", work)
+
+    # 4. Bold sentinel — same trick. `**foo**` → `\x00B foo \x00/B\x00`.
+    def _to_bold_sentinel(m):
+        return "\x00B\x00" + m.group(1) + "\x00/B\x00"
+    work = _BOLD_RE.sub(_to_bold_sentinel, work)
+
+    # 5. HTML-escape the lot.
+    work = _html.escape(work)
+
+    # 6. Substitute sentinels back to real tags. Order matters: do citation
+    #    + bold + hr in any order, they don't collide.
+    work = re.sub(r"\x00CITE(\d+)\x00", lambda m: (
+        f'<sup><a href="{_html.escape(ordered_urls[int(m.group(1)) - 1])}"'
+        f' target="_blank">[{m.group(1)}]</a></sup>'
+    ), work)
+    work = work.replace("\x00B\x00", "<strong>").replace("\x00/B\x00", "</strong>")
+    work = work.replace("\x00HR\x00", "<hr>")
+
+    # 7. Paragraph-split on blank lines; preserve single newlines as <br>.
+    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", work) if p.strip()]
+    body_html = "".join(
+        f'<p>{p.replace(chr(10), "<br>")}</p>' for p in paragraphs
+    )
+
+    return body_html, ordered_urls
+
+
+def _render_dossier_body(spot: Dict) -> str:
+    """White-card dossier panel placed after the politician tracker.
+
+    Renders the full dossier markdown as paragraphs with clickable
+    `[src: URL]` superscript footnotes and a numbered Sources list at the
+    bottom. Returns '' when:
+      • no candidate scheduled, or
+      • candidate has no dossier file on disk (the fallback messaging
+        lives in the header panel via `_render_spotlight_header`-adjacent
+        UI — keeping this body silent avoids two "no dossier" messages on
+        the same page).
+    """
+    if not spot:
+        return ""
+    cand = spot["candidate"]
+    dossier_text = (spot.get("dossier_excerpt") or "").strip()
+    if not dossier_text:
+        # No dossier file — render the fallback messaging here so the
+        # reader sees one consolidated explanation instead of an empty page.
+        try:
+            from scanner.dossier import describe_dossier_status
+            status = describe_dossier_status(cand.get("name", ""))
+        except Exception:
+            status = {"state": "unknown", "when": ""}
         recent_events = spot.get("recent_events") or []
         bits = []
         if recent_events:
@@ -422,60 +506,55 @@ def _render_candidate_spotlight(spot: Dict) -> str:
                 for e in recent_events[:4]
             )
             bits.append(
-                f'<p>Recent activity we already have on file:</p>'
+                '<p>Recent activity on file:</p>'
                 f'<ul style="margin:6px 0 10px 18px;">{evs}</ul>'
             )
-        if status["state"] == "error":
+        if status.get("state") == "error":
             bits.append(
-                f'<p class="spot-empty">⚠️ Last dossier research attempt '
-                f'failed on {_html.escape(status["when"])}. A fresh '
-                f'Opus 4.7 brief has been queued — check back tomorrow.</p>'
+                f'<p class="dossier-empty">⚠️ Last dossier research attempt '
+                f'failed on {_html.escape(status.get("when",""))}. A fresh '
+                f'brief has been queued — check back tomorrow.</p>'
             )
-        elif status["state"] == "queued":
+        elif status.get("state") == "queued":
             bits.append(
-                f'<p class="spot-empty">Dossier research queued '
-                f'{_html.escape(status["when"])} — Cowork will run it on '
-                f'its next scheduled pass.</p>'
+                f'<p class="dossier-empty">Dossier research queued '
+                f'{_html.escape(status.get("when",""))} — Cowork will run it '
+                'on its next pass.</p>'
             )
-        elif status["state"] == "missing":
+        elif status.get("state") == "missing":
             bits.append(
-                '<p class="spot-empty">No dossier brief on file yet. '
+                '<p class="dossier-empty">No dossier brief on file yet. '
                 'Run <code>python main.py dossier --only "'
                 f'{_html.escape(cand.get("name",""))}"</code> to queue one.</p>'
             )
         else:
             bits.append(
-                '<p class="spot-empty">Dossier in progress — full research '
+                '<p class="dossier-empty">Dossier in progress — full research '
                 'expected by tomorrow morning.</p>'
             )
         body_html = "".join(bits)
+        sources_html = ""
+    else:
+        body_html, ordered_urls = _format_dossier_markdown(dossier_text)
+        if ordered_urls:
+            items = "".join(
+                f'<li><a href="{_html.escape(u)}" target="_blank">'
+                f'{_html.escape(u)}</a></li>' for u in ordered_urls
+            )
+            sources_html = (
+                '<div class="dossier-sources">'
+                '<strong>Sources</strong>'
+                f'<ol>{items}</ol></div>'
+            )
+        else:
+            sources_html = ""
 
+    name = _html.escape(cand.get("name", "Unknown"))
     return f"""
-<style>
-  .spot-panel {{ background: linear-gradient(135deg,#fdf6e3 0%,#fef9ed 100%);
-                  border:1px solid #e6d9b4; border-radius:10px;
-                  padding:18px 22px; margin-bottom:24px;
-                  box-shadow:0 1px 3px rgba(0,0,0,.06); }}
-  .spot-panel h2 {{ font-size:.85rem; color:#7a6633; letter-spacing:.06em;
-                     text-transform:uppercase; font-weight:600; margin-bottom:6px; }}
-  .spot-name {{ font-size:1.5rem; color:#1a3a5c; font-weight:700; line-height:1.2; }}
-  .spot-sub  {{ font-size:.9rem; color:#555; margin-top:4px; }}
-  .spot-badges {{ margin-top:8px; display:flex; flex-wrap:wrap; gap:6px; }}
-  .spot-badge {{ background:#1a3a5c; color:#fff; font-size:.7rem; font-weight:600;
-                  padding:3px 9px; border-radius:11px; letter-spacing:.02em; }}
-  .spot-badge-inc  {{ background:#3a7a3a; }}
-  .spot-badge-warn {{ background:#a05a1a; }}
-  .spot-body {{ margin-top:14px; font-size:.9rem; color:#333; }}
-  .spot-body p {{ margin-bottom:8px; }}
-  .spot-body p:last-child {{ margin-bottom:0; }}
-  .spot-empty {{ color:#7a6633; font-style:italic; }}
-</style>
-<div class="spot-panel">
-  <h2>🎙️ Today's Candidate Spotlight</h2>
-  <div class="spot-name">{name}</div>
-  <div class="spot-sub">{subline}</div>
-  <div class="spot-badges">{"".join(badges)}</div>
-  <div class="spot-body">{body_html}</div>
+<div class="dossier-panel">
+  <h2>📄 Candidate Dossier — {name}</h2>
+  <div class="dossier-body">{body_html}</div>
+  {sources_html}
 </div>
 """
 
@@ -488,9 +567,9 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
     locale = _LOCALE
     chat_sidebar = _CHAT_SIDEBAR.replace("DATE_ISO", date_iso)
     podcast_player = _PODCAST_PLAYER_JS.replace("DATE_ISO", date_iso)
-    candidate_spotlight = _render_candidate_spotlight(
-        _load_candidate_spotlight(report_date)
-    )
+    _spot = _load_candidate_spotlight(report_date)
+    spotlight_header = _render_spotlight_header(_spot)
+    dossier_body     = _render_dossier_body(_spot)
 
     sections_html = ""
     for level, label in LEVEL_LABELS.items():
@@ -549,6 +628,43 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   .relevance-bar {{ height: 4px; border-radius: 2px; background: #eee;
                     margin-top: 8px; overflow: hidden; }}
   .relevance-fill {{ height: 100%; background: #1a3a5c; border-radius: 2px; }}
+  /* Spotlight header (top of page) — name + office + badges only */
+  .spot-panel {{ background: linear-gradient(135deg,#fdf6e3 0%,#fef9ed 100%);
+                  border: 1px solid #e6d9b4; border-radius: 10px;
+                  padding: 18px 22px; margin-bottom: 24px;
+                  box-shadow: 0 1px 3px rgba(0,0,0,.06); }}
+  .spot-panel h2 {{ font-size: .85rem; color: #7a6633; letter-spacing: .06em;
+                     text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }}
+  .spot-name {{ font-size: 1.5rem; color: #1a3a5c; font-weight: 700; line-height: 1.2; }}
+  .spot-sub  {{ font-size: .9rem; color: #555; margin-top: 4px; }}
+  .spot-badges {{ margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }}
+  .spot-badge {{ background: #1a3a5c; color: #fff; font-size: .7rem; font-weight: 600;
+                  padding: 3px 9px; border-radius: 11px; letter-spacing: .02em; }}
+  .spot-badge-inc  {{ background: #3a7a3a; }}
+  .spot-badge-warn {{ background: #a05a1a; }}
+  /* Dossier body (below politician tracker) — full dossier with citations */
+  .dossier-panel {{ background: white; border-radius: 8px; padding: 20px;
+                     margin-bottom: 32px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }}
+  .dossier-panel h2 {{ font-size: 1.2rem; color: #1a3a5c; border-bottom: 2px solid #1a3a5c;
+                        padding-bottom: 6px; margin-bottom: 14px; }}
+  .dossier-body {{ font-size: .92rem; color: #333; line-height: 1.65; }}
+  .dossier-body p {{ margin-bottom: 10px; }}
+  .dossier-body p:last-child {{ margin-bottom: 0; }}
+  .dossier-body hr {{ border: none; border-top: 1px solid #ddd; margin: 16px 0; }}
+  .dossier-body sup {{ font-size: .7rem; }}
+  .dossier-body sup a {{ color: #1a3a5c; text-decoration: none; padding: 0 1px;
+                          font-weight: 600; }}
+  .dossier-body sup a:hover {{ text-decoration: underline; }}
+  .dossier-empty {{ color: #7a6633; font-style: italic; }}
+  .dossier-sources {{ margin-top: 20px; padding-top: 14px;
+                       border-top: 1px solid #eee; font-size: .82rem; }}
+  .dossier-sources strong {{ display: block; color: #1a3a5c; margin-bottom: 8px;
+                              text-transform: uppercase; letter-spacing: .05em;
+                              font-size: .78rem; }}
+  .dossier-sources ol {{ padding-left: 28px; color: #555; }}
+  .dossier-sources li {{ padding: 3px 0; word-break: break-all; }}
+  .dossier-sources a {{ color: #1a3a5c; text-decoration: none; }}
+  .dossier-sources a:hover {{ text-decoration: underline; }}
   /* Politician tracker */
   .pol-section {{ background: white; border-radius: 8px; padding: 20px;
                   margin-bottom: 32px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }}
@@ -595,11 +711,12 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   to see what your representatives have been doing.
 </div>
 
-{candidate_spotlight}
+{spotlight_header}
 {podcast_player}
 
 {sections_html}
 {pol_html}
+{dossier_body}
 {refs_html}
 </div>
 <div class="footer">
