@@ -536,7 +536,65 @@ def _render_dossier_body(spot: Dict) -> str:
         sources_html = ""
     else:
         body_html, ordered_urls = _format_dossier_markdown(dossier_text)
-        if ordered_urls:
+        # Pull the FULL source list from the DB — this accumulates citations
+        # across every dossier run for this candidate, not just the URLs in
+        # today's .md file. Footnote numbers in the body still match
+        # `ordered_urls` (one .md file's worth). The Sources panel shows the
+        # broader record so listeners can see all known evidence.
+        from scanner.database import get_candidate_sources
+        try:
+            db_sources = get_candidate_sources(_Cfg.DB_PATH, cand.get("name", ""))
+        except Exception as e:
+            log.debug("Spotlight: get_candidate_sources failed — %s", e)
+            db_sources = []
+
+        # Index DB rows by URL so we can show richer metadata (title + type)
+        # for the in-text footnotes too, not just plain URLs.
+        url_to_row = {r["url"]: r for r in db_sources}
+
+        if db_sources:
+            # Group by source_type for readable presentation
+            from collections import OrderedDict
+            buckets: "OrderedDict[str, list]" = OrderedDict()
+            type_labels = {
+                "official":      "Official records",
+                "biography":     "Biographical",
+                "voting_record": "Voting record",
+                "press":         "Press coverage",
+                "campaign":      "Campaign material",
+                "other":         "Other",
+            }
+            # SQL already orders sources by our preferred type order
+            for r in db_sources:
+                buckets.setdefault(r.get("source_type") or "other", []).append(r)
+
+            sections_html_parts = []
+            for stype, rows in buckets.items():
+                label = type_labels.get(stype, stype.title())
+                items = "".join(
+                    f'<li><a href="{_html.escape(r["url"])}" target="_blank">'
+                    f'{_html.escape(r.get("title") or r["url"])}</a>'
+                    + (f' <span class="dossier-src-summary">— '
+                       f'{_html.escape((r.get("summary") or "")[:140])}'
+                       f'{"…" if (r.get("summary") or "")[140:] else ""}</span>'
+                       if r.get("summary") else '')
+                    + '</li>'
+                    for r in rows
+                )
+                sections_html_parts.append(
+                    f'<div class="dossier-src-group">'
+                    f'<div class="dossier-src-label">{_html.escape(label)} '
+                    f'<span class="dossier-src-count">({len(rows)})</span></div>'
+                    f'<ul>{items}</ul></div>'
+                )
+            sources_html = (
+                '<div class="dossier-sources">'
+                f'<strong>Sources ({len(db_sources)} on file)</strong>'
+                + "".join(sections_html_parts)
+                + '</div>'
+            )
+        elif ordered_urls:
+            # DB has nothing — fall back to URLs scraped from THIS file.
             items = "".join(
                 f'<li><a href="{_html.escape(u)}" target="_blank">'
                 f'{_html.escape(u)}</a></li>' for u in ordered_urls
@@ -658,13 +716,23 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
   .dossier-empty {{ color: #7a6633; font-style: italic; }}
   .dossier-sources {{ margin-top: 20px; padding-top: 14px;
                        border-top: 1px solid #eee; font-size: .82rem; }}
-  .dossier-sources strong {{ display: block; color: #1a3a5c; margin-bottom: 8px;
-                              text-transform: uppercase; letter-spacing: .05em;
-                              font-size: .78rem; }}
-  .dossier-sources ol {{ padding-left: 28px; color: #555; }}
-  .dossier-sources li {{ padding: 3px 0; word-break: break-all; }}
-  .dossier-sources a {{ color: #1a3a5c; text-decoration: none; }}
+  .dossier-sources > strong {{ display: block; color: #1a3a5c;
+                                margin-bottom: 10px;
+                                text-transform: uppercase; letter-spacing: .05em;
+                                font-size: .78rem; }}
+  .dossier-sources ol,
+  .dossier-sources ul {{ padding-left: 22px; color: #555;
+                          margin-bottom: 12px; }}
+  .dossier-sources li {{ padding: 3px 0; word-break: break-word; }}
+  .dossier-sources a {{ color: #1a3a5c; text-decoration: none;
+                         font-weight: 500; }}
   .dossier-sources a:hover {{ text-decoration: underline; }}
+  .dossier-src-group {{ margin-bottom: 12px; }}
+  .dossier-src-label {{ font-weight: 600; color: #1a3a5c; font-size: .82rem;
+                         margin-bottom: 4px; }}
+  .dossier-src-count {{ color: #999; font-weight: 400; font-size: .75rem; }}
+  .dossier-src-summary {{ color: #888; font-size: .78rem;
+                            font-style: italic; }}
   /* Politician tracker */
   .pol-section {{ background: white; border-radius: 8px; padding: 20px;
                   margin-bottom: 32px; box-shadow: 0 1px 3px rgba(0,0,0,.08); }}

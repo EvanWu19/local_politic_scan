@@ -132,7 +132,13 @@ def load_brief(path: Path) -> Dict[str, Any]:
 
 
 def mark_done(brief_path: Path, output_summary: str = "") -> None:
-    """Atomically rename the brief to <id>.done.json."""
+    """Atomically rename the brief to <id>.done.json.
+
+    Side effect: if the brief was a `candidate_dossier`, eagerly import the
+    finished .md file's citations into the `candidate_sources` table so the
+    research record accumulates permanently. The import is non-fatal — any
+    failure logs and is swallowed so the bridge's drain loop keeps moving.
+    """
     done = brief_path.with_name(brief_path.stem + ".done.json")
     data = load_brief(brief_path)
     data["completed_at"] = datetime.now().astimezone().isoformat()
@@ -140,6 +146,25 @@ def mark_done(brief_path: Path, output_summary: str = "") -> None:
         data["output_summary"] = output_summary
     done.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
     brief_path.unlink(missing_ok=True)
+
+    # Auto-import dossier sources on completion.
+    if data.get("type") == "candidate_dossier":
+        try:
+            from scanner.dossier_importer import import_dossier_sources
+            from config import Config as _Cfg
+            out_path = Path(data.get("output_file", ""))
+            cand_name = (data.get("payload", {}) or {}).get("candidate_name") \
+                        or data.get("candidate_name") or ""
+            # dossier_date is encoded in the brief id (dossier_YYYY-MM-DD_slug)
+            m = re.fullmatch(r"dossier_(\d{4}-\d{2}-\d{2})_.+",
+                             data.get("brief_id", ""))
+            dossier_date = m.group(1) if m else None
+            if out_path.exists() and cand_name:
+                n = import_dossier_sources(_Cfg.DB_PATH, out_path,
+                                            cand_name, dossier_date)
+                log.info("mark_done: imported %d source(s) for %s", n, cand_name)
+        except Exception as e:
+            log.warning("mark_done: dossier source import failed (non-fatal): %s", e)
 
 
 def mark_error(brief_path: Path, error: str) -> None:
