@@ -76,6 +76,11 @@ STYLE RULES:
     district", "find out who's on your ballot", or any equivalent. Candidate and
     district research is the TOOL's job, not the listener's. Speak as though we
     already know their races and are walking them through their ballot choices.
+  - NO URLS SPOKEN ALOUD: Never read out a full URL (e.g., "https://...", "www.",
+    domain names, or any web address). When citing a source, use a reference number
+    instead — e.g., "as noted in reference 1", "according to reference 2", "we'll
+    link that in the show notes as reference 3". Full URLs belong only in the written
+    References section appended after the dialogue, never spoken by either host.
 
 Output ONLY the dialogue lines in the ALEX/JORDAN format above. No preamble."""
 
@@ -309,7 +314,23 @@ def generate_podcast_episodes(db_path: Path, podcasts_dir: Path,
         # Cowork mode: queue an author_episode brief and skip the in-process
         # API write. Returns a tiny placeholder; the morning TTS pass picks
         # up whatever Cowork wrote overnight.
-        if getattr(_Cfg, "USE_COWORK_FOR_AI", False):
+        # Cowork-only — direct-API author path disabled 2026-05-15.
+        if True:  # was: if getattr(_Cfg, "USE_COWORK_FOR_AI", False):
+            # PERMANENT RULE (2026-05-19): never queue news-format episodes
+            # when the registry has a candidate available for today OR has
+            # a future-scheduled candidate. The retired news fallback is
+            # explicitly blocked here so the wrong path fails loudly.
+            from scanner.series import (
+                candidate_for_date as _cand_for_date,
+                _next_upcoming_candidate as _next_cand,
+            )
+            if _cand_for_date(target_date) or _next_cand(target_date):
+                raise RuntimeError(
+                    f"News fallback blocked: a candidate series is available "
+                    f"for {target_date.isoformat()} (today or upcoming). "
+                    f"author_episode briefs are permanently retired — route "
+                    f"through scanner.series.queue_today_series instead."
+                )
             length_calibration = _compute_length_calibration(
                 podcasts_dir, target_date, ep_num=ep_num,
             )
@@ -1122,43 +1143,92 @@ _TTS_MAX_CHARS = 4000
 
 
 def _synthesize_dialogue(client: openai.OpenAI, script: str,
-                          out_path: Path, model: str = "gpt-4o-mini-tts") -> int:
+                          out_path: Path, model: str = "gpt-4o-mini-tts",
+                          *,
+                          per_chunk_timeout: float = 60.0,
+                          per_episode_timeout: float = 1800.0) -> int:
     """
     Synthesize the full dialogue → single MP3 at `out_path`.
     Returns approximate duration in seconds.
+
+    Crash-safe contract:
+      • Writes to `<out_path>.partial`, then atomically renames on success.
+        A partially-synthesized episode never appears at `out_path`, so the
+        idempotent "skip if exists" check in tts-publish stays honest.
+      • Each OpenAI request gets `per_chunk_timeout` seconds before raising.
+        Without this the SDK can block indefinitely on a stalled connection.
+      • The whole episode gets `per_episode_timeout` seconds (default 30 min);
+        if exceeded, we abort and clean up. Prevents a runaway from blocking
+        downstream episodes in the same TTS sweep.
+      • Any exception or timeout removes the .partial file before re-raising.
     """
     chunks = _chunk_dialogue_for_tts(script)
     log.info("TTS: synthesizing %d chunks", len(chunks))
 
+    partial_path = out_path.with_suffix(out_path.suffix + ".partial")
+    # Stale partial from a previous crashed run — start fresh.
+    try:
+        partial_path.unlink()
+    except FileNotFoundError:
+        pass
+
+    started_at = time.monotonic()
     total_bytes = 0
-    # Open output file once; append each chunk's MP3 bytes.
-    # OpenAI TTS returns valid MP3 frames that concatenate cleanly for playback.
-    with open(out_path, "wb") as out_f:
-        for i, (speaker, text) in enumerate(chunks, 1):
-            voice = VOICES.get(speaker, "alloy")
-            retry = 0
-            while True:
-                try:
-                    resp = client.audio.speech.create(
-                        model=model,
-                        voice=voice,
-                        input=text,
-                        response_format="mp3",
+    try:
+        with open(partial_path, "wb") as out_f:
+            for i, (speaker, text) in enumerate(chunks, 1):
+                # Per-episode wall-clock budget guard.
+                elapsed = time.monotonic() - started_at
+                if elapsed > per_episode_timeout:
+                    raise TimeoutError(
+                        f"Episode TTS exceeded {per_episode_timeout:.0f}s budget "
+                        f"after {i - 1}/{len(chunks)} chunks"
                     )
-                    audio_bytes = resp.content
-                    out_f.write(audio_bytes)
-                    total_bytes += len(audio_bytes)
-                    if i % 10 == 0 or i == len(chunks):
-                        log.info("  [%d/%d] %s chunks done (%.1f MB)",
-                                 i, len(chunks), speaker, total_bytes / 1_048_576)
-                    break
-                except Exception as e:
-                    retry += 1
-                    if retry >= 3:
-                        log.error("TTS failed on chunk %d after 3 retries: %s", i, e)
-                        raise
-                    log.warning("TTS chunk %d failed (%s), retrying…", i, e)
-                    time.sleep(2 * retry)
+
+                voice = VOICES.get(speaker, "alloy")
+                retry = 0
+                while True:
+                    try:
+                        resp = client.with_options(
+                            timeout=per_chunk_timeout
+                        ).audio.speech.create(
+                            model=model,
+                            voice=voice,
+                            input=text,
+                            response_format="mp3",
+                        )
+                        audio_bytes = resp.content
+                        out_f.write(audio_bytes)
+                        total_bytes += len(audio_bytes)
+                        if i % 10 == 0 or i == len(chunks):
+                            log.info("  [%d/%d] %s chunks done (%.1f MB)",
+                                     i, len(chunks), speaker,
+                                     total_bytes / 1_048_576)
+                        break
+                    except Exception as e:
+                        retry += 1
+                        if retry >= 3:
+                            log.error(
+                                "TTS failed on chunk %d after 3 retries: %s",
+                                i, e,
+                            )
+                            raise
+                        log.warning(
+                            "TTS chunk %d failed (%s), retrying…", i, e
+                        )
+                        time.sleep(2 * retry)
+
+        # Atomic rename — only happens if the loop completed cleanly.
+        # On Windows, replace() overwrites if a stale target exists.
+        partial_path.replace(out_path)
+    except BaseException:
+        # Any failure (Exception, TimeoutError, KeyboardInterrupt, SystemExit)
+        # leaves no partial behind — the next TTS sweep will retry cleanly.
+        try:
+            partial_path.unlink()
+        except FileNotFoundError:
+            pass
+        raise
 
     # Rough duration: OpenAI tts-1 outputs MP3 at ~160 kbps ≈ 20 KB/sec
     duration = total_bytes // 20000

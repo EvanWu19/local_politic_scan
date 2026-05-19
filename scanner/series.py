@@ -117,6 +117,32 @@ def candidate_for_date(target_date: date,
     return None
 
 
+def _next_upcoming_candidate(from_date: date,
+                              reg: Optional[Dict[str, Any]] = None
+                              ) -> Optional[Dict[str, Any]]:
+    """Return the candidate whose `scheduled_date` is the soonest after
+    `from_date` (strictly greater), skipping withdrawn entries.
+
+    Used as the no-news fallback in `queue_today_series` and as the guard
+    signal in `podcast.py`: if any future candidate exists, news-format
+    episodes (`author_episode` briefs) must not be generated. This makes
+    the registry's forward schedule load-bearing — running out of future
+    candidates is an explicit failure mode that surfaces loudly rather
+    than silently degrading to news.
+    """
+    reg = reg or load_registry()
+    iso = from_date.isoformat()
+    future = [
+        c for c in reg.get("candidates", [])
+        if c.get("scheduled_date") and c.get("scheduled_date") > iso
+           and c.get("dossier_status") != "withdrawn"
+    ]
+    if not future:
+        return None
+    future.sort(key=lambda c: c["scheduled_date"])
+    return future[0]
+
+
 def find_candidate(name: str, reg: Optional[Dict[str, Any]] = None
                     ) -> Optional[Dict[str, Any]]:
     reg = reg or load_registry()
@@ -167,8 +193,26 @@ def queue_today_series(target_date: Optional[date] = None,
     reg = load_registry()
     cand = candidate_for_date(target_date, reg)
     if not cand:
-        log.info("series: no candidate scheduled for %s", target_date)
-        return {"status": "no_candidate", "date": target_date.isoformat()}
+        # PERMANENT RULE (2026-05-19): never silently fall through to the
+        # retired news format. If today has no scheduled candidate, find
+        # the next future candidate and air their series early. Only if the
+        # entire forward schedule is empty do we surface an error.
+        cand = _next_upcoming_candidate(target_date, reg)
+        if not cand:
+            log.error(
+                "series: no candidate scheduled for %s and no future "
+                "candidates found — refusing to generate news fallback",
+                target_date,
+            )
+            return {
+                "status": "no_candidate_and_no_fallback",
+                "date": target_date.isoformat(),
+            }
+        log.warning(
+            "series: no candidate scheduled for %s — using next scheduled: "
+            "%s (originally %s)",
+            target_date, cand["name"], cand.get("scheduled_date"),
+        )
 
     name = cand["name"]
     log.info("series: today's candidate is %s (%s)", name, cand.get("office"))
@@ -502,13 +546,13 @@ def _load_events_for_name(db_path: Path, name: str,
         con = sqlite3.connect(str(db_path))
         con.row_factory = sqlite3.Row
         rows = list(con.execute("""
-            select e.id, e.title, e.summary, e.url, e.event_date, e.level,
+            select e.id, e.title, e.summary, e.source_url, e.date, e.level,
                    pe.role, pe.stance
               from politician_events pe
               join events e on e.id = pe.event_id
               join politicians p on p.id = pe.politician_id
              where lower(p.name) = lower(?)
-             order by e.event_date desc limit ?
+             order by e.date desc limit ?
         """, (name, limit)))
         con.close()
     except Exception:
@@ -730,8 +774,26 @@ def queue_today_series_v2(target_date: Optional[date] = None,
     reg = load_registry()
     cand = candidate_for_date(target_date, reg)
     if not cand:
-        log.info("series: no candidate scheduled for %s", target_date)
-        return {"status": "no_candidate", "date": target_date.isoformat()}
+        # PERMANENT RULE (2026-05-19): never silently fall through to the
+        # retired news format. If today has no scheduled candidate, find
+        # the next future candidate and air their series early. Only if the
+        # entire forward schedule is empty do we surface an error.
+        cand = _next_upcoming_candidate(target_date, reg)
+        if not cand:
+            log.error(
+                "series: no candidate scheduled for %s and no future "
+                "candidates found — refusing to generate news fallback",
+                target_date,
+            )
+            return {
+                "status": "no_candidate_and_no_fallback",
+                "date": target_date.isoformat(),
+            }
+        log.warning(
+            "series: no candidate scheduled for %s — using next scheduled: "
+            "%s (originally %s)",
+            target_date, cand["name"], cand.get("scheduled_date"),
+        )
 
     # Resolve config
     try:
