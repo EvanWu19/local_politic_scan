@@ -143,6 +143,147 @@ def _next_upcoming_candidate(from_date: date,
     return future[0]
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Pool-supply tracking + pool-exhausted closing brief
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Registry-supply floor. When fewer than this many *unstarted* upcoming
+# candidates remain, the supply-warning file is written and the operator
+# gets a banner on the homepage.
+SUPPLY_LOW_THRESHOLD = 7
+
+
+def _count_existing_mp3s(podcasts_dir: Path, slug: str) -> int:
+    """Return the number of `podcast_*_series_<slug>_epN.mp3` files on
+    disk for this candidate (across all dates). Used to know whether a
+    candidate has been started/completed."""
+    if not podcasts_dir or not Path(podcasts_dir).exists():
+        return 0
+    return sum(
+        1 for p in Path(podcasts_dir).glob(f"podcast_*_series_{slug}_ep*.mp3")
+        if p.stat().st_size > 1024
+    )
+
+
+def check_candidate_supply(podcasts_dir: Path,
+                            registry: Optional[Dict[str, Any]] = None,
+                            *,
+                            warning_path: Optional[Path] = None) -> Dict[str, Any]:
+    """Count upcoming registry entries that haven't been started yet
+    (zero MP3s on disk for them). If that count drops below
+    ``SUPPLY_LOW_THRESHOLD``, persist a warning file the homepage can
+    read; otherwise remove any stale warning.
+
+    Returns a stats dict:
+        {unstarted_count, next_unstarted: {name, scheduled_date} | None,
+         threshold, warning_active, ...}
+    """
+    registry = registry or load_registry()
+    today = date.today().isoformat()
+    podcasts_dir = Path(podcasts_dir) if podcasts_dir else None
+
+    if warning_path is None:
+        try:
+            from config import Config as _Cfg
+            base = getattr(_Cfg, "BASE_DIR", Path("."))
+        except Exception:
+            base = Path(".")
+        warning_path = Path(base) / "data" / "supply_warning.json"
+
+    unstarted: List[Dict[str, Any]] = []
+    for c in registry.get("candidates", []):
+        sd = c.get("scheduled_date")
+        if not sd or sd <= today:
+            continue
+        if c.get("dossier_status") == "withdrawn":
+            continue
+        slug = _slug(c.get("name", ""))
+        if _count_existing_mp3s(podcasts_dir, slug) == 0:
+            unstarted.append({
+                "name": c.get("name", ""),
+                "scheduled_date": sd,
+                "slug": slug,
+            })
+
+    unstarted.sort(key=lambda e: e["scheduled_date"])
+    next_unstarted = unstarted[0] if unstarted else None
+    warning_active = len(unstarted) < SUPPLY_LOW_THRESHOLD
+
+    payload = {
+        "unstarted_count": len(unstarted),
+        "threshold": SUPPLY_LOW_THRESHOLD,
+        "next_unstarted": next_unstarted,
+        "warning_active": warning_active,
+        "generated_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+    }
+
+    try:
+        if warning_active:
+            warning_path.parent.mkdir(parents=True, exist_ok=True)
+            warning_path.write_text(
+                json.dumps(payload, indent=2, ensure_ascii=False),
+                encoding="utf-8",
+            )
+        else:
+            # Above threshold — remove any stale warning file.
+            if warning_path.exists():
+                warning_path.unlink()
+    except Exception as e:
+        log.debug("supply-warning persistence skipped: %s", e)
+
+    return payload
+
+
+def _queue_closing_brief(target_date: date) -> Optional[Path]:
+    """Write a ``podcast_closing_<date>.json`` brief into the Cowork inbox
+    so the drain can produce a short (~90s) closing episode acknowledging
+    that the registry has been fully covered. Returns the brief path, or
+    None if writing failed."""
+    try:
+        from config import Config as _Cfg
+        base = getattr(_Cfg, "BASE_DIR", Path("."))
+    except Exception:
+        base = Path(".")
+    inbox = Path(base) / "cowork_inbox"
+    inbox.mkdir(parents=True, exist_ok=True)
+
+    date_iso = target_date.isoformat()
+    brief_id = f"podcast_closing_{date_iso}"
+    path = inbox / f"{brief_id}.json"
+
+    output_file = (
+        Path(base) / "podcasts" / f"podcast_{date_iso}_closing.txt"
+    )
+    payload = {
+        "brief_id": brief_id,
+        "type": "podcast_closing",
+        "created_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "output_file": str(output_file),
+        "text": "All candidates in the registry have been covered. "
+                "The series is complete pending new additions.",
+        "instructions": (
+            "Write a short closing episode in the ALEX/JORDAN format. "
+            "Total target: ~250 words / ~90 seconds of audio. Tone: "
+            "wrap-up; the series has reached the end of the current "
+            "registry. Acknowledge the listener by name (Rockville voter "
+            "before the June 23, 2026 primary). Mention that if any "
+            "newly-filed candidate appears in the registry, the show will "
+            "resume the per-candidate series format. Do not invent new "
+            "candidate biography. No URLs read aloud."
+        ),
+    }
+    try:
+        path.write_text(
+            json.dumps(payload, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        log.warning("series: queued podcast_closing brief at %s", path)
+        return path
+    except Exception as e:
+        log.error("series: failed to queue closing brief: %s", e)
+        return None
+
+
 def find_candidate(name: str, reg: Optional[Dict[str, Any]] = None
                     ) -> Optional[Dict[str, Any]]:
     reg = reg or load_registry()
@@ -780,20 +921,37 @@ def queue_today_series_v2(target_date: Optional[date] = None,
         # entire forward schedule is empty do we surface an error.
         cand = _next_upcoming_candidate(target_date, reg)
         if not cand:
+            # POOL-EXHAUSTED HANDLING (2026-05-20): registry is empty of
+            # future candidates. Don't crash silently or just log — queue
+            # a special `podcast_closing` brief so the drain produces a
+            # short ~90-second closing episode acknowledging that the
+            # series has covered everyone currently on file. Future
+            # additions to the registry will resume normal series queueing.
+            _queue_closing_brief(target_date)
             log.error(
                 "series: no candidate scheduled for %s and no future "
-                "candidates found — refusing to generate news fallback",
+                "candidates — queued podcast_closing brief instead",
                 target_date,
             )
             return {
                 "status": "no_candidate_and_no_fallback",
                 "date": target_date.isoformat(),
+                "closing_brief_queued": True,
             }
         log.warning(
             "series: no candidate scheduled for %s — using next scheduled: "
             "%s (originally %s)",
             target_date, cand["name"], cand.get("scheduled_date"),
         )
+
+    # SUPPLY WARNING (2026-05-20): every queue pass, refresh the
+    # supply-warning state so the operator gets a visible signal when the
+    # forward registry runs thin. Cheap and idempotent.
+    try:
+        from config import Config as _Cfg
+        check_candidate_supply(_Cfg.PODCASTS_DIR, reg)
+    except Exception as e:
+        log.debug("series: supply check skipped (non-fatal): %s", e)
 
     # DEDUP GUARD (2026-05-20): if this candidate already has all 4
     # episode MP3s on disk from a prior airing (any date), refuse to
