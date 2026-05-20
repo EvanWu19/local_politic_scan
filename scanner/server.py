@@ -659,11 +659,16 @@ class Handler(BaseHTTPRequestHandler):
                     "display_title": rest, "url": url, "size": size,
                 })
 
-        # Stable display ordering: series grouped by candidate (ep1..ep4 within),
-        # then legacy ep1..ep4, then deepdives, then unknowns.
-        kind_rank = {"series": 0, "ep": 1, "deepdive": 2, "other": 3}
+        # PERMANENT RULE (2026-05-20): the player surfaces series episodes
+        # only. Legacy `_epN` news episodes and `_deepdive_` files are the
+        # retired formats — any leftover ones on disk are archived to
+        # podcasts/archive/, and what remains in podcasts/ shouldn't be
+        # advertised through the API. Belt-and-suspenders: even if a stale
+        # one slips through the archive sweep, this filter hides it.
+        items = [it for it in items if it.get("kind") == "series"]
+
+        # Stable display ordering: series grouped by candidate (ep1..ep4 within).
         items.sort(key=lambda it: (
-            kind_rank.get(it["kind"], 9),
             it.get("candidate_slug", ""),
             it.get("ep_num", 0),
             it.get("title", ""),

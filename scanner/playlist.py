@@ -135,12 +135,16 @@ def build_playlist_index(podcasts_dir: Path,
             })
         by_date.setdefault(date_str, []).append(entry)
 
-    # Sort episodes within each date with the same key the per-day endpoint uses
-    kind_rank = {"series": 0, "ep": 1, "deepdive": 2, "other": 3}
+    # PERMANENT RULE (2026-05-20): playlist surfaces series episodes only.
+    # `_epN` and `_deepdive_` are the retired formats — filter them out so
+    # the queue never plays stale legacy audio. Drop any date that has no
+    # series episodes left after filtering.
     out: List[Dict] = []
     for date_str in sorted(by_date.keys()):
-        eps = sorted(by_date[date_str], key=lambda e: (
-            kind_rank.get(e["kind"], 9),
+        eps = [e for e in by_date[date_str] if e.get("kind") == "series"]
+        if not eps:
+            continue
+        eps.sort(key=lambda e: (
             e.get("candidate_slug", ""),
             e.get("ep_num", 0),
             e.get("title", ""),

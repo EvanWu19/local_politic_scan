@@ -795,6 +795,45 @@ def queue_today_series_v2(target_date: Optional[date] = None,
             target_date, cand["name"], cand.get("scheduled_date"),
         )
 
+    # DEDUP GUARD (2026-05-20): if this candidate already has all 4
+    # episode MP3s on disk from a prior airing (any date), refuse to
+    # generate duplicate content. Bug 3 case: Ben Kramer fully aired
+    # May 13 but a stale registry entry queued him again for May 19.
+    try:
+        from config import Config as _Cfg
+        from scanner.series import _slug
+        slug = _slug(cand.get("name", ""))
+        existing_mp3s = list(_Cfg.PODCASTS_DIR.glob(
+            f"podcast_*_series_{slug}_ep*.mp3"
+        ))
+        # Group by date to count completed airings
+        airings_by_date: Dict[str, set] = {}
+        import re as _re
+        for p in existing_mp3s:
+            m = _re.search(r"podcast_(\d{4}-\d{2}-\d{2})_series_.+_ep(\d+)\.mp3$", p.name)
+            if m and p.stat().st_size > 1024:
+                airings_by_date.setdefault(m.group(1), set()).add(int(m.group(2)))
+        completed_airings = [
+            d for d, eps in airings_by_date.items() if eps >= {1, 2, 3, 4}
+        ]
+        if completed_airings:
+            log.warning(
+                "series: %s already aired in full on %s — refusing to queue "
+                "duplicate series for %s. Update the registry to skip this "
+                "candidate or assign someone new.",
+                cand["name"], ", ".join(sorted(completed_airings)),
+                target_date.isoformat(),
+            )
+            return {
+                "status": "already_aired",
+                "date": target_date.isoformat(),
+                "candidate": cand["name"],
+                "prior_airings": sorted(completed_airings),
+            }
+    except Exception as e:
+        # Non-fatal — if the guard itself crashes we still try to queue
+        log.debug("series: dedup-guard check failed (non-fatal): %s", e)
+
     # Resolve config
     try:
         from config import Config as _Cfg
