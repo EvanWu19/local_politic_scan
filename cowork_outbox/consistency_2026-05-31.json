@@ -1,0 +1,11 @@
+{
+  "brief_id": "consistency_2026-05-31",
+  "type": "score_consistency",
+  "status": "error",
+  "generated_at": "2026-05-31",
+  "generated_by": "cowork drain (AI backend)",
+  "error": "Could not compute consistency scores this run. The task requires (1) reading politicians + politician_events from data/politics.db for 147 politician IDs and (2) INSERTing one new row per politician into consistency_scores. Neither is safely possible from the drain sandbox: `python main.py` cannot open the DB here ('sqlite3.OperationalError: unable to open database file'), and the project mount serves torn/truncated reads in this environment, so reading the sqlite file is unreliable and WRITING INSERTs through the incoherent mount risks corrupting politics.db (a politics_recovered backup from a prior corruption already exists). Per the 'when in doubt, produce a report' rule, NO rows were written and the DB was not touched.",
+  "remediation": "Run score_consistency on the Windows side where politics.db is natively accessible, OR re-queue on a future drain once the sandbox can open the DB. No data was mutated; the consistency_scores history is intact and untouched.",
+  "politician_ids_requested": 147,
+  "rows_written": 0
+}

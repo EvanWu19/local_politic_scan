@@ -10,6 +10,7 @@ Uses prompt caching for the system prompt to save tokens on daily runs.
 """
 import json
 import logging
+import os
 import re
 from typing import List, Dict, Tuple
 
@@ -19,7 +20,15 @@ from config import Config as _Cfg
 
 log = logging.getLogger(__name__)
 
-MODEL = "claude-haiku-4-5-20251001"   # Fast + cheap for daily batch processing
+import os as _os
+# Upgraded to Opus 4.7 on 2026-05-15 for better relevance scoring and
+# local-impact tagging. Two env vars provide a graceful fallback:
+#   PROCESSOR_MODEL          → overrides the default outright
+#   PROCESSOR_TAG_MODEL      → cheaper model for the level/name pass only
+# (Listener asked for Opus everywhere; this keeps the seam in case cost
+#  becomes a problem.)
+MODEL = _os.getenv("PROCESSOR_MODEL", "claude-opus-4-7")
+TAG_MODEL = _os.getenv("PROCESSOR_TAG_MODEL", MODEL)
 
 _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "the configured locale"
 _FED_KW = ", ".join(_Cfg.FEDERAL_KEYWORDS[:12]) if _Cfg.FEDERAL_KEYWORDS else "budget, healthcare, education, housing, transportation"
@@ -56,21 +65,91 @@ def process_batch(api_key: str, events: List[Dict],
                   batch_size: int = 8) -> List[Dict]:
     """
     Enrich a list of raw events with AI-generated fields.
-    Processes in batches to stay within token limits.
-    Returns enriched events (modifies in-place and returns them).
+
+    When `Config.USE_COWORK_FOR_AI` is True (default), this does NOT hit the
+    Anthropic API. It queues ONE Cowork brief listing every event id that
+    needs enrichment; the Cowork agent (Opus 4.7) drains the inbox at night
+    and writes summaries / relevance scores / categories / politicians
+    directly back into the SQLite rows. Returns the events unchanged with
+    a `_pending_cowork: True` marker.
+
+    When False, falls back to the in-process Anthropic batch path.
     """
-    if not api_key:
-        log.warning("No ANTHROPIC_API_KEY — skipping AI enrichment")
+    # Cowork is the only path now. The `api_key` arg is kept for backwards
+    # compatibility with callers (main.py, scan.py) but ignored.
+    from config import Config as _Cfg2
+    if True:  # was: if cowork_mode
+        from datetime import date
+        from pathlib import Path
+        from scanner.cowork_bridge import build_enrich_events_brief, write_brief
+
+        # ── Candidate-news filter ───────────────────────────────────────────
+        # While the 2026-primary series is running and the candidate list
+        # isn't finalized, ONLY enrich events whose text mentions a
+        # candidate the listener can vote on. Untagged news is skipped
+        # (cheaper Cowork drain, no off-topic noise in the dossiers).
+        # Switched off by setting RESTRICT_TO_REGISTRANTS=0 in env.
+        try:
+            registry_path = Path(__file__).resolve().parent.parent / "data" / "candidate_series.json"
+            if registry_path.exists() and os.getenv("RESTRICT_TO_REGISTRANTS", "1") not in ("0", "false", "False", ""):
+                from scanner.series import all_candidate_names
+                names = [n for n in all_candidate_names() if n]
+                if names:
+                    name_lc = [n.lower() for n in names]
+                    before = len(events)
+                    kept = []
+                    for ev in events:
+                        text = " ".join(str(ev.get(k, "")) for k in
+                                        ("title", "description", "raw_content", "summary")).lower()
+                        for nlc in name_lc:
+                            if nlc in text:
+                                ev["_matched_candidate"] = next(
+                                    n for n in names if n.lower() == nlc)
+                                kept.append(ev)
+                                break
+                    log.info("processor: candidate-news filter kept %d/%d events "
+                             "(matching %d registered candidates)",
+                             len(kept), before, len(names))
+                    events = kept
+        except Exception as e:
+            log.warning("processor: candidate filter failed (proceeding unfiltered): %s", e)
+
+        event_ids = [int(e["id"]) for e in events if e.get("id")]
+        if not event_ids:
+            log.info("processor: no DB-backed events to queue (Cowork mode)")
+            return events
+
+        try:
+            districts = _Cfg2.districts_profile()
+        except Exception:
+            districts = ""
+
+        brief = build_enrich_events_brief(
+            target_date=date.today().isoformat(),
+            db_path=Path(getattr(_Cfg2, "DB_PATH", "data/politics.db")),
+            event_ids=event_ids,
+            locale=_LOCALE,
+            federal_keywords=list(getattr(_Cfg2, "FEDERAL_KEYWORDS", [])),
+            districts_profile=districts,
+        )
+        write_brief(brief)
+        log.info("processor: queued enrich_events brief for %d event(s) "
+                 "— Cowork drains overnight.", len(event_ids))
+        for e in events:
+            e.setdefault("_pending_cowork", True)
         return events
 
-    client = _make_client(api_key)
-    enriched = []
-
-    for i in range(0, len(events), batch_size):
-        batch = events[i: i + batch_size]
-        enriched.extend(_process_batch(client, batch))
-
-    return enriched
+    # Direct-API fallback removed 2026-05-15 — every enrichment goes through
+    # a Cowork brief (drained by drain-cowork-inbox). If you somehow reach
+    # this line, surface it as a notification rather than silently calling
+    # the Anthropic API.
+    from scanner.notifications import notify
+    notify("processor",
+           "Reached the disabled direct-API fallback. The Cowork branch "
+           "above should have handled this — check USE_COWORK_FOR_AI.",
+           severity="error",
+           context={"event_count": len(events)})
+    return events
 
 
 def _process_batch(client: anthropic.Anthropic, events: List[Dict]) -> List[Dict]:

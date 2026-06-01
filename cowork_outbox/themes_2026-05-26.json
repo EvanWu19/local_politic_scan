@@ -1,0 +1,46 @@
+{
+  "window_start": "2026-05-20",
+  "window_end": "2026-05-26",
+  "generated_at": "2026-05-26T08:00:00-04:00",
+  "note_count": 0,
+  "note_count_note": "daily_notes table unreachable from sandbox (FUSE-mount sqlite issue; image-malformed when copied). Rollup synthesized from the persistent user voter profile memory + last 5 days of podcast scripts. Recommend Windows-side `python main.py series themes-refresh` on next run to populate from real daily_notes.",
+  "summary": "The listener is a first-time Rockville Democrat 28 days from the June 23 primary, asking the show to focus on (a) substantive career-long documentation rather than recent-vote lists, (b) the sanctuary-policy stance of every Democratic primary candidate, and (c) which Montgomery County Executive candidate is the strongest fiscal-restraint vote vs. the strongest immigration-enforcement-friendly vote. The Peter James series ran on 5/25 and 5/26 — back-to-back, due to a stale-registry row that scheduled him twice — closing the MoCo Executive field. Aruna Miller (5/24, joint ticket with Wes Moore) and Brooke Lierman (5/23, uncontested Comptroller) covered the statewide lines.",
+  "themes": [
+    "Substantive career-long context | the listener has explicitly flagged that recent-roll-call lists are NOT enough — career arc, old press, party-affiliation history matter more",
+    "Side-by-side policy comparison | the listener wants to see the same 5-axis grid (tax / schools / housing / transit / immigration) applied to every Democrat on their ballot, in the same vocabulary, every series",
+    "Sanctuary-policy lookup | every series should answer 'does this candidate weaken or strengthen the sanctuary framework' as a discrete bottom-line, because the listener keeps returning to that question across cycles",
+    "Wootton High School / Crown relocation | should be addressed by name in every MoCo Executive and Council D7 series, because it is on the listener's docket and almost no candidate has spoken to it specifically",
+    "First-time-voter operational guidance | early-voting dates, ballot-return logistics, what to do if registration issues surface — relevant from now through 6/23"
+  ],
+  "open_questions": [
+    "Which Democrat in the MoCo Executive race actually opposes the sanctuary framework? (Per 5/26 ep4: none of the five. The listener should know this is a primary-irrelevant axis for this race.)",
+    "What is Peter James's actual revenue / headcount / customer list at Crystal Clear Automation? (Flagged in dossier as #7 open question — would change the picture)",
+    "What is the specific basis for Peter James's 2020 MD-6 disqualification? (Likely §5-703 signature shortfall, not confirmed)",
+    "Ben Kramer's career-long voting record — pending; the listener has asked for this specifically and the dossier has not been refreshed since Kramer's June 2025 session activity",
+    "Wootton High School relocation specifically — which Council D7 candidate has the most articulated position? (Friedson testified 10/28/25; the others have been quieter)"
+  ],
+  "underserved_topics": [
+    "County Council District 7 race in depth — the listener's most direct elected representative at the county level, currently under-covered relative to the Executive race",
+    "Sixth Judicial Circuit judges (tier-4 races) — five judicial races on the ballot that the listener will see and have to vote on; show has not run a deep-dive yet",
+    "Central Committee MCC19 — small race but listener will see it on ballot; no coverage yet",
+    "What happens on the November general election ballot vs. the June primary — the listener is a first-time voter and the calendar/format difference matters",
+    "Independent expenditure campaigns landscape (CASA in Action is documented at $117K for Jawando; other IE activity in the last 4 weeks would be valuable to flag)"
+  ],
+  "avoid_list": [
+    "'Twenty-X days out from the Maryland Democratic primary' or 'one month from tomorrow' cold-open device — used 5/26 ep1, 5/25 ep1, 5/24 ep1, 5/23 ep1; the show needs a new cold-open framing for next series",
+    "'We do not have a public record of X yet' / 'we have not surfaced ... in surfaced materials' as recurring hedge phrasing — used VERY heavily 5/25 and 5/26 Peter James eps because his record is thin; needs a new way to say it",
+    "'Stop ICE abuse' / ICE-contractor divestment plank framing — used heavily across 5/26 Peter James eps 3 & 4; do not reuse for non-James candidates",
+    "Crystal Clear Automation / Grape Whisperer / autonomous-vehicle elevated guideway / $500K-per-mile cost claim — Peter James-specific anchors, do not reuse",
+    "Five-time candidate / Republican-to-Independent-to-Democrat party arc — Peter James-specific frame, do not reuse",
+    "MCPS-system-restructuring / 'not fund the school system in its current form' framing — Peter James-specific, do not reuse",
+    "'Walt Whitman High School Bethesda' formative-experience hook — used 5/23 Brooke Lierman ep1, do not reuse for non-Lierman candidates",
+    "'Comptroller is uncontested' framing — Lierman-specific from 5/23, do not reuse",
+    "'1964 in Hyderabad / first immigrant statewide officeholder' framing — Aruna Miller-specific from 5/24, do not reuse",
+    "'Recon-level dossier / placeholder until deeper pass' framing — used 5/22 Aaron Penman ep1; if reused for another thin-record candidate should be reframed",
+    "'Anniston Alabama / Donoho School / Vaughn Stewart Junior as mayor' formative device — used 5/20 Vaughn Stewart, do not reuse",
+    "'My Seven Black Fathers / Reid Temple AME' memoir anchor — used 5/19 Jawando, do not reuse",
+    "'Born in Trenton / adopted as an infant from a teenage mom in a convent' origin device — used 5/17 Dawn Luedtke, do not reuse",
+    "'First Muslim officer of the Montgomery County Police Department' identity-formation device — used 5/18 Sharif Hidayat, do not reuse",
+    "'Montgomery County native' framing hook — used heavily 5/16 Friedson ep1, do not reuse"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "brief_id": "series_2026-05-05_sharif-hidayat_ep1",
+  "type": "series_episode",
+  "ep_num": 1,
+  "ep_title": "Origins",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-05_series_sharif-hidayat_ep1.txt",
+  "completed_at": "2026-05-05T20:11:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3300,
+  "must_cover_status": {
+    "year_of_birth_age": "addressed — flagged as not-on-record exact, est ~1973-1974 / ~52 from Daily Signal age-42-in-2016 anchor",
+    "place_of_birth_residence": "Montgomery County MD / Laytonsville MD — confirmed",
+    "family": "Egyptian-immigrant parents confirmed; spouse/kids beyond 'MCPS parent active on PTA' not on record — flagged",
+    "every_school": "Jesuit HS in MoCo confirmed but unnamed in sources; college not in record — flagged",
+    "hs_or_college_press": "none located — flagged on-air",
+    "religion_language_ethnicity": "Muslim self-id confirmed; Egyptian-American confirmed; specific racial-category labels not self-identified",
+    "earliest_public_statements": "earliest located is May 18 2016 Daily Signal feature — flagged as the single substantive long-form pre-candidate profile"
+  },
+  "open_questions_named_on_air": [
+    "exact birthday/birth year",
+    "specific Jesuit HS name",
+    "college (if any)",
+    "1991-1999 Veteran service branch / dates / unit",
+    "spouse name and number of children"
+  ],
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 3300,
+  "calibration_gap": -600
+}

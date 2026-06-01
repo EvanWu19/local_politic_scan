@@ -1,0 +1,35 @@
+{
+  "run_date": "2026-05-06",
+  "list_finalized": true,
+  "filing_deadline_passed": "2026-02-25",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active_in_registry": 22,
+  "total_active_after_proposed_adds": 22,
+  "summary": "No new adds or removals identified at this run versus the registry. Filing deadline was Feb 25, 2026 with cure-period now closed; SBE pages remain static post-deadline. The Linux bash sandbox is failing this run with 'No space left on device' on every invocation, so no Python parsing of the rendered SBE candidate list was possible. WebFetch returned the SBE House-of-Delegates by-district CSV (≈99 KB body) but the file-tool grep cannot extract structured rows without per-line breaks. WebSearch confirmed no public reporting of post-deadline withdrawals or corrections in the listener's relevant races (Council D7, House D19, Senate D19, MD-8) between yesterday and today. The pending Council-At-Large / countywide-non-district / judicial / school-board enumeration remains carried over from prior runs and continues to depend on the Windows-side parser to load the rendered SBE all-counties HTML.",
+  "active_offices_with_open_questions": [
+    "Council At-Large — still NOT enumerated in the registry. Listener has voting rights here. Highest priority gap.",
+    "MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court, BoE, 6th Circuit Judge — still NOT enumerated. Listener has voting rights on all of them per the districts profile.",
+    "MoCo County Executive — earlier flagged Peter James + Mithun Banerjee as adds; status not verified this run; defer apply to Windows-side `series monitor --apply`.",
+    "U.S. Representative MD-8 — registry has 5 candidates (Raskin, Kumar, Leon, Velasquez, Lande); the SBE statewide CSV was fetched but cannot be cleanly parsed in this sandbox."
+  ],
+  "dossier_scout_briefs_to_queue": [],
+  "tools_available_this_run": "WebFetch returned the by-district House CSV but the rendered HTML/CSV bodies exceed sandbox grep boundaries. The bash sandbox is currently failing on `useradd` with 'No space left on device' so Python parsing was not possible. WebSearch was used to confirm slate filings (Bethesda Magazine 2026-02-03 piece on Kramer/Crutchfield/Stewart) and the open-seat field reporting (Bethesda Magazine 2026-01-30 piece on Tichy / Dasgupta / Jennison).",
+  "registry_writes_deferred": "No registry writes performed this run. last_sbe_check should be updated to 2026-05-06T08:00:00-04:00 by the Windows-side ingest. list_finalized remains true.",
+  "next_actions_for_windows_side": [
+    "Re-pull SBE all-counties HTML in a Windows pass that can render JavaScript / parse the rendered table; the Linux sandbox still cannot.",
+    "Enumerate Council At-Large field — likely 4 seats, multi-candidate field; critical gap because Council At-Large is a listener-voting office.",
+    "Enumerate MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court, BoE, 6th Circuit Judge fields.",
+    "Apply any pending County Executive adds (Peter James, Mithun Banerjee if confirmed) via `python main.py series monitor --apply`.",
+    "Update last_sbe_check on candidate_series.json top-level to today's ISO timestamp.",
+    "Consider queuing dossier_scout briefs for Sunil Dasgupta and Christopher Jennison once their open-seat filings are confirmed; Tichy already in registry."
+  ],
+  "sources": [
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_houseofdelegatesbydistrict_candidatelist.csv",
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html",
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_all_counties_candidatelist.html",
+    "https://bethesdamagazine.com/2026/02/03/kramer-crutchfield-stewart-file-reelection/",
+    "https://bethesdamagazine.com/2026/01/30/tichy-drops-out-of-county-council-at-large-race-to-run-for-state-delegate/"
+  ]
+}

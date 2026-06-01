@@ -1,0 +1,51 @@
+{
+  "brief_id": "series_2026-05-28_laurie-anne-sayles_ep3",
+  "type": "series_episode",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-28_series_laurie-anne-sayles_ep3.txt",
+  "instructions": "Write Episode 3 ('Political Record') of the 4-episode 专题 series on Laurie-Anne Sayles (Maryland State Senate District 19, Democratic, district Senate D19). Air date: 2026-05-28.\n\nEPISODE 3 SCOPE — Political Record:\nEvery prior political run (won AND lost). Every vote of public record. Sponsored / co-sponsored legislation with status. Endorsements received and given. Controversies, ethics complaints, FEC filings, news investigations — neutrally framed.\n\nMUST COVER (do not skip):\n  • all prior runs for office (won/lost) with dates and margins\n  • voting record by topic with bill numbers + dates\n  • sponsored/co-sponsored bills and their fate\n  • endorsements received and given, with dates\n  • controversies — alleged vs. proven vs. dismissed\n  • stance shifts over time, with the receipts\n\nDOSSIER (READ FIRST): `C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\laurie-anne-sayles.md` — this is the source of truth for biographical / career / political facts. Cite from it. If a section you need for episode 3 is missing or thin, STOP and write a fresh `candidate_dossier` brief into the inbox for this candidate before writing today's script.\n\nFORMAT:\n  • Two hosts ALEX (presenter) and JORDAN (curious co-host).\n  • Every line starts `ALEX:` or `JORDAN:` — no stage directions,     no markdown, no emoji, no '[laughs]', no asterisks.\n  • LENGTH TARGET — 3900 words (±300; ~30 min at 130 wpm).\n  • Cite specific names, dates, employers, schools, bill numbers,     URLs from the dossier — generalities are why earlier drafts     felt thin.\n\nPM LENGTH CALIBRATION:\n  • No prior scripts to calibrate against. Aim for ~3900 words (~30 min).\n  • Hit the target. If you finish the must-cover list early,     extend the JORDAN follow-up questions and add depth to the     biographical reads — never pad with filler.\n\nAVOID — do not reuse any framing on `context.avoid_list`. The PM agent has flagged these as already-shipped this week:\n  - 'Thirty-X days out from the Maryland Democratic primary' cold-open device — used 2026-05-16/17/18/19 ep1\n  - 'Montgomery County native' framing hook — used heavily 2026-05-16 Friedson ep1\n  - 'My Seven Black Fathers' / Reid Temple A.M.E. as memoir-anchor for anyone other than Jawando — used 2026-05-19 ep1\n  - 'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' formative-experience device for anyone other than Vaughn Stewart — used 2026-05-20 ep1\n  - 'Born in Trenton / adopted as an infant from a teenage mom in a convent' origin device for anyone other than Dawn Luedtke — used 2026-05-17 ep1\n  - 'First Muslim officer of the Montgomery County Police Department' identity-formation device for anyone other than Sharif Hidayat — used 2026-05-18 ep1\n  - 'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as candidate-specific qualifier — used 2026-05-16 ep1\n  - ICE Out Act / Trust Act / DHS officer screening bill as the immigration-record framing hook — used 2026-05-21 Glass ep3/ep4\n  - 'Run the buses, teach the kids, pick up the trash' tagline — used 2026-05-21 Glass ep1/ep2/ep4\n\nLISTENER POSITIONING:\n  • Locale: Rockville, Montgomery County, Maryland.\n  • Their districts:\n  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19\n  • The listener is a registered Democrat in Rockville, MD,     primary on June 23, 2026. Speak as though we already know     their districts; never tell them to 'look up their ballot'.\n  • If any item from `context.listener_notes` ties into this     candidate, address it by name in the dialogue.\n\nWrite the full dialogue to `output_file`. Plain text only. If the dossier doesn't have the facts you need, do NOT invent — have a host say on-air 'we don't have a public record of X yet' and move on.",
+  "context": {
+    "candidate_name": "Laurie-Anne Sayles",
+    "office": "Maryland State Senate District 19",
+    "party": "Democratic",
+    "district": "Senate D19",
+    "target_date": "2026-05-28",
+    "ep_num": 3,
+    "ep_title": "Political Record",
+    "ep_scope": "Every prior political run (won AND lost). Every vote of public record. Sponsored / co-sponsored legislation with status. Endorsements received and given. Controversies, ethics complaints, FEC filings, news investigations — neutrally framed.",
+    "must_cover": [
+      "all prior runs for office (won/lost) with dates and margins",
+      "voting record by topic with bill numbers + dates",
+      "sponsored/co-sponsored bills and their fate",
+      "endorsements received and given, with dates",
+      "controversies — alleged vs. proven vs. dismissed",
+      "stance shifts over time, with the receipts"
+    ],
+    "dossier_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\laurie-anne-sayles.md",
+    "avoid_list": [
+      "'Thirty-X days out from the Maryland Democratic primary' cold-open device — used 2026-05-16/17/18/19 ep1",
+      "'Montgomery County native' framing hook — used heavily 2026-05-16 Friedson ep1",
+      "'My Seven Black Fathers' / Reid Temple A.M.E. as memoir-anchor for anyone other than Jawando — used 2026-05-19 ep1",
+      "'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' formative-experience device for anyone other than Vaughn Stewart — used 2026-05-20 ep1",
+      "'Born in Trenton / adopted as an infant from a teenage mom in a convent' origin device for anyone other than Dawn Luedtke — used 2026-05-17 ep1",
+      "'First Muslim officer of the Montgomery County Police Department' identity-formation device for anyone other than Sharif Hidayat — used 2026-05-18 ep1",
+      "'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as candidate-specific qualifier — used 2026-05-16 ep1",
+      "ICE Out Act / Trust Act / DHS officer screening bill as the immigration-record framing hook — used 2026-05-21 Glass ep3/ep4",
+      "'Run the buses, teach the kids, pick up the trash' tagline — used 2026-05-21 Glass ep1/ep2/ep4"
+    ],
+    "listener_notes": [],
+    "locale": "Rockville, Montgomery County, Maryland",
+    "districts_profile": "  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19",
+    "length_calibration": {
+      "target_words": 3900,
+      "target_minutes": 30,
+      "recent_avg_words": 0,
+      "recent_min": 0,
+      "recent_max": 0,
+      "trend": [],
+      "gap_words": 3900,
+      "calibration_note": "No prior scripts to calibrate against. Aim for ~3900 words (~30 min)."
+    }
+  },
+  "created_at": "2026-05-28T07:01:24.407202-04:00",
+  "due_by": ""
+}

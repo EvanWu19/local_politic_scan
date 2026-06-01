@@ -1,0 +1,86 @@
+{
+  "brief_id": "series_2026-05-06_charlotte-crutchfield_ep3",
+  "type": "series_episode",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-06_series_charlotte-crutchfield_ep3.txt",
+  "instructions": "Write Episode 3 ('Political Record') of the 4-episode 专题 series on Charlotte Crutchfield (Maryland House of Delegates District 19, Democratic, district House D19). Air date: 2026-05-06.\n\nEPISODE 3 SCOPE — Political Record:\nEvery prior political run (won AND lost). Every vote of public record. Sponsored / co-sponsored legislation with status. Endorsements received and given. Controversies, ethics complaints, FEC filings, news investigations — neutrally framed.\n\nMUST COVER (do not skip):\n  • all prior runs for office (won/lost) with dates and margins\n  • voting record by topic with bill numbers + dates\n  • sponsored/co-sponsored bills and their fate\n  • endorsements received and given, with dates\n  • controversies — alleged vs. proven vs. dismissed\n  • stance shifts over time, with the receipts\n\nDOSSIER (READ FIRST): `C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\charlotte-crutchfield.md` — this is the source of truth for biographical / career / political facts. Cite from it. If a section you need for episode 3 is missing or thin, STOP and write a fresh `candidate_dossier` brief into the inbox for this candidate before writing today's script.\n\nFORMAT:\n  • Two hosts ALEX (presenter) and JORDAN (curious co-host).\n  • Every line starts `ALEX:` or `JORDAN:` — no stage directions,     no markdown, no emoji, no '[laughs]', no asterisks.\n  • LENGTH TARGET — 3900 words (±300; ~30 min at 130 wpm).\n  • Cite specific names, dates, employers, schools, bill numbers,     URLs from the dossier — generalities are why earlier drafts     felt thin.\n\nPM LENGTH CALIBRATION:\n  • You have been running short by ~1655 words (~12 min). Target is 3900 words (~30 min); recent avg is 2245. EXTEND segments — deeper candidate-history reads, more JORDAN pushback, more specific votes/dates. Do NOT pad with filler.\n  • Hit the target. If you finish the must-cover list early,     extend the JORDAN follow-up questions and add depth to the     biographical reads — never pad with filler.\n\nAVOID — do not reuse any framing on `context.avoid_list`. The PM agent has flagged these as already-shipped this week:\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again\n\nLISTENER POSITIONING:\n  • Locale: Rockville, Montgomery County, Maryland.\n  • Their districts:\n  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19\n  • The listener is a registered Democrat in Rockville, MD,     primary on June 23, 2026. Speak as though we already know     their districts; never tell them to 'look up their ballot'.\n  • If any item from `context.listener_notes` ties into this     candidate, address it by name in the dialogue.\n\nWrite the full dialogue to `output_file`. Plain text only. If the dossier doesn't have the facts you need, do NOT invent — have a host say on-air 'we don't have a public record of X yet' and move on.",
+  "context": {
+    "candidate_name": "Charlotte Crutchfield",
+    "office": "Maryland House of Delegates District 19",
+    "party": "Democratic",
+    "district": "House D19",
+    "target_date": "2026-05-06",
+    "ep_num": 3,
+    "ep_title": "Political Record",
+    "ep_scope": "Every prior political run (won AND lost). Every vote of public record. Sponsored / co-sponsored legislation with status. Endorsements received and given. Controversies, ethics complaints, FEC filings, news investigations — neutrally framed.",
+    "must_cover": [
+      "all prior runs for office (won/lost) with dates and margins",
+      "voting record by topic with bill numbers + dates",
+      "sponsored/co-sponsored bills and their fate",
+      "endorsements received and given, with dates",
+      "controversies — alleged vs. proven vs. dismissed",
+      "stance shifts over time, with the receipts"
+    ],
+    "dossier_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\charlotte-crutchfield.md",
+    "avoid_list": [
+      "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3",
+      "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3",
+      "The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2",
+      "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+      "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4",
+      "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite",
+      "Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again"
+    ],
+    "listener_notes": [
+      {
+        "date": "2026-04-30",
+        "note": "I need a deep dive of the new rating system of montgomery county, public school system"
+      },
+      {
+        "date": "2026-04-29",
+        "note": "Fisical displin is good.is Andrew,\nAndrew Friedson the man do fisical restriction?\nWhy they want to close and move wooten high school?\n"
+      },
+      {
+        "date": "2026-04-28",
+        "note": "I agree with non essential spending cut.\nNow focus on who i can do on primary vote in June \n"
+      },
+      {
+        "date": "2026-04-27",
+        "note": "I dont like cramer who vote yes to all education increasing.\nI think the property tax is too high\n\n"
+      },
+      {
+        "date": "2026-04-26",
+        "note": "Not only about recent history of my candidates also search the all.history public record or news acout the candidates \nThe podcast 2 claimed that it will let me know the history of my candidate, but actually never linked any history/ old news to a specific candidate \nFor those candidate already filed their names start to collect their history."
+      }
+    ],
+    "locale": "Rockville, Montgomery County, Maryland",
+    "districts_profile": "  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19",
+    "length_calibration": {
+      "target_words": 3900,
+      "target_minutes": 30,
+      "recent_avg_words": 2245,
+      "recent_min": 1586,
+      "recent_max": 3259,
+      "trend": [
+        3259,
+        2901,
+        2673,
+        1872,
+        2835,
+        2551,
+        1983,
+        1702,
+        2221,
+        1586,
+        1737,
+        1624
+      ],
+      "gap_words": 1655,
+      "calibration_note": "You have been running short by ~1655 words (~12 min). Target is 3900 words (~30 min); recent avg is 2245. EXTEND segments — deeper candidate-history reads, more JORDAN pushback, more specific votes/dates. Do NOT pad with filler."
+    }
+  },
+  "created_at": "2026-05-06T07:00:44.373114-04:00",
+  "due_by": ""
+}

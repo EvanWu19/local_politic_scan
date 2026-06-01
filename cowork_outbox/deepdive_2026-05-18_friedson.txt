@@ -1,0 +1,191 @@
+ALEX: This is the deep dive episode for Monday, May 18, 2026. I'm Alex.
+
+JORDAN: I'm Jordan. The candidate today is Andrew Friedson, currently sitting on the Montgomery County Council from District 1, running for County Executive in the Democratic primary on June 23. We've been threading him into the daily episodes all month, and the listener has asked us to do a long-form on him specifically, with citations.
+
+ALEX: Right. We have a dossier on him in our research file. Most of what I'm citing today is from that dossier and from the public press releases and Maryland Matters and Bethesda Magazine coverage that the dossier draws on. I'll name URLs as we go. The dossier itself sits in our internal data folder and gets updated as new votes come in.
+
+JORDAN: Start at the beginning. Who is he?
+
+ALEX: Andrew Friedson, Bethesda native, grew up in the Montgomery County public school system. Career path goes through Maryland fiscal policy. He worked as a senior advisor to then-State Comptroller Peter Franchot before he ran for County Council. He won the Council District 1 seat in 2018, was re-elected in 2022, and is in his second term. He served as Council President in 2023 and 2024, which is the rotating chair role on the council. He currently chairs the council's Planning, Housing, and Parks Committee, which is the committee that handles zoning and county land use questions.
+
+JORDAN: District 1 is which part of the county?
+
+ALEX: District 1 is Bethesda, Chevy Chase, Potomac, North Bethesda, parts of Cabin John. It's the part of the county closest to D.C. on the southwest, with the highest median household income in the county. It's also the part of the county with the most Metro stations: Friendship Heights, Bethesda, Medical Center, Grosvenor-Strathmore, and the new Purple Line stations. Land use and transit oriented development are District 1 issues in a way that they aren't necessarily in District 7, the listener's district.
+
+JORDAN: He launched his County Executive campaign when?
+
+ALEX: He announced on June 23, 2025, which is exactly one year before the primary date. Maryland Matters covered the launch. We will put the URL in the show notes, marylandmatters.org slash 2025 slash 06 slash 23 slash friedson-kicks-off-campaign-for-montgomery-county-executive.
+
+JORDAN: Endorsements?
+
+ALEX: The most recent in-council endorsements came on April 23, 2026. Councilmember Marilyn Balcombe from District 2 and Councilmember Dawn Luedtke from District 7 both endorsed him. Bethesda Magazine covered it. That gives him two of the four district-based council members in his column. The other two, District 3's Sidney Katz and District 5's Kristin Mink, have not endorsed in the primary as of today.
+
+JORDAN: Luedtke is the listener's own councilmember.
+
+ALEX: Luedtke is the listener's own councilmember in District 7, and she has endorsed Friedson for County Executive. The listener can decide how to weight that endorsement. Endorsements aren't dispositive but they are a data point about how the sitting representative the listener trusts is evaluating the field.
+
+JORDAN: Walk the voting record, topic by topic, the way the listener has asked us to do.
+
+ALEX: I'm going to walk five topics. Property tax and county budget. Education and MCPS funding. The Wootton High School question. Housing and land use. And immigration and sanctuary policy.
+
+JORDAN: Property tax first.
+
+ALEX: Property tax is Friedson's most-cited issue and the one the listener has asked us about by name. The pattern in the public record is consistent. He has voted against every property-tax rate increase proposed by sitting County Executive Marc Elrich during his time on the council. That includes the proposed rate increase in 2020, 2023, 2025, and the rate increase in the FY26 budget cycle in 2025. He is the most consistent no vote on tax-rate increases on the current council.
+
+JORDAN: And on operating budgets?
+
+ALEX: Two separate things. The operating budget is the full county budget. The property tax rate is part of how you fund it. Friedson has voted yes on operating budgets that didn't include a tax rate increase. He voted yes on the FY25 operating budget at roughly 7.1 billion dollars, which funded MCPS at 99.2 percent of the Board of Education's request without a rate increase. He voted yes on the FY26 operating budget at roughly 7 billion dollars, which funded MCPS at 99.8 percent of the request without a rate increase. The FY26 vote was unanimous on the headline, 11 to 0, after the council reached a compromise package.
+
+JORDAN: That seems contradictory at first. He's the fiscal restraint candidate but he voted yes on a 7-billion dollar budget.
+
+ALEX: The way to make those consistent is that he was voting yes on the operating budget conditional on no tax increase, and his floor work is in the amendment process. When the Executive proposes a tax-rate increase and an operating expansion, he votes no on the rate hike, no on certain line items, and yes on the final compromise budget if it doesn't raise the rate. That is a coherent fiscal posture. The criticism from the left is that it's a posture that depends on the structural conditions allowing it. In a year where the county can't avoid a tax-rate increase without cutting services, the posture is harder to maintain.
+
+JORDAN: He authored a property tax credit?
+
+ALEX: He authored or championed the expansion of the county supplement to the Homeowners' Tax Credit. The Homeowners' Tax Credit is a state-administered, means-tested property tax credit for households below a certain income threshold. The county can add a supplemental amount on top. Friedson advocated for expanding the county supplement during his first term, and there's record of that work on his campaign biography page at andrewfriedson dot com. The specific bill number, the council action, the dossier doesn't have the bill number cleanly. We flag it as an open question and we'll surface it on the dossier's next refresh.
+
+JORDAN: Education and MCPS funding.
+
+ALEX: MCPS is where the budget story and the politics get most intricate. Friedson supports robust school funding. He has voted yes on operating budgets that fund MCPS at over 99 percent of the Board of Education's request, two years running. He has also opposed using property tax rate increases as the funding mechanism. Bethesda Magazine ran a piece on May 22, 2024, headlined "Elrich and Friedson butt heads over MCPS funding," which captures the public feud between the Executive and Friedson over how to fund the school system. The Executive wanted a tax rate increase to fund a higher MCPS appropriation. Friedson argued for the same MCPS number through reallocation rather than rate increase. The compromise that landed in the council had Friedson's posture.
+
+JORDAN: That is the kind of specific the listener has asked for. Cite the article.
+
+ALEX: Bethesda Magazine, May 22, 2024, URL bethesdamagazine.com slash 2024 slash 05 slash 22 slash elrich-friedson-butt-heads-over-mcps-funding. That's in the show notes.
+
+JORDAN: There's also the police-in-schools letter, isn't there?
+
+ALEX: There is. April 28, 2026, Friedson sent a letter to MCPS leadership and the county police asking them to develop a strategy to permanently station police officers in every county high school. The letter came two days before the April 30 shooting at Blake High School. The timing made it a much bigger story than it would have been otherwise. Bethesda Magazine and WTOP both covered it.
+
+JORDAN: What is he proposing?
+
+ALEX: To explain it properly we have to back up. Montgomery County had a School Resource Officer program for years, which was scrapped in 2021 after equity concerns. The program was replaced with the Community Engagement Officer or CEO program, which is a different model. The CEO is not a sworn officer stationed in the building. The CEO is a community-policing role with assigned schools but not a stationed presence.
+
+JORDAN: And Friedson is asking for a return to stationed officers.
+
+ALEX: Friedson is asking for stationed officers in every high school. The letter is on the record. The response from MCPS leadership and from civil rights groups including the local NAACP and CASA has been critical. The Blake High shooting on April 30 made the political moment for Friedson easier, in the sense that there was a real public-safety event close to the time of his letter. The political moment for the critics also intensified because the conversation moved from theoretical to immediate.
+
+JORDAN: Where does he land in the field on this?
+
+ALEX: Friedson is the most pro-stationed-officer candidate in the Democratic primary for County Executive. Jawando opposes a return to the SRO model. Glass supports a community-engagement structure but has been cautious about endorsing stationed sworn officers. That is a real, real, on-record difference between the three main candidates.
+
+JORDAN: Wootton.
+
+ALEX: Wootton is the listener-flagged topic that the daily notes have asked about three different times. Friedson's position on Wootton is clearer than most of the other candidates'.
+
+JORDAN: Walk it.
+
+ALEX: On October 28, 2025, Friedson testified to the MCPS Board of Education at a public hearing on the Wootton facility planning question. He explicitly called for full renovation of the existing Wootton building, not relocation. He attributed his position in part to the work of Rockville Mayor Monique Ashton and Rockville Councilmember Adam Van Grack, who had been pressing for the renovation option. His quote, from the testimony, is: "The idea of relocating Wootton to Crown never even occurred to me until MCPS proposed it. I meant what I said then, and I stand by it now."
+
+JORDAN: And the board went the other way.
+
+ALEX: The board voted to approve Option H, which is the relocation of Wootton to the new Crown High School site in Gaithersburg, taking effect for the 2027 to 2028 school year. After that vote, Friedson criticized the process publicly, citing a lack of transparency in how the staff recommendation was developed. The vote went against the position he testified for. Bethesda Magazine covered the recommendation in February 2026.
+
+JORDAN: The County Executive doesn't vote on school closures.
+
+ALEX: The County Executive does not vote on individual MCPS school closure decisions. The Board of Education votes. But the County Executive shapes the county capital budget, which is where school renovation funding lives. If Friedson is County Executive and the Wootton renovation is in the capital budget request from MCPS, he has a say in whether to fund it. That is the lever the Executive would have on Wootton, indirectly.
+
+JORDAN: That's important for the listener to know because it tells them what's possible to undo and what isn't.
+
+ALEX: It tells them what's possible to undo and what isn't. If the Wootton relocation goes forward as the board voted, and the Executive wants to fund the existing Wootton building's renovation as a parallel facility decision, that's a possible capital budget conversation. It is not a unilateral Executive decision.
+
+JORDAN: Housing and land use.
+
+ALEX: Friedson is, by far, the most pro-housing-supply member of the current council. He was lead sponsor of Zoning Text Amendment 25-02, which the council branded "More Housing N.O.W." dot acronym. The ZTA allows duplex, triplex, townhome, and apartment housing along county transit corridors, defined as streets with three or more lanes or wider than 100 feet, and requires 15 percent workforce-affordable housing in qualifying projects.
+
+JORDAN: How did the council vote on that?
+
+ALEX: 8 to 3 in favor on July 22, 2025. The co-lead sponsor was Natali Fani-González. The critics, led by Will Jawando, argued the bill favors developer interests. The supporters argued it is the most consequential pro-housing zoning change Montgomery County has made in a decade. Bethesda Magazine covered the vote on July 22, 2025.
+
+JORDAN: That is a real fight.
+
+ALEX: It's a real fight, and it surfaces a genuine policy disagreement between Friedson and Jawando. Friedson believes the housing affordability problem is a supply problem and that the solution is upzoning along transit. Jawando believes the housing affordability problem is partly a corporate landlord and rent stabilization problem and that upzoning alone enriches developers. Both views are defensible. The listener should know they're distinct.
+
+JORDAN: What about rent control?
+
+ALEX: Friedson has been a critic of the county's existing rent control policy. He argues it discourages new construction. The county passed a rent stabilization ordinance in 2023 that caps annual rent increases at the lower of six percent or inflation plus three percent. Friedson voted yes on that ordinance as it was finalized, after working to add carve-outs for new construction. His current public position is that the rent cap is acceptable as a temporary measure but that the long-term solution is supply.
+
+JORDAN: Other housing bills?
+
+ALEX: He was lead sponsor of Bill 2-25, which is another affordable housing bill. The dossier doesn't have the full details on that one, and it's flagged as an open question for the next dossier refresh. Co-sponsors included Luedtke, Balcombe, Sayles, and Council President Stewart. He also sponsored the FAITH Zoning Text Amendment, which makes it easier for houses of worship to build affordable housing on their property. That's an emerging model around the country and Friedson is the local sponsor of it.
+
+JORDAN: Climate.
+
+ALEX: Friedson co-sponsored Bill 2-26, which is the Taxation and Fuel-Energy Tax amendments package. Co-sponsors were Luedtke and Glass. The bill passed March 18, 2026. It expands the county's Green Bank funding for climate resiliency projects. The Green Bank is the public-private financing entity that lends for energy efficiency and renewable energy projects. The press release is on the Green Bank website.
+
+JORDAN: Immigration and sanctuary policy. The listener-flagged topic.
+
+ALEX: This is where I need to give the listener a clear answer. The listener has asked, repeatedly, which Democratic primary candidates oppose sanctuary policy. Friedson does not oppose sanctuary policy. He co-sponsored the strongest sanctuary-style bills the county has passed in this council term.
+
+JORDAN: Cite them.
+
+ALEX: Bill 32-25, the Trust Act, introduced December 2025, passed unanimously. Friedson is a co-sponsor. The bill reaffirms that all county residents, regardless of immigration status, can access county services without fear or discrimination. On the floor, Friedson said, and this is a direct quote, "We're standing up against the terror that ICE has sown in communities across the country because no family should have to live in fear."
+
+JORDAN: Second bill.
+
+ALEX: Bill 3-26, the County Values Act. Lead sponsor was Kristin Mink. Passed unanimously March 24, 2026. Friedson is one of eight co-sponsors. The bill mandates clear judicial-warrant signage and staff training in county-controlled buildings, and prohibits immigration enforcement activities in county-owned parking lots, garages, and vacant lots.
+
+JORDAN: So a listener who wants a Democratic primary County Executive candidate who opposes sanctuary policy is not going to find that candidate in Friedson.
+
+ALEX: They are not. And the listener should hear that plainly. Friedson is a co-sponsor of both the strongest county sanctuary-leaning bills passed in this term, and he has stood on the floor and made statements opposing ICE enforcement actions in the county. That is on the record. The listener can decide how to vote on that information. They will not find a Democratic primary candidate in the field of three who has voted against sanctuary-style protections.
+
+JORDAN: That's a real answer and we should sit with it for a second. The listener has asked this every day for weeks. The answer is that the answer they may have wanted, a Democratic primary opponent of sanctuary policy, isn't on the ballot in MoCo this primary.
+
+ALEX: That's the answer. The field of viable Democratic primary candidates is Friedson, Jawando, and Glass. All three are on record supporting the recent sanctuary-style bills. If the listener wants to vote for a candidate who opposes sanctuary policy, they would need to wait for the general election in November, where the Republican candidate's position will be different. The listener has told us they are a registered Democrat voting in the Democratic primary. So within the Democratic primary, the choice on this issue is which kind of pro-sanctuary candidate they want, not whether to vote for one.
+
+JORDAN: Public safety quality of life bills.
+
+ALEX: Friedson was lead co-sponsor with Luedtke on Bill 13-25, the unlicensed commercial house parties bill. Tightens licensing and raises penalties on for-profit unlicensed residential events. A practical neighborhood-quality-of-life bill, not a marquee fight. Useful as a record of bipartisan working relationships on the council.
+
+JORDAN: Stable positions and shifts. Where has Friedson been consistent and where has he moved?
+
+ALEX: Three areas of consistency. Property tax restraint. Pro-housing supply. Pro-fiscal-discipline framing across multiple budget cycles. Three areas where his position has either evolved or surprised people. The police-in-schools letter, which is a notable shift toward a posture that he had not publicly held before. His support for the rent stabilization ordinance, which he voted for after public skepticism. And the immigration package, where he moved from a more cautious posture in his first term to a co-sponsor role on the Trust Act and the County Values Act in his second term.
+
+JORDAN: Are any of those shifts inconsistent enough that the listener should be concerned?
+
+ALEX: I don't think any rise to inconsistency. The police-in-schools letter is the closest. It is a posture shift, in the sense that he had not been the leading councilmember on stationed-officer questions before. But his framing has been consistent: he sees public safety as a county priority that the budget should reflect. The rent stabilization shift is more of an accommodation than a shift; he voted for the bill after winning concessions on new-construction exemptions, which is normal council horse-trading. The immigration evolution is, in his telling, a response to the federal environment changing.
+
+JORDAN: The contested primary.
+
+ALEX: Three real candidates. Friedson, Jawando, Glass. Marc Elrich, the term-limited incumbent Executive, has filed for an at-large council seat, not the Executive. The minor filers Mithun Banerjee and Peter James are on the ballot but not running active campaigns.
+
+JORDAN: Walk the contrasts.
+
+ALEX: On property tax, Friedson is the most restrained. Jawando and Glass have both voted yes on tax increases that Friedson voted no on. On housing supply, Friedson is the most pro-supply, with the More Housing N.O.W. bill on his record. Jawando is the most skeptical of supply-side housing reform. On policing, Friedson is the most pro-stationed-officer. Jawando is the most cautious. On MCPS funding, the three are closer to each other than they are different. All three have voted yes on operating budgets that fund MCPS at over 99 percent of request.
+
+JORDAN: Money?
+
+ALEX: County executive candidates in Maryland can opt into the county's public financing program, which limits individual contributions and provides matching funds. Friedson opted in. Jawando opted in. Glass opted in. So the money side is more even than it would be in a non-public-financing race. Each of the three has raised between roughly 700 thousand and 1.1 million dollars cycle-to-date through Q1 2026. We will have updated Q2 numbers when the Maryland State Board of Elections posts them in early July.
+
+JORDAN: Endorsements.
+
+ALEX: Friedson has council endorsements from Balcombe and Luedtke. Jawando has endorsements from Mink and from at-large councilmember Pham. Glass has endorsements from Sayles. The labor side: SEIU 500 endorsed Jawando, MCEA the teachers union endorsed Jawando, the firefighters Local 1664 endorsed Glass, the building trades have not endorsed. The business side: the Greater Bethesda Chamber endorsed Friedson, the Greater Silver Spring Chamber has not endorsed.
+
+JORDAN: That's a clean read of who is whose coalition.
+
+ALEX: That's a clean read of who is whose coalition. Friedson is the business-friendly, pro-supply, fiscal-restraint candidate. Jawando is the labor-backed, pro-tenant, pro-spending candidate. Glass is in the middle on most of these.
+
+JORDAN: What changes in Rockville if Friedson wins.
+
+ALEX: Specifically Rockville, which is the listener's home and Council District 7. Three concrete things to expect if Friedson wins the primary on June 23 and the general election in November, which is a near-lock in MoCo for any Democrat.
+
+JORDAN: One.
+
+ALEX: One. The property tax rate is unlikely to be raised in his first four-year term. The rate has been roughly flat for several years. Friedson would maintain that posture. Assessment-driven bill increases would still happen, because assessments rise, but the rate increases that would compound those assessment increases are unlikely.
+
+JORDAN: Two.
+
+ALEX: Two. The county capital budget will tilt toward transit-corridor development, particularly along Route 355 and the Red Line corridor that runs through Rockville. Rockville Town Center, Twinbrook, and Rockville Pike are all in District 1 territory adjacent to the listener's District 7. Expect more upzoning enforcement and more building permit volume in those corridors over four years.
+
+JORDAN: Three.
+
+ALEX: Three. The MCPS capital budget request for renovation of existing buildings is more likely to be funded over new construction. The Wootton question is the immediate test case. If MCPS comes back with a renovation request for the existing Wootton building, Friedson is more likely to fund it than the other candidates would be. If MCPS comes back with a new Crown High School request as the sole option, Friedson is more likely to push back on it.
+
+JORDAN: That's the grounded close for Rockville specifically.
+
+ALEX: That's the grounded close for Rockville specifically. None of these three predictions are guarantees, and we'll know more as the campaign progresses. We will revisit them as the primary gets closer.
+
+JORDAN: That's the Friedson deep dive for May 18.
+
+ALEX: Thanks for listening. The dossier on Friedson is in our internal research folder. The bill numbers, votes, and press release links are in the show notes. The next deep dive in the rotation is Jawando, which will run later this week.
+
+JORDAN: See you in the next episode.

@@ -1,0 +1,1 @@
+{"status":"error_db_blocker","brief_id":"consistency_2026-05-25","reason":"sqlite FUSE/mount blocker — politics.db unreachable from sandbox. Authoritative scores preserved from 2026-05-19. Recommend Windows-side rerun.","output":"cowork_outbox/consistency_2026-05-25.json"}

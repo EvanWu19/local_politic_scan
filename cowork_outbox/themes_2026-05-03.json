@@ -1,0 +1,51 @@
+{
+  "brief_id": "themes_2026-05-03",
+  "type": "weekly_themes",
+  "generated_at": "2026-05-03T10:00:00-04:00",
+  "window_start": "2026-04-26",
+  "window_end": "2026-05-03",
+  "note_count": 7,
+  "summary": "This Rockville first-time Democratic primary voter is now in narrow-the-ballot mode for June 23, 2026. The asks have shifted from 'tell me what's on my ballot' to 'tell me which one of these named people actually votes the way I claim I want to.' Property-tax skepticism and a desire to cut non-essential spending are the strongest priors; sanctuary-policy skepticism is a recurring secondary prior; school spending is the connective tissue between the two because it lands on property taxes. The listener wants Andrew Friedson tested specifically against the fiscal-discipline label and Greg Kramer tested specifically on whether 'votes yes on every education increase' actually holds up bill-by-bill. The new ask of the week is the Montgomery County school rating system — they want a deep dive on it, not a passing mention. Repetition complaints continue to be the #1 quality issue.",
+  "themes": [
+    "Candidate-specific voting records over generalities — listener wants Friedson, Kramer, Glass, Jawando, Stewart, Crutchfield, Tichy named with bill numbers and roll-call counts, not described in general terms",
+    "Property tax as the master variable — listener treats every state and county education vote as a downstream property-tax question and expects the show to trace the chain from state floor to local Maintenance-of-Effort to their tax bill",
+    "Sanctuary-policy stance, candidate by candidate — listener wants a clean answer for each Democrat on the ballot, not category-level claims about the county",
+    "Wootton High School relocation — listener has asked three weeks running why MCPS wants to move it; this is now the local-school story they are most invested in",
+    "The MCPS new rating system — fresh ask from 2026-04-30 daily note; listener wants a structured deep dive, not a paragraph"
+  ],
+  "open_questions": [
+    "I need a deep dive of the new rating system of montgomery county, public school system",
+    "Is Andrew Friedson the man who does fiscal restriction?",
+    "Why do they want to close and move Wootton High School?",
+    "What is Kramer's full historical voting record, including old news and public records beyond recent sessions?",
+    "Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?"
+  ],
+  "underserved_topics": [
+    "MCPS rating / accountability system — 2026-04-30 ask has not been addressed at all yet",
+    "Crutchfield, Stewart, Tichy — the District 19 House non-incumbent filers; show has promised dossiers and not delivered",
+    "Glass and Jawando full fiscal records on par with the Friedson dossier — currently the listener has 'three Democrats agree on X' framing more than candidate-by-candidate splits",
+    "Public Election Fund participation by candidate — touched on in Friedson dossier (he opted out) but not extended to a side-by-side",
+    "Side-by-side policy comparison table for Governor, County Executive, House of Delegates D19"
+  ],
+  "avoid_list": [
+    "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3",
+    "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3",
+    "The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2",
+    "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+    "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+    "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3",
+    "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4",
+    "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite",
+    "Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again",
+    "Kramer 8-vote walkthrough across HB1273, HB642, HB933, HB211, HB1485 (Pension Cost Shift no), HB304, HB712, HB1102 — already laid out in full in 2026-05-02 ep1; reference summary only, do not re-read every bill",
+    "Friedson 4-no-votes on Elrich property-tax increases (2020, 2023, 2025, 2026) as the lead Friedson hook — used in 2026-05-02 deepdive_friedson; can cite once but do not lead an episode with it",
+    "Comptroller Lierman direct-care vacancy 22% vs 16% Montgomery County / state — covered in 2026-05-02 ep1; if revisited, advance the story instead of repeating the headline number",
+    "Baltimore Inner Harbor ColiMinder real-time water testing as a 'this lands on the County Executive's desk' hook — used in 2026-05-02 ep1",
+    "Luedtke endorsement of Friedson framed as 'your councilmember has endorsed' — used in 2026-05-02 deepdive_friedson"
+  ],
+  "audit_notes": [
+    "DB upsert into weekly_themes table not performed in this run — bash/sqlite access was unavailable. Windows-side processor should mirror this JSON into the weekly_themes row when it picks up the .done.json marker.",
+    "Window window_start 2026-04-26 reflects the available daily_notes context shipped in the briefs. If the live politics.db has additional notes dated 2026-05-01 / 2026-05-02 / 2026-05-03 that were not included in the brief, the Windows-side processor should re-run themes after merging."
+  ]
+}

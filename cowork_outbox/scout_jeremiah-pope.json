@@ -1,0 +1,19 @@
+{
+  "candidate_name": "Jeremiah Pope",
+  "richness_score": 0.35,
+  "estimated_age": null,
+  "estimated_research_hours": 3.5,
+  "has_campaign_site": true,
+  "has_wikipedia": false,
+  "has_ballotpedia": false,
+  "has_legislative_record": false,
+  "has_court_record_search_hits": false,
+  "earliest_news_year": 2024,
+  "missing_critical_sections": [
+    "education",
+    "career",
+    "political_record"
+  ],
+  "notes": "Thin profile; first-time activist run for At-Large. Office_primer likely the better Ep 4 fill.",
+  "scouted_at": "2026-05-25T02:42:00+00:00"
+}

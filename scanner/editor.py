@@ -98,25 +98,52 @@ def review_script(
     podcasts_dir: Path,
     db_path: Path,
     anthropic_key: str,
-    model: str = "claude-sonnet-4-5-20250929",
+    model: str = "claude-sonnet-4-6",
 ) -> Dict:
     """
     Main entry point. Returns:
         {"final_script": str, "notes": str, "changed": bool}
     Falls through to the draft unchanged on any error.
     """
-    if not anthropic_key:
+    # Cowork-only — direct API path disabled 2026-05-15.
+    prior_excerpts = _load_prior_script_excerpts(podcasts_dir, episode_date, days=PRIOR_DAYS)
+    notes_block = _load_recent_notes(db_path, episode_date, days=NOTES_DAYS)
+    themes_block = _load_latest_themes_block(db_path, episode_date)
+
+    from scanner.cowork_bridge import build_review_episode_brief, write_brief
+    from scanner.notifications import notify
+    out_file = podcasts_dir / f"podcast_{episode_date.isoformat()}_ep{ep_num}.editor.txt"
+    try:
+        brief = build_review_episode_brief(
+            target_date=episode_date.isoformat(),
+            ep_num=ep_num,
+            ep_title=ep_title,
+            draft=draft,
+            prior_excerpts=prior_excerpts,
+            notes_block=notes_block,
+            themes_block=themes_block,
+            output_file=out_file,
+        )
+        write_brief(brief)
+        log.info("editor: queued review_episode brief for ep%d — "
+                 "Cowork rewrites overnight.", ep_num)
         return {
             "final_script": draft,
-            "notes": "Editor skipped: no API key",
+            "notes": "Editor queued for Cowork — using draft as placeholder.",
             "changed": False,
             "verdict": "approved",
             "rewrite_reason": "",
         }
-
-    prior_excerpts = _load_prior_script_excerpts(podcasts_dir, episode_date, days=PRIOR_DAYS)
-    notes_block = _load_recent_notes(db_path, episode_date, days=NOTES_DAYS)
-    themes_block = _load_latest_themes_block(db_path, episode_date)
+    except Exception as e:
+        notify("editor", f"Failed to queue review brief for ep{ep_num}: {e}",
+               severity="error")
+        return {
+            "final_script": draft,
+            "notes": f"Editor queue failed: {e}",
+            "changed": False,
+            "verdict": "approved",
+            "rewrite_reason": "",
+        }
 
     user_prompt = _build_user_prompt(
         ep_num=ep_num,

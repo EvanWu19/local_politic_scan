@@ -1,0 +1,154 @@
+{
+  "brief_id": "deepdive_2026-05-24_andrew-friedson",
+  "type": "deep_dive_script",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-24_deepdive_andrew_friedson.txt",
+  "instructions": "Write a ~30-minute single-candidate deep-dive podcast on Andrew Friedson. Two hosts: ALEX (presenter) and JORDAN (curious first-time voter from Rockville, MD). Every line begins ALEX: or JORDAN: — no stage directions, no markdown.\n\nCover, in this order:\n  1. Who they are and which seat the listener is voting on.\n  2. Their actual voting record by topic — quote bill numbers and cite the dossier. Do NOT speak in generalities; if the dossier has a vote, name it.\n  3. Where their stated positions and votes have been stable, where they've shifted, and which votes the listener-flagged topics turn on (sanctuary policy, school funding, property tax, etc.).\n  4. What's contested in the upcoming primary and how this candidate differs from the others.\n  5. A 'what would change in Rockville if they win' grounded close.\n\nAVOID re-using any framing on this list:\n  - 'Thirty-X days out from the Maryland Democratic primary' as the cold-open device — used in podcast_2026-05-16 ep1, 2026-05-17 ep1, 2026-05-18 ep1, 2026-05-19 ep1\n  - 'Montgomery County native' as the framing hook — used heavily in 2026-05-16 Friedson ep1 and revisited 2026-05-18 Hidayat ep1\n  - 'My Seven Black Fathers' as the framing device for any candidate other than Will Jawando — used in 2026-05-19 ep1\n  - 'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' as the formative-experience device for any candidate other than Vaughn Stewart — used in 2026-05-20 ep1\n  - 'Born in Trenton, between Atlantic City and Philadelphia / adopted as an infant from a teenage mom in a convent' as origin device for any candidate other than Dawn Luedtke — used in 2026-05-17 ep1\n  - 'First Muslim officer of the Montgomery County Police Department' as identity-formation device for any candidate other than Sharif Hidayat — used in 2026-05-18 ep1\n  - 'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as a candidate-specific qualifier when reusable on other candidates — used in 2026-05-16 ep1\n  - Reference to 'My Seven Black Fathers' memoir or Reid Temple A.M.E. Church for any candidate other than Jawando — used in 2026-05-19 ep1\n  - ICE Out Act / Trust Act / DHS officer screening bill as the immigration-record framing hook — used in 2026-05-21 Glass ep3 and ep4; can be referenced but not lead-framed in next-week candidates\n  - 'Run the buses, teach the kids, pick up the trash' tagline as a candidate-pitch device — used in 2026-05-21 Glass ep1, ep2, and ep4\n\nIf the dossier is missing a fact you'd want to cite, say so on-air ('we don't have a record of how they voted on X yet'), don't invent.",
+  "context": {
+    "candidate_name": "Andrew Friedson",
+    "target_date": "2026-05-24",
+    "politician_row": {
+      "id": 7,
+      "name": "Andrew Friedson",
+      "office": "County Council District 1",
+      "party": "Democrat",
+      "district": "1",
+      "level": "county",
+      "bio": ""
+    },
+    "events": [
+      {
+        "id": 205,
+        "title": "District 1 council candidates debate housing, fiscal policy at Bethesda forum",
+        "summary": "Four candidates (three Democrats, one Republican) are running for a Montgomery County Council seat in District 1 and debated their positions on housing and fiscal (money/budget) policy. This election does not affect your district, but shows how local races are unfolding.",
+        "date": "2026-04-20",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"election\", \"housing\"]",
+        "role": "Montgomery County Councilmember, District 1",
+        "stance": "vacating seat",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Montgomery County Councilmember",
+        "stance": "Addresses public safety concerns regarding vandalism and arson",
+        "notes": ""
+      },
+      {
+        "id": 31,
+        "title": "Democratic candidates for Montgomery County’s top job make pitches at forum",
+        "summary": "Five Democratic candidates are running for Montgomery County executive and holding public forums to introduce themselves. This directly affects Rockville voters, who live in Montgomery County and will vote in this election for their county's top leader.",
+        "date": "2026-04-16",
+        "level": "state",
+        "type": "news",
+        "categories": "[\"election\", \"budget\"]",
+        "role": "Candidate for Montgomery County Executive",
+        "stance": "Running in Democratic primary",
+        "notes": ""
+      },
+      {
+        "id": 31,
+        "title": "Democratic candidates for Montgomery County’s top job make pitches at forum",
+        "summary": "Five Democratic candidates are running for Montgomery County executive and holding public forums to introduce themselves. This directly affects Rockville voters, who live in Montgomery County and will vote in this election for their county's top leader.",
+        "date": "2026-04-16",
+        "level": "state",
+        "type": "news",
+        "categories": "[\"election\", \"budget\"]",
+        "role": "Democratic Candidate for Montgomery County Executive",
+        "stance": "Running for office",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Montgomery County Councilmember (District 7)",
+        "stance": "Addressing public safety concerns",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Montgomery County Councilmember, District 7",
+        "stance": "Responding to local public safety incident",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Councilmember",
+        "stance": "Commenting on public safety incident",
+        "notes": ""
+      }
+    ],
+    "consistency": {
+      "id": 1060,
+      "politician_id": 7,
+      "politician_name": "Andrew Friedson",
+      "window_start": "2026-04-16",
+      "window_end": "2026-05-21",
+      "event_count": 7,
+      "score": 0.85,
+      "verdict": "consistent",
+      "summary": "Andrew Friedson shows stable positions across 2 topic(s) with no clear shifts across 7 events.",
+      "stable_positions": [
+        {
+          "topic": "public_safety",
+          "position": "addresses public safety concerns regarding vandalism and arson",
+          "evidence_event_ids": [
+            104,
+            104,
+            104,
+            104
+          ]
+        },
+        {
+          "topic": "fiscal",
+          "position": "running in democratic primary",
+          "evidence_event_ids": [
+            31,
+            31
+          ]
+        }
+      ],
+      "shifts": [],
+      "generated_at": "2026-05-22T02:56:48.722624"
+    },
+    "listener_notes": [],
+    "avoid_list": [
+      "'Thirty-X days out from the Maryland Democratic primary' as the cold-open device — used in podcast_2026-05-16 ep1, 2026-05-17 ep1, 2026-05-18 ep1, 2026-05-19 ep1",
+      "'Montgomery County native' as the framing hook — used heavily in 2026-05-16 Friedson ep1 and revisited 2026-05-18 Hidayat ep1",
+      "'My Seven Black Fathers' as the framing device for any candidate other than Will Jawando — used in 2026-05-19 ep1",
+      "'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' as the formative-experience device for any candidate other than Vaughn Stewart — used in 2026-05-20 ep1",
+      "'Born in Trenton, between Atlantic City and Philadelphia / adopted as an infant from a teenage mom in a convent' as origin device for any candidate other than Dawn Luedtke — used in 2026-05-17 ep1",
+      "'First Muslim officer of the Montgomery County Police Department' as identity-formation device for any candidate other than Sharif Hidayat — used in 2026-05-18 ep1",
+      "'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as a candidate-specific qualifier when reusable on other candidates — used in 2026-05-16 ep1",
+      "Reference to 'My Seven Black Fathers' memoir or Reid Temple A.M.E. Church for any candidate other than Jawando — used in 2026-05-19 ep1",
+      "ICE Out Act / Trust Act / DHS officer screening bill as the immigration-record framing hook — used in 2026-05-21 Glass ep3 and ep4; can be referenced but not lead-framed in next-week candidates",
+      "'Run the buses, teach the kids, pick up the trash' tagline as a candidate-pitch device — used in 2026-05-21 Glass ep1, ep2, and ep4"
+    ],
+    "dossier_path": null
+  },
+  "created_at": "2026-05-24T07:00:49.175365-04:00",
+  "due_by": ""
+}

@@ -1,0 +1,9 @@
+{
+  "run_date": "2026-05-25T02:39:47+00:00",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active": 61,
+  "list_finalized": true,
+  "notes": "Filing window closed; list_finalized was already true. Statewide page fetched and parsed — names matched the registry's existing roster (Anthony G. Brown / Brooke Lierman / Aruna Miller / Wes Moore for AG, Comptroller, LtGov, Gov). Local counties page was returned but truncated past Baltimore City — Montgomery County section did not load in this fetch. No additions or withdrawals detected within the parsed portion; the registry's existing 62 (61 active, 1 withdrawn) entries remain consistent with the statewide list and prior MoCo data. last_sbe_check updated to 2026-05-25T02:39:47+00:00."
+}

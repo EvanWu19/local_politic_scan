@@ -1,0 +1,31 @@
+{
+  "brief_id": "dossier_2026-04-30_friedson",
+  "type": "candidate_dossier",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\friedson.md",
+  "instructions": "Build a candidate dossier for Andrew Friedson (Montgomery County Executive Democratic primary 2026, currently District 1 County Councilmember). Listener has explicitly asked for voting records, prior public statements, sponsored bills, and controversies — go look them up with web search. Cite each claim with a URL. Output is a Markdown file with these sections:\n  1. Bio (one paragraph)\n  2. Voting record by topic (table or bulleted list, with bill numbers)\n  3. Public statements & policy positions (quoted, with links)\n  4. Sponsored / co-sponsored legislation (with status)\n  5. Controversies or notable press (neutral framing, sourced)\n  6. Stance on listener-flagged topics: sanctuary policy, school funding, property tax, Wootton High School relocation, fiscal discipline\n  7. Open questions the next podcast deep-dive should answer.\nLength: 800–1500 words. Cite everything. If a record cannot be found, say so explicitly — do not fabricate.\n\nNOTE: This dossier was queued by the deepdive_2026-04-30_friedson brief because that brief had no prior dossier_path. The Cowork agent producing the deep-dive script also produced this dossier inline in the same run from web research, so this brief should be marked .done.json by that same run.",
+  "context": {
+    "candidate_name": "Andrew Friedson",
+    "office": "Montgomery County Executive (current District 1 Councilmember)",
+    "party": "Democrat",
+    "district": "Montgomery County / current Council District 1 (Bethesda, Chevy Chase, Potomac)",
+    "listener_focus": [
+      "sanctuary policy on illegal immigration",
+      "school funding",
+      "property tax",
+      "Wootton High School relocation",
+      "fiscal discipline"
+    ],
+    "known_events": [
+      {
+        "id": 273,
+        "title": "Balcombe and Luedtke endorse Friedson for county executive",
+        "date": "2026-04-23",
+        "summary": "Two sitting Montgomery County Councilmembers (Marilyn Balcombe, District 2 and Dawn Luedtke, District 7) endorsed Friedson in the Democratic primary for county executive."
+      }
+    ]
+  },
+  "created_at": "2026-04-30T15:00:00-04:00",
+  "due_by": "",
+  "completed_at": "2026-05-01T01:20:44.477020+00:00",
+  "output_summary": "Dossier written inline by deepdive_2026-04-30_friedson run; saved to data/candidate_dossiers/friedson.md and outbox copy."
+}

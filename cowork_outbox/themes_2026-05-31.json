@@ -1,0 +1,48 @@
+{
+  "brief_id": "themes_2026-05-31",
+  "type": "weekly_themes",
+  "window_start": "2026-05-24",
+  "window_end": "2026-05-31",
+  "generated_at": "2026-05-31",
+  "generated_by": "cowork drain (AI backend)",
+  "db_upsert_status": "SKIPPED — politics.db not safely writable from the drain sandbox this run (mount read/write incoherence; `python main.py` could not open the DB either, error 'unable to open database file'). This rollup was built from the authoritative listener context already embedded in today's series + dossier briefs (avoid_list, listener_focus) plus the stored voter profile, NOT from a fresh daily_notes read. The weekly_themes table should be UPSERTed on the Windows side, or next drain once DB access is restored.",
+  "summary": "The listener is a first-time Democratic primary voter in Rockville (MD-8 / Legislative District 19 / Council District 7) preparing for the June 23, 2026 Maryland primary. Their dominant, recurring need is differentiation: with a 17-candidate At-Large County Council field and several still-undecided down-ballot races, they want the candidates pulled apart on the specific issues they care about — school funding discipline, the Wootton High closure/relocation, sanctuary policy, and property taxes — rather than generic biography. Their single loudest standing complaint about the show itself is repetition of framings and anecdotes across episodes.",
+  "themes": [
+    "At-Large field differentiation | 17 Democrats for 4 seats; listener wants the non-front-runners (Silvestre now covered; Khan, Barrie, Goldberg, McNulty still need dossiers/episodes) pulled apart on actual positions.",
+    "School-funding discipline vs. reflexive increases | Listener dislikes a 'yes-to-every-increase' pattern (flagged re: Sen. Ben Kramer 04-27) and wants per-line-item budget votes, not totals.",
+    "Sanctuary / immigration enforcement | Listener keeps asking, pointedly and from more than one direction, which of their candidates is FOR vs. AGAINST county sanctuary policy.",
+    "Property taxes too high | Listener wants each candidate's concrete tax-rate posture, not vibes.",
+    "Down-ballot + non-partisan races still undecided | Judicial, Register of Wills, Clerk of Circuit Court, and Republican alternatives remain unresearched for this listener."
+  ],
+  "open_questions": [
+    "Who among my candidates is against sanctuary policy on illegal immigration?",
+    "Why do they want to close and move Wootton High School?",
+    "Is Andrew Friedson actually the fiscal-restraint candidate, measured by line-item votes?",
+    "What are the policy differences between each candidate?",
+    "Deep dive of the new Montgomery County Public School rating system and per-school grades for Rockville schools."
+  ],
+  "underserved_topics": [
+    "At-Large candidates with no dossier/episode yet: Hamza Khan, Fatmata Barrie, Scott Goldberg, Jim McNulty (and the rest of the 17-person field).",
+    "Ben Kramer's full education-funding-increase voting record (its own dossier, not yet built).",
+    "Per-school MCPS rating/grade data for the specific Rockville schools the listener's household attends.",
+    "Non-partisan / down-ballot races: judicial, Register of Wills, Clerk of Circuit Court, plus any Republican alternatives.",
+    "Karla Silvestre's specific MCPS line-item budget votes and her Wootton High position (flagged in her dossier as not-yet-pulled)."
+  ],
+  "recent_coverage_to_avoid": [
+    "'Thirty-X days out from the Maryland Democratic primary' cold-open — used 05-16/17/18/19 ep1 and 05-25 Peter James ep1.",
+    "'Montgomery County native' framing hook — used heavily 05-16 Friedson ep1.",
+    "'My Seven Black Fathers' / Reid Temple A.M.E. memoir anchor — reserve for Jawando only (05-19).",
+    "'Anniston, Alabama / Donoho School / Vaughn Stewart Jr as mayor' formative device — Vaughn Stewart only (05-20).",
+    "'Born in Trenton / adopted from a teenage mom in a convent' origin device — Dawn Luedtke only (05-17).",
+    "'First Muslim officer of the Montgomery County Police Department' identity device — Sharif Hidayat only (05-18).",
+    "'Pre-political biography is thinner in the public record / no Wikipedia entry' qualifier — used 05-16 ep1.",
+    "ICE Out Act / Trust Act / DHS officer screening bill as the immigration hook — used 05-21 Glass ep3/ep4.",
+    "'Run the buses, teach the kids, pick up the trash' tagline — used 05-21 Glass.",
+    "Calendar/countdown studio opens ('It is Monday May twenty-fifth ... one month from tomorrow') and generic 'Welcome back to the Rockville Primary Briefing, I'm Alex' — used 05-25 and 05-27.",
+    "'Brass plaque on Maryland Avenue listing the County Executives' cold-open and 'Day two/three/four of [Candidate] week' device — used 05-29 Marc Elrich set.",
+    "Marc-Elrich-specific framings ('teacher and tenant organizer from Takoma Park', 'won by 32 votes', 'lighter than the council, louder than the council') — Elrich only.",
+    "RE-COVERING MARC ELRICH AT ALL — fully covered 05-29; gap-bug guard, do not let an unscheduled-gap day re-queue him.",
+    "NEW THIS RUN (05-31, Silvestre) — avoid reusing for the next candidate: the 'Darkis Ester Silvestre Scholarship for undocumented students' cold-open anchor; the 'undocumented eight-year-old who won asylum before high school' origin device; the 'biology-major-to-Penn-ESOL pivot' education hook; the 'you pick four, it's a sorting problem not a duel' At-Large framing. These are Silvestre-specific."
+  ],
+  "note_count": "n/a (daily_notes table not read this run — see db_upsert_status)"
+}

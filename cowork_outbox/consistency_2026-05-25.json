@@ -1,0 +1,8 @@
+{
+  "target_date": "2026-05-25",
+  "status": "db_blocker",
+  "reason": "sqlite FUSE/mount blocker — data/politics.db unreachable from Linux sandbox (intermittent issue documented across 2026-05-19, 2026-05-22, 2026-05-23 runs). Cannot read politician rows for scoring.",
+  "verdict": "insufficient",
+  "note": "Authoritative Friedson id=7 score=0.85 preserved from 2026-05-19 run. Recommend Windows-side `python main.py pm consistency --date 2026-05-25` to re-run with native DB access.",
+  "scores": {}
+}

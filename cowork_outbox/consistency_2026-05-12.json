@@ -1,0 +1,12 @@
+{
+  "run_date": "2026-05-12",
+  "politicians_processed": 138,
+  "rows_inserted": 138,
+  "verdicts": {
+    "insufficient": 88,
+    "consistent": 50,
+    "mixed": 0,
+    "inconsistent": 0
+  },
+  "notes": "Inserted 138 new rows into consistency_scores. Conservative scoring: 88 politicians had fewer than 3 linked events (verdict=insufficient, score=0.0); 50 had 3+ events with no detected stance flips (verdict=consistent, score=0.6..1.0). No mixed or inconsistent verdicts surfaced — stance flips in our event corpus are rare, which is consistent with our prior runs. To improve future runs, the processor should write event categories and stance values more granularly so topic-level shifts can actually be detected."
+}

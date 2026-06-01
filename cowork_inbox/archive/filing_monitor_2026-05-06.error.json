@@ -1,0 +1,38 @@
+{
+  "brief_id": "filing_monitor_2026-05-06",
+  "type": "filing_monitor",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-06.json",
+  "instructions": "Fetch the two SBE candidate-list pages and diff them against the local registry at `C:\\Users\\evan_\\local_politic_scan\\data\\candidate_series.json`.\n\nStatewide list URL: https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html\nLocal-races list URL: https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_all_counties_candidatelist.html\n\nWithin those pages, ONLY consider candidates running for offices the listener can vote on — match by office + district against:\n  • Governor of Maryland\n  • Maryland Attorney General\n  • Maryland Comptroller\n  • U.S. Representative MD-8\n  • Maryland State Senate District 19\n  • Maryland House of Delegates District 19\n  • Montgomery County Executive\n  • Montgomery County Council District 7\n  • Montgomery County Council At-Large\n  • Montgomery County State's Attorney\n  • Montgomery County Sheriff\n  • Montgomery County Clerk of the Circuit Court\n  • Montgomery County Register of Wills\n  • Montgomery County Judge of the Orphans' Court\n  • Montgomery County Board of Education\n  • Circuit Court Judge — 6th Judicial Circuit\n\nAnd districts:\n  • MD-8\n  • Legislative District 19\n  • Council D7\n  • MoCo countywide\n  • MD statewide\n\nFor every relevant candidate found on the SBE page that is NOT in the registry: append a new entry following the schema of existing rows (4 episodes, status='pending', dossier_status='pending', and scheduled_date set to the next available open day after the last scheduled candidate, one per day). Tier follows: tier 1 = your-district races (Council D7, House D19, Senate D19, MD-8, MoCo Executive, MoCo Council At-Large), tier 2 = statewide, tier 3 = county-wide non-district (state's attorney, sheriff, clerk, register, orphans), tier 4 = judicial / school board.\n\nFor every registry candidate NOT on the SBE page (i.e., they withdrew): set their `dossier_status` to 'withdrawn' and `scheduled_date` to null. Don't delete — keep history.\n\nUpdate `last_sbe_check` to today's ISO timestamp. If the SBE page indicates the filing window has closed AND a full final list is published (after Feb 24 + any cure period), set `list_finalized` to true.\n\nWrite a short JSON summary to `output_file`: `{added: [names...], removed: [names...], renamed: [...], total_active: N, list_finalized: bool, run_date: ISO}`. Also append one line to `cowork_outbox/_log.md`: 'YYYY-MM-DD monitor: +N new, -K withdrawn (total active: T)'.",
+  "context": {
+    "state_board_url": "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html",
+    "local_board_url": "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_all_counties_candidatelist.html",
+    "registry_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_series.json",
+    "relevant_offices": [
+      "Governor of Maryland",
+      "Maryland Attorney General",
+      "Maryland Comptroller",
+      "U.S. Representative MD-8",
+      "Maryland State Senate District 19",
+      "Maryland House of Delegates District 19",
+      "Montgomery County Executive",
+      "Montgomery County Council District 7",
+      "Montgomery County Council At-Large",
+      "Montgomery County State's Attorney",
+      "Montgomery County Sheriff",
+      "Montgomery County Clerk of the Circuit Court",
+      "Montgomery County Register of Wills",
+      "Montgomery County Judge of the Orphans' Court",
+      "Montgomery County Board of Education",
+      "Circuit Court Judge — 6th Judicial Circuit"
+    ],
+    "relevant_districts": [
+      "MD-8",
+      "Legislative District 19",
+      "Council D7",
+      "MoCo countywide",
+      "MD statewide"
+    ]
+  },
+  "created_at": "2026-05-06T07:00:44.379346-04:00",
+  "due_by": ""
+}

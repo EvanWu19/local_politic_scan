@@ -1,0 +1,17 @@
+{
+  "candidate_name": "James J. Dietrich",
+  "richness_score": 0.4,
+  "estimated_age": null,
+  "estimated_research_hours": 3.0,
+  "has_campaign_site": true,
+  "has_wikipedia": false,
+  "has_ballotpedia": false,
+  "has_legislative_record": false,
+  "has_court_record_search_hits": false,
+  "earliest_news_year": 2020,
+  "missing_critical_sections": [
+    "political_record"
+  ],
+  "notes": "Thin candidate.",
+  "scouted_at": "2026-05-25T02:42:00+00:00"
+}

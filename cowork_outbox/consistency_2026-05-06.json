@@ -1,0 +1,23 @@
+{
+  "target_date": "2026-05-06",
+  "politician_count_requested": 138,
+  "rows_inserted": 0,
+  "verdict": "deferred",
+  "reason": "DB access unavailable in this run. The Linux Cowork sandbox is still returning 'No space left on device' on every bash invocation, so politics.db at C:\\Users\\evan_\\local_politic_scan\\data\\politics.db could not be opened to read the politicians table or the politician_events join. Per the established prior-run pattern (2026-05-03, 2026-05-04, 2026-05-05 deferral entries in cowork_outbox/_log.md), the consistency scoring is not run from secondary inference because doing so would invent a verdict. The 138 ids should be scored from the Windows side where politics.db is openable directly.",
+  "next_actions_for_windows_side": [
+    "Re-run python main.py score-consistency --date 2026-05-06 from the Windows side, where politics.db is openable directly without WAL contention or sandbox-disk issues.",
+    "Verify the consistency_scores table is healthy and not in the disk-malformed state flagged on 2026-05-01; if it is malformed, drop and recreate before re-running.",
+    "If the table is healthy, the scoring run should complete in under five minutes for the 138-id list.",
+    "Charlotte Crutchfield's politician_id (if present in the requested list) should at minimum reflect the today-completed dossier-and-arc; recent stable-positions to expect: HB 147 spousal-defense repeal (2021 + 2022 sponsor), juvenile-justice review (2021), marijuana-records expungement co-sponsorship (multiple sessions), Justice Reinvestment Oversight Board membership (2022-). No identified shifts."
+  ],
+  "politician_ids_pending": [
+    7, 108, 228, 284, 117, 1, 5, 4, 34, 136, 212, 120, 94, 214, 226, 299, 114, 283, 179, 105,
+    91, 116, 314, 137, 259, 159, 242, 224, 113, 313, 66, 63, 62, 60, 46, 50, 55, 47, 52, 51,
+    54, 65, 49, 58, 59, 48, 56, 53, 61, 57, 318, 64, 157, 182, 178, 103, 154, 257, 207, 210,
+    118, 138, 319, 315, 99, 162, 104, 211, 208, 135, 115, 90, 101, 111, 225, 96, 229, 93, 227, 92,
+    95, 102, 141, 165, 223, 221, 121, 185, 122, 140, 296, 163, 164, 222, 184, 317, 180, 244, 312, 181,
+    112, 297, 107, 206, 300, 134, 166, 183, 160, 258, 156, 158, 89, 209, 241, 109, 139, 100, 213, 153,
+    97, 243, 155, 316, 216, 161, 219, 98, 218, 245, 260, 220, 119, 217, 110, 215, 106, 298
+  ],
+  "generated_at": "2026-05-06T09:15:00-04:00"
+}

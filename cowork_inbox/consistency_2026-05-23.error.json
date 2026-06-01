@@ -1,0 +1,8 @@
+{
+  "brief_id": "consistency_2026-05-23",
+  "type": "score_consistency",
+  "status": "error",
+  "errored_at": "2026-05-24T02:47:21.322736",
+  "reason": "data/politics.db is unreadable from the Linux FUSE sandbox \u2014 sqlite returns 'unable to open database file' on direct open and 'database disk image is malformed' when copied. Same intermittent FUSE-mount issue noted in project memory. The DB file is fine on Windows; the issue is the mount layer's compatibility with sqlite's WAL/locking. This brief requires reading politician_events joined to events \u2014 cannot be processed Linux-side.",
+  "recommendation": "Run this brief from the Windows side, OR refactor the brief generator to embed the necessary politician_events rows into the brief context.events_payload at queue time so the Linux drain doesn't need DB access. The second approach is preferable for reliability \u2014 the AI side should not assume DB access since it's intermittent."
+}

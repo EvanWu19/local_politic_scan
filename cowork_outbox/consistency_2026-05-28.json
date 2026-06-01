@@ -1,0 +1,8 @@
+{
+  "brief_id": "consistency_2026-05-28",
+  "run_date": "2026-05-28",
+  "verdict": "deferred",
+  "reason": "Drain run on 2026-05-28 prioritized today series_episode generation (Laurie-Anne Sayles ep1-4) and dossier cleanup. Consistency scoring requires reading politics.db and writing N rows to consistency_scores; deferred to next-run when more analytical budget is available. No rows were inserted.",
+  "politician_ids_pending": "see brief context",
+  "next_action": "Process on next drain run; database is intact and consistency_scores table is unmodified."
+}

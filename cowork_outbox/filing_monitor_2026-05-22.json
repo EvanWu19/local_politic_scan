@@ -1,0 +1,9 @@
+{
+  "run_date": "2026-05-22",
+  "status": "deferred",
+  "reason": "list_finalized=True; SBE pages exceed web_fetch token cap",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "list_finalized": true
+}

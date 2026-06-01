@@ -1,0 +1,9 @@
+{
+  "brief_id": "dossier_2026-05-21_adrian-boafo",
+  "processed_at": "2026-05-23T02:42:04-04:00",
+  "status": "error",
+  "error_class": "not_on_ballot",
+  "error_message": "Not in registry; not on listener ballot. Noise event-mention.",
+  "drain_decision": "No dossier written. The processor should filter dossier briefs by membership in data/candidate_series.json before queuing \u2014 same recurring noise pattern as 2026-05-22's batch (all marked .error.json with the same rationale).",
+  "windows_side_followup": "Fix the dossier emitter to gate on candidate_series.json registry membership. Until that ships, every drain wastes time rejecting the same Harford / Baltimore / federal noise."
+}

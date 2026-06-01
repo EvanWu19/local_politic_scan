@@ -1,0 +1,9 @@
+{
+  "brief_id": "dossier_2026-05-21_brooke-lierman",
+  "processed_at": "2026-05-23T02:42:04-04:00",
+  "status": "error",
+  "error_class": "defer_low_priority",
+  "error_message": "Brooke Lierman IS in candidate_series.json, but flagged `uncontested=true` and scheduled_date=2026-07-09 \u2014 that is POST-primary (primary is 2026-06-23). She does not appear on the Democratic primary ballot as a contested race. Per the SKILL.md bandwidth tip: 'if you find a thin dossier brief that won't be used for a week, defer it to next run.' Pattern matches the identical 2026-05-22 brief, which was also marked .error.json.",
+  "drain_decision": "Defer. If the user still wants a Lierman dossier (general-election context), re-queue with a contested-race flag.",
+  "windows_side_followup": "Suppress dossier briefs for uncontested registry entries or for entries scheduled past 2026-06-23."
+}

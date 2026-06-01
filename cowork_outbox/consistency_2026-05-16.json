@@ -1,0 +1,9 @@
+{
+  "brief_id": "consistency_2026-05-16",
+  "status": "blocked",
+  "completed_at": "2026-05-16T09:32:00Z",
+  "note": "Could not score consistency. The brief requires reading from data/politics.db (sqlite) — the file is unreachable through the Linux FUSE mount this session ('unable to open database file' on direct sqlite3 access; 'database disk image is malformed' when copied to /tmp and reopened). This is the same DB blocker that prevented the bootstrap sequence at start of run. Manual Windows-side run of `python main.py series scout-results` (or any sqlite-touching subcommand) on the user's machine will surface whether the DB is actually corrupted or just unreadable through FUSE. Once Windows confirms DB health, this brief can be re-queued and processed on the next drain.",
+  "politician_count": 0,
+  "scored": [],
+  "skipped_reason": "sqlite_unreachable_from_linux_sandbox"
+}

@@ -1,0 +1,44 @@
+{
+  "brief_id": "themes_2026-05-14",
+  "window_start": "2026-05-08",
+  "window_end": "2026-05-14",
+  "generated_at": "2026-05-14T08:00:00-04:00",
+  "note_count": null,
+  "summary": "The listener is forty days from the June 23 Maryland primary and is voting for the first time. Their attention has shifted from MoCo Council races (covered last week) into the federal MD-8 series this week, with the upcoming MoCo Executive primary (Friedson / Glass / Jawando) flagged repeatedly as the race they most want a substantive head-to-head on. They also continue to ask for resolution on three named items the show has not yet definitively answered: Wootton High School closure, Andrew Friedson's fiscal record, and which Democratic primary candidates oppose sanctuary policy.",
+  "themes": [
+    "Federal seat in context | The listener has now heard the full Raskin series and needs the four MD-8 primary opponents framed honestly without padding.",
+    "MoCo Executive head-to-head | Friedson/Glass/Jawando comparison is the most-requested deliverable for the May 19-21 episode window.",
+    "Local jurisdiction clarity | The listener keeps asking federal candidates about state/county issues; the show should keep mapping each concern to the right ballot line.",
+    "Long-tenure record reads | Listener trusts deep biographical reads (Raskin dossier ran to 3300+ words and was the most-referenced source in this week's scripts); apply same depth to Friedson next week.",
+    "Direct yes/no on sanctuary policy | Listener is annoyed when the show hedges; for each candidate give a single bottom-line line."
+  ],
+  "open_questions": [
+    "Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?",
+    "Why does MCPS want to close and move Wootton High School, and what happens next?",
+    "Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?",
+    "What are the documented policy differences between Friedson, Glass, and Jawando on the County Executive primary?",
+    "Does Raskin or any other federal-level candidate plan to endorse in the MoCo Executive primary, and would that endorsement signal anything meaningful?"
+  ],
+  "underserved_topics": [
+    "School board races (BoE seats are on the listener's ballot but have not had any episode time yet)",
+    "Circuit Court judges in the 6th Judicial Circuit — Sitting Judges slate vs. challengers (zero episode coverage so far)",
+    "Council At-Large bracket (4 seats, large field — needs a dedicated overview)",
+    "Clerk / Register / Sheriff / State's Attorney downballot rundown",
+    "Maryland House of Delegates District 19 (3 seats) — covered partially via individual incumbents but not as a unit"
+  ],
+  "avoid_list": [
+    "The framing 'a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration' as a setup line — already used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3",
+    "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police as the concrete sanctuary-policy example — already in 2026-04-28 ep1 and 2026-04-29 ep3",
+    "The ICE agent mask-ban ordinance passed by the Montgomery County Council as the sanctuary-policy benchmark — already in 2026-04-29 ep2",
+    "'Two stories, properly worked through' / 'two stories, not spreading thin across six' as an episode-framing device — already in 2026-04-29 ep1",
+    "Governor Moore's 'Leave No One Behind' slogan contrasted with disability services cuts — already in 2026-04-27 ep1 and ep1.rewrite",
+    "ACA marketplace quiet-downgrade story ('thousands of Marylanders have been quietly downgrading their health insurance plans') — already in 2026-04-28 ep1 and 2026-04-29 ep3",
+    "Maryland's 90-day part-time legislature explanation ('they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners') — already in 2026-04-26 ep3 and ep3.rewrite",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing — already in 2026-04-26 ep1, ep1.rewrite, and ep4",
+    "Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — already in 2026-04-27 ep4 and ep4.rewrite",
+    "Listener's own frustration about promised candidate deep-dives not delivering — show has now narrated this back at least five times; stop using it as a framing device",
+    "'forty days until the primary' as a sign-off — already used as the closing tag in all four Raskin episodes (2026-05-14 ep1-4); rotate or retire after this week",
+    "Tommy Raskin biographical anecdote as an emotional anchor — used substantively in 2026-05-14 ep3 and referenced in ep4; do not re-deploy in unrelated episodes",
+    "'Vote for him. Move on with your day' as a recommendation pattern — used in 2026-05-14 ep4; if re-used the listener will notice"
+  ]
+}

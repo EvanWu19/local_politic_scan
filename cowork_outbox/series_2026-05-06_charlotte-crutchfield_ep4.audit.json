@@ -1,0 +1,21 @@
+{
+  "brief_id": "series_2026-05-06_charlotte-crutchfield_ep4",
+  "type": "series_episode",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-06_series_charlotte-crutchfield_ep4.txt",
+  "completed_at": "2026-05-06T08:55:00-04:00",
+  "approx_word_count": 3970,
+  "ep_title": "This Race",
+  "must_cover_coverage": {
+    "the_seat_and_when_term_starts": "Multi-member House D19 sends 3 Delegates; primary 6/23/2026, general 11/2026; 4-year term Jan 2027-Jan 2031",
+    "every_other_candidate_filed": "Slate: Sen Ben Kramer (Senate), Del Vaughn Stewart (House re-election with Crutchfield). Cullison seat open: Christa Tichy of Aspen Hill filed; Sunil Dasgupta of Rockville and Christopher Jennison of Aspen Hill considering",
+    "3-5_substantive_policy_disagreements": "5 axes named: (1) Blueprint/fiscal — slate uniformly supportive; (2) criminal justice — Crutchfield is slate's specialist; (3) housing/zoning — Stewart is most progressive; (4) transit/Metro — slate uniformly supportive; (5) Wootton/MCPS — slate has not taken positions",
+    "listener_flagged_topics_in_this_race": "Sanctuary: slate likely supports existing MD framework. Fiscal restriction: NOT this slate, look at open-seat field. Wootton: state venue is District 15 not D19. Property tax: County Council ballot, not D19 House",
+    "what_concretely_changes_if_THIS_candidate_wins": "Continuity — Crutchfield continues as Corrections Subcommittee chair + Deputy Majority Whip + slate model. If she loses, slate model breaks and the third Delegate goes to whoever displaced her plus open-seat winner"
+  },
+  "key_sources_cited": [
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_houseofdelegatesbydistrict_candidatelist.csv",
+    "https://bethesdamagazine.com/2026/02/03/kramer-crutchfield-stewart-file-reelection/",
+    "https://bethesdamagazine.com/2026/01/30/tichy-drops-out-of-county-council-at-large-race-to-run-for-state-delegate/",
+    "https://en.wikipedia.org/wiki/2026_Maryland_House_of_Delegates_election"
+  ]
+}

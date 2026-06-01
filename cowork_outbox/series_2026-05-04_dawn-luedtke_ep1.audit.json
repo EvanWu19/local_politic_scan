@@ -1,0 +1,30 @@
+{
+  "brief_id": "series_2026-05-04_dawn-luedtke_ep1",
+  "type": "series_episode",
+  "ep_num": 1,
+  "ep_title": "Origins",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-04_series_dawn-luedtke_ep1.txt",
+  "completed_at": "2026-05-04T20:11:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3650,
+  "must_cover_status": {
+    "year_of_birth_age": "addressed — flagged as not-on-record, est ~1974 / ~52",
+    "place_of_birth_residence": "Trenton NJ / Ashton MD — confirmed",
+    "family": "Eric Luedtke + 4 kids — confirmed, kids not named",
+    "every_school": "Penn 1996 + UMD Law 2000 — confirmed; HS flagged as gap",
+    "hs_or_college_press": "none located — flagged on-air",
+    "religion_language_ethnicity": "not self-identified — addressed on-air with care re: convent/religion conflation",
+    "earliest_public_statements": "May 11 2021 MD Center for School Safety conference is the earliest on-record talk — flagged"
+  },
+  "five_open_questions_named_on_air": [
+    "exact birth year/date",
+    "high school in southern NJ",
+    "Penn-to-law-school gap year",
+    "private-practice firm name",
+    "pre-25 public statements"
+  ],
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 3650,
+  "calibration_gap": -250
+}

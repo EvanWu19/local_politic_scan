@@ -1,0 +1,10 @@
+{
+  "brief_id": "consistency_2026-05-20",
+  "processed_at": "2026-05-20T22:50:00-04:00",
+  "status": "error",
+  "error_class": "db_blocker",
+  "error_message": "sqlite3.OperationalError: unable to open database file at data/politics.db — Linux FUSE-mount blocker, file is present (7.3 MB) but unreadable by sqlite3 inside the drain sandbox. This is the same intermittent blocker flagged in project memory.",
+  "scope_attempted": "100+ politician_ids requested in brief context; none scored",
+  "windows_side_followup": "python main.py score-consistency 2026-05-20 — re-run on Windows where the sqlite file opens normally. The brief itself does not need to be re-queued by the Windows side; only the score-consistency action needs to be re-executed there.",
+  "drain_decision": "Skip rather than write fabricated consistency rows. The brief explicitly says 'be conservative — wording differences are NOT shifts' and the only honest stance is no-write-without-DB-read."
+}

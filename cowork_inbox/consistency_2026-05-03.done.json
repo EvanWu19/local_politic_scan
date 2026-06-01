@@ -1,0 +1,10 @@
+{
+  "brief_id": "consistency_2026-05-03",
+  "type": "score_consistency",
+  "status": "deferred",
+  "processed_at": "2026-05-03T11:35:00-04:00",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-03.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-03.json",
+  "rows_inserted": 0,
+  "notes": "Scoring deferred — DB access unavailable from the Linux Cowork sandbox in this run (workspace shell returned 'No space left on device' on every attempt). Per project hard rules, no fabrication of vote counts is permitted, so this is being marked .done.json with rows_inserted=0 to clear the inbox slot. Windows-side cowork-queue processor should re-run the score_consistency step against the live politics.db."
+}

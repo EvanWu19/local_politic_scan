@@ -1,0 +1,17 @@
+{
+  "brief_id": "scout_christa-tichy",
+  "type": "dossier_scout",
+  "output_file": "/sessions/gracious-zen-clarke/mnt/local_politic_scan/data/candidate_scouts/christa-tichy.json",
+  "instructions": "Do a 5-10 minute web reconnaissance on Christa Tichy (Maryland House of Delegates District 19, Democratic, district House D19). Goal: estimate how rich vs. thin their public record is, so the series scheduler can decide when to air their episodes.\n\nWhat to do (fast, NOT exhaustive):\n  1. One Google search for their full name + 'Maryland' or the      office they're running for. Note rough hit count + quality.\n  2. Check if they have a campaign website. Note url + how much      biographical content it has.\n  3. Check Wikipedia / Ballotpedia.\n  4. Check LinkedIn (look for first archived appearance year).\n  5. Check whether their name appears in:\n       \u2022 Maryland legislative DB (mgaleg.maryland.gov)\n       \u2022 congress.gov / GovTrack legacy\n       \u2022 Montgomery County legislative DB\n       \u2022 Court records (PACER, MD Judiciary Case Search)\n       \u2022 Any major newspaper archive (Baltimore Banner, Bethesda          Magazine, WTOP, Maryland Matters, Washington Post)\n  6. Note their estimated year of birth if findable.\n\nDo NOT write the dossier. Do NOT do the deep age-(x-20) lookback. Do NOT cite every claim. This is just RECONNAISSANCE.\n\nOutput a JSON file at `output_file` exactly like:\n{\n  \"candidate_name\": \"<name>\",\n  \"richness_score\": 0.0..1.0,         # 1.0 = decades of public record, 0.1 = first-time activist with no trail\n  \"estimated_age\": <int or null>,\n  \"estimated_research_hours\": <float>,  # how long the deep dossier will take. 0.5 (rich) to 6.0 (need archival digging) or 99 if essentially nothing exists\n  \"has_campaign_site\": true|false,\n  \"has_wikipedia\": true|false,\n  \"has_ballotpedia\": true|false,\n  \"has_legislative_record\": true|false,\n  \"has_court_record_search_hits\": true|false,\n  \"earliest_news_year\": <int or null>,\n  \"missing_critical_sections\": [\"education\", \"career\", \"political_record\"],  # any of: demographics, socioeconomic, education, career, political_record\n  \"notes\": \"<one paragraph for the scheduler \u2014 what is and isn't findable, any name disambiguation issues, any plausible angles for an office_primer episode if dossier is thin>\"\n}\n\nBe honest. If a candidate genuinely has nothing \u2014 say richness_score 0.1 and explain why in `notes`. The system uses these to decide whether to switch episode 4 from biography to an office-primer episode about the seat itself.",
+  "context": {
+    "candidate_name": "Christa Tichy",
+    "office": "Maryland House of Delegates District 19",
+    "party": "Democratic",
+    "district": "House D19"
+  },
+  "created_at": "2026-05-16T02:38:55.884331+00:00",
+  "due_by": "",
+  "status": "done",
+  "completed_at": "2026-05-15T22:58:00-04:00",
+  "result_summary": "Scout estimate: richness=0.3"
+}

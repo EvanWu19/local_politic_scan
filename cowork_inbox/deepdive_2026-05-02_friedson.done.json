@@ -1,0 +1,100 @@
+{
+  "brief_id": "deepdive_2026-05-02_friedson",
+  "type": "deep_dive_script",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-02_deepdive_friedson.txt",
+  "instructions": "Write a ~30-minute single-candidate deep-dive podcast on Friedson. Two hosts: ALEX (presenter) and JORDAN (curious first-time voter from Rockville, MD). Every line begins ALEX: or JORDAN: — no stage directions, no markdown.\n\nCover, in this order:\n  1. Who they are and which seat the listener is voting on.\n  2. Their actual voting record by topic — quote bill numbers and cite the dossier. Do NOT speak in generalities; if the dossier has a vote, name it.\n  3. Where their stated positions and votes have been stable, where they've shifted, and which votes the listener-flagged topics turn on (sanctuary policy, school funding, property tax, etc.).\n  4. What's contested in the upcoming primary and how this candidate differs from the others.\n  5. A 'what would change in Rockville if they win' grounded close.\n\nAVOID re-using any framing on this list:\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again\n\nIf the dossier is missing a fact you'd want to cite, say so on-air ('we don't have a record of how they voted on X yet'), don't invent.",
+  "context": {
+    "candidate_name": "Friedson",
+    "target_date": "2026-05-02",
+    "politician_row": {
+      "id": 228,
+      "name": "Friedson",
+      "office": "Montgomery County Executive",
+      "party": "unknown",
+      "district": "Montgomery",
+      "level": "county",
+      "bio": ""
+    },
+    "events": [
+      {
+        "id": 273,
+        "title": "Balcombe and Luedtke endorse Friedson for county executive",
+        "summary": "County officials are endorsing a candidate for county executive, and there are proposals about county government conduct and partnerships being debated. These decisions affect county budgets, services, and policies that impact your daily life.",
+        "date": "2026-04-23",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"election\", \"budget\"]",
+        "role": "County executive candidate",
+        "stance": "receiving endorsements",
+        "notes": ""
+      }
+    ],
+    "consistency": {
+      "id": 670,
+      "politician_id": 228,
+      "politician_name": "Friedson",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": null,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Friedson; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": [],
+      "generated_at": "2026-04-30 11:03:29"
+    },
+    "listener_notes": [
+      {
+        "date": "2026-04-30",
+        "note": "I need a deep dive of the new rating system of montgomery county, public school system"
+      },
+      {
+        "date": "2026-04-29",
+        "note": "Fisical displin is good.is Andrew,\nAndrew Friedson the man do fisical restriction?\nWhy they want to close and move wooten high school?\n"
+      },
+      {
+        "date": "2026-04-28",
+        "note": "I agree with non essential spending cut.\nNow focus on who i can do on primary vote in June \n"
+      },
+      {
+        "date": "2026-04-27",
+        "note": "I dont like cramer who vote yes to all education increasing.\nI think the property tax is too high\n\n"
+      },
+      {
+        "date": "2026-04-26",
+        "note": "Not only about recent history of my candidates also search the all.history public record or news acout the candidates \nThe podcast 2 claimed that it will let me know the history of my candidate, but actually never linked any history/ old news to a specific candidate \nFor those candidate already filed their names start to collect their history."
+      },
+      {
+        "date": "2026-04-25",
+        "note": "Dig deeper into all candidates voting history, what is their historical  political viewpoint "
+      },
+      {
+        "date": "2026-04-24",
+        "note": "Who are the candidates of the primary voting i will vote to, i already join the democratsparty? What the policy difference between each candidates ? Who against sanctuary policy on illegal immigration? "
+      },
+      {
+        "date": "2026-04-23",
+        "note": "I want to kown what happened if change my election to join liberty party ? Do i need to attend some assembly and the party start to know me?\n"
+      },
+      {
+        "date": "2026-04-22",
+        "note": "What has synagogues in Max?\n 我希望能有primer election candidates 的专题，一个candidate一期，总结个人历史和执政理念\nI need you to help me figure out which cannidate suit my cificin i don'T hear this question anymorea\nThis Maryland sewage case is be mentioned in multiple days. News and I don't think it's really relevant to the election. So don't give it to me anymore.\nI have heard about teachers couching in previous day. However, my kids is attending a private school called st john's episcopal school, so if you can collect more news about them or their organization and also, i'm very interested in how we can vote on the school meal price increasing\n"
+      }
+    ],
+    "avoid_list": [
+      "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3",
+      "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3",
+      "The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2",
+      "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+      "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4",
+      "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite",
+      "Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again"
+    ],
+    "dossier_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\friedson.md"
+  },
+  "created_at": "2026-05-02T07:00:37.726952-04:00",
+  "due_by": ""
+}

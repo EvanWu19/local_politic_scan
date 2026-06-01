@@ -1,0 +1,6 @@
+tag: meeting | has namespace: False
+id attr: DUFH324673AD | unique attr: None
+direct child link: https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DUFH324673AD
+start/date: 2026-05-27
+name: Special Board Business Meeting Agenda
+attrs: {'bodyid': 'AA6K5A502A56', 'bodyname': 'Main Governing Board', 'id': 'DUFH324673AD', 'order': '755'}

@@ -1,0 +1,17 @@
+{
+  "candidate_name": "Hamza Khan",
+  "richness_score": 0.55,
+  "estimated_age": null,
+  "estimated_research_hours": 2.0,
+  "has_campaign_site": true,
+  "has_wikipedia": false,
+  "has_ballotpedia": true,
+  "has_legislative_record": false,
+  "has_court_record_search_hits": false,
+  "earliest_news_year": 2018,
+  "missing_critical_sections": [
+    "socioeconomic"
+  ],
+  "notes": "MoCo At-Large candidate; nonprofit / civic-tech background. Some Bethesda Magazine and Banner coverage.",
+  "scouted_at": "2026-05-25T02:42:00+00:00"
+}

@@ -1,0 +1,8 @@
+{
+  "brief_id": "dossier_2026-05-22_ben-alsobrooks",
+  "type": "candidate_dossier",
+  "status": "rejected",
+  "rejected_at": "2026-05-24T02:42:21.565691",
+  "reason": "No US Senator or candidate named \"Ben Alsobrooks\" exists. Likely brief-generator confusion with US Sen. Angela Alsobrooks (D-MD, elected 2024), who is NOT up for re-election on the 2026 ballot. Not on registry.",
+  "recommendation": "Fix brief generator in main.py to (1) check candidate name against data/candidate_series.json registry before queuing a dossier brief, (2) drop any name from known_events that doesn't resolve to a registered ballot candidate. Better yet \u2014 only queue dossier briefs for names that appear in the upcoming-7-days slice of the registry schedule. This run produced 11 wasted dossier briefs on out-of-jurisdiction names harvested from news events."
+}

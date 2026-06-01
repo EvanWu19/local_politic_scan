@@ -1,0 +1,48 @@
+{
+  "week_start": "2026-05-14",
+  "week_end": "2026-05-21",
+  "themes": [
+    "MCPS school rating system mechanics | Listener wants to know how the new score is calculated and what scores Rockville schools received",
+    "Friedson's line-item fiscal record | Final budget yes/no is not enough; listener wants vote-by-vote on individual budget items",
+    "Wootton High School closure timeline | Listener wants to know who decides, when, and how Board of Education members got their seats",
+    "Career-long voting records, not just recent sessions | Listener has flagged that recent roll-calls miss older positions, especially for Kramer 2007-present",
+    "Sanctuary policy opposition within Democratic primary | Listener wants to know which D primary candidates would relax sanctuary, not just oppose Trump"
+  ],
+  "open_questions": [
+    "What is the new MCPS rating methodology and how is each Rockville school graded under it?",
+    "Is Andrew Friedson actually the fiscal-restraint candidate when measured by individual line-item votes?",
+    "Why is MCPS proposing to close/relocate Wootton High School and what happens next on the timeline?",
+    "What is Ben Kramer's full historical voting record back to 2007 on consumer protection, judiciary, immigration, and education funding?",
+    "Among the five+ Democratic primary candidates on the ballot, which one (if any) actually opposes the existing sanctuary framework?"
+  ],
+  "underserved_topics": [
+    "Side-by-side ballot matrix across every Democratic primary candidate on the listener's actual ballot (Exec, At-Large, D7, MD-8, House D19, Senate D19)",
+    "Pre-political biographies and old press of candidates whose recent record is well-covered but whose deeper career arc is not",
+    "Specific votes on individual MCPS budget items by line, not just total budget yes/no",
+    "The Wootton timeline itself \u2014 when does the Board actually vote, what is the procedural path"
+  ],
+  "summary": "The listener is a first-time Democratic primary voter in Rockville. They want career-long records, line-item votes, and named answers on sanctuary opposition, fiscal restraint, and the Wootton question. Recurring frustration: deep-dive promises that deliver shallow recent-roll-call reads. They want old news and full history, not just the last session.",
+  "avoid_list": [
+    "'Thirty-X days out from the Maryland Democratic primary' as the cold-open device \u2014 used in podcast_2026-05-16 ep1, 2026-05-17 ep1, 2026-05-18 ep1, 2026-05-19 ep1",
+    "'Montgomery County native' as the framing hook \u2014 used heavily in 2026-05-16 Friedson ep1 and revisited 2026-05-18 Hidayat ep1",
+    "'My Seven Black Fathers' as the framing device for any candidate other than Will Jawando \u2014 used in 2026-05-19 ep1",
+    "'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' as the formative-experience device for any candidate other than Vaughn Stewart \u2014 used in 2026-05-20 ep1",
+    "'Born in Trenton, between Atlantic City and Philadelphia / adopted as an infant from a teenage mom in a convent' as origin device for any candidate other than Dawn Luedtke \u2014 used in 2026-05-17 ep1",
+    "'First Muslim officer of the Montgomery County Police Department' as identity-formation device for any candidate other than Sharif Hidayat \u2014 used in 2026-05-18 ep1",
+    "'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as a candidate-specific qualifier when reusable on other candidates \u2014 used in 2026-05-16 ep1",
+    "Reference to 'My Seven Black Fathers' memoir or Reid Temple A.M.E. Church for any candidate other than Jawando \u2014 used in 2026-05-19 ep1",
+    "ICE Out Act / Trust Act / DHS officer screening bill as the immigration-record framing hook \u2014 used in 2026-05-21 Glass ep3 and ep4; can be referenced but not lead-framed in next-week candidates",
+    "'Run the buses, teach the kids, pick up the trash' tagline as a candidate-pitch device \u2014 used in 2026-05-21 Glass ep1, ep2, and ep4"
+  ],
+  "listener_candidate_interest": [
+    "Andrew Friedson",
+    "Ben Kramer",
+    "Evan Glass",
+    "Dawn Luedtke",
+    "Sharif Hidayat",
+    "Will Jawando",
+    "Vaughn Stewart"
+  ],
+  "note_count": 7,
+  "generated_at": "2026-05-22T02:56:16.694338"
+}

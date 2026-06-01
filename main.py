@@ -15,7 +15,7 @@ import logging
 import os
 import sys
 import subprocess
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 # Force UTF-8 output on Windows so Unicode symbols render correctly
@@ -134,6 +134,19 @@ def cmd_fetch(args):
         all_raw.extend(county)
     except Exception as e:
         errors.append(f"county: {e}")
+        print(f"✗ {e}")
+
+    # ── Hyperlocal hearings (Rockville City + Planning, MCPS BoardDocs,
+    #    Park & Planning, WSSC). Each fetcher is independently fault-tolerant.
+    try:
+        print("  [3.5/6] Rockville / MCPS / Park & Planning / WSSC…",
+              end=" ", flush=True)
+        from scanner.sources.local_hearings import fetch_all_local_hearings
+        hyperlocal = fetch_all_local_hearings(max_per_source=10)
+        print(f"✓ {len(hyperlocal)} items")
+        all_raw.extend(hyperlocal)
+    except Exception as e:
+        errors.append(f"local_hearings: {e}")
         print(f"✗ {e}")
 
     try:
@@ -307,17 +320,89 @@ def cmd_publish(args):
             log.warning("Analyst pass failed (non-fatal): %s", e)
             print(f"   ⚠️  Analyst failed: {e}\n")
 
+    # ── Dossier briefs for Cowork (non-fatal)
+    # Queue per-candidate research briefs the Cowork agent (Opus 4.7 with
+    # web search) drains overnight. Keeps voting-record / public-statement
+    # research fresh without paying for a separate Opus API call.
+    if getattr(cfg, "USE_COWORK_FOR_OPUS", False):
+        try:
+            print("🗂️   Dossier briefs — queueing per-candidate research for Cowork…")
+            from scanner.dossier import queue_dossier_briefs
+            queued = queue_dossier_briefs(
+                db_path=cfg.DB_PATH,
+                output_dir=cfg.CANDIDATE_DOSSIER_DIR,
+            )
+            if queued:
+                print(f"   ✓ Queued {len(queued)} dossier brief(s): "
+                      f"{', '.join(queued[:5])}{' …' if len(queued) > 5 else ''}\n")
+            else:
+                print("   (all dossiers fresh — nothing to queue)\n")
+        except Exception as e:
+            log.warning("Dossier briefs failed (non-fatal): %s", e)
+            print(f"   ⚠️  Dossier brief queueing failed: {e}\n")
+
     # ── Report
     cmd_report(args, silent=True)
 
-    # ── Podcast
-    if getattr(args, "no_podcast", False):
-        print("(Skipping podcast — --no-podcast flag set.)\n")
-        return
-    cmd_podcast(args)
+    # ── Series mode (default while data/candidate_series.json exists)
+    # During the 2026 primary build-up, the daily 4-episode podcast is
+    # paused in favor of the 4-episode-per-candidate 专题 series. The
+    # registry tracks what airs when. If no candidate is scheduled for
+    # today, fall through to the legacy daily podcast.
+    series_handled = False
+    from scanner.series import REGISTRY_PATH as series_registry
+    if series_registry.exists():
+        try:
+            from scanner.series import queue_today_series, queue_filing_monitor
+            target = date.today()
+            if getattr(args, "date", None):
+                target = datetime.strptime(args.date, "%Y-%m-%d").date()
+            result = queue_today_series(target_date=target)
+            if result["status"] == "queued":
+                print(f"📡  Series 专题 — today: {result['candidate']} "
+                      f"({result['office']})")
+                print(f"   Dossier queued : {result['dossier_queued']}")
+                print(f"   Episodes queued: ep{', ep'.join(str(n) for n in result['episodes_queued'])}")
+                series_handled = True
+            else:
+                print(f"📡  No series candidate scheduled for {target.isoformat()}.")
+            # Always queue the daily filing-list monitor brief while the
+            # registry is not finalized. Cowork drains it overnight and
+            # appends any newly-filed candidates.
+            try:
+                from scanner.series import load_registry
+                if not load_registry().get("list_finalized"):
+                    queue_filing_monitor()
+                    print("   ✓ Filing-list monitor brief queued.")
+            except Exception as e:
+                log.debug("filing monitor queue failed: %s", e)
+        except Exception as e:
+            log.warning("series flow failed (non-fatal): %s", e)
+            print(f"   ⚠️  series queueing failed: {e}")
 
-    # ── Deep-dive (专题) episodes for any candidate the listener named
-    _maybe_run_deepdives(args)
+    # ── Podcast (legacy daily 4-ep) — only if no series candidate today
+    if not series_handled:
+        if getattr(args, "no_podcast", False):
+            print("(Skipping podcast — --no-podcast flag set.)\n")
+            return
+        cmd_podcast(args)
+        # Deep-dive (legacy) episodes for any candidate the listener named
+        _maybe_run_deepdives(args)
+
+    # ── TTS sweep — synthesize MP3s for any Cowork-produced scripts that
+    # don't have audio yet. In Cowork mode the daily Author runs are async;
+    # by the time the 7am publish job runs, last night's drain has already
+    # written real .txt scripts for *yesterday*. We TTS the last 4 days so
+    # that scripts written late (after the 7am window) still get audio on the
+    # next publish. Idempotent — skips MP3s that already exist.
+    if getattr(cfg, "USE_COWORK_FOR_AI", False) and cfg.OPENAI_API_KEY:
+        from types import SimpleNamespace
+        for i in range(4, -1, -1):   # today-4 … today
+            d = date.today() - timedelta(days=i)
+            try:
+                cmd_tts_publish(SimpleNamespace(date=d.isoformat()))
+            except Exception as e:
+                log.warning("TTS sweep failed for %s: %s", d, e)
 
 
 def _maybe_run_deepdives(args) -> None:
@@ -402,14 +487,17 @@ def cmd_report(args, silent=False):
         if ps.get("events"):
             pol_summaries.append(ps)
 
-    report = gen_report(events, pol_summaries)
+    target = date.today()
+    if getattr(args, "date", None):
+        target = datetime.strptime(args.date, "%Y-%m-%d").date()
 
-    today = date.today()
-    save_report(cfg.DB_PATH, today, report["html"], report["markdown"])
-    html_path = save_html_report(report["html"], cfg.REPORTS_DIR, today)
+    report = gen_report(events, pol_summaries, report_date=target)
+
+    save_report(cfg.DB_PATH, target, report["html"], report["markdown"])
+    html_path = save_html_report(report["html"], cfg.REPORTS_DIR, target)
 
     # Also save markdown
-    md_path = cfg.REPORTS_DIR / f"digest_{today.strftime('%Y-%m-%d')}.md"
+    md_path = cfg.REPORTS_DIR / f"digest_{target.strftime('%Y-%m-%d')}.md"
     md_path.write_text(report["markdown"], encoding="utf-8")
 
     if not silent:
@@ -507,16 +595,25 @@ def cmd_serve(args):
 # ──────────────────────────────────────────────────────────────────────────────
 
 def cmd_podcast(args):
-    """Generate 4×30-min podcast episodes from recent digest events."""
+    """Generate 4×30-min podcast episodes from recent digest events.
+
+    In Cowork mode (Config.USE_COWORK_FOR_AI=True), this writes placeholder
+    scripts and queues author_episode briefs for Cowork to fill in overnight.
+    The next day's `cmd_tts_publish` synthesizes audio from whatever Cowork
+    landed.
+    """
     initialize_db(cfg.DB_PATH)
 
     no_audio = getattr(args, "no_audio", False)
-    if not cfg.ANTHROPIC_API_KEY:
-        print("✗  ANTHROPIC_API_KEY missing — add to .env and retry.")
+    cowork_mode = getattr(cfg, "USE_COWORK_FOR_AI", False)
+
+    if not cowork_mode and not cfg.ANTHROPIC_API_KEY:
+        print("✗  ANTHROPIC_API_KEY missing — add to .env, or set "
+              "USE_COWORK_FOR_AI=1 to route AI through Cowork instead.")
         return
     if not no_audio and not cfg.OPENAI_API_KEY:
-        print("✗  OPENAI_API_KEY missing — add to .env or use --no-audio.")
-        return
+        print("⚠️   OPENAI_API_KEY missing — running with --no-audio implicitly.")
+        no_audio = True
 
     target = date.today()
     if getattr(args, "date", None):
@@ -763,6 +860,304 @@ def cmd_deepdive(args):
     print()
 
 
+def cmd_tts_publish(args):
+    """Synthesize MP3s for any podcast scripts on disk that are missing audio.
+
+    Runs after Cowork has drained the inbox overnight. Walks
+    `podcasts/podcast_<date>_*.txt` for the target date, and for each script
+    that's missing the matching `.mp3`, calls OpenAI TTS to synthesize it.
+
+    This is the only Anthropic-free step that still needs a paid API key —
+    OpenAI TTS for audio. Set OPENAI_API_KEY in .env.
+    """
+    if not cfg.OPENAI_API_KEY:
+        print("✗  OPENAI_API_KEY missing — add to .env.")
+        return
+
+    target = date.today()
+    if getattr(args, "date", None):
+        target = datetime.strptime(args.date, "%Y-%m-%d").date()
+
+    date_str = target.strftime("%Y-%m-%d")
+    pattern = f"podcast_{date_str}_*.txt"
+    scripts = sorted(p for p in cfg.PODCASTS_DIR.glob(pattern)
+                     if not p.name.endswith(".draft.txt")
+                     and not p.name.endswith(".rewrite.txt")
+                     and not p.name.endswith(".editor.txt"))
+    if not scripts:
+        print(f"(no scripts in podcasts/ for {date_str} — nothing to TTS)")
+        return
+
+    import openai as _openai
+    from scanner.podcast import _synthesize_dialogue
+    client = _openai.OpenAI(api_key=cfg.OPENAI_API_KEY)
+
+    print(f"\n🔊  TTS publish — {date_str} ({len(scripts)} script(s))")
+    for script_path in scripts:
+        script = script_path.read_text(encoding="utf-8")
+        # Skip empty / placeholder scripts
+        if len(script.strip()) < 200:
+            print(f"   ⊘  {script_path.name}: too short — skipping (probably a "
+                  "Cowork placeholder, run again after the drain)")
+            continue
+        mp3_path = script_path.with_suffix(".mp3")
+        if mp3_path.exists() and mp3_path.stat().st_size > 1024:
+            print(f"   ✓  {mp3_path.name} already synthesized")
+            continue
+        try:
+            duration = _synthesize_dialogue(
+                client, script, mp3_path, cfg.PODCAST_TTS_MODEL,
+            )
+            print(f"   ✓  {mp3_path.name} ({duration//60}:{duration%60:02d})")
+        except Exception as e:
+            print(f"   ✗  {script_path.name}: {e}")
+
+
+def cmd_cowork_queue(args):
+    """Push a full set of briefs to Cowork: enrich + PM + analyst + dossier
+    + author episodes for today.
+
+    Used as the evening 22:00–22:15 step on Windows (after fetch). Cowork
+    then drains everything overnight; tomorrow morning's tts-publish renders
+    the audio.
+    """
+    initialize_db(cfg.DB_PATH)
+    if not getattr(cfg, "USE_COWORK_FOR_AI", False):
+        print("Note: USE_COWORK_FOR_AI is off — this command does nothing. "
+              "Enable it in .env or config.py.")
+        return
+
+    target = date.today()
+    if getattr(args, "date", None):
+        target = datetime.strptime(args.date, "%Y-%m-%d").date()
+
+    print(f"\n📨  Queueing Cowork briefs for {target}…\n")
+
+    # 1. Event enrichment — for unenriched events
+    try:
+        from scanner.processor import process_batch
+        from scanner.database import list_unenriched_events
+        try:
+            unenriched = list_unenriched_events(cfg.DB_PATH, days=2)
+        except Exception:
+            # Fallback: any event missing summary
+            from scanner.database import get_recent_events
+            unenriched = [e for e in get_recent_events(cfg.DB_PATH, days=2, min_relevance=0.0)
+                          if not (e.get("summary") or "").strip()]
+        if unenriched:
+            process_batch("", unenriched)   # cowork mode → just queues
+            print(f"   ✓ enrich_events  → {len(unenriched)} events queued")
+        else:
+            print("   ⊘ enrich_events  → all events already enriched")
+    except Exception as e:
+        print(f"   ⚠ enrich_events failed: {e}")
+
+    # 2. PM rollup
+    try:
+        from scanner.pm import generate_weekly_themes
+        generate_weekly_themes(db_path=cfg.DB_PATH, anthropic_key="",
+                                window_end=target)
+        print("   ✓ weekly_themes  → queued")
+    except Exception as e:
+        print(f"   ⚠ weekly_themes failed: {e}")
+
+    # 3. Analyst pass
+    try:
+        from scanner.analyst import analyze_all
+        analyze_all(db_path=cfg.DB_PATH, anthropic_key="")
+        print("   ✓ score_consistency → queued")
+    except Exception as e:
+        print(f"   ⚠ score_consistency failed: {e}")
+
+    # 4. Dossiers
+    try:
+        from scanner.dossier import queue_dossier_briefs
+        names = queue_dossier_briefs(db_path=cfg.DB_PATH,
+                                      output_dir=cfg.CANDIDATE_DOSSIER_DIR)
+        if names:
+            print(f"   ✓ candidate_dossier → {len(names)} candidate(s) queued")
+        else:
+            print("   ⊘ candidate_dossier → all dossiers fresh")
+    except Exception as e:
+        print(f"   ⚠ candidate_dossier failed: {e}")
+
+    # 5. Author episodes — runs the podcast pipeline which queues briefs
+    try:
+        from scanner.podcast import generate_podcast_episodes
+        results = generate_podcast_episodes(
+            db_path=cfg.DB_PATH,
+            podcasts_dir=cfg.PODCASTS_DIR,
+            anthropic_key="",
+            openai_key="",
+            target_date=target,
+            no_audio=True,
+            filter_incidents=cfg.PODCAST_FILTER_INDIVIDUAL_INCIDENTS,
+        )
+        n_queued = sum(1 for r in results if r.get("status") == "queued_cowork")
+        print(f"   ✓ author_episode → {n_queued} episode(s) queued")
+    except Exception as e:
+        print(f"   ⚠ author_episode failed: {e}")
+
+    # 6. Deep-dives — based on PM-flagged candidates the listener named
+    #    Skip any candidate who already has a complete 4-episode series so
+    #    we never re-queue a deepdive for someone already fully covered.
+    try:
+        from scanner.database import get_latest_weekly_themes
+        from scanner.series import _candidate_has_complete_series
+        rollup = get_latest_weekly_themes(cfg.DB_PATH)
+        names = (rollup or {}).get("listener_candidate_interest") or []
+        # Filter out candidates whose series is already complete
+        names = [nm for nm in names
+                 if not _candidate_has_complete_series(nm, cfg.PODCASTS_DIR)]
+        if names:
+            from scanner.deepdive import generate_deep_dive
+            for nm in names[:2]:
+                generate_deep_dive(
+                    db_path=cfg.DB_PATH, podcasts_dir=cfg.PODCASTS_DIR,
+                    anthropic_key="", openai_key="",
+                    candidate_name=nm, target_date=target,
+                    no_audio=True, skip_editor=False,
+                )
+            print(f"   ✓ deep_dive_script → {min(2, len(names))} queued")
+        else:
+            print("   ⊘ deep_dive_script → no listener-flagged candidates "
+                  "(all flagged candidates already have complete series)")
+    except Exception as e:
+        print(f"   ⚠ deep_dive_script failed: {e}")
+
+    print(f"\nAll briefs are in: {cfg.COWORK_INBOX_DIR}")
+    print("The Cowork drain-cowork-inbox scheduled task will process them on "
+          "its next run.\n")
+
+
+def cmd_series(args):
+    """4-episode-per-candidate series (专题) commands.
+
+    Subcommands:
+      python main.py series today          # queue today's scheduled candidate
+      python main.py series queue NAME     # force-queue a named candidate
+      python main.py series status         # show progress + next 14 days
+      python main.py series monitor        # queue an SBE-list-diff brief
+      python main.py series reconcile      # walk disk for completed episodes
+    """
+    initialize_db(cfg.DB_PATH)
+    sub = getattr(args, "series_cmd", None)
+    if sub == "today":
+        target = date.today()
+        if getattr(args, "date", None):
+            target = datetime.strptime(args.date, "%Y-%m-%d").date()
+        from scanner.series import queue_today_series, status_summary
+        result = queue_today_series(target_date=target)
+        if result["status"] == "no_candidate":
+            print(f"(no candidate scheduled for {target.isoformat()})")
+            return
+        print(f"\n📡  Series queue — {result['date']} · {result['candidate']}")
+        print(f"    Office     : {result.get('office','')}")
+        print(f"    Dossier    : {'queued' if result['dossier_queued'] else 'already on disk'}")
+        print(f"    Episodes   : queued ep{', ep'.join(str(n) for n in result['episodes_queued'])}")
+        print(f"    → All briefs in: {cfg.COWORK_INBOX_DIR}")
+    elif sub == "queue":
+        from scanner.series import find_candidate, queue_today_series, save_registry, load_registry
+        name = " ".join(args.name) if isinstance(args.name, list) else args.name
+        reg = load_registry()
+        cand = find_candidate(name, reg)
+        if not cand:
+            print(f"✗  '{name}' not in registry. Run `series monitor` to refresh, or add manually.")
+            return
+        target = date.today()
+        if getattr(args, "date", None):
+            target = datetime.strptime(args.date, "%Y-%m-%d").date()
+        # Re-point the candidate to today so queue_today_series picks them up.
+        cand["scheduled_date"] = target.isoformat()
+        save_registry(reg)
+        result = queue_today_series(target_date=target)
+        print(f"\n📡  Force-queued {cand['name']} for {target.isoformat()}")
+        print(f"    Episodes queued: {result.get('episodes_queued')}")
+    elif sub == "status":
+        from scanner.series import status_summary
+        print(status_summary())
+    elif sub == "monitor":
+        from scanner.series import queue_filing_monitor
+        p = queue_filing_monitor()
+        print(f"📡  Filing-list monitor brief queued: {p}")
+        print("    Cowork will re-fetch SBE pages on the next drain and update the registry.")
+    elif sub == "reconcile":
+        from scanner.series import reconcile_completed_episodes
+        n = reconcile_completed_episodes(cfg.PODCASTS_DIR)
+        print(f"✓  Marked {n} new episode(s) as done.")
+    elif sub == "scout":
+        from scanner.series import queue_scout_all
+        names = queue_scout_all(force=getattr(args, "force", False))
+        if names:
+            print(f"📡  Queued dossier_scout briefs for {len(names)} candidate(s):")
+            for n in names: print(f"    • {n}")
+            print("    Cowork drains overnight; run `series scout-results` after to pull richness scores back into the registry.")
+        else:
+            print("(all candidates already have scout results — pass --force to re-scout)")
+    elif sub == "scout-results":
+        from scanner.series import apply_scout_results
+        n = apply_scout_results()
+        print(f"✓  Applied {n} scout result(s) to the registry.")
+    elif sub == "reschedule":
+        from scanner.series import reschedule_by_readiness
+        n = reschedule_by_readiness()
+        print(f"✓  Rescheduled {n} candidate(s) by tier+richness. New schedule:")
+        from scanner.series import status_summary
+        print(status_summary())
+    else:
+        print("Usage: python main.py series {today|queue NAME|status|scout|scout-results|reschedule|monitor|reconcile}")
+
+
+def cmd_dossier(args):
+    """Queue Cowork dossier briefs for filed candidates / listener-named names.
+
+    Designed to be called both from the daily publish pipeline and standalone.
+    The Cowork agent (Opus 4.7) drains the resulting briefs from cowork_inbox/
+    on its next scheduled run and writes per-candidate dossiers under
+    data/candidate_dossiers/.
+    """
+    initialize_db(cfg.DB_PATH)
+    from scanner.dossier import queue_dossier_briefs, retry_failed_briefs
+
+    # --retry-failed short-circuits everything else.
+    if getattr(args, "retry_failed", False):
+        names = retry_failed_briefs(
+            db_path=cfg.DB_PATH,
+            output_dir=cfg.CANDIDATE_DOSSIER_DIR,
+            max_briefs=int(getattr(args, "max", 12)),
+        )
+        if names:
+            print(f"✓ Requeued {len(names)} previously-failed dossier brief(s):")
+            for n in names:
+                print(f"   • {n}")
+        else:
+            print("No failed dossier briefs in the last 14 days.")
+        return
+
+    only_names = None
+    if getattr(args, "name", None):
+        only_names = [args.name] if isinstance(args.name, str) else list(args.name)
+
+    queued = queue_dossier_briefs(
+        db_path=cfg.DB_PATH,
+        output_dir=cfg.CANDIDATE_DOSSIER_DIR,
+        only_names=only_names,
+        force=bool(getattr(args, "force", False)),
+        max_briefs=int(getattr(args, "max", 12)),
+    )
+    if queued:
+        print(f"✓ Queued {len(queued)} dossier brief(s):")
+        for n in queued:
+            print(f"   • {n}")
+        print(f"\nBriefs are in: {cfg.COWORK_INBOX_DIR}")
+        print("The Cowork drain-cowork-inbox scheduled task will process them on its next run,")
+        print("or you can click 'Run now' on it from the Scheduled sidebar.")
+    else:
+        print("No dossier briefs queued — all dossiers are fresh, or no candidates matched.")
+        if getattr(args, "force", False):
+            print("(--force was set, but no eligible candidates were found.)")
+
+
 def cmd_pm(args):
     """Roll up recent daily_notes into themes/open-questions/underserved-topics."""
     initialize_db(cfg.DB_PATH)
@@ -790,6 +1185,48 @@ def cmd_pm(args):
 
     print(format_themes_for_prompt(saved))
     print()
+
+
+def cmd_notifications(args):
+    """Show unseen notifications surfaced by scanner roles.
+
+    Lists items written via scanner.notifications.notify() — Cowork brief
+    failures, queue errors, anything a role flagged for your attention.
+    """
+    from scanner.notifications import list_unseen, mark_seen, scan_failed_briefs
+
+    if getattr(args, "scan", False):
+        n = scan_failed_briefs(within_hours=24 * 7)
+        print(f"Scanned cowork_inbox/ — surfaced {n} failed brief(s) "
+              "from the last 7 days.\n")
+
+    rows = list_unseen(limit=int(getattr(args, "limit", 50)))
+    if not rows:
+        print("No unseen notifications.")
+        return
+    for r in rows:
+        sev = (r.get("severity") or "warn").upper()
+        ts = (r.get("created_at") or "")[:19]
+        print(f"[{sev:5}] {ts}  {r.get('role','')}: {r.get('message','')}")
+        ctx = r.get("context", "")
+        if ctx and ctx != "{}":
+            print(f"        context: {ctx}")
+    print(f"\n{len(rows)} unseen notification(s).")
+
+    if getattr(args, "mark_seen", False):
+        for r in rows:
+            mark_seen(int(r["id"]))
+        print("All listed notifications marked seen.")
+
+
+def cmd_weekly_review(args):
+    """Run the weekly site-review (writes audit + Cowork dispatch brief)."""
+    from weekly_review import write_review_and_dispatch
+    from datetime import date as _date, datetime as _dt
+    today = (_dt.strptime(args.date, "%Y-%m-%d").date()
+             if getattr(args, "date", None) else _date.today())
+    path = write_review_and_dispatch(today, dry_run=bool(getattr(args, "dry_run", False)))
+    print(f"Review written to: {path}")
 
 
 def cmd_setup(args):
@@ -846,180 +1283,170 @@ def cmd_setup(args):
     startup_dir = Path(os.environ["APPDATA"]) / "Microsoft/Windows/Start Menu/Programs/Startup"
     launcher_bat = startup_dir / "LocalPoliticsServer.bat"
     print(f"\n[3/3] Creating auto-start launcher at:\n      {launcher_bat}")
-
-    # VBS wrapper makes the cmd window stay hidden; bat calls python directly
     script_dir = Path(__file__).parent
     bat_content = (
-        f'@echo off\r\n'
-        f'cd /d "{script_dir}"\r\n'
-        f'start "" /B "{python_exe}" "{script}" serve --port {args.port} '
-        f'>> "{server_log}" 2>&1\r\n'
+        f"@echo off\r\n"
+        f"cd /d \"{script_dir}\"\r\n"
+        f"start \"\" /B \"{python_exe}\" \"{script}\" serve --port {args.port} >> \"{server_log}\" 2>&1\r\n"
     )
     try:
         startup_dir.mkdir(parents=True, exist_ok=True)
         launcher_bat.write_text(bat_content, encoding="utf-8")
-        print(f"      ✅  Server will auto-start at every Windows login.")
-        print(f"          Logs: {server_log}")
-        print(f"          To remove: delete that .bat file")
-
-        ts_ip = get_tailscale_ip()
-        hostname = os.environ.get("COMPUTERNAME", "this-pc")
-        print("\n📱  Access reports from your phone via Tailscale:")
-        if ts_ip:
-            print(f"      http://{ts_ip}:{args.port}/        ← bookmark this on your phone")
-        else:
-            print(f"      http://<your-tailscale-ip>:{args.port}/")
-            print("      (run `tailscale ip -4` in PowerShell to find the IP)")
-        print(f"      http://{hostname}:{args.port}/       (Tailscale MagicDNS alias)")
-        print("\n      To start the server NOW (without rebooting):")
-        print(f"      .venv\\Scripts\\python main.py serve")
+        print(f"      OK Server will auto-start at every Windows login.")
     except Exception as e:
-        print(f"      ✗  Could not create startup launcher: {e}")
-        print(f"      You can still run the server manually:")
-        print(f"        .venv\\Scripts\\python main.py serve")
-
-    print(f"\nTo remove the scheduled tasks later:")
-    print(f"  schtasks /delete /tn {publish_task} /f")
-    print(f"  schtasks /delete /tn {fetch_task} /f")
+        print(f"      Could not create startup launcher: {e}")
 
 
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 # CLI
-# ──────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(
-        prog="python main.py",
-        description="Local Politics Scanner",
-    )
+    parser = argparse.ArgumentParser(prog="python main.py",
+                                     description="Local Politics Scanner")
     sub = parser.add_subparsers(dest="command")
 
-    fetch = sub.add_parser("fetch",
-        help="Collector only: fetch all sources, enrich with AI, save to DB (no report/podcast)")
+    sub.add_parser("fetch", help="Collector only")
 
-    publish = sub.add_parser("publish",
-        help="Publish today's content from existing DB data: PM → Analyst → report → podcast")
-    publish.add_argument("--date", help="Target date YYYY-MM-DD for podcast (default: today)")
-    publish.add_argument("--no-audio", action="store_true",
-                         help="Skip OpenAI TTS (write script only)")
-    publish.add_argument("--skip-editor", action="store_true",
-                         help="Skip the Editor pass (draft straight to TTS)")
-    publish.add_argument("--no-podcast", action="store_true",
-                         help="Only generate the report, skip the podcast")
-    publish.add_argument("--no-defer", action="store_true",
-                         help="Disable multi-day overflow queue (process every event today)")
+    publish = sub.add_parser("publish", help="Publish today's content")
+    publish.add_argument("--date")
+    publish.add_argument("--no-audio", action="store_true")
+    publish.add_argument("--skip-editor", action="store_true")
+    publish.add_argument("--no-podcast", action="store_true")
+    publish.add_argument("--no-defer", action="store_true")
 
-    scan = sub.add_parser("scan",
-        help="(Legacy alias) Fetch then immediately publish in one shot — "
-             "prefer scheduled `fetch` + `publish` for day-over-day feedback loop")
-    scan.add_argument("--with-podcast", action="store_true",
-                      help="Also generate today's podcast (legacy flag — on by default in `publish`)")
-    scan.add_argument("--no-podcast", action="store_true",
-                      help="Skip the podcast when running in one-shot mode")
-    scan.add_argument("--no-audio", action="store_true",
-                      help="Generate scripts but skip OpenAI TTS")
-    scan.add_argument("--skip-editor", action="store_true",
-                      help="Skip the Editor pass (draft straight to TTS)")
-    scan.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
+    scan = sub.add_parser("scan", help="Fetch then publish (legacy)")
+    scan.add_argument("--with-podcast", action="store_true")
+    scan.add_argument("--no-podcast", action="store_true")
+    scan.add_argument("--no-audio", action="store_true")
+    scan.add_argument("--skip-editor", action="store_true")
+    scan.add_argument("--date")
 
-    pod = sub.add_parser("podcast", help="Generate a 2-hour two-host podcast from recent digest")
-    pod.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
-    pod.add_argument("--no-audio", action="store_true",
-                     help="Write the script to .txt but skip OpenAI TTS (no audio cost)")
-    pod.add_argument("--skip-editor", action="store_true",
-                     help="Skip the Editor pass (go straight from draft to TTS)")
-    pod.add_argument("--no-defer", action="store_true",
-                     help="Disable multi-day overflow queue (process every event today)")
+    pod = sub.add_parser("podcast", help="Generate podcast")
+    pod.add_argument("--date")
+    pod.add_argument("--no-audio", action="store_true")
+    pod.add_argument("--skip-editor", action="store_true")
+    pod.add_argument("--no-defer", action="store_true")
 
-    rep = sub.add_parser("report", help="Generate report from existing DB data")
-    rep.add_argument("--days", type=int, default=7, help="Days of history to include (default: 7)")
+    rep = sub.add_parser("report", help="Generate report")
+    rep.add_argument("--days", type=int, default=7)
+    rep.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
 
-    pol = sub.add_parser("politician", help="Look up a politician's recent tracked activity")
-    pol.add_argument("name", nargs="+", help="Politician name (can be partial)")
+    pol = sub.add_parser("politician", help="Look up politician")
+    pol.add_argument("name", nargs="+")
 
-    sub.add_parser("status", help="Show scan history and database stats")
+    sub.add_parser("status", help="Show stats")
+    sub.add_parser("candidates", help="Show candidates")
 
-    sub.add_parser("candidates", help="Show candidate tracker (2026 cycle) with recent DB activity")
+    srv = sub.add_parser("serve", help="HTTP server")
+    srv.add_argument("--host", default="0.0.0.0")
+    srv.add_argument("--port", type=int, default=8080)
 
-    srv = sub.add_parser("serve", help="Start HTTP server for phone/Tailscale access")
-    srv.add_argument("--host", default="0.0.0.0", help="Bind host (default: 0.0.0.0)")
-    srv.add_argument("--port", type=int, default=8080, help="Port (default: 8080)")
+    pm = sub.add_parser("pm", help="PM rollup")
+    pm.add_argument("--date")
+    pm.add_argument("--days", type=int, default=7)
 
-    pm = sub.add_parser("pm", help="Roll up recent audience daily_notes into themes")
-    pm.add_argument("--date", help="Window end date YYYY-MM-DD (default: today)")
-    pm.add_argument("--days", type=int, default=7, help="Window length in days (default: 7)")
+    an = sub.add_parser("analyst", help="Score politicians")
+    an.add_argument("--name")
+    an.add_argument("--level", choices=["federal","state","county","school","local"])
+    an.add_argument("--min-events", type=int, default=3)
 
-    an = sub.add_parser("analyst", help="Score politicians' position consistency from tracked events")
-    an.add_argument("--name", help="Score just this politician (LIKE match)")
-    an.add_argument("--level", choices=["federal", "state", "county", "school", "local"],
-                    help="Limit to politicians at this level")
-    an.add_argument("--min-events", type=int, default=3,
-                    help="Skip politicians with fewer linked events (default: 3)")
+    disc = sub.add_parser("discover", help="Discover candidates")
+    disc.add_argument("--year", type=int)
+    disc.add_argument("--window", default="1y")
 
-    disc = sub.add_parser("discover",
-        help="Discover ballot candidates from Google News per configured district")
-    disc.add_argument("--year", type=int, help="Ballot year (default: current year)")
-    disc.add_argument("--window", default="1y",
-                       help="Google News time window: '90d', '6m', '1y', '2y' (default: 1y)")
+    dd = sub.add_parser("deepdive", help="Deep-dive episode")
+    dd.add_argument("name", nargs="+")
+    dd.add_argument("--date")
+    dd.add_argument("--no-audio", action="store_true")
+    dd.add_argument("--skip-editor", action="store_true")
 
-    dd = sub.add_parser("deepdive",
-        help="Generate a ~30-min deep-dive (专题) episode for one candidate")
-    dd.add_argument("name", nargs="+", help="Candidate name (can be partial)")
-    dd.add_argument("--date", help="Target date YYYY-MM-DD (default: today)")
-    dd.add_argument("--no-audio", action="store_true",
-                     help="Write the script only; skip OpenAI TTS")
-    dd.add_argument("--skip-editor", action="store_true",
-                     help="Skip the Editor pass")
+    bf = sub.add_parser("backfill", help="Backfill news")
+    bf.add_argument("--name")
+    bf.add_argument("--level", choices=["federal","state","county","school","local"])
+    bf.add_argument("--window", default="2y")
+    bf.add_argument("--locale-hint")
+    bf.add_argument("--max-items", type=int, default=40)
 
-    bf = sub.add_parser("backfill", help="Fetch historical news per politician (Google News deep search)")
-    bf.add_argument("--name", help="Backfill just this politician (LIKE match)")
-    bf.add_argument("--level", choices=["federal", "state", "county", "school", "local"],
-                    help="Limit to politicians at this level")
-    bf.add_argument("--window", default="2y",
-                    help="Google News time window: e.g. '90d', '6m', '2y' (default: 2y)")
-    bf.add_argument("--locale-hint", help="Extra search keyword (default: USER_STATE)")
-    bf.add_argument("--max-items", type=int, default=40,
-                    help="Max items per politician (default: 40)")
+    setup = sub.add_parser("setup", help="Register scheduled tasks")
+    setup.add_argument("--port", type=int, default=8080)
+    setup.add_argument("--no-server", action="store_true")
 
-    setup = sub.add_parser("setup", help="Register daily-scan + web-server scheduled tasks")
-    setup.add_argument("--port", type=int, default=8080, help="Server port (default: 8080)")
-    setup.add_argument("--no-server", action="store_true",
-                       help="Only schedule the daily scan, not the web server")
+    tts = sub.add_parser("tts-publish", help="TTS pass for already-written scripts")
+    tts.add_argument("--date")
+
+    cw = sub.add_parser("cowork-queue", help="Queue all Cowork briefs for today")
+    cw.add_argument("--date")
+
+    nt = sub.add_parser("notifications",
+                         help="Show unseen notifications from scanner roles")
+    nt.add_argument("--limit", type=int, default=50)
+    nt.add_argument("--mark-seen", action="store_true",
+                    help="Mark every listed notification as seen after printing.")
+    nt.add_argument("--scan", action="store_true",
+                    help="Before listing, scan cowork_inbox/*.error.json from "
+                         "the last 7 days and surface any new failures.")
+
+    wr = sub.add_parser("weekly-review",
+                         help="Run the weekly site-review (audit + Cowork dispatch)")
+    wr.add_argument("--date", help="Override today (YYYY-MM-DD)")
+    wr.add_argument("--dry-run", action="store_true")
+
+    do = sub.add_parser("dossier", help="Queue dossier briefs")
+    do.add_argument("--names", help="Comma-separated names")
+    do.add_argument("--name", help="Single candidate name")
+    do.add_argument("--force", action="store_true")
+    do.add_argument("--max", type=int, default=12)
+    do.add_argument("--retry-failed", action="store_true",
+                    help="Requeue every candidate whose last brief errored "
+                         "in the last 14 days, using the gap-filling prompt.")
+
+    sr = sub.add_parser("series",
+        help="4-episode-per-candidate series orchestration (专题)")
+    sr_sub = sr.add_subparsers(dest="series_cmd")
+    sr_today = sr_sub.add_parser("today", help="Queue today's scheduled candidate")
+    sr_today.add_argument("--date", help="Override target date (YYYY-MM-DD)")
+    sr_queue = sr_sub.add_parser("queue", help="Force-queue a named candidate")
+    sr_queue.add_argument("name", nargs="+", help="Candidate name (partial match OK)")
+    sr_queue.add_argument("--date", help="Air date (YYYY-MM-DD; default today)")
+    sr_sub.add_parser("status", help="Show registry stats + next 14 days")
+    sr_sub.add_parser("monitor", help="Queue a SBE-list-diff brief for the registry")
+    sr_sub.add_parser("reconcile", help="Mark episodes done if their .txt is on disk")
+    sr_scout = sr_sub.add_parser("scout", help="Queue fast richness recon for every candidate")
+    sr_scout.add_argument("--force", action="store_true", help="Re-scout even those with results")
+    sr_sub.add_parser("scout-results", help="Apply scout JSON files to the registry (richness, age, lookback)")
+    sr_sub.add_parser("reschedule", help="Reorder air dates within tier by richness (rich first, thin later)")
 
     args = parser.parse_args()
 
-    if args.command == "fetch":
-        cmd_fetch(args)
-    elif args.command == "publish":
-        cmd_publish(args)
-    elif args.command == "scan":
-        cmd_scan(args)
-    elif args.command == "report":
-        cmd_report(args)
-    elif args.command == "politician":
-        cmd_politician(args)
-    elif args.command == "status":
-        cmd_status(args)
-    elif args.command == "serve":
-        cmd_serve(args)
-    elif args.command == "podcast":
-        cmd_podcast(args)
-    elif args.command == "setup":
-        cmd_setup(args)
-    elif args.command == "candidates":
-        cmd_candidates(args)
-    elif args.command == "pm":
-        cmd_pm(args)
-    elif args.command == "analyst":
-        cmd_analyst(args)
-    elif args.command == "backfill":
-        cmd_backfill(args)
-    elif args.command == "discover":
-        cmd_discover(args)
-    elif args.command == "deepdive":
-        cmd_deepdive(args)
-    else:
+    dispatch = {
+        "fetch": cmd_fetch,
+        "publish": cmd_publish,
+        "scan": cmd_scan,
+        "report": cmd_report,
+        "politician": cmd_politician,
+        "status": cmd_status,
+        "serve": cmd_serve,
+        "podcast": cmd_podcast,
+        "setup": cmd_setup,
+        "candidates": cmd_candidates,
+        "pm": cmd_pm,
+        "analyst": cmd_analyst,
+        "backfill": cmd_backfill,
+        "discover": cmd_discover,
+        "deepdive": cmd_deepdive,
+        "tts-publish": cmd_tts_publish,
+        "cowork-queue": cmd_cowork_queue,
+        "dossier": cmd_dossier,
+        "series": cmd_series,
+        "notifications": cmd_notifications,
+        "weekly-review": cmd_weekly_review,
+    }
+    fn = dispatch.get(args.command)
+    if fn is None:
         parser.print_help()
+        return
+    fn(args)
 
 
 if __name__ == "__main__":

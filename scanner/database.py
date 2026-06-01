@@ -211,6 +211,28 @@ def initialize_db(db_path: Path) -> None:
                 FOREIGN KEY (event_id) REFERENCES events(id)
             );
             CREATE INDEX IF NOT EXISTS idx_deferred_until ON deferred_events(defer_until);
+
+            -- Permanent research record per politician. Every [src: URL]
+            -- citation a dossier ever made for this person lives here so
+            -- evidence accumulates across dossier runs instead of dying with
+            -- the .md file in cowork_outbox/. UNIQUE(name,url) dedups
+            -- repeated citations of the same source across multiple runs.
+            -- Index names use `csrc_` prefix to avoid colliding with the
+            -- existing `idx_cs_politician` on consistency_scores.
+            CREATE TABLE IF NOT EXISTS candidate_sources (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                politician_name TEXT NOT NULL,
+                url             TEXT NOT NULL,
+                title           TEXT,
+                summary         TEXT,
+                source_type     TEXT,
+                date_collected  DATE,
+                dossier_date    DATE,
+                raw_excerpt     TEXT,
+                UNIQUE(politician_name, url)
+            );
+            CREATE INDEX IF NOT EXISTS idx_csrc_politician ON candidate_sources(politician_name);
+            CREATE INDEX IF NOT EXISTS idx_csrc_url        ON candidate_sources(url);
         """)
 
         # Column migrations for existing DBs (ALTER TABLE ADD COLUMN is a no-op
@@ -858,3 +880,173 @@ def clear_deferred_events(db_path: Path, event_ids: List[int]) -> None:
             "DELETE FROM deferred_events WHERE event_id = ?",
             [(eid,) for eid in event_ids],
         )
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Digest-references log — backs the "new today vs seen earlier" split in the
+# References section so the same URLs don't keep dominating every morning.
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _ensure_digest_references(conn) -> None:
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS digest_references (
+            url            TEXT PRIMARY KEY,
+            first_appeared DATE,
+            last_appeared  DATE,
+            days_seen      INTEGER DEFAULT 1
+        )
+    """)
+
+
+def record_digest_references(db_path: Path, urls: List[str]) -> Dict[str, str]:
+    """Record today's reference URLs and return {url: first_appeared} for
+    every URL passed in. Used by reporter._references_section_html to bucket
+    URLs into "new today" vs "seen earlier this week"."""
+    today_iso = date.today().isoformat()
+    out: Dict[str, str] = {}
+    if not urls:
+        return out
+    with get_connection(db_path) as conn:
+        _ensure_digest_references(conn)
+        for u in urls:
+            row = conn.execute(
+                "SELECT first_appeared, days_seen FROM digest_references "
+                "WHERE url = ?", (u,)
+            ).fetchone()
+            if row is None:
+                conn.execute(
+                    "INSERT INTO digest_references "
+                    "(url, first_appeared, last_appeared, days_seen) "
+                    "VALUES (?, ?, ?, 1)",
+                    (u, today_iso, today_iso),
+                )
+                out[u] = today_iso
+            else:
+                first = row["first_appeared"] or today_iso
+                conn.execute(
+                    "UPDATE digest_references SET last_appeared = ?, "
+                    "days_seen = days_seen + CASE WHEN last_appeared = ? "
+                    "THEN 0 ELSE 1 END WHERE url = ?",
+                    (today_iso, today_iso, u),
+                )
+                out[u] = first
+    return out
+
+
+def recent_events_for_politician(
+    db_path: Path, name: str, limit: int = 6
+) -> List[Dict]:
+    """Fetch the politician's most-recent linked events. Used by the
+    Candidate Spotlight fallback so the panel always shows something
+    concrete when the dossier file is missing."""
+    if not name:
+        return []
+    sql = """
+        SELECT e.title, e.summary, e.date, e.source_url, e.source_name,
+               COALESCE(pe.role, 'mentioned') AS role
+          FROM events e
+          JOIN politician_events pe ON pe.event_id = e.id
+          JOIN politicians p ON p.id = pe.politician_id
+         WHERE p.name = ?
+         ORDER BY (e.date IS NULL), e.date DESC, e.id DESC
+         LIMIT ?
+    """
+    try:
+        with get_connection(db_path) as conn:
+            rows = conn.execute(sql, (name, limit)).fetchall()
+            return [dict(r) for r in rows]
+    except Exception:
+        return []
+
+
+# ── Candidate research sources (permanent dossier citation record) ──────────
+
+def upsert_candidate_source(db_path: Path, politician_name: str, url: str,
+                              title: str = "", summary: str = "",
+                              source_type: str = "other",
+                              date_collected: Optional[str] = None,
+                              dossier_date: Optional[str] = None,
+                              raw_excerpt: str = "") -> None:
+    """Insert or update one (politician_name, url) row.
+
+    Conflict policy on the UNIQUE(politician_name, url) key: keep the
+    existing `date_collected` (first-seen wins) but overwrite the
+    descriptive fields if the new dossier supplied non-empty values. This
+    way a later, better-written excerpt replaces an earlier sparse one
+    without losing the original collection date.
+    """
+    if not (politician_name and url):
+        return
+    with get_connection(db_path) as conn:
+        conn.execute(
+            """INSERT INTO candidate_sources
+                 (politician_name, url, title, summary, source_type,
+                  date_collected, dossier_date, raw_excerpt)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+               ON CONFLICT(politician_name, url) DO UPDATE SET
+                 title         = COALESCE(NULLIF(excluded.title, ''),       title),
+                 summary       = COALESCE(NULLIF(excluded.summary, ''),     summary),
+                 source_type   = COALESCE(NULLIF(excluded.source_type, ''), source_type),
+                 dossier_date  = COALESCE(excluded.dossier_date,            dossier_date),
+                 raw_excerpt   = COALESCE(NULLIF(excluded.raw_excerpt, ''), raw_excerpt)
+            """,
+            (politician_name, url, title or "", summary or "",
+             source_type or "other", date_collected, dossier_date,
+             raw_excerpt or ""),
+        )
+
+
+def get_candidate_sources(db_path: Path, politician_name: str) -> List[Dict]:
+    """All recorded sources for one politician, ordered by source_type then
+    most-recent dossier first. Empty list if none found or name blank."""
+    if not politician_name:
+        return []
+    sql = """
+        SELECT id, politician_name, url, title, summary, source_type,
+               date_collected, dossier_date, raw_excerpt
+          FROM candidate_sources
+         WHERE politician_name = ?
+         ORDER BY
+           CASE source_type
+             WHEN 'official'      THEN 1
+             WHEN 'biography'     THEN 2
+             WHEN 'voting_record' THEN 3
+             WHEN 'press'         THEN 4
+             WHEN 'campaign'      THEN 5
+             ELSE                      6
+           END,
+           (dossier_date IS NULL), dossier_date DESC, id
+    """
+    try:
+        with get_connection(db_path) as conn:
+            rows = conn.execute(sql, (politician_name,)).fetchall()
+            return [dict(r) for r in rows]
+    except Exception:
+        return []
+
+
+def search_candidate_sources(db_path: Path, query: str,
+                              limit: int = 50) -> List[Dict]:
+    """LIKE-based search across title + summary + raw_excerpt. Cheap and
+    good enough at this corpus size; swap for FTS5 if the table grows
+    past low-thousands of rows."""
+    q = (query or "").strip()
+    if not q:
+        return []
+    needle = f"%{q}%"
+    sql = """
+        SELECT id, politician_name, url, title, summary, source_type,
+               date_collected, dossier_date, raw_excerpt
+          FROM candidate_sources
+         WHERE title       LIKE ?
+            OR summary     LIKE ?
+            OR raw_excerpt LIKE ?
+         ORDER BY politician_name, source_type
+         LIMIT ?
+    """
+    try:
+        with get_connection(db_path) as conn:
+            rows = conn.execute(sql, (needle, needle, needle, limit)).fetchall()
+            return [dict(r) for r in rows]
+    except Exception:
+        return []

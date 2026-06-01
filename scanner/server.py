@@ -21,7 +21,8 @@ import logging
 import os
 import re
 import socket
-from datetime import date
+import time
+from datetime import date, datetime
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from config import Config as _Cfg
@@ -98,6 +99,33 @@ def _render_index(reports: List[Tuple[str, Path]],
                    podcasts: List[Tuple[str, Path]]) -> str:
     today = date.today().isoformat()
 
+    # Supply-warning banner. Only shown when the file exists and
+    # `warning_active=true` (the writer doesn't bother creating one when
+    # supply is healthy). Failing to read it is non-fatal — homepage just
+    # renders without the banner.
+    warning_html = ""
+    try:
+        warning_path = _Cfg.BASE_DIR / "data" / "supply_warning.json" \
+            if hasattr(_Cfg, "BASE_DIR") else Path("data/supply_warning.json")
+        if warning_path.exists():
+            w = json.loads(warning_path.read_text(encoding="utf-8"))
+            if w.get("warning_active"):
+                nu = w.get("next_unstarted") or {}
+                next_bit = (f' Next unstarted candidate: <strong>'
+                            f'{nu.get("name", "—")}</strong> '
+                            f'(@ {nu.get("scheduled_date", "—")}).'
+                           ) if nu else " The forward queue is empty."
+                warning_html = (
+                    '<div class="supply-warn">⚠️ <strong>Low candidate supply:</strong> '
+                    f'only {w.get("unstarted_count", 0)} unstarted upcoming '
+                    f'candidates (threshold {w.get("threshold", 7)}).{next_bit}'
+                    ' Add more entries to <code>data/candidate_series.json</code>'
+                    ' or run the filing-monitor to backfill.'
+                    '</div>'
+                )
+    except Exception:
+        pass
+
     if not reports:
         rows_html = """
         <div style='padding:32px;text-align:center;color:#888;'>
@@ -162,6 +190,11 @@ def _render_index(reports: List[Tuple[str, Path]],
   .row-arrow {{ color: #ccc; font-size: 1.8rem; line-height: 1; }}
   .badge {{ font-size: .68rem; font-weight: 700; padding: 2px 7px; border-radius: 10px; }}
   .badge.new {{ background: #c0392b; color: white; }}
+  .supply-warn {{ background: #fff3cd; border-left: 4px solid #f5b800;
+                   color: #5a4a14; padding: 12px 14px; border-radius: 8px;
+                   margin-bottom: 14px; font-size: .85rem; line-height: 1.5; }}
+  .supply-warn code {{ background: rgba(0,0,0,.06); padding: 1px 6px;
+                        border-radius: 4px; font-size: .82rem; }}
   .footer {{ text-align: center; color: #aaa; font-size: .75rem; padding: 24px 16px; }}
 </style></head><body>
 <div class="header">
@@ -169,8 +202,11 @@ def _render_index(reports: List[Tuple[str, Path]],
   <div class="sub">{_SITE_SUB} · {len(reports)} digests · {len(podcasts)} podcasts</div>
 </div>
 <div class="container">
+  {warning_html}
   <div class="quick-actions">
     <a class="primary" href="/latest">Latest Digest</a>
+    <a href="/playlist">🎵 Playlist</a>
+    <a href="/coverage">🗂️ Coverage</a>
     <a href="/api/events.json?days=3">JSON</a>
   </div>
   <div class="section-title">Recent Digests</div>
@@ -368,7 +404,7 @@ class Handler(BaseHTTPRequestHandler):
     knowledge_dir: Path = Path("knowledge")
     db_path: Path = Path("data/politics.db")
     anthropic_key: str = ""
-    chat_model: str = "claude-sonnet-4-5-20250929"
+    chat_model: str = "claude-sonnet-4-6"
 
     def log_message(self, fmt, *args):
         log.info("%s - %s", self.address_string(), fmt % args)
@@ -390,6 +426,14 @@ class Handler(BaseHTTPRequestHandler):
             if path.startswith("/podcast/") and path.endswith("-index.json"):
                 date_s = path[len("/podcast/"):-len("-index.json")]
                 return self._serve_podcast_index(date_s)
+            if path.startswith("/api/podcast-files/"):
+                return self._serve_podcast_files(path[len("/api/podcast-files/"):])
+            if path == "/playlist":
+                return self._serve_playlist_page()
+            if path == "/api/playlist-index":
+                return self._serve_playlist_index()
+            if path == "/coverage":
+                return self._serve_coverage_page()
             if path == "/podcasts":
                 return self._serve_podcast_list()
             if path == "/chat":
@@ -446,6 +490,13 @@ class Handler(BaseHTTPRequestHandler):
                 if not fpath.exists():
                     return self._head(404)
                 return self._head(200, "application/json", fpath.stat().st_size)
+            if path.startswith("/api/podcast-files/"):
+                # Endpoint always responds 200 with a (possibly empty) list.
+                return self._head(200, "application/json")
+            if path == "/playlist":
+                return self._head(200, "text/html; charset=utf-8")
+            if path == "/api/playlist-index":
+                return self._head(200, "application/json")
             if path.startswith("/report/") and path.endswith(".html"):
                 stem = path[len("/report/"):-len(".html")]
                 fpath = self.reports_dir / f"digest_{stem}.html"
@@ -567,6 +618,257 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(200, "application/json", b"{}")
         self._send(200, "application/json; charset=utf-8", p.read_bytes())
 
+    def _serve_podcast_files(self, date_str: str):
+        """List every MP3 we have for a date, with display metadata.
+
+        Player JS calls this to discover which audio files exist — including
+        legacy `_epN`, `_series_<slug>_epN`, and `_deepdive_<slug>` variants —
+        without having to hardcode filenames in the browser.
+        """
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", date_str):
+            return self._send_404()
+
+        # Patterns we know how to label, in display order.
+        prefix = f"podcast_{date_str}_"
+        SERIES_EP_TITLES = {1: "Origins", 2: "Career", 3: "Political Record", 4: "This Race"}
+        LEGACY_EP_TITLES = {1: "Episode 1", 2: "Episode 2", 3: "Episode 3", 4: "Episode 4"}
+
+        # Pull series-registry candidate names so slugs become real names.
+        slug_to_name: dict = {}
+        try:
+            from scanner.series import load_registry, _slug
+            reg = load_registry()
+            for c in reg.get("candidates", []):
+                nm = c.get("name") or ""
+                if nm:
+                    slug_to_name[_slug(nm)] = nm
+        except Exception:
+            pass
+
+        items = []
+        if self.podcasts_dir.exists():
+            for mp3 in sorted(self.podcasts_dir.glob(f"{prefix}*.mp3")):
+                stem = mp3.stem            # podcast_<date>_<rest>
+                rest = stem[len(prefix):]  # e.g. "ep1", "series_dawn-luedtke_ep2", "deepdive_friedson"
+                size = mp3.stat().st_size
+                url  = f"/podcast/{stem}.mp3"
+
+                m = re.fullmatch(r"series_(.+)_ep(\d+)", rest)
+                if m:
+                    slug, n = m.group(1), int(m.group(2))
+                    cand = slug_to_name.get(slug) or slug.replace("-", " ").title()
+                    title = SERIES_EP_TITLES.get(n, f"Part {n}")
+                    items.append({
+                        "kind": "series", "candidate": cand, "candidate_slug": slug,
+                        "ep_num": n, "title": title,
+                        "display_title": f"{cand} — {title}",
+                        "url": url, "size": size,
+                    })
+                    continue
+
+                m = re.fullmatch(r"ep(\d+)", rest)
+                if m:
+                    n = int(m.group(1))
+                    items.append({
+                        "kind": "ep", "ep_num": n,
+                        "title": LEGACY_EP_TITLES.get(n, f"Episode {n}"),
+                        "display_title": f"Episode {n}",
+                        "url": url, "size": size,
+                    })
+                    continue
+
+                m = re.fullmatch(r"deepdive_(.+)", rest)
+                if m:
+                    slug = m.group(1)
+                    cand = slug_to_name.get(slug) or slug.replace("-", " ").title()
+                    items.append({
+                        "kind": "deepdive", "candidate": cand, "candidate_slug": slug,
+                        "title": "Deep Dive",
+                        "display_title": f"{cand} — Deep Dive",
+                        "url": url, "size": size,
+                    })
+                    continue
+
+                # Unknown shape — still show it so the user can play it.
+                items.append({
+                    "kind": "other", "title": rest,
+                    "display_title": rest, "url": url, "size": size,
+                })
+
+        # PERMANENT RULE (2026-05-20): the player surfaces series episodes
+        # only. Legacy `_epN` news episodes and `_deepdive_` files are the
+        # retired formats — any leftover ones on disk are archived to
+        # podcasts/archive/, and what remains in podcasts/ shouldn't be
+        # advertised through the API. Belt-and-suspenders: even if a stale
+        # one slips through the archive sweep, this filter hides it.
+        items = [it for it in items if it.get("kind") == "series"]
+
+        # Stable display ordering: series grouped by candidate (ep1..ep4 within).
+        items.sort(key=lambda it: (
+            it.get("candidate_slug", ""),
+            it.get("ep_num", 0),
+            it.get("title", ""),
+        ))
+
+        body = json.dumps({"date": date_str, "items": items}, ensure_ascii=False).encode()
+        self._send(200, "application/json; charset=utf-8", body)
+
+    def _serve_playlist_page(self):
+        """GET /playlist — the multi-day queue player UI."""
+        from scanner.playlist import render_playlist_page
+        self._send(200, "text/html; charset=utf-8",
+                    render_playlist_page().encode("utf-8"))
+
+    def _serve_coverage_page(self):
+        """GET /coverage — single-glance status table for every candidate
+        in the registry: name, scheduled date, MP3 count, status badge."""
+        try:
+            from scanner.series import (
+                load_registry, _slug, _count_existing_mp3s,
+            )
+        except Exception as e:
+            return self._send(500, "text/plain", f"coverage import error: {e}".encode())
+
+        try:
+            reg = load_registry()
+        except Exception as e:
+            return self._send(500, "text/plain", f"registry load error: {e}".encode())
+
+        from datetime import date as _date
+        today_iso = _date.today().isoformat()
+
+        rows = []
+        for c in reg.get("candidates", []):
+            sd = c.get("scheduled_date")
+            slug = _slug(c.get("name", ""))
+            mp3_count = _count_existing_mp3s(self.podcasts_dir, slug)
+            mp3_count = min(mp3_count, 4)   # cap display at 4
+            withdrawn = c.get("dossier_status") == "withdrawn"
+
+            if withdrawn:
+                badge_class, badge_text = "badge-withdrawn", "⊘ Withdrawn"
+            elif mp3_count == 4:
+                badge_class, badge_text = "badge-complete", "✅ Complete"
+            elif mp3_count > 0:
+                badge_class, badge_text = "badge-partial",  f"🔄 Partial ({mp3_count}/4)"
+            elif sd and sd > today_iso:
+                badge_class, badge_text = "badge-future",   "📅 Future"
+            else:
+                badge_class, badge_text = "badge-pending",  "⏳ Pending"
+
+            rows.append({
+                "name":   c.get("name", "(unnamed)"),
+                "office": c.get("office", ""),
+                "sched":  sd or "—",
+                "tier":   c.get("tier"),
+                "mp3":    mp3_count,
+                "badge_class": badge_class,
+                "badge_text":  badge_text,
+                "sort_key":   (sd or "9999-99-99", c.get("name", "")),
+            })
+
+        rows.sort(key=lambda r: r["sort_key"])
+
+        # Tally for header
+        total = len(rows)
+        complete = sum(1 for r in rows if r["badge_text"].startswith("✅"))
+        partial  = sum(1 for r in rows if r["badge_text"].startswith("🔄"))
+        pending  = sum(1 for r in rows if r["badge_text"].startswith("⏳"))
+        future   = sum(1 for r in rows if r["badge_text"].startswith("📅"))
+
+        import html as _h
+        tr_html = "".join(
+            f'<tr><td class="cand-name">{_h.escape(r["name"])}'
+            f'<div class="cand-office">{_h.escape(r["office"])}</div></td>'
+            f'<td class="cand-sched">{_h.escape(r["sched"])}</td>'
+            f'<td class="cand-tier">{("T" + str(r["tier"])) if r["tier"] else ""}</td>'
+            f'<td class="cand-mp3">{r["mp3"]}/4</td>'
+            f'<td><span class="badge {r["badge_class"]}">{r["badge_text"]}</span></td>'
+            f'</tr>'
+            for r in rows
+        )
+
+        body = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Candidate Coverage Status</title>
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          background: #f5f5f0; color: #222; line-height: 1.5; padding: 24px 16px; }}
+  .container {{ max-width: 1000px; margin: 0 auto; }}
+  h1 {{ font-size: 1.4rem; color: #1a3a5c; margin-bottom: 6px; }}
+  .sub {{ color: #777; font-size: .9rem; margin-bottom: 16px; }}
+  .tally {{ display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px;
+            font-size: .85rem; }}
+  .tally div {{ background: white; padding: 8px 14px; border-radius: 8px;
+                box-shadow: 0 1px 3px rgba(0,0,0,.07); }}
+  .tally strong {{ color: #1a3a5c; font-size: 1.05rem; }}
+  table {{ width: 100%; border-collapse: collapse; background: white;
+           border-radius: 8px; overflow: hidden;
+           box-shadow: 0 1px 3px rgba(0,0,0,.07); }}
+  th {{ text-align: left; padding: 10px 14px; background: #1a3a5c; color: white;
+        font-size: .82rem; font-weight: 600; text-transform: uppercase;
+        letter-spacing: .04em; }}
+  td {{ padding: 10px 14px; border-bottom: 1px solid #eee; font-size: .9rem;
+        vertical-align: top; }}
+  tr:last-child td {{ border-bottom: none; }}
+  tr:hover td {{ background: #fafbfc; }}
+  .cand-name {{ font-weight: 600; color: #1a3a5c; }}
+  .cand-office {{ font-weight: 400; color: #777; font-size: .78rem;
+                   margin-top: 2px; }}
+  .cand-sched {{ font-family: ui-monospace, monospace; color: #555; }}
+  .cand-tier {{ color: #888; font-size: .85rem; }}
+  .cand-mp3 {{ font-family: ui-monospace, monospace; color: #1a3a5c; font-weight: 600; }}
+  .badge {{ display: inline-block; font-size: .72rem; font-weight: 600;
+            padding: 3px 9px; border-radius: 11px; letter-spacing: .02em;
+            white-space: nowrap; }}
+  .badge-complete  {{ background: #c8e6c9; color: #2a5a2a; }}
+  .badge-partial   {{ background: #fff3cd; color: #7a6633; }}
+  .badge-pending   {{ background: #eee;    color: #777; }}
+  .badge-future    {{ background: #dce8f5; color: #1a3a5c; }}
+  .badge-withdrawn {{ background: #f5d1d1; color: #7a2a2a; }}
+  a {{ color: #1a3a5c; }}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🗂️ Candidate Coverage Status</h1>
+  <div class="sub">Generated {datetime.now().strftime("%Y-%m-%d %H:%M")} —
+       <a href="/">← Home</a> · <a href="/playlist">Playlist</a></div>
+  <div class="tally">
+    <div><strong>{total}</strong> candidates</div>
+    <div>✅ <strong>{complete}</strong> complete</div>
+    <div>🔄 <strong>{partial}</strong> partial</div>
+    <div>⏳ <strong>{pending}</strong> pending</div>
+    <div>📅 <strong>{future}</strong> future</div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>Candidate</th><th>Scheduled</th><th>Tier</th><th>MP3s</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {tr_html}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>"""
+        self._send(200, "text/html; charset=utf-8", body.encode("utf-8"))
+
+    def _serve_playlist_index(self):
+        """GET /api/playlist-index — JSON of every date that has ≥1 ready MP3.
+
+        Returned ascending by date; the frontend reverses for descending sort.
+        Each entry: {date, label, episodes:[{ep_num,title,display_title,url,size,...}]}.
+        """
+        from scanner.playlist import build_playlist_index
+        data = build_playlist_index(self.podcasts_dir)
+        body = json.dumps(data, ensure_ascii=False).encode()
+        self._send(200, "application/json; charset=utf-8", body)
+
     def _handle_digest_chat(self, body: bytes):
         """
         POST /chat  — sidebar Q&A tied to a specific day's digest.
@@ -596,8 +898,39 @@ class Handler(BaseHTTPRequestHandler):
             if md_path.exists():
                 context = md_path.read_text(encoding="utf-8")
 
-        import anthropic as _anthropic
-        client = _anthropic.Anthropic(api_key=self.anthropic_key)
+        # Cowork-only — direct API path disabled 2026-05-15. Every chat
+        # question becomes a brief; drain-cowork-inbox answers it.
+        try:
+            from scanner.cowork_bridge import build_chat_brief, write_brief
+            brief = build_chat_brief(
+                db_path=self.db_path,
+                conversation_id=0,        # ad-hoc digest chat — no conv id
+                message_id=int(time.time() * 1000) % 2_000_000_000,
+                question=question,
+                digest_excerpt=(context or "")[:8000],
+                locale=_LOCALE,
+            )
+            write_brief(brief)
+            placeholder = (
+                "Your question is queued for the Cowork research run. "
+                "Answers land in the next 24–48 hours. Refresh this page "
+                "tomorrow morning."
+            )
+            self._send(200, "application/json; charset=utf-8",
+                        json.dumps({"answer": placeholder,
+                                    "queued_for_cowork": True},
+                                   ensure_ascii=False).encode())
+            return
+        except Exception as e:
+            from scanner.notifications import notify
+            notify("server.chat", f"queue failed: {e}", severity="error")
+            self._send(500, "application/json",
+                        json.dumps({"error": f"queue failed: {e}"}).encode())
+            return
+
+        # ── Unreachable: direct API path retained inert for reference ────────
+        import anthropic as _anthropic  # noqa: F401
+        client = None  # noqa: F841
 
         system = (
             f"You are a political analyst assistant for a voter in {_LOCALE}. "
@@ -778,7 +1111,7 @@ class Handler(BaseHTTPRequestHandler):
 def run_server(reports_dir: Path, db_path: Path,
                podcasts_dir: Path = None, knowledge_dir: Path = None,
                anthropic_key: str = "",
-               chat_model: str = "claude-sonnet-4-5-20250929",
+               chat_model: str = "claude-sonnet-4-6",
                host: str = "0.0.0.0", port: int = 8080):
     Handler.reports_dir = reports_dir
     Handler.podcasts_dir = podcasts_dir or (reports_dir.parent / "podcasts")
@@ -789,6 +1122,24 @@ def run_server(reports_dir: Path, db_path: Path,
 
     Handler.podcasts_dir.mkdir(parents=True, exist_ok=True)
     Handler.knowledge_dir.mkdir(parents=True, exist_ok=True)
+
+    # Supply-warning startup log. Cheap to compute, surfaces low-stock
+    # condition immediately rather than waiting for the next queue pass.
+    try:
+        from scanner.series import check_candidate_supply
+        stats = check_candidate_supply(Handler.podcasts_dir)
+        if stats.get("warning_active"):
+            nu = stats.get("next_unstarted") or {}
+            log.warning(
+                "SUPPLY WARNING: only %d unstarted upcoming candidates "
+                "(threshold %d). Next: %s @ %s",
+                stats.get("unstarted_count", 0),
+                stats.get("threshold", 7),
+                nu.get("name", "—"),
+                nu.get("scheduled_date", "—"),
+            )
+    except Exception as e:
+        log.debug("supply check at startup skipped: %s", e)
 
     server = ThreadingHTTPServer((host, port), Handler)
     ts_ip = get_tailscale_ip()

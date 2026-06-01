@@ -1,0 +1,45 @@
+{
+  "brief_id": "filing_monitor_2026-05-13",
+  "run_date": "2026-05-13T15:10:00Z",
+  "sources_consulted": [
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html"
+  ],
+  "registry_health": {
+    "path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_series.json",
+    "status": "MALFORMED",
+    "issue": "JSON parse fails at line ~813, column 7. File appears truncated mid-record on the final entry (Brooke Lierman, Comptroller — 22nd candidate row). Cause is most likely an interrupted write from a prior Windows-side run. Recommend the Windows side restore from .git history (git checkout) or rewrite via main.py series rebuild before the next monitor run.",
+    "candidates_visible_by_grep": 22,
+    "last_visible_entry": "Brooke Lierman (Maryland Comptroller)",
+    "monitor_did_not_modify_registry": true
+  },
+  "added": [],
+  "removed_or_withdrawn": [
+    {
+      "name": "Marc Lande",
+      "office": "U.S. Representative MD-8",
+      "party": "Democratic",
+      "sbe_status": "Withdrawn - 12/12/2025",
+      "registry_action_needed": "Set dossier_status='withdrawn', scheduled_date=null. NOT applied this run due to corrupted registry."
+    }
+  ],
+  "confirmed_active_in_scope": {
+    "Governor (Democratic)": ["Eric S. Felber", "Wes Moore"],
+    "Attorney General (Democratic)": ["Anthony G. Brown"],
+    "U.S. Representative MD-8 (Democratic)": ["J. D. Kumar", "Stephen Alan Leon", "Jamie Raskin", "Boris Kabel Velasquez"],
+    "Maryland State Senate District 19 (Democratic)": ["Ben Kramer"]
+  },
+  "notes_on_scope": [
+    "Statewide SBE page fetch was truncated by the web_fetch tool at Legislative District 23; Senate D19 and MD-8 sections were captured in full before truncation, but House of Delegates by District, Governor of Maryland Republican side, and the Comptroller race section were either past the truncation point or not yet reached. Comptroller (Brooke Lierman) is listed in the registry as uncontested and is not on the statewide page in the captured range — recommend a second fetch of the same URL on the next monitor run to capture the truncated portion.",
+    "The all-counties (local-races) SBE URL was NOT fetched this run because the bandwidth budget for this drain was spent on Ben Kramer episode authoring. The Montgomery County Council District 7, Council At-Large, State's Attorney, Sheriff, Clerk, Register of Wills, Orphans' Court, Board of Education, and Circuit Court Judge sections therefore have NOT been refreshed this run. Schedule for next run."
+  ],
+  "list_finalized": true,
+  "list_finalized_basis": "Filing deadline was February 24, 2026, plus statutory cure period through ~March 11, 2026. Today is May 13, 2026 — both windows are well past. Marc Lande's December 12, 2025 withdrawal is an SBE-listed status update against a closed list, not a new filing. Treat the list as finalized for episode-planning purposes.",
+  "total_active_in_scope_confirmed": 8,
+  "next_run_priorities": [
+    "Repair data/candidate_series.json (git restore or main.py rebuild).",
+    "Re-fetch the statewide URL and capture the post-District-23 content (House of Delegates by District section, Republican side of Governor and Attorney General).",
+    "Fetch the all-counties URL https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_all_counties_candidatelist.html and refresh Council D7, Council At-Large, MoCo Executive, judicial / Board of Ed, Sheriff, State's Attorney sections.",
+    "Apply Marc Lande withdrawal to the registry once it is parseable.",
+    "Queue dossier_scout briefs for any newly-found candidates."
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "brief_id": "filing_monitor_2026-05-13",
+  "status": "done",
+  "processed_at": "2026-05-13T15:10:00Z",
+  "output_path": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-13.json",
+  "added_count": 0,
+  "withdrawn_flagged": ["Marc Lande (MD-8 D, withdrew 12/12/2025)"],
+  "registry_modified": false,
+  "registry_health_issue": "data/candidate_series.json is malformed (truncated mid-record at Brooke Lierman). Surfaced in output JSON. Registry was not modified this run to avoid further damage.",
+  "list_finalized": true
+}

@@ -1,0 +1,9 @@
+{
+  "brief_id": "themes_2026-05-03",
+  "type": "weekly_themes",
+  "status": "done",
+  "processed_at": "2026-05-03T11:35:00-04:00",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-03.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-03.json",
+  "notes": "Themes rollup written. DB upsert into weekly_themes table NOT performed in this run (no DB access from the Linux Cowork sandbox). Windows-side processor should mirror this JSON into the weekly_themes row when it picks up this marker."
+}

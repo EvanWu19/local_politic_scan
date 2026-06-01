@@ -1,0 +1,15 @@
+{
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active": 22,
+  "list_finalized": true,
+  "run_date": "2026-05-12T03:30:00-04:00",
+  "notes": "SBE filing deadline was 2026-02-24; cure window closed mid-March 2026. List is final for offices on listener's ballot. Registry already contains the seven-Democrat MD House D19 field (Crutchfield, Stewart, Dasgupta, Johnson, Sorrel, Stone, Tichy) confirmed by Bethesda Magazine 2026-03-02 roundup, the County Council D7 field, the MD-8 field, the County Executive field, and the statewide tickets. No new filings have surfaced in May coverage. SBE statewide page fetched but exceeded inline token budget for direct line-by-line diff; relied on registry + secondary sources cross-check.",
+  "sources_consulted": [
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html",
+    "https://bethesdamagazine.com/2026/03/02/five-new-candidates-two-incumbents-vie-for-three-district-19-delegate-seats/",
+    "https://www.thebanner.com/politics-power/local-government/montgomery-county-final-candidates-2026-V2WGULT3HRFTTBGNLHKUVLS6CI/",
+    "https://politics1.com/md.htm"
+  ]
+}

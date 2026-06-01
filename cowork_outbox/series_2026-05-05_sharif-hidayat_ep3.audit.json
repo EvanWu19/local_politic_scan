@@ -1,0 +1,30 @@
+{
+  "brief_id": "series_2026-05-05_sharif-hidayat_ep3",
+  "type": "series_episode",
+  "ep_num": 3,
+  "ep_title": "Political Record",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-05_series_sharif-hidayat_ep3.txt",
+  "completed_at": "2026-05-05T20:13:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3000,
+  "stated_positions_covered": [
+    "Thrive 2050: opposed (DOA quote)",
+    "Housing mix: anti-heavy-rental, pro-ownership",
+    "Agricultural reserve: pro-protection",
+    "Upcounty representation / budget allocation: red-headed stepchildren frame",
+    "Closed primary: opposed",
+    "SROs: pro-reinstatement",
+    "Public safety: pro-police strength"
+  ],
+  "open_questions_named_on_air": [
+    "Trust Act / sanctuary posture",
+    "Wootton High School consolidation",
+    "New MCPS school-rating system",
+    "Property-tax rate"
+  ],
+  "listener_notes_addressed_by_date": ["2026-04-27 (property tax / Kramer)", "2026-04-29 (Wootton / Friedson fiscal)", "2026-04-30 (MCPS rating system)", "2026-04-28 (now in choose-mode)"],
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 3000,
+  "calibration_gap": -900
+}

@@ -1,0 +1,12 @@
+{
+  "brief_id": "consistency_2026-05-05",
+  "type": "score_consistency",
+  "status": "done",
+  "completed_at": "2026-05-05T20:17:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-05.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-05.json",
+  "rows_inserted": 0,
+  "verdict": "deferred",
+  "politician_count_requested": 138,
+  "notes": "Fourth consecutive day deferring score_consistency: Linux sandbox bash is still failing with 'No space left on device' so politics.db cannot be opened from the Cowork side. Output JSON documents the deferral and lists all 138 pending politician_ids; the Windows side should re-run python main.py score-consistency --date 2026-05-05 directly."
+}

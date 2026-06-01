@@ -1,0 +1,13 @@
+{
+ "brief_id": "consistency_2026-05-30",
+ "generated_at": "2026-05-31T02:56:54.040599Z",
+ "window_end": "2026-05-30",
+ "politicians_scored": 138,
+ "verdict_breakdown": {
+  "consistent": 48,
+  "mixed": 2,
+  "inconsistent": 0,
+  "insufficient": 88
+ },
+ "method": "Conservative: a shift is flagged only when the same category shows both an explicit support-direction and oppose-direction event; freeform stance/summary text classified by keyword. <3 events => insufficient (score 0.0). New rows inserted per run (history preserved)."
+}

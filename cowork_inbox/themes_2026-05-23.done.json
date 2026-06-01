@@ -1,0 +1,9 @@
+{
+  "brief_id": "themes_2026-05-23",
+  "type": "weekly_themes",
+  "status": "partial",
+  "completed_at": "2026-05-24T02:48:20.007117",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-23.json",
+  "partial_reason": "daily_notes table not readable from FUSE sandbox; podcast-derived sections (avoid_list especially) are complete. weekly_themes table upsert NOT performed \u2014 recommend Windows-side reading of this JSON to feed the upsert.",
+  "notes": "13-item avoid_list extracted from podcast scripts 5/18-5/21. Editor should treat this as authoritative for variation guidance in the next episode write."
+}

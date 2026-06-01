@@ -1,0 +1,43 @@
+{
+ "brief_id": "dossier_2026-05-28_aaron-penman",
+ "type": "candidate_dossier",
+ "output_file": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\aaron-penman.md",
+ "instructions": "Build a DEEP candidate dossier for Aaron Penman (, , district unknown). The current draft of these dossiers has been too thin to support a single-candidate deep-dive episode \u2014 it covers a few recent votes and stops. The listener has asked for the *life* of the candidate, not just a roll-call list.\n\nStep 1 \u2014 RESOLVE THE PERSON.\n  \u2022 Web-search to disambiguate. The name 'Aaron Penman' may be     common; pin down the specific person running for this office in     this district. Cross-check with the campaign filing, the office     they're running for, the district, and party.\n  \u2022 Determine year of birth (or best estimate). This sets the     look-back window for step 3.\n\nStep 2 \u2014 BIOGRAPHICAL FOUNDATION.\nBuild these sections from web research, citing every fact:\n  A. DEMOGRAPHICS \u2014 birth year & age, place of birth, current      residence, family (spouse, children if publicly disclosed),      race/ethnicity if publicly self-identified, religion if      publicly self-identified, languages spoken.\n  B. SOCIOECONOMIC \u2014 net worth & income (from public financial      disclosures, FEC filings, state ethics filings), home      ownership status if public, major business interests,      stock holdings, any disclosed conflicts of interest.\n  C. EDUCATION \u2014 every school attended (high school, college,      graduate), degrees earned with years, notable academic      awards or unfinished programs, any honorary degrees.\n  D. PROFESSIONAL HISTORY \u2014 every job held, in reverse chronology,      with start/end years and employer. For each role, one line on      what they actually did. Include military service, nonprofit      work, volunteer leadership, board memberships. Fill gaps      where possible \u2014 a five-year unaccounted-for stretch is itself      a finding worth noting.\n\nStep 3 \u2014 DEEP NEWS HISTORY.\nOnce you know their age, search news, social media, archived web pages, court records, professional licensure boards, podcast interviews, op-eds, and academic publications across a window of **(candidate_age \u2212 20) years, minimum 10 years**. So a 40-year-old \u2192 20 years back; a 30-year-old \u2192 10 years back; a 28-year-old \u2192 10 years back (minimum); a 65-year-old \u2192 45 years back; an 80-year-old \u2192 60 years back. The window deliberately skips childhood and early teens (nothing useful below age 20). Don't just sample recent press releases. Use these starting points:\n  \u2022 Google News with date-range filter (set after: tbs=cdr)\n  \u2022 news.google.com archive\n  \u2022 web.archive.org for the candidate's own site / employer pages\n  \u2022 Their LinkedIn, X/Twitter back to earliest posts\n  \u2022 Local newspapers' archives (Bethesda Magazine, Maryland Matters,     Washington Post, WTOP) \u2014 many are free or cached\n  \u2022 Court records (PACER for federal, Maryland Judiciary Case     Search for state)\n  \u2022 Charity filings (ProPublica Nonprofit Explorer)\n  \u2022 Academic citations (Google Scholar)\n  \u2022 For Maryland legislators: mgaleg.maryland.gov full bill history\n  \u2022 For Montgomery County officials: county council legislative DB\n  \u2022 For federal: congress.gov + GovTrack legacy data\nSurface anything substantive you find \u2014 early career controversies, switch in party affiliation, prior runs for office (won AND lost), endorsements they collected and gave, organizations they joined or founded, public statements that have aged interestingly.\n\nStep 4 \u2014 POLITICAL TRACK RECORD (if they've held office).\n  \u2022 Voting record by topic \u2014 table with bill numbers, dates,     direction (yes/no/abstain), brief description.\n  \u2022 Public statements & policy positions \u2014 quoted, with links and     dates. Show evolution where positions shifted.\n  \u2022 Sponsored / co-sponsored legislation \u2014 with status (passed /     failed / committee / introduced).\n  \u2022 Endorsements received and given \u2014 list with dates.\n\nStep 5 \u2014 CONTROVERSIES & NOTABLE PRESS.\nNeutral framing. If something is alleged, say so; if proven, say so; if dismissed, say so. Include ethics complaints, lawsuits, FEC complaints, news investigations.\n\nStep 6 \u2014 STANCE ON LISTENER-FLAGGED TOPICS:\n  Pre-political biographies of incumbents (Friedson, Glass, Jawando), Judicial branch races (Circuit Court Judge, Orphans' Court), Register of Wills / Clerk of Circuit Court \u2014 almost no coverage, MoCo Board of Education candidates beyond at-large slate, Republican alternative views on countywide races (the listener votes D primary, but wants to know what's on the general ballot), What is Ben Kramer's full historical voting record back to 2007 on consumer protection, judiciary, immigration, and education funding?, Is Andrew Friedson actually the fiscal-restraint candidate when measured by individual line-item votes?, Why is MCPS proposing to close/relocate Wootton High School and what happens next on the timeline?, Among the five+ Council-At-Large Democrats, which one (if any) actually opposes the existing sanctuary framework?, What is the new MCPS rating methodology and how is each Rockville school graded under it?\nFor each topic give: (a) public statements with quotes/links, (b) any votes that bear on it, (c) clear bottom-line assessment (supports / opposes / mixed / unclear).\n\nStep 7 \u2014 OPEN QUESTIONS. What couldn't you find? Name the gaps explicitly so the next deep-dive episode can flag them as \"we don't know yet.\"\n\nOUTPUT.\n  \u2022 Format: Markdown to `output_file`.\n  \u2022 Length target: 1800\u20133500 words (was 800\u20131500 before this     upgrade \u2014 the prior length wasn't enough to support 30     minutes of dialogue).\n  \u2022 Cite every non-obvious claim with a URL. Inline footnotes or     bracketed [src: URL] are fine.\n  \u2022 If a fact CAN'T be sourced after honest searching, say so.     NEVER fabricate dates, employers, schools, family details,     quotes, vote counts, or bill numbers.",
+ "context": {
+  "candidate_name": "Aaron Penman",
+  "office": "",
+  "party": "",
+  "district": "",
+  "listener_focus": [
+   "Pre-political biographies of incumbents (Friedson, Glass, Jawando)",
+   "Judicial branch races (Circuit Court Judge, Orphans' Court)",
+   "Register of Wills / Clerk of Circuit Court \u2014 almost no coverage",
+   "MoCo Board of Education candidates beyond at-large slate",
+   "Republican alternative views on countywide races (the listener votes D primary, but wants to know what's on the general ballot)",
+   "What is Ben Kramer's full historical voting record back to 2007 on consumer protection, judiciary, immigration, and education funding?",
+   "Is Andrew Friedson actually the fiscal-restraint candidate when measured by individual line-item votes?",
+   "Why is MCPS proposing to close/relocate Wootton High School and what happens next on the timeline?",
+   "Among the five+ Council-At-Large Democrats, which one (if any) actually opposes the existing sanctuary framework?",
+   "What is the new MCPS rating methodology and how is each Rockville school graded under it?"
+  ],
+  "known_events": [
+   {
+    "id": 159,
+    "title": "Frimpong moves up, Matthews-Brown moves on, a path for Penman, in notes",
+    "summary": "Ama Frimpong, legal director at We Are CASA (an immigrant advocacy organization), was promoted to chief of services. This is a personnel announcement about leadership changes at a nonprofit organization focused on immigrant issues.",
+    "source_url": "https://marylandmatters.org/2026/04/18/frimpong-moves-up-matthews-brown-moves-on-a-path-for-penman-in-notes/",
+    "date": "2026-04-18",
+    "level": "state",
+    "role": "Harford County Council candidate",
+    "stance": "N/A"
+   }
+  ]
+ },
+ "created_at": "2026-05-28T23:45:02.408129-04:00",
+ "due_by": "",
+ "status": "done",
+ "result": {
+  "verdict": "superseded_duplicate",
+  "note": "Identical re-queue superseded by the 2026-05-29 dossier brief for the same candidate. Both are far-future statewide candidates (air mid-July, 6-7 weeks out); per SKILL, thin far-future dossiers are deferred. No research performed; the 05-29 brief carries the deferral."
+ }
+}

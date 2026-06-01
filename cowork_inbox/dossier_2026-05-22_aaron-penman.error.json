@@ -1,0 +1,8 @@
+{
+  "brief_id": "dossier_2026-05-22_aaron-penman",
+  "type": "candidate_dossier",
+  "status": "rejected",
+  "rejected_at": "2026-05-24T02:42:21.550507",
+  "reason": "Aaron Penman \u2014 name appears in known_events context (Frimpong personnel news) but Penman is not a registered candidate on the listener's MoCo June 23, 2026 Democratic primary ballot. Public Aaron Penman of note is a Republican former MD State Police officer who ran for US House MD-1 in 2024; not on this ballot. Brief generator harvested name from news text without registry check.",
+  "recommendation": "Fix brief generator in main.py to (1) check candidate name against data/candidate_series.json registry before queuing a dossier brief, (2) drop any name from known_events that doesn't resolve to a registered ballot candidate. Better yet \u2014 only queue dossier briefs for names that appear in the upcoming-7-days slice of the registry schedule. This run produced 11 wasted dossier briefs on out-of-jurisdiction names harvested from news events."
+}

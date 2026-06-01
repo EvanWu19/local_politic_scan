@@ -1,0 +1,6 @@
+{
+  "brief_id": "dossier_2026-05-15_ama-frimpong",
+  "status": "deferred",
+  "completed_at": "2026-05-16T09:40:00Z",
+  "reason": "Per SKILL.md priority: deferred because (a) friedson dossier is already rich and was used for today's deep dive (separate file kept in data/candidate_dossiers/friedson.md); (b) all other listed candidates either are not on the now-finalized June 23 MoCo Democratic primary ballot (per today's filing_monitor) or are scheduled more than 7 days out. Today's filing_monitor added 32 new ballot-qualified candidates; the next morning's `series reschedule` + `series scout-results` will re-prioritize and re-queue the briefs that are actually due in the next 1\u20133 days. Defer cost: zero \u2014 episodes for these candidates are 14\u201335 days out."
+}

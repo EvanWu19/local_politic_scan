@@ -1,0 +1,8 @@
+{
+  "brief_id": "dossier_2026-05-22_brian-frosh",
+  "type": "candidate_dossier",
+  "status": "rejected",
+  "rejected_at": "2026-05-24T02:42:21.582686",
+  "reason": "Brian Frosh is the FORMER Maryland Attorney General (2015\u20132023). He retired and is NOT a 2026 candidate. Brief generator harvested name from historical context.",
+  "recommendation": "Fix brief generator in main.py to (1) check candidate name against data/candidate_series.json registry before queuing a dossier brief, (2) drop any name from known_events that doesn't resolve to a registered ballot candidate. Better yet \u2014 only queue dossier briefs for names that appear in the upcoming-7-days slice of the registry schedule. This run produced 11 wasted dossier briefs on out-of-jurisdiction names harvested from news events."
+}

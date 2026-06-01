@@ -1,0 +1,12 @@
+{
+  "brief_id": "series_2026-05-20_vaughn-stewart_ep4",
+  "type": "series_episode",
+  "processed_at": "2026-05-20T22:55:00-04:00",
+  "status": "done",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-20_series_vaughn-stewart_ep4.txt",
+  "word_count": 4004,
+  "format_check": "pass — every non-empty line begins with ALEX: or JORDAN:",
+  "url_check": "pass — no http://, https://, www., .org/, .com/, or .gov/ tokens in spoken text",
+  "dossier_used": "data/candidate_dossiers/vaughn-stewart.md",
+  "fabrication_check": "no fabricated bill numbers, vote counts, employer names, school names, quotes, family-member names, or dates. Where the dossier said 'open question' or 'not on the record', the script said so on air."
+}

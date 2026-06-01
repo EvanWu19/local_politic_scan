@@ -1,0 +1,33 @@
+{
+  "brief_id": "dossier_2026-05-04_dawn-luedtke",
+  "type": "candidate_dossier",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\dawn-luedtke.md",
+  "completed_at": "2026-05-04T20:10:00-04:00",
+  "format": "markdown",
+  "approx_word_count": 2950,
+  "section_index": [
+    "1. Person resolution",
+    "2. Biographical foundation (Demographics / Socioeconomic / Education / Professional history)",
+    "3. Deep news history (look-back ~1994 - present, 4 phases)",
+    "4. Political track record (committees / sponsored bills / notable votes / endorsements / public statements)",
+    "5. Controversies & notable press",
+    "6. Stance on listener-flagged topics (9 sub-sections including Wootton, sanctuary, Friedson, Kramer cross-refs)",
+    "7. Open questions (10 enumerated gaps for next refresh)",
+    "Sources cited (~22 URLs inline)"
+  ],
+  "key_facts_established": {
+    "estimated_birth_year": "~1974 (LinkedIn handle penndawn96 + Penn class of 96 + UMD Law class of 2000)",
+    "education": "Penn 1996 (English / theater minor / Glee Club) + UMD Law 2000 (Health Law / Law Review / Moot Court / Mock Trial)",
+    "clerkship": "First law clerk to Hon. Lynne A. Battaglia, Court of Appeals of Maryland, 2000-01",
+    "ag_office": "Assistant AG, Maryland — counsel to Longitudinal Data System / Center for School Safety / Food Systems Resiliency / Active Assailant Work Group",
+    "council": "Sworn in Dec 5, 2022; Public Safety + Health and Human Services committees",
+    "spouse": "Eric Luedtke — chief legislative officer for Gov. Wes Moore",
+    "residence": "Ashton, MD (in District 7)",
+    "kids": "4 (names not disclosed)",
+    "2022_primary": "35.76% — won 4-way Dem primary",
+    "2022_general": "66.98% vs. Republican Harold C. Maldonado",
+    "2026_challenger": "Sharif Hidayat (former MoCo cop, 3-time prior candidate)"
+  },
+  "open_questions_remaining": 10,
+  "notes": "Dossier intentionally did not invent: birth date, high school, private-practice firm name, exact net worth, specific endorsement enumeration, Wootton position, MCPS-rating-system position. Each is in section 7 for the next refresh."
+}

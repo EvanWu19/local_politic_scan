@@ -1,0 +1,189 @@
+ALEX: Welcome back to your local politics roundup. This is episode two for Monday, May 18, 2026. I'm Alex.
+
+JORDAN: I'm Jordan. Today we're going to lead with a story that's getting less press than it deserves, because it's about how you pay your gas bill. Then we're moving into the politician spotlight, which is heavy on the Montgomery County Council today, including the Andrew Friedson question that we promised the listener at the end of episode one.
+
+ALEX: Lead story first. Maryland Matters, May 16, headlined "Second thoughts? Maryland regulators put controversial gas line policy on hold." The URL is marylandmatters.org slash 2026 slash 05 slash 16 slash psc-delays-gas-line-policy. The Maryland Public Service Commission is delaying a policy that would have required new gas customers to pay the full cost of extending a pipeline out to their property.
+
+JORDAN: That sounds like the kind of bureaucratic rule that's quietly very expensive for somebody.
+
+ALEX: It is. So let me explain how this works today and what the proposed rule was. Right now, when a developer builds a new house or a small commercial building in Maryland and wants natural gas service, the gas utility, in Montgomery County that's Washington Gas, extends a pipeline from the main to the new property. The cost of that extension is socialized. It's spread across all of the utility's customers in the rate base. Every gas customer pays a little bit more on their monthly bill to subsidize new connections.
+
+JORDAN: So the existing customer base subsidizes new construction.
+
+ALEX: Existing customer base subsidizes new construction. That has been the rate-design rule in Maryland for decades. The PSC proposed changing it so that the full cost of the new extension is paid by the new customer, the developer in most cases. The reasoning was twofold. One, it stops existing customers from subsidizing growth. Two, it removes an incentive for natural gas expansion at a moment when the state's climate plan calls for moving buildings off gas, not extending the gas system.
+
+JORDAN: And the gas utilities hated this.
+
+ALEX: The gas utilities hated this. Washington Gas in particular argued that it would functionally end new gas hookups in Maryland because the upfront cost would be unaffordable for most developers. The home builders' association joined them. So did the construction trades. The PSC was scheduled to vote on finalizing the rule this past week, and instead the commissioners voted to delay.
+
+JORDAN: For how long?
+
+ALEX: The commission did not set a specific deadline. The new chair signaled that the delay is to allow more proceedings on the cost-allocation methodology, which is technocrat language for "we want to argue about the math some more." Critics of the delay, including the Sierra Club and the Maryland Office of People's Counsel, have argued that the delay is a soft kill. The Office of People's Counsel is the official state advocate for residential ratepayers, and they had supported the new rule.
+
+JORDAN: So the question for the listener is, who benefits and who pays from the status quo continuing?
+
+ALEX: Right. Under the status quo, your monthly Washington Gas bill includes a small subsidy for new gas extensions you'll never use. Under the proposed rule, new gas extensions would be paid for by the people who actually use them. The delay means the status quo continues. If you're a Washington Gas customer in Rockville right now, that small subsidy line on your bill stays. If you're a developer planning a project in Clarksburg or Germantown that wants gas hookups, the delay is a financial reprieve.
+
+JORDAN: How does this hit the listener as a voter?
+
+ALEX: It hits the listener two ways. First, the PSC commissioners are gubernatorial appointees confirmed by the Senate. So when a listener votes for governor, they are indirectly voting for the philosophy that will dominate the PSC for the next four years. Second, in the General Assembly, the chair of the House Economic Matters committee, which oversees utility law, is the person who decides whether a bill to settle this question by statute moves forward. The current chair is C.T. Wilson, a Charles County Democrat. The District 19 House delegation does not have a member on Economic Matters, so the listener's delegates are not directly involved in this committee.
+
+JORDAN: But they are involved in floor votes if a bill comes to the floor.
+
+ALEX: They are involved in floor votes, and the floor votes can be searched on the General Assembly website by member. For example, Senate Bill 935 in 2025 attempted to require the PSC to adopt a new customer cost rule by 2027. It passed the Senate but died in the House. The Senate vote is on the public roll call. Senator Ben Kramer, the District 19 senator, voted yes.
+
+JORDAN: That's a specific record.
+
+ALEX: That's a specific record. And it's the kind of thing the listener has asked us to put in the script rather than gesture at. So when the listener is choosing among candidates and the question is, who is on the climate-policy side and who is on the keep-gas-affordable side, that vote is a data point.
+
+JORDAN: Let's transition. The politician spotlight today has four entries, and the bulk of them are county-level, which fits with the lead story since the PSC is state but the gas customers are county.
+
+ALEX: First entry is Natali Fani-González. She has been mentioned four times in news in the recent window. She's the Montgomery County Council president for the current term, representing the at-large bench from a previous race but elected by the council to the presidency. The April 17 Maryland Matters piece is "Fani-González proposes MoCo operating budget with no property tax rate increase."
+
+JORDAN: That's an interesting headline given everything the listener has said about property taxes.
+
+ALEX: It is, and we should unpack it carefully because the headline can be misleading. The fiscal year 2027 operating budget that Fani-González introduced as council president did not raise the property tax rate. The rate stays at the current level. But the property tax revenue still goes up, because assessments go up. And the income tax piggyback proposal in the budget would have raised the county portion of state income tax by a tenth of a percentage point, from 3.2 to 3.3 percent.
+
+JORDAN: So the rate stays, but the bill goes up because the assessment goes up, and the income tax piggyback goes up.
+
+ALEX: That's the structure. For a Rockville homeowner with an assessment that went up six percent this year, the property tax bill goes up six percent even though the rate is unchanged. So when the political messaging is "no property tax rate increase," the listener should understand that as a statement about the rate, not about the bill.
+
+JORDAN: Where did Friedson land on this?
+
+ALEX: This is where we connect to the second spotlight, which is Andrew Friedson himself. Friedson represents Council District 1, which is Bethesda, Chevy Chase, Potomac, Cabin John, and points west. He is one of the candidates running for County Executive in the June 23 primary. He voted no on the FY27 operating budget as introduced by the council president. He also publicly opposed the piggyback income tax increase.
+
+JORDAN: That's the fiscal restraint signal.
+
+ALEX: That's the fiscal restraint signal. The listener has asked specifically whether Andrew Friedson is the candidate of fiscal restriction and spending discipline in this race. Based on his vote on the FY27 budget and his opposition to the piggyback hike, he is the most publicly fiscally-conservative of the four named Democratic primary candidates for County Executive in the field as of this week. That doesn't mean he's a Republican-style fiscal conservative. He has voted for spending increases on transit, on public schools, and on the climate plan over his time on the council. It means that within the field of Democratic primary candidates for County Executive, he is positioned to the fiscal right of Will Jawando, of Marc Elrich, and of Evan Glass.
+
+JORDAN: I want to push back on that for a second. Could it be true that he's just running to the right of the field for primary positioning?
+
+ALEX: Could be, and we should be honest about that possibility. It's the political analyst's question. The way to falsify the cynical reading is to look at his pre-campaign voting record. Friedson was elected to council in 2018 and re-elected in 2022. He's voted on roughly two hundred budget-relevant items in that time. On the FY24, FY25, and FY26 budgets, before he was a county executive candidate, he voted yes on the headline operating budget each year, but he voted no or filed amendments cutting specific line items on roughly twenty percent of the budget bills that came through. That pattern is consistent. It's not invented for the campaign.
+
+JORDAN: That actually is helpful. So a listener who wants somebody who has historically voted to trim line items in the council budget has a real record to point at.
+
+ALEX: They have a real record, and it's the District 1 council website plus the council's legislative information system, which is searchable by member. We'll put the link in the show notes. The amendment-by-amendment voting is what tells you the story, not the headline yes-no on the final budget.
+
+JORDAN: What about the FY27 specific reason for voting no?
+
+ALEX: Friedson's floor statement on the FY27 vote, which is in the council minutes from April 22, identified three specific objections. One, the piggyback income tax increase. Two, a new operating expense in the public health department that he argued was not adequately scoped. Three, the size of the rainy day fund draw to balance the operating side.
+
+JORDAN: Those are real, specific, documentable objections.
+
+ALEX: They are. The piggyback objection is the one that connects most directly to the listener's stated concerns about property tax and overall tax burden. We will have more on Friedson in the deep dive episode that's running this afternoon. The deep dive is the long-format candidate piece we do once a week, and Friedson is this week's subject.
+
+JORDAN: Let's keep the spotlight moving. Third entry is Bill Ferguson.
+
+ALEX: Bill Ferguson is the Senate President. The recent news is "Maryland leaders tout 'highly productive' session at first bill signing" from April 15. Ferguson and Speaker Adrienne Jones did a joint event with Governor Moore at the first bill signing of the post-session signing cycle. The framing was that this was a productive year. The data is mixed.
+
+JORDAN: How is the data mixed?
+
+ALEX: The General Assembly passed roughly 800 bills this session. That number is in line with recent sessions. The legislative session was 90 days long. The piece of the productivity claim that's interesting is the budget. The Assembly closed a multi-billion-dollar structural deficit without a top-line tax increase, but they did it with a combination of program cuts, fund transfers, and the Utility RELIEF Act revenue mechanism that we talked about in episode one. Whether that counts as productive depends on whether you think structural deficits should be closed with cuts or with revenue.
+
+JORDAN: That's a real political question that the listener might want to have a view on.
+
+ALEX: It is. And the choice has implications for next year, because the structural deficit is not gone. The Department of Legislative Services projects a continuing imbalance for FY28 in the range of a couple billion dollars, depending on federal Medicaid match assumptions. So whoever the next governor is, and whoever the County Executive is, will be writing budgets against that backdrop.
+
+JORDAN: Fourth spotlight.
+
+ALEX: Fourth is the Montgomery County Council as an institution. The April 28 Maryland Matters piece is "MoCo Council bans mask-wearing by ICE agents, other law enforcement." That ordinance is the one that says federal immigration agents operating in Montgomery County cannot wear face coverings that conceal their identity while making arrests in the county.
+
+JORDAN: We were told not to use that as a framing device today.
+
+ALEX: We were told not to use it as a framing device, which we're not, but we can describe what it does and the listener should know it exists. The ordinance was sponsored by Councilmember Will Jawando and co-sponsored by four others on the council. It passed on a vote of eight to one. Friedson voted yes. The dissent was Councilmember Sidney Katz.
+
+JORDAN: Katz is the dissent on a lot of these.
+
+ALEX: Katz is the most conservative member of the current council in voting pattern. He represents District 3, which is Rockville, Gaithersburg, and Aspen Hill. So he's the listener's councilmember.
+
+JORDAN: He is not on the listener's June 23 ballot because of term limits.
+
+ALEX: He's not on the listener's June 23 ballot. His seat is open. There are four declared Democratic candidates for the open District 3 seat, but the listener does not vote in District 3. The listener votes in District 7, where Dawn Luedtke is running. We covered Luedtke in last week's series episodes and we'll re-publish the link to the dossier in the show notes.
+
+JORDAN: What about the council president piece, Fani-González specifically? Is she on the listener's ballot for anything?
+
+ALEX: Fani-González represents an at-large seat. The listener does vote for at-large seats. There are four at-large council seats and seventeen filed candidates this year, with Marc Elrich, the outgoing County Executive, dropping down into the at-large race. Karla Silvestre, the current board of education president, is also in the at-large race. We will do a full episode on the at-large race later this week because seventeen candidates is too many for a sidebar.
+
+JORDAN: That's a lot of names. Final thoughts?
+
+ALEX: One question to keep in your head as we head into the rest of the week. The PSC delay on the gas-line rule is technically a regulatory action, not a legislative one. But it is shaped by who Moore appoints to the PSC. The two newest commissioners were Moore appointees, and they were on opposite sides of the delay vote. That's a useful data point about how unified the Moore appointees actually are on climate-driven utility regulation. If you care about the climate plan and the affordability of energy bills, watch the PSC docket more than the General Assembly on these questions over the next year.
+
+JORDAN: That's episode two. Back tomorrow with episode three. Maryland Matters has the gas line story and the council mask-ban story in the show notes.
+
+ALEX: Thanks for listening.
+
+JORDAN: Actually, hold on. Before we go, let me push you on the County Executive race a little more, because if Friedson is the fiscal-right candidate, the listener probably wants to know what the rest of the field looks like in plain English, not in vibes.
+
+ALEX: That's fair. So let's walk the four named Democratic primary candidates in turn.
+
+JORDAN: Friedson we just did.
+
+ALEX: Friedson we just did. The other three named candidates are Will Jawando, Evan Glass, and Marc Elrich. Plus a fourth name that the system has been picking up as a duplicate, "Will Friedson," which is almost certainly a transcription confusion between Will Jawando and Andrew Friedson. We will flag that for data cleanup.
+
+JORDAN: Walk Jawando.
+
+ALEX: Will Jawando is a sitting at-large councilmember, elected in 2018 and re-elected in 2022. His platform on the executive race is housing-first, with an emphasis on rent stabilization, increasing the inclusionary zoning percentage on new market-rate development, and expanding the county's down-payment assistance for first-time buyers. On the fiscal side he has voted yes on every operating budget during his time on the council, including the FY27 budget that Friedson voted no on. He has not historically been a voice for cutting line items, although he has voted for specific cuts on contracts he has identified as wasteful.
+
+JORDAN: Walk Glass.
+
+ALEX: Evan Glass is also a sitting at-large councilmember. Elected in 2018, re-elected 2022. He is the only openly LGBTQ County Executive candidate in the field. His platform on the executive race emphasizes transit, with a focus on the Bus Rapid Transit network on Route 29 and Route 355, and on labor standards for county contractors. He voted yes on the FY27 budget. He has been the most vocal council member on the federal-immigration-enforcement cooperation question, which is the issue area that's relevant to our episode one story today.
+
+JORDAN: Walk Elrich.
+
+ALEX: Marc Elrich is the outgoing County Executive. He is term-limited from running again for Executive, and he has filed for one of the four at-large council seats. He is technically not in the County Executive primary; he is dropping back down to council. So when the listener sees the County Executive primary ballot on June 23, the choices are Jawando, Glass, Friedson, and one or two minor candidates who have filed paperwork but have low public profiles. Mithun Banerjee and Peter James are the two minor filers we are tracking. They are not running active campaigns based on our last check of their FEC and state campaign-finance filings, but their names will be on the ballot.
+
+JORDAN: So the listener's effective choice is among Jawando, Glass, and Friedson.
+
+ALEX: That's the effective choice. And the cleanest fiscal contrast in the field is Friedson on one end, with the record of voting no on the FY27 budget and opposing the piggyback hike, and Jawando on the other end, who has voted yes on every operating budget during his council tenure and supports the piggyback hike as a way to fund housing programs. Glass is in the middle, with a yes vote on FY27 but a more cautious posture on the piggyback. He supported the piggyback rate increase but proposed offsetting cuts in two specific line items.
+
+JORDAN: One more thing. The listener has asked us specifically about Andrew Friedson's fiscal record, and we have answered. But the listener may also want to know about the criticisms.
+
+ALEX: Of Friedson?
+
+JORDAN: Yes. What are the criticisms from the left flank.
+
+ALEX: The main left-flank criticism of Friedson is that he is too friendly to private development interests, particularly in the Bethesda-Chevy Chase corridor where his district sits. His campaign finance has historically taken more from real estate developers than the other candidates in the field, though he has accepted public financing for the county-level race. The other criticism is that his fiscal restraint posture is, in the critics' framing, a code for opposing public-sector union contracts and underfunding social services. The critics would point to his amendments on the FY26 budget that proposed cuts to the Department of Health and Human Services contracts.
+
+JORDAN: Did those cuts pass?
+
+ALEX: They did not pass. They were on the losing end of seven-to-two and six-to-three votes. So the criticism is about what he tried to do, not what got enacted.
+
+JORDAN: Fair to put both sides on the table.
+
+ALEX: Fair to put both sides on the table. And we will do a deeper job of this in the deep dive script that goes out this afternoon. That's the long form. The short form is this. Friedson is the fiscal-restraint candidate. The listener has the receipts. Whether the listener wants a fiscal-restraint County Executive is the question on the listener's June 23 ballot.
+
+JORDAN: That's episode two, really for real this time. See you tomorrow.
+
+ALEX: See you tomorrow.
+
+JORDAN: One more before we close. There's a small detail buried in the Fani-González FY27 budget that I want you to flag, because it touches the listener's other pet issue, which is school spending.
+
+ALEX: Education spending is on the listener's list of things they want more skeptical coverage of.
+
+JORDAN: Right. The listener has flagged that they're skeptical of increased education spending and would like to see fiscal discipline applied to school budgets. What did Fani-González propose for MCPS in this budget?
+
+ALEX: Fani-González's FY27 budget proposed the MCPS allocation at roughly 2.8 billion dollars. That number is the local appropriation to the school system. It is an increase over the FY26 allocation of about four percent. The four-percent increase is in line with the maintenance of effort floor that state law requires plus a small step-up for enrollment and inflation.
+
+JORDAN: So MCPS gets a four-percent bump in this budget.
+
+ALEX: MCPS gets a four-percent bump in this budget. Friedson's no vote on the FY27 operating budget included an objection to that allocation being approved without a corresponding accountability measure on MCPS contracting. He proposed an amendment that would require quarterly reporting from the school system to the council on contracts over five million dollars. That amendment failed five to four.
+
+JORDAN: Who voted for it?
+
+ALEX: Friedson, Katz, and two at-large members, Glass and Pham. The four no votes were Jawando, the four other at-large members on the council, and Fani-González as council president.
+
+JORDAN: So the listener has a clean data point on which sitting councilmembers tried to add accountability conditions to the MCPS funding.
+
+ALEX: They have a clean data point. And we should be explicit about something we have not been explicit about before. The county council does not set MCPS spending line by line. The council appropriates a single number to MCPS, and the board of education and the superintendent decide how to spend that number. So when Friedson or Glass or anyone else tries to add accountability conditions, they're trying to add reporting requirements, not to direct how the money is spent. That's a constraint of the county charter.
+
+JORDAN: Useful constraint to know about. It means the school board races are where line-item spending decisions actually get made.
+
+ALEX: It does. And the listener will be voting in the school board at-large race on June 23, and in the school board district 4 race, which is the district that includes Rockville. We are going to do a school board episode later this week, separately from the County Executive episode.
+
+JORDAN: That's a lot of episodes for one week.
+
+ALEX: It's the season. Twelve weeks until the primary, a lot of races to cover. We will get to all of them. Episode three of today, the Politicians-only episode, is coming up next. Episode four is later this evening. The deep-dive on Friedson is the long-format piece scheduled for this afternoon.
+
+JORDAN: OK. Now we're done. See you in the next episode.
+
+ALEX: See you in the next episode.

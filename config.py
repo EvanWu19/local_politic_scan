@@ -82,6 +82,8 @@ class Config:
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
     CONGRESS_API_KEY: str = os.getenv("CONGRESS_API_KEY", "")
     OPENSTATES_API_KEY: str = os.getenv("OPENSTATES_API_KEY", "")
+    GOVINFO_API_KEY: str = os.getenv("GOVINFO_API_KEY", "")   # GovInfo / Congressional Record (item 5)
+    FEC_API_KEY: str = os.getenv("FEC_API_KEY", "")           # openFEC campaign finance (item 6)
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 
     # ── Podcast settings ───────────────────────────────────────────────────────
@@ -91,13 +93,30 @@ class Config:
     PODCAST_FILTER_INDIVIDUAL_INCIDENTS = True   # exclude crime/incident stories
     PODCAST_HOST_ALEX_VOICE = "onyx"      # OpenAI voices: alloy/echo/fable/onyx/nova/shimmer
     PODCAST_HOST_JORDAN_VOICE = "nova"
-    PODCAST_TTS_MODEL = "tts-1"           # tts-1 ($15/1M chars) or tts-1-hd ($30/1M chars)
-    PODCAST_SCRIPT_MODEL = "claude-sonnet-4-5-20250929"   # Claude model for dialogue writing
+    PODCAST_TTS_MODEL = "gpt-4o-mini-tts"   # upgraded from tts-1 — better naturalness, similar cost
+    PODCAST_SCRIPT_MODEL = "claude-sonnet-4-6"   # Author / Editor / deep-dive default
     PODCASTS_DIR = BASE_DIR / "podcasts"
+
+    # ── Cowork hand-off ────────────────────────────────────────────────────────
+    # When True, the Opus-grade work (candidate dossiers, single-candidate deep
+    # dives, editor rewrite escalations) is queued as a brief in cowork_inbox/
+    # for the user's Cowork desktop agent to handle, rather than calling the
+    # Anthropic API. The Cowork agent runs on Opus 4.7 (no separate billing)
+    # and has web search; both matter for these stages. Set to False to fall
+    # back to the original API path.
+    # USE_COWORK_FOR_AI replaces USE_COWORK_FOR_OPUS — when true, EVERY Anthropic
+    # API call site (processor enrichment, analyst, PM, editor, author, chat,
+    # dossier, deep-dive, editor rewrite) emits a Cowork brief instead. Only
+    # OpenAI TTS still talks to a paid API. Default: on.
+    USE_COWORK_FOR_AI: bool = os.getenv("USE_COWORK_FOR_AI", os.getenv("USE_COWORK_FOR_OPUS", "1")) not in ("0", "false", "False", "")
+    USE_COWORK_FOR_OPUS: bool = USE_COWORK_FOR_AI   # back-compat alias
+    COWORK_INBOX_DIR = BASE_DIR / "cowork_inbox"
+    COWORK_OUTBOX_DIR = BASE_DIR / "cowork_outbox"
+    CANDIDATE_DOSSIER_DIR = BASE_DIR / "data" / "candidate_dossiers"
 
     # ── Knowledge & chat ───────────────────────────────────────────────────────
     KNOWLEDGE_DIR = BASE_DIR / "knowledge"
-    CHAT_MODEL = "claude-sonnet-4-5-20250929"
+    CHAT_MODEL = "claude-sonnet-4-6"
 
     # ── Federal Filter: ONLY these topics ─────────────────────────────────────
     # Federal news is massive — only items matching one of these keywords are
@@ -117,6 +136,31 @@ class Config:
     SCAN_DAYS_BACK = 3          # How many days back to look for new items
     MAX_ITEMS_PER_SOURCE = 25   # Max items fetched per source per run
     RELEVANCE_THRESHOLD = 0.35  # Skip AI processing for items below this score
+
+    # ── Full-text article extraction (trafilatura) ────────────────────────────
+    # When True, news RSS items are upgraded from feed summaries to the clean
+    # article body + canonical date/author (OSS plan, item 3). Any extraction
+    # failure falls back to the RSS summary, so the scan never breaks. Disable
+    # with FULLTEXT_EXTRACT=0 in .env. Requires `pip install trafilatura`; if
+    # the package is missing the pipeline logs once and runs as before.
+    FULLTEXT_EXTRACT: bool = os.getenv("FULLTEXT_EXTRACT", "1") not in (
+        "0", "false", "False", "")
+    FULLTEXT_MAX_ARTICLES = int(os.getenv("FULLTEXT_MAX_ARTICLES", "80"))
+    FULLTEXT_MAX_CHARS = int(os.getenv("FULLTEXT_MAX_CHARS", "6000"))
+
+    # ── Phase 2 data sources (OSS plan) ────────────────────────────────────────
+    # GovInfo Congressional Record "mentions" search terms (item 5). Defaults to
+    # the listener's county + congressional district; override via GOVINFO_TERMS
+    # (comma-separated) in .env.
+    GOVINFO_TERMS = [t.strip() for t in os.getenv(
+        "GOVINFO_TERMS",
+        f"{os.getenv('USER_COUNTY','Montgomery County')}, Maryland-08, Rockville"
+    ).split(",") if t.strip()]
+    # Local path to a downloaded Maryland SBE campaign-finance CSV (item 6).
+    SBE_FINANCE_CSV = os.getenv("SBE_FINANCE_CSV", "")
+    # Legistar client slug for civic-scraper, e.g. "montgomerycountymd" (item 2).
+    # Empty disables the Legistar source (RSS/HTML fetchers are unaffected).
+    CIVIC_LEGISTAR_CLIENT = os.getenv("CIVIC_LEGISTAR_CLIENT", "")
 
     # ── Paths ──────────────────────────────────────────────────────────────────
     DB_PATH = BASE_DIR / "data" / "politics.db"

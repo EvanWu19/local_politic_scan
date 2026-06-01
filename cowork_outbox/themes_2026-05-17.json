@@ -1,0 +1,43 @@
+{
+  "brief_id": "themes_2026-05-17",
+  "window_start": "2026-05-11",
+  "window_end": "2026-05-17",
+  "generated_at": "2026-05-18T02:55:00-04:00",
+  "db_upsert_status": "deferred_due_to_sqlite_fuse_blocker",
+  "summary": "Listener is a first-time Dem voter in Rockville, MoCo, MD-8/D19/Council D7. They want bill-cited, name-cited, side-by-side reads on every Dem primary candidate on their actual ballot — not framings, not vibes. They have flagged five specific open questions repeatedly: (1) which candidates oppose county-level sanctuary policy, (2) Friedson's full fiscal record, (3) Wootton High School relocation and which candidates vote on the outcome, (4) Kramer's career-long voting record beyond the recent session, (5) a documented side-by-side across the candidates on their ballot.",
+  "themes": [
+    "Bill-level receipts on each candidate, not narrative summaries — listener has asked daily.",
+    "Fiscal restraint and property tax math — rate-flat vs bill-flat distinction has not been made until this week.",
+    "Sanctuary policy specifics on county-level co-sponsorship: Trust Act (Bill 32-25), County Values Act (Bill 3-26).",
+    "Wootton High School: structural and political map of who actually has a vote on the outcome.",
+    "Career-long records, not just recent session — Kramer's House years (2007-2015) and Senate years (2015-now)."
+  ],
+  "open_questions": [
+    "Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration? (Answered for the top 3 MoCo Exec candidates today: none of Friedson/Glass/Jawando — all are County Values Act co-sponsors.)",
+    "Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline? (Cleanest answer to date: yes on tax rate votes, with 4 documented no votes 2020/2023/2025/2026 on Elrich rate increases; complication is FY27 gap.)",
+    "Why does MCPS want to close and move Wootton High School, and what happens next?",
+    "What is Kramer's full historical voting record, including old news and public records beyond recent sessions?",
+    "What are the documented policy differences between each candidate on my primary ballot?"
+  ],
+  "underserved_topics": [
+    "Side-by-side ballot-wide comparison sheet on all Dem primary candidates",
+    "Tier-3 county races: State's Attorney, Sheriff, Clerk, Register of Wills",
+    "Tier-4 judicial races: 5 Sixth Judicial Circuit judges",
+    "MD-8 challenger reads: J.D. Kumar, Boris Kabel Velasquez, Stephen Alan Leon",
+    "17-filer At-Large Council field — listener votes for up to 4, only Elrich and Silvestre named so far"
+  ],
+  "avoid_list_for_next_episode": [
+    "The Charter Limit override mechanism on Friedson — used as the centerpiece of 2026-05-17 ep1 and the Friedson deep dive; do not reframe it for at least 3 episodes",
+    "Kumar Barve's 30-year House service framing — used in 2026-05-17 ep1 to introduce the PSC gas line pause; do not reuse as biographical intro",
+    "'rate flat does not mean bill flat' explainer on property tax mechanics — used in 2026-05-17 ep2; do not re-explain the assessment-vs-rate distinction",
+    "CASA in Action 143-endorsement story / Ferguson endorsement framing — used in 2026-05-17 ep2",
+    "Kramer 'reliable Democratic caucus discipline / not a defector' framing — used in 2026-05-17 ep3",
+    "Wes Moore Community Trust Act on-the-desk framing — used in 2026-05-17 ep3",
+    "Friedson '4 no votes on Elrich rate increases (2020/2023/2025/2026)' as fiscal-restraint receipt — used in deepdive_friedson, ep1, and ep2 same day",
+    "Friedson More Housing N.O.W. ZTA 25-02 8-3 vote framing — used in deepdive_friedson; do not reframe for 3 days",
+    "April 28 police-in-schools letter / April 30 Blake High shooting timing — used in deepdive_friedson; do not reuse",
+    "Lierman 'Maryland's hospital rate-setting waiver up for renegotiation in 2027' framing — used in 2026-05-17 ep3"
+  ],
+  "note_count_inferred": 0,
+  "note_count_source": "daily_notes table not reachable from sandbox; values above reflect MEMORY-resident listener priorities and recent script content"
+}

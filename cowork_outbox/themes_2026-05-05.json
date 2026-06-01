@@ -1,0 +1,62 @@
+{
+  "window_start": "2026-04-29",
+  "window_end": "2026-05-05",
+  "generated_at": "2026-05-05T20:00:00-04:00",
+  "note_count": 6,
+  "summary": "Listener (registered Democrat, Rockville, Council D7, MD-19, MD-8) is now in choose-mode for the June 23 primary, not deciding-what-to-care-about-mode. Their April 28 note crystallizes it: 'now focus on who i can do on primary vote in June.' The dominant standing asks remain unchanged for a sixth straight week — full historical candidate dossiers, side-by-side policy comparisons across their actual ballot races, fiscal restraint as the operating value (property tax too high, non-essential spending should be cut), the Wootton High School relocation question, the new MCPS school rating system, and the sanctuary-policy litmus test. Today's coverage was a full four-episode series on Sharif Hidayat (Council D7 challenger to Luedtke). The Hidayat record is structurally thinner than Luedtke's because he has never held office; the show flagged that asymmetry on-air rather than papering over it.",
+  "themes": [
+    "fiscal discipline vs. spending growth | Property tax too high (4/27) + non-essential spending cuts good (4/28) is now the listener's operating value across all races; today's Hidayat coverage flagged he has not staked an explicit property-tax-rate position, so the question is unsettled in District 7.",
+    "candidate full-history dossiers | Listener has asked for this every week from 4/25 onward; today's Hidayat dossier deliberately upgraded format (Egyptian-immigrant origin, MCPD timeline 1999–2022, ADL Shield 2012, FAA DPE designation, 3 campaigns in 5 years) per the 1800–3500 word target; on-air the show did not pretend his footprint was as deep as Luedtke's.",
+    "concrete side-by-side policy comparison across the listener's actual races | Today's ep4 introduced a Hidayat-vs-Luedtke split table covering Thrive 2050, housing mix, agricultural reserve, upcounty representation, closed primary, SROs, Trust Act / sanctuary posture, and most-recent property-tax decision; this is the format the listener has been asking for since 4/24.",
+    "MCPS structural decisions affecting them as a Rockville parent | Wootton relocation (4/29) and the new rating system (4/30) are still Board of Education questions; Hidayat ran for BoE in 2024 but has not commented publicly on either issue — flagged on-air as a forum question.",
+    "sanctuary policy as a litmus test | Honest answer for MoCo Democrats remains: no Democratic primary candidate currently before the listener has explicitly opposed the County's sanctuary posture on the record. Hidayat is on the record as pro-police strength but has not staked a sanctuary-policy position; Luedtke voted yes on Trust Act and helped sponsor the detention-center ban."
+  ],
+  "open_questions": [
+    "Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?",
+    "Why does MCPS want to close and move Wootton High School, and what happens next?",
+    "What is Kramer's full historical voting record, including old news beyond recent sessions?",
+    "What are the documented policy differences between each candidate on my primary ballot?",
+    "Which Democratic primary candidate actually opposes sanctuary policy on illegal immigration?",
+    "What is the new MCPS rating system actually doing — what changes for my kid?",
+    "What is Sharif Hidayat's stated position on the property-tax rate? (Open after today's series — he has not made one publicly.)",
+    "What is Sharif Hidayat's stated position on the Trust Act, the County detention-center ban, and the broader sanctuary posture? (Open after today's series.)",
+    "What military branch and dates of service correspond to Hidayat's self-identified 'Veteran' status? (The 1991–1999 window in his bio is undocumented in the public record reviewed.)"
+  ],
+  "underserved_topics": [
+    "Council At-Large field — listener votes for At-Large but no At-Large candidate has been profiled yet; remains tier-1 priority",
+    "MoCo Board of Education race — the Wootton and grading-system questions actually live here, but no BoE candidate has been profiled",
+    "MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court — listener has voting rights and zero coverage",
+    "U.S. Representative MD-8 — Raskin race has five filed Democrats but no episode yet",
+    "Property-tax-rate trajectory and the FY26 spending affordability guidelines vote — listener's stated priority but not directly explained",
+    "How a registered Democrat in MoCo casts a vote against sanctuary policy in 2026 — answer remains the November ballot, not the June primary; the show has not yet said this plainly"
+  ],
+  "avoid_list": [
+    "The framing 'a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration' — used 4/28 ep1, 4/29 ep3",
+    "The Evan Glass DHS-screening bill as the sanctuary-policy hook — used 4/28 ep1, 4/29 ep3",
+    "The ICE agent mask-ban ordinance as the sanctuary-policy benchmark — used 4/29 ep2; today's series mentions it factually only",
+    "'Two stories, properly worked through' / 'two stories, not spreading thin across six' as an episode-framing device — 4/29 ep1",
+    "Governor Moore's 'Leave No One Behind' slogan contrasted with disability services cuts — 4/27 ep1 and ep1.rewrite",
+    "The ACA marketplace quiet-downgrade story — 4/28 ep1, 4/29 ep3",
+    "Maryland's 90-day part-time legislature explainer — 4/26 ep3 and ep3.rewrite",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices — 4/26 ep1, ep1.rewrite, ep4",
+    "The Beltsville Agricultural Research Center closure as a District 19 candidate-record hook — 4/27 ep4 and ep4.rewrite",
+    "Listener's own frustration about promised candidate deep-dives not delivering — already narrated back across at least five episodes; do not repeat as a framing device",
+    "The Friedson cash-on-hand $2.1M cycle-to-date number with the Glass/Jawando comparison — 5/3 ep3; do not re-quote next week without a fresh report number",
+    "The labor-endorsement landscape paragraph (SEIU 500 + UFCW 27 to Jawando, MCEA to Glass, IAFF 1664 to Friedson) — 5/3 ep3; do not re-paste verbatim",
+    "The Sage at Shady Grove + More Housing N.O.W. illustration of Friedson's record — 5/3 ep3; do not repeat as framing",
+    "The Penn Glee Club / 'penndawn96' biographical hook — used heavily in 5/4 ep1 (Luedtke origins); do not redeploy in non-Luedtke episodes",
+    "The Battaglia first-clerkship anecdote — used as a Luedtke biographical anchor 5/4 ep1; do not redeploy outside Luedtke series",
+    "The 'red-headed stepchildren up here' Hidayat quote — used three times across today's 5/5 series (ep1, ep3, ep4); do not redeploy more than once next week",
+    "The 'first Muslim officer of MCPD' framing of Hidayat's 1999 swearing-in — used in 5/5 ep1 and ep2; do not lead a future episode with this line",
+    "The FAA Designated Pilot Examiner / Gaithersburg EA07 detail about Hidayat — used in 5/5 ep2; do not repeat verbatim",
+    "The 2012 ADL Shield Award detail about Hidayat — used in 5/5 ep2; do not repeat verbatim",
+    "The Hidayat-vs-Luedtke split-table format — used in 5/5 ep3 and ep4; do not redeploy as a head-to-head template within the next 7 days"
+  ],
+  "db_writes_deferred": "weekly_themes UPSERT (window_start=2026-04-29, window_end=2026-05-05) was NOT executed — bash sandbox is currently failing with 'No space left on device' on every invocation, so politics.db at C:\\Users\\evan_\\local_politic_scan\\data\\politics.db could not be opened from this run. SQL to apply is mirrored separately. The Windows-side scheduler can ingest this JSON via the existing weekly_themes upsert path the same way it ingested 2026-05-04.",
+  "sources": [
+    "candidate_dossier brief context.listener_notes (6 most recent daily_notes through 2026-04-30)",
+    "Recent podcast scripts: podcast_2026-05-01_*.txt through podcast_2026-05-04_series_dawn-luedtke_ep*.txt",
+    "Today's series: podcast_2026-05-05_series_sharif-hidayat_ep1.txt through ep4.txt",
+    "PM avoid_list from the four series_episode briefs (2026-05-05)"
+  ]
+}

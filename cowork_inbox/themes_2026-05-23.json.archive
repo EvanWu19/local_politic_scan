@@ -1,0 +1,14 @@
+{
+  "brief_id": "themes_2026-05-23",
+  "type": "weekly_themes",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-23.json",
+  "instructions": "Roll up the listener's recent daily_notes into a structured signal block the Editor and Author agents will use to plan the next episode.\n\nSteps:\n  1. Read the last 7 rows from `daily_notes` at `C:\\Users\\evan_\\local_politic_scan\\data\\politics.db`.\n  2. Read the last 5 days of `podcast_*_ep*.txt` from the `podcasts/` directory — first ~30 lines each — so you can detect framings, taglines, and anecdotes the show has reused.\n  3. Distill into five sections:\n       SUMMARY — 2-3 sentence paragraph on what this listener cares about right now.\n       THEMES — 0–5 lines, `<theme> | <why it matters>`.\n       OPEN QUESTIONS — 0–5 lines, near-verbatim.\n       UNDERSERVED TOPICS — 0–5 lines.\n       RECENT COVERAGE TO AVOID — 0–10 lines, concrete framings/taglines/anecdotes already used in the last 5 days. Be specific.\n  4. UPSERT a row into `weekly_themes` keyed by (window_start, window_end). Fields: themes, open_questions, underserved_topics, summary (each as JSON arrays of strings or as the multi-line text the project's existing parser accepts), avoid_list (JSON array), note_count, generated_at.\n  5. Also write the structured rollup to `output_file` for audit.\n\nBe conservative on themes (no inventing from one passing comment), AGGRESSIVE on the avoid list — repetition is the listener's #1 complaint.",
+  "context": {
+    "target_date": "2026-05-23",
+    "db_path": "C:\\Users\\evan_\\local_politic_scan\\data\\politics.db",
+    "window_days": 7,
+    "locale": "Rockville, Montgomery County, Maryland"
+  },
+  "created_at": "2026-05-23T07:00:39.062526-04:00",
+  "due_by": ""
+}

@@ -1,0 +1,15 @@
+{
+  "brief_id": "themes_2026-05-10",
+  "type": "weekly_themes",
+  "status": "done",
+  "completed_at": "2026-05-10T14:51:59Z",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-10.json",
+  "window_start": "2026-05-04",
+  "window_end": "2026-05-10",
+  "note_count": 7,
+  "theme_count": 5,
+  "open_questions": 9,
+  "underserved_topics": 7,
+  "avoid_list_count": 34,
+  "notes": "Weekly rollup window 5/4-5/10. UPSERT to weekly_themes deferred to Windows-side."
+}

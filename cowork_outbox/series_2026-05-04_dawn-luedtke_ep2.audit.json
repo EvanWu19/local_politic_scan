@@ -1,0 +1,23 @@
+{
+  "brief_id": "series_2026-05-04_dawn-luedtke_ep2",
+  "type": "series_episode",
+  "ep_num": 2,
+  "ep_title": "Career",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-04_series_dawn-luedtke_ep2.txt",
+  "completed_at": "2026-05-04T20:12:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3700,
+  "must_cover_status": {
+    "every_job_employer_dates": "Battaglia clerkship 2000-01 / private practice ~2001-mid-2010s (firm not in record, flagged on-air) / AG office ~2017-2022 / Council Dec 2022-present",
+    "military_service": "none in record — addressed",
+    "boards_nonprofits": "Opera Baltimore VP / Penn Glee Club Grad Club Sec / past Olney Theatre / Transformation Theater / Bruce Montgomery Foundation",
+    "public_statements_outside_politics": "May 11 2021 MD Center for School Safety talk; podcast guest spots Rural Assembly Everywhere Radio + Rural Remix",
+    "social_media_history": "LinkedIn penndawn96 / Facebook Councilmember Dawn Luedtke (2022 launch); pre-2022 Twitter not surfaced",
+    "court_records": "no party-side appearances surfaced (PACER + MD Judiciary Case Search), counsel-of-record only — addressed",
+    "publicly_disclosed_financial_picture": "structure described (Council salary + spousal salary + Ashton home + unpaid arts board seats); itemized disclosure flagged as records-request open question"
+  },
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 3700,
+  "calibration_gap": -200
+}

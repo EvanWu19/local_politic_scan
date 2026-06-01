@@ -1,0 +1,66 @@
+{
+  "run_date": "2026-05-04",
+  "list_finalized": true,
+  "filing_deadline_passed": "2026-02-25",
+  "added": [
+    {
+      "name": "Peter James",
+      "office": "Montgomery County Executive",
+      "party": "Democratic",
+      "district": "MoCo",
+      "incumbent": false,
+      "uncontested": false,
+      "tier": 1,
+      "suggested_scheduled_date": "2026-05-26",
+      "rationale": "Reported among the five Democratic filers for County Executive; not present in registry. Self-description: works in artificial intelligence. [src: https://www.thebanner.com/politics-power/local-government/montgomery-county-final-candidates-2026-V2WGULT3HRFTTBGNLHKUVLS6CI/; https://mdbaynews.com/2026/01/31/montgomery-county-executive-race-2026-candidates/]"
+    },
+    {
+      "name": "Mithun Banerjee",
+      "office": "Montgomery County Executive",
+      "party": "Democratic",
+      "district": "MoCo",
+      "incumbent": false,
+      "uncontested": false,
+      "tier": 1,
+      "suggested_scheduled_date": "2026-05-27",
+      "rationale": "Reported among the five Democratic filers for County Executive; not present in registry. Self-description: project manager. [src: https://mdbaynews.com/2026/01/31/montgomery-county-executive-race-2026-candidates/]"
+    }
+  ],
+  "removed": [],
+  "renamed": [],
+  "dossier_scout_briefs_to_queue": [
+    "Peter James (MoCo Executive)",
+    "Mithun Banerjee (MoCo Executive)"
+  ],
+  "active_offices_with_open_questions": [
+    "Maryland Comptroller — registry has Brooke Lierman as uncontested incumbent. Verify against final SBE list when full HTML can be parsed; flagging because Comptroller filings frequently see late challengers.",
+    "Maryland Attorney General — registry has Anthony G. Brown as uncontested incumbent. Same verification flag.",
+    "Governor of Maryland — registry has Wes Moore (incumbent) + Eric S. Felber. Banner reports more than two filers historically; verify at next pass.",
+    "U.S. Representative MD-8 — registry has Raskin + Kumar + Leon + Velasquez + Lande. Verify count against SBE final list.",
+    "House of Delegates D19 — registry has Crutchfield + Stewart + Dasgupta + Sebastian Johnson + Sorrel + Stone + Tichy = 7 candidates for 3 seats.",
+    "Senate D19 — registry has Ben Kramer (uncontested) — verify.",
+    "Council D7 — registry has Luedtke + Hidayat = 2 — confirmed by Bethesda Magazine and Banner reporting.",
+    "Council At-Large — NOT YET IN REGISTRY. Greater Greater Washington's endorsement set referenced Morrison, Ashman, Stewart, Fani-Gonzalez, Luedtke, Goldberg, Silvestre, Sayles, McNulty across districts. At-Large field needs a separate enumeration pass.",
+    "MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court, BoE, 6th Circuit Judge — NOT YET IN REGISTRY. These are tier 3/4 offices and the bootstrap notes flag they will be appended by the daily monitor task as the lists are pulled. They were NOT pulled in this pass because the SBE all-counties HTML page returned >1MB of mostly-script content that could not be parsed in this sandbox without bash."
+  ],
+  "total_active_in_registry": 22,
+  "total_active_after_proposed_adds": 24,
+  "tools_available_this_run": "WebSearch + WebFetch only — bash sandbox returned 'No space left on device' on every invocation; the SBE all-counties HTML returned content too large for the file-tool grep to parse meaningfully. Diff was therefore done by cross-referencing The Baltimore Banner's post-filing-deadline candidate roundup and Bethesda Magazine's MoCo-filers piece against the registry.",
+  "registry_writes_deferred": "Append the two County-Executive entries (Peter James, Mithun Banerjee) and queue dossier_scout briefs for both. The Cowork agent does not write to candidate_series.json directly this run because the file is the canonical schedule and the Windows-side `python main.py series scout` + `series reschedule` should ingest these adds and slot them in at the proper tier. A staged-write JSON has been mirrored to cowork_outbox/filing_monitor_writes_2026-05-04.json for the Windows side to apply.",
+  "next_actions_for_windows_side": [
+    "Run python main.py series monitor --apply to ingest the two added County Executive Democrats.",
+    "Run python main.py series scout for both new entries to estimate richness before scheduling.",
+    "Re-pull SBE all-counties HTML in a Windows pass that can render JavaScript or parse the rendered table; the Linux sandbox cannot.",
+    "Enumerate Council At-Large field — likely 4 seats, multi-candidate field; this is a critical gap because Council At-Large is one of the listener's voting offices.",
+    "Enumerate MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court, BoE, 6th Circuit Judge fields — listener has voting rights on all of them per the districts profile.",
+    "Set list_finalized=true on the registry top-level once the full enumeration is complete; per SBE the filing deadline passed Feb 25, 2026."
+  ],
+  "sources": [
+    "https://www.thebanner.com/politics-power/local-government/montgomery-county-final-candidates-2026-V2WGULT3HRFTTBGNLHKUVLS6CI/",
+    "https://www.thebanner.com/politics-power/local-government/candidates-montgomery-county-elections-2026-XQOJ72NBB5BWXNJGZVSG2G4GJY/",
+    "https://bethesdamagazine.com/2025/08/08/who-has-filed-moco-offices/",
+    "https://mdbaynews.com/2026/01/31/montgomery-county-executive-race-2026-candidates/",
+    "https://montgomeryperspective.com/2025/08/01/hidayat-to-challenge-luedtke-in-council-district-7/",
+    "https://elections.maryland.gov/elections/2026/primary_candidates/index_2026GP.html"
+  ]
+}

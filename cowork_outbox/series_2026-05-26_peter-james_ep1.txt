@@ -1,0 +1,133 @@
+ALEX: It is Tuesday morning, May twenty-sixth, twenty-twenty-six. Twenty-eight days until polls close on the Maryland Democratic primary. Welcome back. Jordan, where are we today.
+
+JORDAN: We are on the second day of our Peter James series. Episode one of four. The Peter James of Gaithersburg. The man who runs Crystal Clear Automation. The man who has filed for office in this state five separate times — twice as a Republican, once as an Independent, twice as a Democrat. And the man whose name shows up on the Rockville ballot this June in the County Executive contest.
+
+ALEX: One housekeeping note before we begin. Our scheduling registry on the back end of this show has a stale row. It carries Peter James under the Maryland House of Delegates District nineteen line, marked as an incumbent. That is wrong on every dimension. He is not a sitting House of Delegates member. He has never held a state-legislative seat. He has never held any elected office. He is filed in the Democratic primary for Montgomery County Executive, and that is what this series will treat him as.
+
+JORDAN: Five Democrats on that County Executive ballot. Friedson, Glass, Jawando, Banerjee, and James. We have already done long-form treatment of Friedson, Glass, Jawando, and Banerjee on this show. We are filling in James because the listener wrote in last week saying the County Executive race is the line on the ballot they care about the most and they want every name.
+
+ALEX: Today is episode one. Origins. The framing is the same every time. We start with the human being. Birth, family, hometown, schooling, demographics, early-life public record. The platform is episode three. The current race is episode four. The career between college and politics is what we get to in episode two.
+
+JORDAN: One more piece of housekeeping. There are absences in the public record of Peter James. We are going to flag them as we go, rather than guess past them. If you hear one of us say on the air that we do not have a public record of something yet, that is real. We are not protecting him. We are telling you what is and is not on the page.
+
+ALEX: Date of birth. The exact day and month are not in the public record we have access to. What we do have is the age-at-filing line in the Bethesda Magazine story from March of twenty-twenty-two, which reported him as sixty-six years old when he walked into the Board of Elections and filed for County Executive that cycle. Back-derive that and the year of birth is roughly nineteen fifty-six. As of the June twenty-third, twenty-twenty-six primary, he will be either sixty-nine or seventy.
+
+JORDAN: That is the oldest candidate of the five in this race. Friedson is in his late thirties. Jawando and Glass are in their early forties. Banerjee, the engineer-challenger we covered last weekend, is in his late forties. James is roughly a generation older than the four people he is running against. That is a meaningful frame for how he stands at a forum.
+
+ALEX: Place of birth. Nashville, Tennessee. The biographical line that he himself supplies to Ballotpedia says he moved to Maryland at age four. So functionally he is a Maryland life. The Tennessee birth is the line on the certificate; the formative years and the schooling and the adulthood are here.
+
+JORDAN: And then we hit the first wall in the early biography. There is no documented K through twelve record. Not on Ballotpedia, not in the Bethesda Magazine candidacy profile, not in the Banner voter guide, not in the Montgomery for All twenty-twenty-six questionnaire he himself responded to. We do not know what elementary school he attended. We do not know what middle school. We do not know what high school.
+
+ALEX: That is the first absence worth naming on this episode. With most of the candidates we have profiled this month, the K through twelve record is in the public domain. Friedson's path through Wayside Elementary, Hoover Middle School, and Winston Churchill High in Potomac is in his own biography material. Jawando has written about his own school years at length. Even Mithun Banerjee, who is also a small-business challenger candidate, has a documented Montgomery Blair High School connection. With Peter James, the public-facing biography starts at the college level.
+
+JORDAN: We do not know whether he is a Montgomery County Public Schools graduate, a Prince George's graduate, a private-school graduate, or out of state. He moved here at age four, but where he went to school after that is not in the documented record.
+
+ALEX: Family. Married, with two children. That is the entire publicly disclosed family structure. Spouse's name is not in surfaced press material. Children's ages are not stated. The Banner voter guide and Ballotpedia agree on the bare "married with two children" line and supply no further detail. The campaign material describes Crystal Clear Automation as, quote, family-owned, which is consistent with that family structure, but the campaign has not put the spouse on camera in any of the press we have surveyed.
+
+JORDAN: Race, ethnicity, religion. Not self-identified in the surfaced materials. He has not made an explicit racial self-identification in the press coverage. He has not put a religious tradition on his bio.
+
+ALEX: There is one indirect signal on that last point that we should put on the record carefully, because it is suggestive but not conclusive. The nonprofit he runs is called First Fruits Farms. The phrase "first fruits" is a phrase that lives in the Old Testament agricultural law — Leviticus, Deuteronomy, the dedication of the first portion of the harvest to a religious purpose. So the name has Biblical resonance. But he has not described the project in explicitly religious terms in any of the materials we have. So we will note the name has Biblical resonance and not draw a conclusion from it.
+
+JORDAN: Languages. English. We have not surfaced a second language. In a county where roughly one in three residents was born outside the United States, that is worth knowing about a County Executive candidate.
+
+ALEX: Now to the educational record, where we do have specifics — though, again, gaps. He attended the University of Delaware for roughly two years. He studied cybernetics. He did not finish a degree at Delaware.
+
+JORDAN: Cybernetics is an unusual major to name. The word itself comes from the late nineteen forties — Norbert Wiener at MIT, the cross-disciplinary study of feedback in machines, in animals, in social systems. By the late nineteen seventies, when Peter James would have been a college freshman or sophomore, the discipline had peaked and was starting to break up into its descendant fields — control theory, systems engineering, artificial intelligence, cognitive science. The interesting wrinkle in his own biography is that he says Delaware housed cybernetics inside the philosophy department, not inside engineering.
+
+ALEX: That tells you something about the angle he is coming from. He did not come up as an electrical engineer or a control-systems person. He came up as somebody whose intellectual frame was philosophy of mind, philosophy of systems, complexity. Two years at Delaware, no degree.
+
+JORDAN: He then transferred — the biography on Ballotpedia is not super clean about whether he transferred or simply moved on later — to the University of Maryland, where he says he, quote, studied American history. Studied. Not, quote, graduated with a degree in American history. The campaign biography is careful about that word. So we cannot say on this episode that Peter James holds a bachelor's degree from the University of Maryland. We can say that he attended.
+
+ALEX: Put a pin in that. Whether he completed a Maryland degree is one of the open questions the listener should keep on a list. We will pick it up again in episode four.
+
+JORDAN: He describes, in the campaign biography, independent study after the formal-university years. Three named subjects. Biophysics. Dissipative structures. Human brain anatomy and function. Dissipative structures, for the listener, is the phrase most associated with the Belgian chemist Ilya Prigogine, the nineteen seventy-seven Nobel laureate in chemistry. The core idea is that complex order can emerge in open systems that are far from thermodynamic equilibrium.
+
+ALEX: Pair Prigogine with brain anatomy and biophysics, and what you are describing is the consciousness-and-complexity reading list that ran through certain corners of late nineteen-seventies and nineteen-eighties intellectual life. People like Douglas Hofstadter on the popular side, the early Santa Fe Institute on the technical side. So the picture of his intellectual formation is this. Formal university time on the order of four years, split across two institutions, no documented completed degree, and then a self-directed reading program in complex systems and computational neuroscience.
+
+JORDAN: That is not a typical executive-candidate resume. It is much closer to the early biography of a tech-industry founder than to a typical political career.
+
+ALEX: Which fits where he goes next. His own description — and this is from the Banner voter guide and from the Montgomery for All twenty-twenty-six questionnaire — is that the first twenty years of his professional life were spent in Silicon Valley, consulting to, in his words, over two hundred Inc. one hundred and Fortune five hundred companies. Twenty years would line up roughly with the nineteen-eighties through the late nineteen-nineties.
+
+JORDAN: That is the period he was in his twenties and thirties. Mapping back, somewhere in his early twenties he goes to the West Coast. We do not have the firm name. We do not have the list of clients. We do not have the city. The biographical claim is, on its face, plausible — a person with cybernetics-and-systems training in the early nineteen eighties is in the right place at the right time for that kind of consulting work — but the specifics are not independently verified in the press record.
+
+ALEX: One specific career line that Ballotpedia does list is a stint as a, quote, cost evaluation system coordinator at Intel Corporation. No dates. No division. No city. The single line is on the Ballotpedia page. We mention it because Ballotpedia mentions it, but we are not pretending we have more.
+
+JORDAN: There is also a Ballotpedia line that is genuinely difficult to parse. Under career experience it reads, quote, issuer of Just Money. Capital J, capital M. The Ballotpedia entry does not elaborate on what Just Money is. It could be a community-currency project. It could be an alternative-banking concept. It could be a publication or a software product or a small consulting practice with a brand name. We searched and we have not found a clean public description.
+
+ALEX: That is a piece of his early career that is just on the page unexplained. We will flag it again in episode four.
+
+JORDAN: After the Silicon Valley years, his public biography has a real gap. From the late nineteen nineties through twenty-fifteen — about fifteen years — there is no documented employer, no public statement, no surfaced press mention. We know that at some point in that window he moves back to Maryland from California, because by twenty-fifteen he is in Germantown registering a Maryland LLC. But the move date is not in the public record.
+
+ALEX: That is the second big absence. Fifteen unaccounted-for years in the resume of a man asking to run a county of more than one million people. We are not implying anything sinister. Adults are entitled to private decades. We are telling you what is and is not on the page.
+
+JORDAN: Twenty-fifteen is the next firm anchor. He registers Crystal Clear Automation, LLC, in Maryland. The corporate filing is searchable on OpenCorporates and on Bizapedia. The business address is in Germantown. The LLC is what he describes as his current main professional identity. The product line is what we will spend most of episode two on, because the platform he runs on is essentially his company's product list reframed as policy. But for episode one the relevant fact is that the LLC is the inflection point in his late fifties when his name re-enters the documentable public record.
+
+ALEX: Episode one is about the run-up to that. The first fifty-some years. And what we can say about those is mostly an absence with two anchors at either end. Birth and early childhood, Nashville to Maryland. Then a documented college period at Delaware and Maryland with no completed degree. Then a self-described Silicon Valley consulting career through the nineteen-eighties and nineteen-nineties. Then a hole. Then the Maryland LLC.
+
+JORDAN: The earliest documented public statement we have from him predates the LLC by seven years. He is a Republican candidate for the United States House of Representatives in twenty-zero-eight, after the long-serving Democrat Albert Wynn resigned mid-term from the Fourth Congressional District. He runs in a four-way Republican primary. He wins it. He then loses the June seventeenth, twenty-zero-eight special general election to Donna Edwards by something like eighty-one to seventeen, with a Libertarian, Thibeaux Lincecum, also on the ballot.
+
+ALEX: He runs again that fall for the full term and loses to Edwards by something like eighty-five to thirteen. The Maryland State Board of Elections returns are the source. So the earliest substantive public statement we have from him is on the campaign trail of a Republican congressional run in twenty-zero-eight at age fifty-one or fifty-two.
+
+JORDAN: We will go through the three federal congressional runs in detail in episode three. The reason it matters for episode one is that it tells you when his name first becomes documentable on a public-record basis. Twenty-zero-eight. He was over fifty before the press paid him any attention.
+
+ALEX: Family residence pattern. Continuous residence in Gaithersburg or Germantown since at least twenty-zero-eight. That is the disambiguator that makes us sure this is the same Peter James we are tracking. The corporate filings tie to Germantown. The campaign filings tie to Gaithersburg. The candidate forum coverage from twenty-twenty-two and from the April sixteenth, twenty-twenty-six forum places him in upcounty Montgomery.
+
+JORDAN: A note for the Rockville listener. Gaithersburg is in upcounty Montgomery. Our listener lives in Rockville, which is the southwestern boundary of Council District seven. James lives outside District seven, but the County Executive office governs the whole county, so the geography is not a disqualifier in the way that running for District seven Council from Gaithersburg would be. It does shape his platform. The upcounty perspective is detectable in the way he talks about transit and about Crown.
+
+ALEX: Religion, again, we cannot place. Ethnicity we cannot place. Net worth and home ownership we cannot document precisely. He is the owner of a small business, the business is privately held and not required to publish financials, and the public press has not put a number on him.
+
+JORDAN: The Banner voter guide describes him as self-identifying as a small-business owner who would be hurt by a county property-tax increase. That is the closest the public record gets to a financial self-description. It is consistent with a man who owns his own company, draws his living from that company, has not disclosed major stock holdings, and is therefore exposed to the local tax base in a different way than a salaried county official.
+
+ALEX: Family business is family-owned, in his own description. Whether that means the spouse and children are formally officers of the LLC, or whether it is a more colloquial use of the phrase, we do not know. He has not put officers names on the public-facing campaign material.
+
+JORDAN: No military service is on the record. No board memberships beyond the presidency of Germantown Kiwanis. The Kiwanis presidency is the only documented civic-leadership role we have for him outside of his own LLC and his own nonprofit, First Fruits Farms. We do not have the dates of his Kiwanis presidency, the length of the term, or the activity of the club under his leadership.
+
+ALEX: First Fruits Farms — the nonprofit we mentioned earlier — is described as an open-source robotic farm using local renewable energy, positioned as a more environmentally sustainable alternative to conventional row-crop agriculture. He is the founder. The Maryland nonprofit registration we have not retrieved. The IRS Form nine-ninety we have not retrieved. So we cannot tell you the budget, the staff, the donor base, or the volume of operations. We can tell you it exists, that it is in his biography, and that the name links his civic identity to small-scale agriculture in a county that is rapidly losing it.
+
+JORDAN: One demographic piece we have not addressed. Religion. We said we do not know. There is a soft signal in the nonprofit name that suggests religious framing, but no explicit self-identification. The kind of question a campaign would normally answer in a faith-and-values forum, which has not happened in this primary cycle.
+
+ALEX: To close out episode one, let me put the listener in the right frame. Peter James, age seventy at the June primary. Born in Nashville, moved to Maryland at four. K through twelve undocumented. Two years at Delaware studying cybernetics; subsequent attendance at Maryland studying American history; no documented completed degree. Twenty years of self-described Silicon Valley consulting in the eighties and nineties. A line on a corporate-filing site about Intel. A line on Ballotpedia about something called Just Money. Then fifteen years of silence. Then the registration of Crystal Clear Automation in twenty-fifteen, in Germantown.
+
+JORDAN: And in twenty-zero-eight, age fifty-one or fifty-two, he runs for Congress as a Republican. We will pick that up tomorrow.
+
+ALEX: Episode two of this series is on the career. Crystal Clear Automation in detail. First Fruits Farms. The Kiwanis presidency. Court records — there are none surfaced for him personally. Social media history. Financial disclosure. Op-eds and books — there are not any documented. Public statements outside politics.
+
+JORDAN: Episode three is on the political record. Three federal congressional runs. The twenty-twenty-two County Executive run. The twenty-twenty-six platform across taxes, transit, housing, the school system, and the artificial-intelligence framing.
+
+ALEX: Episode four is on this race specifically. The five-way Democratic primary for County Executive. Where Peter James fits. What it would mean for our listener — registered Democrat in Rockville, voting June twenty-third — if he won.
+
+JORDAN: One last thing for the listener. We are not soft-pedaling the party-history piece. He was the Republican nominee against Donna Edwards in twenty-zero-eight. He ran in the Republican primary against Roscoe Bartlett in twenty-twelve. He filed as an Independent in twenty-twenty. He registered as a Democrat ahead of the twenty-twenty-two cycle, and he himself has said publicly the registration was to, quote, reach the most people. That is a real thing about him. We will deal with the substance of those runs in episode three. For now you have it on the table.
+
+ALEX: That is episode one. We will see you tomorrow on the same feed for episode two of Peter James.
+
+JORDAN: Same place, same time, twenty-eight days out.
+
+ALEX: Before we let the listener go for the day, let us double back and unpack a few of the threads we left hanging. Three of them are worth a longer look.
+
+JORDAN: Thread one. The move from Tennessee at age four. The biographical line is bare. He says he moved to Maryland at age four. That places the move sometime around nineteen sixty. We do not have the city or the county in Maryland where the family landed. We do not have the parents' names. We do not have the parents' occupations. We have not surfaced any siblings.
+
+ALEX: We can place rough context. Nineteen-sixty Nashville is the year of the lunch-counter sit-ins, one of the epicenters of the civil-rights movement. Maryland in that period is a Border-South state, segregated by law in many ways, on the front edge of suburbanization in Montgomery and Prince George's County. A family making a Tennessee-to-Maryland move at the cusp of the nineteen-sixties is in motion at a real inflection point.
+
+JORDAN: We are speculating about context, not about him. The candidate has not described that move in his surfaced material. He has not described his parents. He has not described religious upbringing. The biographical record is silent on all of that.
+
+ALEX: Thread two. The college years. We said he was at Delaware for two years studying cybernetics, then moved to Maryland to study American history. There is more we can say about timing. If we use the nineteen fifty-six birth year and a typical college-start age of eighteen, he is starting college around nineteen seventy-four. Two years at Delaware puts him out of Delaware around nineteen seventy-six. The university transfer to College Park happens after that.
+
+JORDAN: Nineteen seventy-four is also a meaningful Delaware moment. The cybernetics program at Delaware in the mid-nineteen seventies was small, and it was, as he says, housed inside the philosophy department, not engineering. The department had a number of faculty doing work on systems theory and philosophy of mind. That kind of program produced a small number of graduates whose later careers cluster in a recognizable way — in computer science, in cognitive science, in software entrepreneurship.
+
+ALEX: So when he says he studied cybernetics at Delaware in the seventies, that is a real coordinate, not a costume. We just cannot verify which professors he studied under, what work he did, or what the trajectory out of Delaware looked like, because he did not finish.
+
+JORDAN: At College Park he says he studied American history. Again, no documented completed degree. The era is the late nineteen seventies, when the bicentennial of the Revolution is fresh.
+
+ALEX: Thread three. The phrase he uses repeatedly across the candidacies — that he was an, quote, independent voter for most of his life. That phrasing shows up in the Bethesda Magazine candidacy piece from twenty-twenty-two. It shows up in the Banner voter guide. It is the language he uses to explain the party history. The literal voter-registration record we have surfaced shows him registered as a Republican in twenty-zero-eight when he files for MD-four, still Republican in twenty-twelve when he files for MD-six, registered as Independent in twenty-twenty when he files for MD-six, registered as Democrat in twenty-twenty-two when he files for County Executive, and still Democrat in twenty-twenty-six.
+
+JORDAN: So the self-description and the registration record are not in total alignment. The self-description is, I have always been an independent voter. The actual party registration in surfaced records flips. Republican to Independent to Democrat is a real arc. Whether he was independently registered in stretches before twenty-zero-eight, we do not know. The voter-registration record beyond his federal-candidate filings has not been pulled into this run.
+
+ALEX: That is a piece of the early-life biography that will become more important in episode three, when we walk through the political record. For now, the way to hold it is — what he says about himself, and what the registration records show, point in compatible but not identical directions. He has been registered with three different party labels in twenty years. He frames the labels as tactical. The framing is sincere on the evidence we have. It is also unusual, and the listener should hold it as a real fact about him rather than a piece of campaign noise.
+
+JORDAN: One more thing on the religion piece — and I want to flag this carefully. He has called his nonprofit First Fruits Farms. We do not know whether the phrase is meant in its agricultural-policy sense or its religious sense or both. We do not have a public statement from him interpreting the name. There are Maryland farms by similar names that are explicitly church-tied — the most prominent being a North Carolina nonprofit, not Maryland — and there are agricultural-aid charities by similar names that are secular. We are not going to put a faith tradition on him without his having put it on himself.
+
+ALEX: Closing thought before we shut down for the day. The thing the listener is meant to leave episode one with is this. Peter James, age seventy at the June twenty-third primary. Continuous Gaithersburg-Germantown residence for at least eighteen years. A college education that began in Delaware studying cybernetics in the philosophy department and continued at College Park studying American history, with no documented completed degree at either institution. A twenty-year career in self-described Silicon Valley consulting through the nineteen eighties and nineteen nineties, with one documented employer name on the page — Intel. A fifteen-year gap in the public record between his Silicon Valley years and the twenty-fifteen registration of Crystal Clear Automation in Germantown. A first appearance in the press as a Republican congressional candidate at age fifty-one or fifty-two.
+
+JORDAN: That is what we know about the man before the politics. Episode two is on the career outside of politics. Crystal Clear Automation, First Fruits Farms, Germantown Kiwanis, public statements outside the campaign trail, and what we can and cannot say about his finances.
+
+ALEX: Tomorrow morning. Same feed. Twenty-seven days out from the primary.

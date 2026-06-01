@@ -1,0 +1,16 @@
+{
+  "brief_id": "themes_2026-05-05",
+  "type": "weekly_themes",
+  "status": "done",
+  "completed_at": "2026-05-05T20:16:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-05.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-05.json",
+  "window_start": "2026-04-29",
+  "window_end": "2026-05-05",
+  "note_count": 6,
+  "themes_count": 5,
+  "open_questions_count": 9,
+  "underserved_topics_count": 6,
+  "avoid_list_count": 19,
+  "notes": "Week-over-week the listener has moved from deciding-what-to-care-about into choose-mode (4/28 note). Avoid list extended with today's series-specific framings — Hidayat 'red-headed stepchildren' quote, 'first Muslim officer of MCPD' line, FAA DPE detail, 2012 ADL Shield Award detail, Hidayat-vs-Luedtke split-table format — so they don't get redeployed in the next seven days. weekly_themes UPSERT against politics.db deferred (DB-access reason); JSON written to canonical output_file path."
+}

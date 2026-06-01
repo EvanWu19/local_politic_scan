@@ -86,7 +86,7 @@ EXTRACT_SYSTEM = (
 def handle_message(db_path: Path, knowledge_dir: Path,
                    anthropic_key: str, user_message: str,
                    conversation_id: Optional[int] = None,
-                   chat_model: str = "claude-sonnet-4-5-20250929",
+                   chat_model: str = "claude-sonnet-4-6",
                    context_days: int = 3,
                    max_context_events: int = 30) -> Dict:
     """
@@ -98,7 +98,9 @@ def handle_message(db_path: Path, knowledge_dir: Path,
         update_conversation_title, get_recent_events,
     )
 
-    client = anthropic.Anthropic(api_key=anthropic_key)
+    # Cowork-only — direct API path disabled 2026-05-15.
+    cowork_mode = True
+    client = None
 
     # ── 1. Ensure conversation exists ────────────────────────────────────────
     if conversation_id is None:
@@ -115,34 +117,51 @@ def handle_message(db_path: Path, knowledge_dir: Path,
     context_text = _format_events_for_context(events)
 
     # ── 3. Append user message ───────────────────────────────────────────────
-    add_message(db_path, conversation_id, "user", user_message)
+    user_msg_id = add_message(db_path, conversation_id, "user", user_message)
 
-    # ── 4. Build message history for Claude ──────────────────────────────────
-    history = [
-        {"role": m["role"], "content": m["content"]}
-        for m in conv.get("messages", [])
-    ]
-    # Add the new user message we just stored
-    history.append({"role": "user", "content": user_message})
-
-    # ── 5. Call Claude ───────────────────────────────────────────────────────
-    try:
-        resp = client.messages.create(
-            model=chat_model,
-            max_tokens=1500,
-            system=[
-                {"type": "text", "text": CHAT_SYSTEM,
-                 "cache_control": {"type": "ephemeral"}},
-                {"type": "text",
-                 "text": f"## Today's digest context (top {len(events)} stories)\n\n{context_text}",
-                 "cache_control": {"type": "ephemeral"}},
-            ],
-            messages=history,
+    # ── Cowork mode: queue brief, save a placeholder reply, return ──────────
+    if cowork_mode:
+        from scanner.cowork_bridge import build_chat_brief, write_brief
+        # Insert the assistant placeholder row first so we have an id to
+        # update later; Cowork will overwrite content + status.
+        placeholder = (
+            "Your question is queued for the Cowork research run. "
+            "It will be answered by tomorrow morning's sync (typical "
+            "lag: 24–48 hrs). The answer will appear here automatically."
         )
-        reply = resp.content[0].text
-    except Exception as e:
-        log.exception("Chat API error")
-        reply = f"Sorry, I hit an error: `{e}`. Try again in a moment."
+        asst_msg_id = add_message(db_path, conversation_id, "assistant", placeholder)
+        try:
+            brief = build_chat_brief(
+                db_path=db_path,
+                conversation_id=conversation_id,
+                message_id=asst_msg_id,
+                question=user_message,
+                digest_excerpt=context_text,
+                locale=_LOCALE if "_LOCALE" in globals() else "your area",
+            )
+            write_brief(brief)
+            log.info("chat: queued chat_question brief (msg %d).", asst_msg_id)
+        except Exception as e:
+            log.exception("chat: failed to queue Cowork brief: %s", e)
+        return {
+            "conversation_id": conversation_id,
+            "reply": placeholder,
+            "note_saved": False,
+            "queued_for_cowork": True,
+        }
+
+    # ── Direct-API path disabled — this code is unreachable in production.
+    #   Kept inert so callers don't break and so a future maintainer can
+    #   compare prompt structure if they re-enable the API path.
+    from scanner.notifications import notify
+    notify("chat",
+           "Reached the disabled direct-API fallback. Cowork branch above "
+           "should have returned. Check USE_COWORK_FOR_AI.", severity="error")
+    history = []  # noqa: F841 — kept to preserve symbol for tooling
+    reply = (
+        "Cowork-only mode: this branch should not have run. A notification "
+        "has been recorded for you to investigate."
+    )
 
     # ── 6. Save assistant reply ──────────────────────────────────────────────
     add_message(db_path, conversation_id, "assistant", reply)

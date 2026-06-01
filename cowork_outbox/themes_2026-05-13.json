@@ -1,0 +1,42 @@
+{
+  "brief_id": "themes_2026-05-13",
+  "status": "partial",
+  "run_date": "2026-05-13T15:15:00Z",
+  "db_access": "blocked — politics.db SQLite version mismatch (file written by 3.50.0, drain has 3.37.2). daily_notes table could not be read.",
+  "summary": "Listener appears focused on (a) Wootton High School closure and what it means for District 19 attendance areas, (b) whether any Democratic primary candidate openly opposes Maryland's sanctuary-jurisdiction direction, (c) Andrew Friedson's fiscal record specifically (asked repeatedly, not yet given a focused answer), (d) Ben Kramer's full historical voting record (not just recent sessions). The dossier-quality improvement effort is ongoing; today's Ben Kramer dossier and 4-episode series represent the new deeper baseline.",
+  "themes": [
+    "Wootton closure | listener has asked directly; show has acknowledged but not resolved the policy question of why MCPS chose closure and what comes next",
+    "Sanctuary policy filter | listener wants a yes/no answer per candidate; today's Kramer ep3 delivered the cleanest one yet — Kramer has no public record opposing sanctuary",
+    "Friedson fiscal record | listener has asked repeatedly; Friedson's 专题 is queued, the answer is committed for that series",
+    "Historical voting record on incumbents | listener wants pre-2020 records, not just recent sessions; today's Kramer dossier surfaces nineteen years of record",
+    "Side-by-side primary comparison | promised for the synthesis week after all candidate series complete"
+  ],
+  "open_questions": [
+    "What is Wootton's status after the March 26 7-1 board vote and the CEPA April 28 administrative appeal?",
+    "Did Senator Kramer take a position on the 2025 Maryland immigration bill — yea/nay on the floor vote?",
+    "What is the outcome of the Joint Committee on Legislative Ethics review of the March 2026 Kramer/Moore comments?",
+    "How does Andrew Friedson's fiscal record on the County Council compare to other County Executive candidates?",
+    "Is there a Democratic primary opponent for any of the District 19 races that has been added since the February 24 filing deadline?"
+  ],
+  "underserved_topics": [
+    "Housing — Montgomery County housing supply and zoning has been mentioned but not deeply covered for any candidate",
+    "Public safety beyond DUI — gun policy, juvenile justice, MCPD oversight",
+    "Transportation — Purple Line, BRT, road safety legislation",
+    "MCPS oversight beyond Wootton — inspector general, accountability, budget",
+    "Federal-state interaction — Medicaid, Section 8, federal-grant exposure under the second Trump administration"
+  ],
+  "avoid_list": [
+    "The framing 'a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration' as a setup line",
+    "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police as the concrete sanctuary-policy example",
+    "The ICE agent mask-ban ordinance passed by the Montgomery County Council as the sanctuary-policy benchmark",
+    "'Two stories, properly worked through' / 'two stories, not spreading thin across six' as an episode-framing device",
+    "Governor Moore's 'Leave No One Behind' slogan contrasted with disability services cuts",
+    "The ACA marketplace quiet-downgrade story ('thousands of Marylanders have been quietly downgrading their health insurance plans')",
+    "Maryland's 90-day part-time legislature explanation ('they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners')",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing",
+    "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook",
+    "Listener's own frustration about promised candidate deep-dives not delivering — now flagged across at least five episodes; do not repeat as framing"
+  ],
+  "note_count": "unknown — daily_notes table unreadable this run; avoid_list and themes drawn from the persistent recent-coverage memory inside the briefs the Windows scanner generated.",
+  "remediation": "Upgrade drain-side SQLite to ≥3.45 OR have the Windows side write weekly_themes back into politics.db itself with the output of this JSON as input."
+}

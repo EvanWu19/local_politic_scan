@@ -1,0 +1,49 @@
+{
+  "added": [
+    "Mithun Banerjee",
+    "Peter James",
+    "Fatmata Barrie",
+    "Josie Caballero",
+    "Radwan Chowdhury",
+    "Marc Elrich",
+    "Dana Eugene Gassaway",
+    "Scott Evan Goldberg",
+    "Hamza Khan",
+    "Matt Losak",
+    "Jim McNulty",
+    "Jeremiah Pope",
+    "Laurie-Anne Sayles",
+    "Prabu Selvam",
+    "Karla Silvestre",
+    "Steve Solomon",
+    "Lelia B. True",
+    "Vicki Vergagni",
+    "Muhammad Arif Wali",
+    "Van Free",
+    "John McCarthy",
+    "Karen Bushell",
+    "Alan S. Bowser",
+    "Paul J. Dollahite",
+    "Barbara Ebel",
+    "Will Milam",
+    "Maxwell Cornelius Uy",
+    "Sharon V. Burrell",
+    "Victor M. Del Pino",
+    "James J. Dietrich",
+    "Catherine H. McQueen",
+    "Marylin Pierre"
+  ],
+  "removed": [
+    "Marc Lande"
+  ],
+  "renamed": [],
+  "total_active": 53,
+  "list_finalized": true,
+  "run_date": "2026-05-17",
+  "sources": [
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html",
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_all_counties_candidatelist.html",
+    "https://elections.maryland.gov/elections/2026/primary_ballots/Montgomery.pdf"
+  ],
+  "notes": "Official Montgomery County Democratic primary ballot PDF (SBE, updated 2026-05-15) was the canonical source for this diff. Marc Lande confirmed withdrawn 2025-12-12 (statewide list). 5 highest-priority tier-1 adds scheduled into 6-17..6-21 slots (the only weekday-style slots left before the 6-23 primary); the remaining 25 new candidates were added with scheduled_date=null and dossier_status=unsched_overflow so future runs (or a manual re-prioritization) can pick them up."
+}

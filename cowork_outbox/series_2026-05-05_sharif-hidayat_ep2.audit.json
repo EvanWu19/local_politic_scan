@@ -1,0 +1,23 @@
+{
+  "brief_id": "series_2026-05-05_sharif-hidayat_ep2",
+  "type": "series_episode",
+  "ep_num": 2,
+  "ep_title": "Career",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-05_series_sharif-hidayat_ep2.txt",
+  "completed_at": "2026-05-05T20:12:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3450,
+  "must_cover_status": {
+    "every_job_with_dates": "MCPD 1999-~2022 (academy then patrol then community services officer ~2009-2022); commercial pilot ~2022-present; FAA DPE Gaithersburg EA07 ~2024-present — confirmed",
+    "military_service": "self-identified Veteran with no branch/dates/unit on record — flagged on-air",
+    "boards_nonprofits_volunteer": "MCPS PTA (school not named); ADL Shield Award team 2012 — confirmed",
+    "public_statements_outside_politics": "May 18 2016 Daily Signal profile is the single substantive pre-candidate piece — confirmed",
+    "social_media_history": "current handles only @votesharif (FB) and @SharifHida50003 (X), both go back only to candidate-era 2022 — confirmed",
+    "court_records": "no PACER hits, no MD Judiciary Case Search hits bearing on candidacy — confirmed",
+    "publicly_disclosed_financial": "thinner than incumbent's; MCPD pension status not on record; DPE per-task income flagged for ethics-disclosure attention — flagged"
+  },
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 3450,
+  "calibration_gap": -450
+}

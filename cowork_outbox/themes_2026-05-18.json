@@ -1,0 +1,50 @@
+{
+  "window_start": "2026-05-12",
+  "window_end": "2026-05-18",
+  "note_count": 7,
+  "summary": "This listener is a first-time Democratic voter in Rockville preparing for the June 23, 2026 primary who has now asked, multiple days running, for substantive candidate-linked content: career-long voting records (Kramer specifically, all primary candidates generally), a concrete answer on Andrew Friedson as the fiscal-restraint candidate, an explainer on the new MCPS school rating system (added 2026-04-30), and a clear decision path on the Wootton High School closure question. Their open policy priors stay constant: skepticism toward high property taxes, opposition to increased education spending, support for non-essential spending cuts and fiscal discipline, and a clear interest in which Democratic primary candidates oppose sanctuary policy on illegal immigration.",
+  "themes": [
+    "MCPS rating system explained | Listener 2026-04-30 directly asked for a deep dive on the new MoCo school rating system; show has gestured but never produced a dedicated explainer.",
+    "Andrew Friedson as the fiscal-restraint candidate | Listener 2026-04-29 asked plainly if Friedson is the discipline candidate; needs a single concrete yes/no answer with vote citations.",
+    "Wootton High School closure decision path | Asked 2026-04-29; show has acknowledged the question but never traced who decides, when, and where Wootton candidates land on it.",
+    "Career-long candidate records, not just recent session | Listener 2026-04-25, 04-26, 04-27 asked for old news / career history on Kramer specifically and on all primary candidates.",
+    "Side-by-side documented policy comparison across primary candidates | Listener 2026-04-24 asked which Democratic primary candidates oppose sanctuary policy and what the policy differences are across the whole ballot."
+  ],
+  "open_questions": [
+    "Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?",
+    "Why does MCPS want to close and move Wootton High School, and what happens next?",
+    "What is Ben Kramer's full historical voting record, including old news, not just recent sessions?",
+    "Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?",
+    "What is the new Montgomery County Public School rating system and how does it grade my child's school?"
+  ],
+  "underserved_topics": [
+    "MCPS school rating system mechanics \u2014 how the new score is calculated and what scores Rockville schools received",
+    "Andrew Friedson's specific fiscal record by line-item, not just final budget yes/no",
+    "Wootton High School closure decision timeline \u2014 who votes, when, and how those board members got there",
+    "Career-long Kramer voting record (2007-present) on consumer protection, judiciary, immigration, and education funding",
+    "Side-by-side candidate matrix on listener's actual ballot for sanctuary, fiscal, MCPS spending, and Wootton"
+  ],
+  "avoid_list": [
+    "\"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line \u2014 used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3",
+    "Evan Glass background-screening DHS bill as the sanctuary-policy example \u2014 used in 2026-04-28 ep1 and 2026-04-29 ep3",
+    "Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark \u2014 used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)",
+    "\"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device \u2014 used in 2026-04-29 ep1",
+    "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts \u2014 used in 2026-04-27 ep1 and ep1.rewrite",
+    "ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") \u2014 used in 2026-04-28 ep1 and revisited 2026-04-29 ep3",
+    "Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") \u2014 used in 2026-04-26 ep3",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing \u2014 used in 2026-04-26 ep1 and ep4",
+    "Beltsville Agricultural Research Center closure as a District 19 candidate-record hook \u2014 used in 2026-04-27 ep4",
+    "Listener's own frustration about promised deep-dives not delivering, narrated back to the listener \u2014 has shipped across at least five episodes; do not use as a framing device again"
+  ],
+  "listener_candidate_interest": [
+    "Andrew Friedson",
+    "Ben Kramer",
+    "Will Jawando",
+    "Evan Glass",
+    "Dawn Luedtke",
+    "Charlotte Crutchfield",
+    "Vaughn Stewart",
+    "Christa Tichy",
+    "Jamie Raskin"
+  ]
+}

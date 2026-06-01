@@ -1,0 +1,39 @@
+{
+  "target_date": "2026-05-19",
+  "generated_at": "2026-05-20T02:54:01.597178Z",
+  "window_days": 7,
+  "status": "partial",
+  "note": "DB-side daily_notes were unreachable this run (database locked / mid-write). Themes block is built from the last 5 podcast scripts in podcasts/, plus standing listener priorities recorded in dossier listener_focus fields.",
+  "summary": "Listener (Rockville Democrat, MD-8 / D19 / Council D7, first-time primary voter) is in the middle of the candidate-deep-dive cycle. The single-candidate series and Andrew Friedson deep-dive are the lead deliverables. Standing priorities remain MCPS school funding mechanics, Wootton High School relocation, sanctuary-policy clarity across the leading Democratic candidates, and fiscal restraint on property tax.",
+  "themes": [
+    "Single-candidate deep-dive cadence | Listener prefers one candidate per episode over multi-candidate news roundups; the May 18-25 gap-fill incident reinforced this preference",
+    "Wootton High School Crown relocation | Recurring listener-flagged topic; appears in dossiers for Friedson, the executive race, and the MCPS school-board context",
+    "Sanctuary policy across leading Democrats | Listener wants to know who actually opposes sanctuary protections; trust act + county values act voting record is consistent across Friedson / Glass / Jawando",
+    "Property tax discipline | Listener tracks property-tax votes by line; Friedson's 4-for-4 no-vote record on Elrich proposals is the cleanest signal",
+    "MCPS rating system | Listener wants to know how Rockville schools score and how the new rating is calculated \u2014 a state/MCPS topic, not a county-executive lever"
+  ],
+  "avoid_for_next_episodes": [
+    "Listener-frustration-narrated-back-to-listener framing \u2014 has shipped across at least five episodes",
+    "Beltsville Agricultural Research Center as D19 hook (used 2026-04-27 ep4)",
+    "Maryland's 90-day part-time legislature explainer (used 2026-04-26 ep3)",
+    "Wave of 25 retiring Maryland lawmakers framing (used 2026-04-26 ep1 and ep4)",
+    "ACA marketplace quiet-downgrade story (used 2026-04-28 ep1 and 2026-04-29 ep3)",
+    "Moore Leave-No-One-Behind / disability-cuts contrast (used 2026-04-27 ep1)",
+    "Two stories properly worked through framing (used 2026-04-29 ep1)",
+    "Evan Glass DHS background-screening bill as sanctuary example (used 2026-04-28 ep1 and 2026-04-29 ep3)",
+    "ICE-agent mask-ban as sanctuary benchmark hook (used 2026-04-29 ep2; may be referenced but not used as framing)"
+  ],
+  "upcoming_episode_slots": [
+    "2026-05-25 \u2014 Laurie-Anne Sayles (next scheduled candidate per data/candidate_series.json)",
+    "2026-05-26 \u2014 Christa Tichy",
+    "2026-05-27 \u2014 Charlotte Crutchfield",
+    "2026-05-28 \u2014 Boris Kabel Velasquez"
+  ],
+  "recent_episode_inventory": [
+    "podcast_2026-05-19_deepdive_andrew_friedson.txt",
+    "podcast_2026-05-18_series_sharif-hidayat_ep4.txt",
+    "podcast_2026-05-18_series_sharif-hidayat_ep3.txt",
+    "podcast_2026-05-18_series_sharif-hidayat_ep2.txt",
+    "podcast_2026-05-18_series_sharif-hidayat_ep1.txt"
+  ]
+}
