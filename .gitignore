@@ -16,6 +16,13 @@ knowledge/
 # Logs
 *.log
 
+# Cowork runtime artifacts (message-queue + error JSON, regenerated each run)
+cowork_inbox/
+cowork_outbox/
+
+# Scratch / validation files
+tmp_*
+
 # Python
 __pycache__/
 *.pyc
