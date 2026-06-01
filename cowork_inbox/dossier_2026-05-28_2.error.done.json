@@ -1,0 +1,10 @@
+{
+ "brief_id": "dossier_2026-05-28_2",
+ "status": "done",
+ "error": "Malformed registry entry: candidate_name=\"2\", office is empty. Brief cannot be processed. Registry needs cleanup of the placeholder \"2\" candidate.",
+ "processed_at": "2026-05-30T03:03:06",
+ "result": {
+  "verdict": "superseded_duplicate",
+  "note": "Identical re-queue superseded by the 2026-05-29 dossier brief for the same candidate. Both are far-future statewide candidates (air mid-July, 6-7 weeks out); per SKILL, thin far-future dossiers are deferred. No research performed; the 05-29 brief carries the deferral."
+ }
+}

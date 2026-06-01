@@ -136,6 +136,19 @@ def cmd_fetch(args):
         errors.append(f"county: {e}")
         print(f"✗ {e}")
 
+    # ── Hyperlocal hearings (Rockville City + Planning, MCPS BoardDocs,
+    #    Park & Planning, WSSC). Each fetcher is independently fault-tolerant.
+    try:
+        print("  [3.5/6] Rockville / MCPS / Park & Planning / WSSC…",
+              end=" ", flush=True)
+        from scanner.sources.local_hearings import fetch_all_local_hearings
+        hyperlocal = fetch_all_local_hearings(max_per_source=10)
+        print(f"✓ {len(hyperlocal)} items")
+        all_raw.extend(hyperlocal)
+    except Exception as e:
+        errors.append(f"local_hearings: {e}")
+        print(f"✗ {e}")
+
     try:
         print("  [4/6] MCPS school board…", end=" ", flush=True)
         mcps = fetch_mcps_board(cfg.MAX_ITEMS_PER_SOURCE)
@@ -379,11 +392,13 @@ def cmd_publish(args):
     # ── TTS sweep — synthesize MP3s for any Cowork-produced scripts that
     # don't have audio yet. In Cowork mode the daily Author runs are async;
     # by the time the 7am publish job runs, last night's drain has already
-    # written real .txt scripts for *yesterday*. We TTS yesterday and today
-    # so the webpage picks them up. Idempotent — skips MP3s that already exist.
+    # written real .txt scripts for *yesterday*. We TTS the last 4 days so
+    # that scripts written late (after the 7am window) still get audio on the
+    # next publish. Idempotent — skips MP3s that already exist.
     if getattr(cfg, "USE_COWORK_FOR_AI", False) and cfg.OPENAI_API_KEY:
         from types import SimpleNamespace
-        for d in (date.today() - timedelta(days=1), date.today()):
+        for i in range(4, -1, -1):   # today-4 … today
+            d = date.today() - timedelta(days=i)
             try:
                 cmd_tts_publish(SimpleNamespace(date=d.isoformat()))
             except Exception as e:
@@ -984,10 +999,16 @@ def cmd_cowork_queue(args):
         print(f"   ⚠ author_episode failed: {e}")
 
     # 6. Deep-dives — based on PM-flagged candidates the listener named
+    #    Skip any candidate who already has a complete 4-episode series so
+    #    we never re-queue a deepdive for someone already fully covered.
     try:
         from scanner.database import get_latest_weekly_themes
+        from scanner.series import _candidate_has_complete_series
         rollup = get_latest_weekly_themes(cfg.DB_PATH)
         names = (rollup or {}).get("listener_candidate_interest") or []
+        # Filter out candidates whose series is already complete
+        names = [nm for nm in names
+                 if not _candidate_has_complete_series(nm, cfg.PODCASTS_DIR)]
         if names:
             from scanner.deepdive import generate_deep_dive
             for nm in names[:2]:
@@ -999,7 +1020,8 @@ def cmd_cowork_queue(args):
                 )
             print(f"   ✓ deep_dive_script → {min(2, len(names))} queued")
         else:
-            print("   ⊘ deep_dive_script → no listener-flagged candidates")
+            print("   ⊘ deep_dive_script → no listener-flagged candidates "
+                  "(all flagged candidates already have complete series)")
     except Exception as e:
         print(f"   ⚠ deep_dive_script failed: {e}")
 
@@ -1095,7 +1117,22 @@ def cmd_dossier(args):
     data/candidate_dossiers/.
     """
     initialize_db(cfg.DB_PATH)
-    from scanner.dossier import queue_dossier_briefs
+    from scanner.dossier import queue_dossier_briefs, retry_failed_briefs
+
+    # --retry-failed short-circuits everything else.
+    if getattr(args, "retry_failed", False):
+        names = retry_failed_briefs(
+            db_path=cfg.DB_PATH,
+            output_dir=cfg.CANDIDATE_DOSSIER_DIR,
+            max_briefs=int(getattr(args, "max", 12)),
+        )
+        if names:
+            print(f"✓ Requeued {len(names)} previously-failed dossier brief(s):")
+            for n in names:
+                print(f"   • {n}")
+        else:
+            print("No failed dossier briefs in the last 14 days.")
+        return
 
     only_names = None
     if getattr(args, "name", None):
@@ -1148,6 +1185,48 @@ def cmd_pm(args):
 
     print(format_themes_for_prompt(saved))
     print()
+
+
+def cmd_notifications(args):
+    """Show unseen notifications surfaced by scanner roles.
+
+    Lists items written via scanner.notifications.notify() — Cowork brief
+    failures, queue errors, anything a role flagged for your attention.
+    """
+    from scanner.notifications import list_unseen, mark_seen, scan_failed_briefs
+
+    if getattr(args, "scan", False):
+        n = scan_failed_briefs(within_hours=24 * 7)
+        print(f"Scanned cowork_inbox/ — surfaced {n} failed brief(s) "
+              "from the last 7 days.\n")
+
+    rows = list_unseen(limit=int(getattr(args, "limit", 50)))
+    if not rows:
+        print("No unseen notifications.")
+        return
+    for r in rows:
+        sev = (r.get("severity") or "warn").upper()
+        ts = (r.get("created_at") or "")[:19]
+        print(f"[{sev:5}] {ts}  {r.get('role','')}: {r.get('message','')}")
+        ctx = r.get("context", "")
+        if ctx and ctx != "{}":
+            print(f"        context: {ctx}")
+    print(f"\n{len(rows)} unseen notification(s).")
+
+    if getattr(args, "mark_seen", False):
+        for r in rows:
+            mark_seen(int(r["id"]))
+        print("All listed notifications marked seen.")
+
+
+def cmd_weekly_review(args):
+    """Run the weekly site-review (writes audit + Cowork dispatch brief)."""
+    from weekly_review import write_review_and_dispatch
+    from datetime import date as _date, datetime as _dt
+    today = (_dt.strptime(args.date, "%Y-%m-%d").date()
+             if getattr(args, "date", None) else _date.today())
+    path = write_review_and_dispatch(today, dry_run=bool(getattr(args, "dry_run", False)))
+    print(f"Review written to: {path}")
 
 
 def cmd_setup(args):
@@ -1299,10 +1378,28 @@ def main():
     cw = sub.add_parser("cowork-queue", help="Queue all Cowork briefs for today")
     cw.add_argument("--date")
 
+    nt = sub.add_parser("notifications",
+                         help="Show unseen notifications from scanner roles")
+    nt.add_argument("--limit", type=int, default=50)
+    nt.add_argument("--mark-seen", action="store_true",
+                    help="Mark every listed notification as seen after printing.")
+    nt.add_argument("--scan", action="store_true",
+                    help="Before listing, scan cowork_inbox/*.error.json from "
+                         "the last 7 days and surface any new failures.")
+
+    wr = sub.add_parser("weekly-review",
+                         help="Run the weekly site-review (audit + Cowork dispatch)")
+    wr.add_argument("--date", help="Override today (YYYY-MM-DD)")
+    wr.add_argument("--dry-run", action="store_true")
+
     do = sub.add_parser("dossier", help="Queue dossier briefs")
     do.add_argument("--names", help="Comma-separated names")
+    do.add_argument("--name", help="Single candidate name")
     do.add_argument("--force", action="store_true")
     do.add_argument("--max", type=int, default=12)
+    do.add_argument("--retry-failed", action="store_true",
+                    help="Requeue every candidate whose last brief errored "
+                         "in the last 14 days, using the gap-filling prompt.")
 
     sr = sub.add_parser("series",
         help="4-episode-per-candidate series orchestration (专题)")
@@ -1342,6 +1439,8 @@ def main():
         "cowork-queue": cmd_cowork_queue,
         "dossier": cmd_dossier,
         "series": cmd_series,
+        "notifications": cmd_notifications,
+        "weekly-review": cmd_weekly_review,
     }
     fn = dispatch.get(args.command)
     if fn is None:

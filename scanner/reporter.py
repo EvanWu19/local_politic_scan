@@ -231,6 +231,7 @@ _PODCAST_PLAYER_JS = """
 # ── Section labels ─────────────────────────────────────────────────────────────
 LEVEL_LABELS = {
     "federal": "🇺🇸 Federal (filtered topics)",
+    "federal_mentions": "🏛️ Federal Mentions of Your Area",
     "state": f"🏛️ {_STATE} State Legislature",
     "county": f"🏘️ {_COUNTY}",
     "school": "🎓 MCPS Board & School Cluster",
@@ -312,7 +313,14 @@ def _load_candidate_spotlight(report_date: date) -> Dict:
         if not p.is_absolute():
             from config import BASE_DIR
             p = BASE_DIR / p
-        if p.exists():
+        # OneDrive cloud-only files raise WinError 1920 from stat() — the
+        # exists() check itself can blow up. Treat any OSError as "absent".
+        try:
+            p_exists = p.exists()
+        except OSError as e:
+            log.warning("Spotlight: stat failed for %s — %s", p, e)
+            p_exists = False
+        if p_exists:
             try:
                 raw = p.read_text(encoding="utf-8")
                 # Strip a YAML front-matter block if present (between two `---`
@@ -471,6 +479,72 @@ def _format_dossier_markdown(text: str):
     return body_html, ordered_urls
 
 
+def _render_sources_panel_from_db(politician_name: str,
+                                    fallback_urls: Optional[List[str]] = None) -> str:
+    """Render the grouped Sources panel using `candidate_sources` rows for
+    this politician. Falls back to a flat list of `fallback_urls` (URLs
+    scraped from the current dossier .md file) when the DB has nothing.
+    Returns '' when neither source is available."""
+    from scanner.database import get_candidate_sources
+    try:
+        db_sources = get_candidate_sources(_Cfg.DB_PATH, politician_name)
+    except Exception as e:
+        log.debug("Spotlight: get_candidate_sources failed — %s", e)
+        db_sources = []
+
+    if db_sources:
+        from collections import OrderedDict
+        buckets: "OrderedDict[str, list]" = OrderedDict()
+        type_labels = {
+            "official":      "Official records",
+            "biography":     "Biographical",
+            "voting_record": "Voting record",
+            "press":         "Press coverage",
+            "campaign":      "Campaign material",
+            "other":         "Other",
+        }
+        for r in db_sources:
+            buckets.setdefault(r.get("source_type") or "other", []).append(r)
+
+        sections_parts = []
+        for stype, rows in buckets.items():
+            label = type_labels.get(stype, stype.title())
+            items = "".join(
+                f'<li><a href="{_html.escape(r["url"])}" target="_blank">'
+                f'{_html.escape(r.get("title") or r["url"])}</a>'
+                + (f' <span class="dossier-src-summary">— '
+                   f'{_html.escape((r.get("summary") or "")[:140])}'
+                   f'{"…" if (r.get("summary") or "")[140:] else ""}</span>'
+                   if r.get("summary") else '')
+                + '</li>'
+                for r in rows
+            )
+            sections_parts.append(
+                f'<div class="dossier-src-group">'
+                f'<div class="dossier-src-label">{_html.escape(label)} '
+                f'<span class="dossier-src-count">({len(rows)})</span></div>'
+                f'<ul>{items}</ul></div>'
+            )
+        return (
+            '<div class="dossier-sources">'
+            f'<strong>Sources ({len(db_sources)} on file)</strong>'
+            + "".join(sections_parts)
+            + '</div>'
+        )
+
+    if fallback_urls:
+        items = "".join(
+            f'<li><a href="{_html.escape(u)}" target="_blank">'
+            f'{_html.escape(u)}</a></li>' for u in fallback_urls
+        )
+        return (
+            '<div class="dossier-sources">'
+            '<strong>Sources</strong>'
+            f'<ol>{items}</ol></div>'
+        )
+    return ""
+
+
 def _render_dossier_body(spot: Dict) -> str:
     """White-card dossier panel placed after the politician tracker.
 
@@ -486,13 +560,16 @@ def _render_dossier_body(spot: Dict) -> str:
     if not spot:
         return ""
     cand = spot["candidate"]
+    cand_name = cand.get("name", "")
     dossier_text = (spot.get("dossier_excerpt") or "").strip()
     if not dossier_text:
-        # No dossier file — render the fallback messaging here so the
-        # reader sees one consolidated explanation instead of an empty page.
+        # No readable dossier file — render the fallback messaging here so
+        # the reader sees one consolidated explanation instead of an empty
+        # section. Sources panel STILL renders from DB (accumulated from
+        # prior dossier runs) so the page isn't blank.
         try:
             from scanner.dossier import describe_dossier_status
-            status = describe_dossier_status(cand.get("name", ""))
+            status = describe_dossier_status(cand_name)
         except Exception:
             status = {"state": "unknown", "when": ""}
         recent_events = spot.get("recent_events") or []
@@ -525,89 +602,23 @@ def _render_dossier_body(spot: Dict) -> str:
             bits.append(
                 '<p class="dossier-empty">No dossier brief on file yet. '
                 'Run <code>python main.py dossier --only "'
-                f'{_html.escape(cand.get("name",""))}"</code> to queue one.</p>'
+                f'{_html.escape(cand_name)}"</code> to queue one.</p>'
             )
         else:
             bits.append(
-                '<p class="dossier-empty">Dossier in progress — full research '
-                'expected by tomorrow morning.</p>'
+                '<p class="dossier-empty">Dossier file is present but not '
+                'readable right now (cloud-sync may have offloaded it). The '
+                'Sources panel below shows what we have collected for this '
+                'candidate across previous runs.</p>'
             )
         body_html = "".join(bits)
-        sources_html = ""
+        ordered_urls: List[str] = []
     else:
         body_html, ordered_urls = _format_dossier_markdown(dossier_text)
-        # Pull the FULL source list from the DB — this accumulates citations
-        # across every dossier run for this candidate, not just the URLs in
-        # today's .md file. Footnote numbers in the body still match
-        # `ordered_urls` (one .md file's worth). The Sources panel shows the
-        # broader record so listeners can see all known evidence.
-        from scanner.database import get_candidate_sources
-        try:
-            db_sources = get_candidate_sources(_Cfg.DB_PATH, cand.get("name", ""))
-        except Exception as e:
-            log.debug("Spotlight: get_candidate_sources failed — %s", e)
-            db_sources = []
 
-        # Index DB rows by URL so we can show richer metadata (title + type)
-        # for the in-text footnotes too, not just plain URLs.
-        url_to_row = {r["url"]: r for r in db_sources}
+    sources_html = _render_sources_panel_from_db(cand_name, ordered_urls)
 
-        if db_sources:
-            # Group by source_type for readable presentation
-            from collections import OrderedDict
-            buckets: "OrderedDict[str, list]" = OrderedDict()
-            type_labels = {
-                "official":      "Official records",
-                "biography":     "Biographical",
-                "voting_record": "Voting record",
-                "press":         "Press coverage",
-                "campaign":      "Campaign material",
-                "other":         "Other",
-            }
-            # SQL already orders sources by our preferred type order
-            for r in db_sources:
-                buckets.setdefault(r.get("source_type") or "other", []).append(r)
-
-            sections_html_parts = []
-            for stype, rows in buckets.items():
-                label = type_labels.get(stype, stype.title())
-                items = "".join(
-                    f'<li><a href="{_html.escape(r["url"])}" target="_blank">'
-                    f'{_html.escape(r.get("title") or r["url"])}</a>'
-                    + (f' <span class="dossier-src-summary">— '
-                       f'{_html.escape((r.get("summary") or "")[:140])}'
-                       f'{"…" if (r.get("summary") or "")[140:] else ""}</span>'
-                       if r.get("summary") else '')
-                    + '</li>'
-                    for r in rows
-                )
-                sections_html_parts.append(
-                    f'<div class="dossier-src-group">'
-                    f'<div class="dossier-src-label">{_html.escape(label)} '
-                    f'<span class="dossier-src-count">({len(rows)})</span></div>'
-                    f'<ul>{items}</ul></div>'
-                )
-            sources_html = (
-                '<div class="dossier-sources">'
-                f'<strong>Sources ({len(db_sources)} on file)</strong>'
-                + "".join(sections_html_parts)
-                + '</div>'
-            )
-        elif ordered_urls:
-            # DB has nothing — fall back to URLs scraped from THIS file.
-            items = "".join(
-                f'<li><a href="{_html.escape(u)}" target="_blank">'
-                f'{_html.escape(u)}</a></li>' for u in ordered_urls
-            )
-            sources_html = (
-                '<div class="dossier-sources">'
-                '<strong>Sources</strong>'
-                f'<ol>{items}</ol></div>'
-            )
-        else:
-            sources_html = ""
-
-    name = _html.escape(cand.get("name", "Unknown"))
+    name = _html.escape(cand_name or "Unknown")
     return f"""
 <div class="dossier-panel">
   <h2>📄 Candidate Dossier — {name}</h2>

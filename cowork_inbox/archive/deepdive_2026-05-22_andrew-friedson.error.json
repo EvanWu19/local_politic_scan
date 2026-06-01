@@ -1,0 +1,10 @@
+{
+  "brief_id": "deepdive_2026-05-22_andrew-friedson",
+  "processed_at": "2026-05-23T02:42:04-04:00",
+  "status": "error",
+  "error_class": "format_banned",
+  "error_message": "Invariant #1 violation: the project no longer generates `deep_dive_script` or `author_episode` podcast briefs. ALL podcast output must be `series_episode` format. Per scanner/series.py + scanner/podcast.py changes after the 2026-05-19/20 unscheduled-gap incident, deepdive briefs must be hard-rejected at drain time so they cannot resurface in the day's listening rotation.",
+  "candidate": "Andrew Friedson",
+  "drain_decision": "No script written. Friedson's series block of four episodes already aired 2026-05-16; his next scheduled re-airing in the registry is 2026-06-22 as `series_episode`. If the listener wants additional Friedson material before then, queue an `office_primer` for County Executive or wait for the 6/22 series run.",
+  "windows_side_followup": "Stop the Windows-side scheduler from emitting deepdive/author briefs entirely; current emitters appear to still be live somewhere. Verify with: grep -nE \"deep_dive_script|author_episode\" scanner/*.py main.py"
+}

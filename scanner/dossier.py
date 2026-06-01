@@ -31,7 +31,7 @@ from __future__ import annotations
 import json
 import logging
 import sqlite3
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -49,6 +49,14 @@ log = logging.getLogger(__name__)
 # ``main.py dossier --force "Wes Moore"``.
 DEFAULT_REFRESH_DAYS = 7
 MAX_DOSSIERS_PER_RUN = 8   # cap so a fresh DB doesn't queue 200 briefs at once
+
+# Look at the last 14 days of brief outcomes when deciding whether to retry.
+RETRY_LOOKBACK_DAYS = 14
+
+# The Opus model the Cowork agent should use when running these briefs.
+# Override with COWORK_DOSSIER_MODEL env var if the listener's account
+# doesn't yet expose 4.7.
+DEFAULT_COWORK_MODEL = "claude-opus-4-7"
 
 
 def queue_dossier_briefs(
@@ -215,6 +223,101 @@ def _names_from_recent_notes(db_path: Path, today: date,
     return found
 
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Brief-status introspection — used by the reporter spotlight fallback and
+# the --retry-failed CLI path so we can tell a stuck brief from one that's
+# still in flight.
+# ──────────────────────────────────────────────────────────────────────────────
+
+def _list_briefs_for(slug: str, status_suffix: str) -> List[Path]:
+    from scanner.cowork_bridge import INBOX_DIR
+    if not INBOX_DIR.exists():
+        return []
+    return sorted(INBOX_DIR.glob(f"dossier_*_{slug}{status_suffix}"))
+
+
+def describe_dossier_status(name: str) -> Dict[str, str]:
+    """Return {state, when} describing the latest Cowork outcome for `name`:
+      - state='done'    → most recent brief finished (file should be on disk)
+      - state='error'   → most recent brief errored
+      - state='queued'  → brief is sitting in the inbox awaiting Cowork
+      - state='missing' → no brief found in the inbox at all
+    """
+    from scanner.cowork_bridge import _slugify
+    slug = _slugify(name)
+
+    candidates: List[tuple] = []
+    for suffix, state in ((".done.json", "done"),
+                          (".error.json", "error"),
+                          (".json", "queued")):
+        for p in _list_briefs_for(slug, suffix):
+            # `.json` glob also catches .done/.error — filter those out.
+            if suffix == ".json" and (
+                p.name.endswith(".done.json") or p.name.endswith(".error.json")
+            ):
+                continue
+            candidates.append((p.stat().st_mtime, state, p))
+    if not candidates:
+        return {"state": "missing", "when": ""}
+
+    candidates.sort(reverse=True)
+    _, state, p = candidates[0]
+    when = datetime.fromtimestamp(p.stat().st_mtime).date().isoformat()
+    return {"state": state, "when": when}
+
+
+def list_failed_briefs(within_days: int = RETRY_LOOKBACK_DAYS) -> List[Dict[str, Any]]:
+    """Return [{slug, candidate_name, error_path, age_days}] for every
+    .error.json brief in the last `within_days`."""
+    from scanner.cowork_bridge import INBOX_DIR
+    out: List[Dict[str, Any]] = []
+    cutoff = datetime.now() - timedelta(days=within_days)
+    if not INBOX_DIR.exists():
+        return out
+    for p in INBOX_DIR.glob("dossier_*.error.json"):
+        if datetime.fromtimestamp(p.stat().st_mtime) < cutoff:
+            continue
+        try:
+            data = json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            continue
+        out.append({
+            "slug": p.stem.replace(".error", "").split("_", 2)[-1],
+            "candidate_name": data.get("context", {}).get("candidate_name", ""),
+            "error_path": str(p),
+            "age_days": (datetime.now()
+                         - datetime.fromtimestamp(p.stat().st_mtime)).days,
+        })
+    return out
+
+
+def retry_failed_briefs(db_path: Path, *,
+                         output_dir: Optional[Path] = None,
+                         today: Optional[date] = None,
+                         max_briefs: int = MAX_DOSSIERS_PER_RUN) -> List[str]:
+    """Requeue every candidate whose last brief errored in the last
+    `RETRY_LOOKBACK_DAYS`. Uses the gap-filling instructions so Cowork
+    no longer refuses on candidates with empty office/party/district."""
+    failed = list_failed_briefs()
+    if not failed:
+        log.info("dossier retry: nothing in error state")
+        return []
+    names = [f["candidate_name"] for f in failed if f["candidate_name"]]
+    if not names:
+        log.warning("dossier retry: %d error briefs but none parseable",
+                    len(failed))
+        return []
+    log.info("dossier retry: requeuing %d candidate(s)", len(names))
+    return queue_dossier_briefs(
+        db_path=db_path,
+        output_dir=output_dir,
+        only_names=names,
+        today=today,
+        force=True,
+        max_briefs=max_briefs,
+    )
+
+
 def _names_with_recent_consistency(db_path: Path, today: date,
                                      days: int = 14) -> List[str]:
     con = sqlite3.connect(str(db_path))
@@ -238,12 +341,12 @@ def _load_events_for_candidate(db_path: Path, pol_id: int,
     con.row_factory = sqlite3.Row
     try:
         rows = list(con.execute(
-            "select e.id, e.title, e.summary, e.url, e.event_date, e.level, "
+            "select e.id, e.title, e.summary, e.source_url, e.date, e.level, "
             "       pe.role, pe.stance "
             "from politician_events pe "
             "join events e on e.id = pe.event_id "
             "where pe.politician_id = ? "
-            "order by e.event_date desc limit ?",
+            "order by e.date desc limit ?",
             (pol_id, limit)))
     finally:
         con.close()

@@ -1,0 +1,5 @@
+{
+  "generated_at": "2026-05-15T22:55:00-04:00",
+  "scored": [],
+  "note": "Backend processing skipped politician-by-politician consistency scoring this run — series-mode briefs for J. D. Kumar (4 episodes + dossier) were processed at full depth and consumed the available compute window. The score_consistency brief will be re-queued on the next cowork drain. No consistency_scores rows were inserted in this run."
+}

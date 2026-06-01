@@ -1,0 +1,63 @@
+{
+  "brief_id": "themes_2026-05-22",
+  "processed_at": "2026-05-23T02:42:04-04:00",
+  "status": "partial",
+  "windows_side_followup": "DB upsert was skipped \u2014 sqlite3 FUSE-mount blocker prevents `weekly_themes` row write from Linux. Re-upsert this JSON Windows-side: `python main.py pm weekly-themes 2026-05-22 --input cowork_outbox/themes_2026-05-22.json` (or whatever the project's import path is).",
+  "scope": {
+    "target_date": "2026-05-22",
+    "window_days": 7,
+    "podcasts_scanned": [
+      "podcast_2026-05-17_series_dawn-luedtke_ep1..ep4 (4 episodes)",
+      "podcast_2026-05-18_series_sharif-hidayat_ep1..ep4 (4 episodes)",
+      "podcast_2026-05-19_series_will-jawando_ep1..ep4 (4 episodes)",
+      "podcast_2026-05-20_series_vaughn-stewart_ep1..ep4 (4 episodes)",
+      "podcast_2026-05-21_series_evan-glass_ep1..ep4 (4 episodes)"
+    ],
+    "daily_notes_read": 0,
+    "daily_notes_status": "blocked (sqlite db unreadable from Linux FUSE sandbox)"
+  },
+  "summary": "The listener spent the week getting the first full set of head-to-head ballot pairings: Luedtke vs Hidayat in Council D7, Jawando vs Friedson on the Executive seat, and Vaughn Stewart's record next to the seven-candidate D19 House field. Sanctuary policy was the most-returned-to listener priority across all five candidates \u2014 every Episode 3 or 4 of the week contained an explicit on-air, named answer for that candidate. Friedson's fiscal record, Wootton, and Ben Kramer's career-long voting record were referenced but NOT yet broken down line-item \u2014 they are tomorrow's promised work.",
+  "themes": [
+    "Sanctuary / anti-detention as a sorting axis | Stewart was situated as the strongest pro-sanctuary candidate on the listener's ballot (Dignity Not Detention 2021 lead sponsor); Glass as pro-sanctuary via 2021 Trust Act / Ethnic & Civic Activities support; Luedtke heavy sanctuary-protection record; Hidayat the only on-ballot D7 contrast \u2014 show kept its promise to give each candidate an explicit yes/no on the listener's deciding question.",
+    "Up-county vs down-county budget equity | Hidayat ep4 turned the D7 race on Thrive Montgomery 2050 (he opposed, Luedtke voted yes Oct 2022) \u2014 the cleanest documented Luedtke-Hidayat split. Worth referencing once when Van Free comes up (also D7).",
+    "MD-8/Raskin connection as a credentialing line | Stewart ep2 surfaced his 2015 role as policy director on Jamie Raskin's MD-8 primary; this is a recurring legitimization frame the show should not over-rely on for other candidates with weaker links.",
+    "Hidayat's 2022 fifth-place finish + 'red-headed stepchildren' quote | Ep3 used this as his through-line. Safe to reference, but don't re-use as a fresh hook in any other candidate's episode.",
+    "Glass's 'run the buses, teach the kids, pick up the trash' as personal tagline | Used in ep1, ep2, ep4 of Glass week. Already on the SKILL.md avoid-list. Confirming as off-limits."
+  ],
+  "open_questions": [
+    "Wootton High School closure timeline \u2014 who votes, when, procedural path. Touched in Glass ep4 framing (school accountability) but the actual Board-of-Education vote calendar has not been laid out for the listener on-air yet.",
+    "Andrew Friedson's line-item fiscal record \u2014 Glass ep4 mentioned that Glass wants to add a CE-appointed BoE seat for accountability, but did NOT do a side-by-side of Friedson's individual MCPS budget line votes versus the other candidates. Still owed.",
+    "Ben Kramer's full historical voting record back to 2007 on consumer protection / judiciary / immigration / education funding. Kramer's series is scheduled but the deep historical pull hasn't aired.",
+    "Sanctuary side-by-side matrix across the full Exec field \u2014 we've answered Stewart, Glass, Luedtke, Hidayat, Jawando individually, but a one-screen matrix that puts all five Execs on the same axis is not yet on air.",
+    "New MCPS rating methodology and how each Rockville school is graded under it \u2014 touched in passing during Glass ep4 but not explained."
+  ],
+  "underserved_topics": [
+    "Wootton High School closure procedural path (mentioned, never laid out).",
+    "Friedson line-item budget votes vs. final-budget yes/no.",
+    "Kramer career-long votes (the candidate's own series will reach this, but a preview matrix would be useful sooner).",
+    "Side-by-side ballot matrix as a standalone summary deliverable \u2014 the listener has asked for this repeatedly; the series-week format keeps deferring it.",
+    "The five tier-3/tier-4 races finalized 2026-05-16 (State's Attorney, Clerk, Register of Wills, Sheriff, Sixth Judicial Circuit judges) \u2014 listener has had zero coverage of any of these yet."
+  ],
+  "avoid_list": [
+    "'Thirty-X days out from the Maryland Democratic primary' cold-open device \u2014 used 5/16, 5/17, 5/18, 5/19 ep1s. Officially exhausted; pick a new opener.",
+    "'Montgomery County native' as a framing hook \u2014 leaned on 5/16 Friedson ep1, revisited 5/18 Hidayat ep1, and 5/19 Jawando ep1. Stop.",
+    "'My Seven Black Fathers' memoir reference \u2014 Jawando-only (5/19).",
+    "'Reid Temple A.M.E. Church' \u2014 Jawando-only (5/19).",
+    "'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' \u2014 Vaughn Stewart-only (5/20).",
+    "'Born in Trenton, between Atlantic City and Philadelphia / adopted as an infant from a teenage mom in a convent' \u2014 Luedtke-only (5/17).",
+    "'First Muslim officer of the Montgomery County Police Department' \u2014 Hidayat-only (5/18).",
+    "'Westbury, Long Island / CNN bureau library / Gandhi Brigade Youth Media' \u2014 Evan Glass-only (5/21).",
+    "'Run the buses, teach the kids, pick up the trash' \u2014 Glass tagline only (5/21).",
+    "'ICE Out Act / Trust Act / DHS officer screening bill' as the immigration-record framing HOOK \u2014 used heavily in Glass 5/21 ep3 and ep4. Can still be referenced for comparison, but it should not LEAD-FRAME any candidate's immigration record next week.",
+    "'Dignity Not Detention Act of 2021' as the lead-framing of any candidate other than Vaughn Stewart \u2014 he is the sponsor, others can only be co-sponsors.",
+    "'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as a reusable candidate-specific qualifier \u2014 5/16 Friedson ep1. Stop.",
+    "'Red-headed stepchildren' quote \u2014 Hidayat-only (5/18).",
+    "'Thrive Montgomery 2050' as a Council District 7 sorting axis \u2014 fully discharged on 5/18 ep4. Can be referenced in passing for D7 candidates only; do not re-use as a head-to-head device elsewhere.",
+    "Three-bill arc framing ('Law Enforcement Trust 2019 \u2192 Use-of-Force 2020 \u2192 Community Informed Training 2021') \u2014 Jawando-only (5/19 ep3)."
+  ],
+  "note_count": 0,
+  "note_count_unavailable_reason": "daily_notes DB unreadable from Linux sandbox; podcast_*.txt files were used as the secondary signal source per the instructions step 2 fallback.",
+  "generated_at": "2026-05-23T02:42:04-04:00",
+  "window_start": "2026-05-16",
+  "window_end": "2026-05-22"
+}

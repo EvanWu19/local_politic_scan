@@ -1,0 +1,51 @@
+{
+  "window_start": "2026-04-28",
+  "window_end": "2026-05-04",
+  "generated_at": "2026-05-04T20:00:00-04:00",
+  "note_count": 7,
+  "summary": "Listener is a registered Democrat in Rockville (Council D7, MD-19) heading into the June 23 primary. Their dominant request is sustained, candidate-by-candidate, full-history coverage rather than recent-vote roll-call summaries. Specific named asks they keep restating: (1) Andrew Friedson and fiscal restriction (whether he is the genuine fiscal-discipline candidate); (2) the Wootton High School relocation — why MCPS wants the move and what happens next; (3) Ben Kramer's full historical voting record beyond recent sessions; (4) the new MCPS school rating/grading system; (5) which Democratic primary candidates actually oppose sanctuary policy on illegal immigration. They are now committed (April 28) to focusing on the primary and have signaled support for non-essential spending cuts and against high property tax.",
+  "themes": [
+    "fiscal discipline vs. spending growth | Listener has flagged property tax as too high (4/27) and supports non-essential spending cuts (4/28); the four MoCo Exec front-runners differ on FY26 budget growth and the affordability cap.",
+    "candidate full-history dossiers | Listener wants pre-recent-session record (4/26) and historical viewpoint over time (4/25); they have explicitly told us prior episodes promised this and did not deliver.",
+    "concrete policy comparison across the listener's actual ballot races | Listener wants side-by-side, not survey of the field (4/24, 4/26, 4/28).",
+    "MCPS structural decisions affecting them as a Rockville parent | New grading system (4/30) and the Wootton relocation (4/29) are both Board of Education decisions, not Council decisions, and prior episodes have conflated the two institutions.",
+    "sanctuary policy as a litmus test | Listener has asked the same question three weeks in a row (4/24): which Democratic primary candidates actually oppose sanctuary policy on illegal immigration. The honest answer for MoCo Democrats is none, and we should say so plainly without burying it."
+  ],
+  "open_questions": [
+    "Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?",
+    "Why does MCPS want to close and move Wootton High School, and what happens next?",
+    "What is Kramer's full historical voting record, including old news beyond recent sessions?",
+    "What are the documented policy differences between each candidate on my primary ballot?",
+    "Which Democratic primary candidate actually opposes sanctuary policy on illegal immigration?",
+    "What is the new MCPS rating system actually doing — what changes for my kid?"
+  ],
+  "underserved_topics": [
+    "Council At-Large field — listener votes for At-Large but no At-Large candidate has been profiled yet; tier 1 priority",
+    "MoCo Board of Education race — the Wootton and grading-system questions actually live here, but no BoE candidate has been profiled",
+    "MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court — listener has voting rights and zero coverage",
+    "U.S. Representative MD-8 — Raskin race has five filed Democrats but no episode yet",
+    "Property-tax-rate trajectory and the spending affordability guidelines vote — listener's stated priority but not directly explained",
+    "How a registered Democrat actually casts a vote against sanctuary policy in 2026 MoCo — i.e., the answer is the November ballot, not the June primary"
+  ],
+  "avoid_list": [
+    "The framing 'a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration' — used in 4/28 ep1 and 4/29 ep3",
+    "The Evan Glass DHS-screening bill as the sanctuary-policy hook — 4/28 ep1 and 4/29 ep3",
+    "The ICE agent mask-ban ordinance as the sanctuary-policy benchmark — 4/29 ep2; the 5/4 series ep3 mentions it once in factual context only, not as a framing device",
+    "'Two stories, properly worked through' / 'two stories, not spreading thin across six' as an episode-framing device — 4/29 ep1",
+    "Governor Moore's 'Leave No One Behind' slogan contrasted with disability services cuts — 4/27 ep1 and ep1.rewrite",
+    "The ACA marketplace quiet-downgrade story ('thousands of Marylanders have been quietly downgrading their health insurance plans') — 4/28 ep1 and 4/29 ep3",
+    "Maryland's 90-day part-time legislature explainer — 4/26 ep3 and ep3.rewrite",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices — 4/26 ep1, ep1.rewrite, ep4",
+    "The Beltsville Agricultural Research Center closure as a District 19 candidate-record hook — 4/27 ep4 and ep4.rewrite",
+    "Listener's own frustration about promised candidate deep-dives not delivering — already narrated back across at least five episodes; do not repeat as a framing device",
+    "The Friedson cash-on-hand $2.1M cycle-to-date number with the Glass/Jawando comparison — 5/3 ep3; do not re-quote next week without a fresh report number",
+    "The labor-endorsement landscape paragraph (SEIU 500 + UFCW 27 to Jawando, MCEA to Glass, IAFF 1664 to Friedson) — 5/3 ep3; do not re-paste verbatim",
+    "The Sage at Shady Grove + More Housing N.O.W. illustration of Friedson's record — 5/3 ep3; do not repeat as framing"
+  ],
+  "db_writes_deferred": "weekly_themes UPSERT (window_start=2026-04-28, window_end=2026-05-04) was NOT executed — bash sandbox returned 'No space left on device' on every invocation, so the politics.db SQLite file at C:\\Users\\evan_\\local_politic_scan\\data\\politics.db could not be opened from this run. The SQL statement to apply is mirrored to cowork_outbox/themes_writes_2026-05-04.sql for the Windows side to apply once the live server's WAL contention permits.",
+  "sources": [
+    "candidate_dossier brief context.listener_notes (7 most recent daily_notes through 2026-04-30)",
+    "Recent podcast scripts in C:\\Users\\evan_\\local_politic_scan\\podcasts\\ for the 2026-05-01 through 2026-05-03 windows",
+    "PM avoid_list from the four series_episode briefs"
+  ]
+}

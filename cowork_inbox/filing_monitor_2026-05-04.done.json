@@ -1,0 +1,13 @@
+{
+  "brief_id": "filing_monitor_2026-05-04",
+  "type": "filing_monitor",
+  "status": "done",
+  "completed_at": "2026-05-04T20:15:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-04.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-04.json",
+  "added_count": 2,
+  "removed_count": 0,
+  "list_finalized": true,
+  "filing_deadline_passed": "2026-02-25",
+  "notes": "Two County-Executive Democrats absent from registry surfaced: Peter James (AI background) and Mithun Banerjee (project manager). Both should be queued for dossier_scout on the Windows side. SBE all-counties HTML is dynamic-rendered and the Linux sandbox could not parse it without bash; verification done via Baltimore Banner post-deadline candidate roundup and MD Bay News. The tier 3/4 offices (State's Attorney, Sheriff, Clerk, Register, Orphans, BoE, 6th Circuit Judge, Council At-Large) are NOT yet enumerated in the registry — flagged as required follow-up because the listener has voting rights on all of them."
+}

@@ -82,6 +82,8 @@ class Config:
     ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
     CONGRESS_API_KEY: str = os.getenv("CONGRESS_API_KEY", "")
     OPENSTATES_API_KEY: str = os.getenv("OPENSTATES_API_KEY", "")
+    GOVINFO_API_KEY: str = os.getenv("GOVINFO_API_KEY", "")   # GovInfo / Congressional Record (item 5)
+    FEC_API_KEY: str = os.getenv("FEC_API_KEY", "")           # openFEC campaign finance (item 6)
     OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
 
     # ── Podcast settings ───────────────────────────────────────────────────────
@@ -134,6 +136,31 @@ class Config:
     SCAN_DAYS_BACK = 3          # How many days back to look for new items
     MAX_ITEMS_PER_SOURCE = 25   # Max items fetched per source per run
     RELEVANCE_THRESHOLD = 0.35  # Skip AI processing for items below this score
+
+    # ── Full-text article extraction (trafilatura) ────────────────────────────
+    # When True, news RSS items are upgraded from feed summaries to the clean
+    # article body + canonical date/author (OSS plan, item 3). Any extraction
+    # failure falls back to the RSS summary, so the scan never breaks. Disable
+    # with FULLTEXT_EXTRACT=0 in .env. Requires `pip install trafilatura`; if
+    # the package is missing the pipeline logs once and runs as before.
+    FULLTEXT_EXTRACT: bool = os.getenv("FULLTEXT_EXTRACT", "1") not in (
+        "0", "false", "False", "")
+    FULLTEXT_MAX_ARTICLES = int(os.getenv("FULLTEXT_MAX_ARTICLES", "80"))
+    FULLTEXT_MAX_CHARS = int(os.getenv("FULLTEXT_MAX_CHARS", "6000"))
+
+    # ── Phase 2 data sources (OSS plan) ────────────────────────────────────────
+    # GovInfo Congressional Record "mentions" search terms (item 5). Defaults to
+    # the listener's county + congressional district; override via GOVINFO_TERMS
+    # (comma-separated) in .env.
+    GOVINFO_TERMS = [t.strip() for t in os.getenv(
+        "GOVINFO_TERMS",
+        f"{os.getenv('USER_COUNTY','Montgomery County')}, Maryland-08, Rockville"
+    ).split(",") if t.strip()]
+    # Local path to a downloaded Maryland SBE campaign-finance CSV (item 6).
+    SBE_FINANCE_CSV = os.getenv("SBE_FINANCE_CSV", "")
+    # Legistar client slug for civic-scraper, e.g. "montgomerycountymd" (item 2).
+    # Empty disables the Legistar source (RSS/HTML fetchers are unaffected).
+    CIVIC_LEGISTAR_CLIENT = os.getenv("CIVIC_LEGISTAR_CLIENT", "")
 
     # ── Paths ──────────────────────────────────────────────────────────────────
     DB_PATH = BASE_DIR / "data" / "politics.db"

@@ -1,0 +1,13 @@
+{
+  "brief_id": "filing_monitor_2026-05-05",
+  "type": "filing_monitor",
+  "status": "done",
+  "completed_at": "2026-05-05T20:15:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-05.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-05.json",
+  "added_count": 0,
+  "removed_count": 0,
+  "list_finalized": true,
+  "filing_deadline_passed": "2026-02-25",
+  "notes": "No-net-change run. SBE all-counties HTML still dynamic-rendered and unparsable from Linux sandbox. Yesterday's pending adds (Peter James, Mithun Banerjee for County Executive) remain not-yet-applied; the Windows-side `python main.py series monitor --apply` step should be run. Council At-Large + State's Attorney + Sheriff + Clerk + Register + Orphans' Court + BoE + 6th Circuit Judge all still missing from registry — listener has voting rights on every one of them. Critical follow-up backlog."
+}

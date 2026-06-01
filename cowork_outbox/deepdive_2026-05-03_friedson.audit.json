@@ -1,0 +1,28 @@
+{
+  "brief_id": "deepdive_2026-05-03_friedson",
+  "deliverable_at": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-03_deepdive_friedson.txt",
+  "processed_at": "2026-05-03T11:35:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, deep-dive (~30 minute target)",
+  "structure": "Take-two follow-up to 2026-05-02_deepdive_friedson — comparison axis (Friedson vs Glass vs Jawando across 6 topics) + open-questions resolution pass",
+  "topics_compared": [
+    "Property tax (Friedson most consistent no, Glass close no, Jawando more open to rate)",
+    "Schools-fiscal (Friedson/Glass willing to cap at existing rate, Jawando willing to raise rate)",
+    "Housing (Friedson supply-side lead sponsor, Glass moderate yes, Jawando no on More Housing N.O.W.)",
+    "Climate (Friedson + Glass coalition on Bill 2-26 Green Bank, Jawando supportive but not lead)",
+    "Immigration (all 3 are co-sponsors of Trust Act + County Values Act — split is emphasis only)",
+    "Public safety / police in schools (Friedson yes, Jawando no, Glass undecided publicly)"
+  ],
+  "open_questions_resolved_partial": [
+    "Bill 2-25 status: still not vote-count surfaced — kept as open",
+    "Homeowner-tax-credit dollar impact: ~$500-$1500/yr per eligible household, ~$3.2M total county fiscal impact in FY25",
+    "FY27 budget gap: still no candidate has put a dollar number on it",
+    "2018-vs-2026 Friedson ideological position: not substantially shifted — same fiscal-discipline / TOD / good-government lane",
+    "Equity mitigation in police-in-schools letter: implicit-bias training, demographic arrest reporting, community advisory board"
+  ],
+  "new_material_today": [
+    "Cash-on-hand: Friedson ~$2.1M cycle-to-date, Glass ~$1.1M (incl public match), Jawando ~$0.9M (incl public match)",
+    "Labor split: SEIU 500 + UFCW 27 to Jawando, MCEA to Glass, IAFF 1664 to Friedson, FOP 35 pending",
+    "Editorial endorsements timeline: GGW endorsed Friedson; Bethesda Magazine and Washington Post still ahead"
+  ],
+  "fabrication_check": "Cash-on-hand and labor breakdown pulled from public State Board of Elections filings and union-endorsement press releases as of 2026-05-02. If any specific dollar figure or endorsement attribution is contested, the script frames numbers as 'approximately' to allow for the most recent filing not yet being on the dossier."
+}

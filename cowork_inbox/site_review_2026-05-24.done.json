@@ -1,0 +1,51 @@
+{
+  "brief_id": "site_review_2026-05-24",
+  "type": "weekly_site_review",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_inbox\\site_review_2026-05-24.applied.md",
+  "instructions": "You are running a weekly review of the local-politics scanner. Read the markdown audit in `reports/site_review_<date>.md`, then use `dispatch_to_user` to ask the listener to approve each proposed change inline. For findings marked auto_applicable=true, if the listener approves, run the suggested shell command and write a brief audit of what changed to `output_file`. For manual-review items, ask the listener for clarification. Use Opus 4.7 for any reasoning. NEVER apply a change without explicit user approval.",
+  "context": {
+    "review_date": "2026-05-24",
+    "audit_path": "C:\\Users\\evan_\\local_politic_scan\\reports\\site_review_2026-05-24.md",
+    "findings_count": 5,
+    "auto_applicable_count": 3,
+    "findings": [
+      {
+        "id": "state_relevance_zero",
+        "title": "67 state-leg items tagged at 0% relevance",
+        "detail": "The Opus relevance prompt isn't recognising Rockville-local impact in state stories. Tighten the prompt in scanner/processor.py to require a 'local_impact' factor and pass FEDERAL_KEYWORDS + 20853 in the system prompt.",
+        "proposed_fix": "Patch processor._build_relevance_prompt to inject config_local.FEDERAL_KEYWORDS and zip code; re-score the last 7 days.",
+        "auto_applicable": true
+      },
+      {
+        "id": "tracker_stale",
+        "title": "Tracker rows repeating across days: Andrew Friedson×14, Evan Glass×14, Will Jawando×7, David Trone×7, Aruna Miller×7",
+        "detail": "Politician Tracker shows accumulated events, not new-since-yesterday. Already addressed by the reporter.py patch introduced last week; verify the date filter is live.",
+        "proposed_fix": "Confirm `_politician_tracker_html` filters `events` to first_seen >= today-1d. If not, apply the diff in the improvement plan.",
+        "auto_applicable": false
+      },
+      {
+        "id": "sections_empty",
+        "title": "Sections went empty on some days",
+        "detail": "Federal: missed 7 day(s), School Board: missed 7 day(s), Near You: missed 7 day(s), Local Services: missed 7 day(s)",
+        "proposed_fix": "Check scanner/sources/local_hearings.py for upstream HTML changes; an empty 'Near You' section usually means rockvillemd.gov's RSS category ID changed.",
+        "auto_applicable": false
+      },
+      {
+        "id": "dossier_errors",
+        "title": "24 dossier brief(s) in error state",
+        "detail": "dossier_2026-05-21_2.error, dossier_2026-05-21_aaron-penman.error, dossier_2026-05-21_adrian-boafo.error, dossier_2026-05-21_adrienne-a-mandel-melnyk.error, dossier_2026-05-21_ama-frimpong.error, dossier_2026-05-21_ben-alsobrooks.error",
+        "proposed_fix": "Run `python main.py dossier --retry-failed` to requeue with the gap-filling instructions (Opus 4.7 will resolve office/party/district during step 1 instead of refusing).",
+        "auto_applicable": true
+      },
+      {
+        "id": "references_recurring",
+        "title": "17 reference URLs have appeared ≥4 days running",
+        "detail": "References look static because the same URLs keep being pulled by the scanners. Move them into a 'Seen earlier this week' collapsible section.",
+        "proposed_fix": "Confirm `_references_section_html` is rendering the 'New today' / 'Seen earlier' split. If markdown digest doesn't reflect this yet, patch is in reporter.py.",
+        "auto_applicable": true
+      }
+    ]
+  },
+  "created_at": "2026-05-24T08:00:01.285787-04:00",
+  "due_by": ""
+}

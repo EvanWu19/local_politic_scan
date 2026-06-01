@@ -1,0 +1,166 @@
+{
+  "brief_id": "author_2026-05-01_ep1",
+  "type": "author_episode",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-01_ep1.txt",
+  "instructions": "Write a ~30-minute episode 1 of the daily local-politics podcast for 2026-05-01. Topic: 'Maryland + More'.\n\nFORMAT:\n  • Two hosts ALEX (presenter) and JORDAN (curious co-host).\n  • Every line starts `ALEX:` or `JORDAN:` — no stage directions, no markdown, no emoji, no '[laughs]', no asterisks.\n  • Length target ~3500-4500 words.\n  • Cover the segments in `context.segments` in order. Each segment is a topic + a list of events (title, summary, url, date, level, politicians, role/stance). Cite specific votes and dates from the events — generalities are why prior drafts felt repetitive.\n\nAVOID — do not reuse any framing on `context.avoid_list`. The PM agent has flagged these as already-shipped this week:\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again\n\nLISTENER POSITIONING:\n  • The listener is a first-time voter in the configured locale.\n  • Locale: Rockville, Montgomery County, Maryland.\n  • Their districts:\n  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19\n  • NEVER tell them to 'figure out who their candidate is', 'look up their district', or 'find out who's on their ballot'. The tool owns that work.\n  • The listener's recent daily_notes (in `context.listener_notes`) are direct asks — address at least ONE of them by name in this episode.\n\nBALLOT CONTEXT (already-known races):\nYOUR BALLOT (2026) — confirmed/likely candidates for the listener's districts. The listener's choice is BETWEEN these named people; never tell the listener to go figure out who their candidate is. If a contest has fewer than two known candidates, say so out loud (\"only one filer so far\") instead of fudging.\n  • Governor of Maryland\n      - Wes Moore (D)\n      - Chris Bouchat (R)\n      - Dan Cox (R)\n      - Ed Hale (R)\n      - Hershey (unknown) [withdrawn]\n  • Maryland House of Delegates District 19\n      - Bonnie Cullison (unknown) [withdrawn]\n      - Crutchfield (unknown)\n      - Kramer (unknown)\n      - Stewart (unknown)\n      - Tichy (unknown)\n  • Montgomery County Executive\n      - Evan Glass (unknown)\n      - Friedson (unknown)\n      - Glass (unknown)\n      - Jawando (unknown)\n      - Will Friedson (unknown)\n\nPM SIGNAL BLOCK (what the listener cares about right now):\nListener rollup (2026-04-24..2026-04-30, based on 6 notes):\nSummary: This listener is a first-time Democratic voter in Rockville preparing for the June primary who cares most about knowing exactly who is on their ballot and what those candidates have actually done — voting records, bill history, and documented positions, not summaries or vibes. They have clear policy priors: skepticism toward high property taxes, opposition to increased education spending, openness to non-essential spending cuts and fiscal discipline, and a specific interest in which candidates oppose sanctuary policy on illegal immigration. They have flagged repeatedly that the show promises candidate deep-dives but fails to deliver them in a concrete, candidate-linked way.\nRecurring themes:\n  - Candidate voting records and historical public record — The listener has asked every single day for specific votes, old news, and documented positions tied to named candidates on their actual ballot, not general descriptions.\n  - Property taxes and fiscal discipline — The listener connects education spending votes directly to their property tax burden and has expressed support for fiscal restraint and cutting non-essential spending.\n  - Sanctuary policy and immigration enforcement — The listener wants to know concretely which Democratic primary candidates oppose or support sanctuary-style policies, not just which ones use immigration-friendly language.\n  - June primary ballot clarity — The listener is narrowing focus to actionable primary choices and wants episode content organized around who they can actually vote for in June.\nOpen questions the listener keeps raising:\n  - Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?\n  - Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?\n  - Why does MCPS want to close and move Wootton High School, and what happens next?\n  - What is Kramer's full historical voting record, including old news and public records beyond recent sessions?\n  - What are the documented policy differences between each candidate on my primary ballot?\nTopics they want more coverage of:\n  - Andrew Friedson's specific fiscal record and positions — listener asked directly and has not received a focused answer\n  - Wootton High School closure — listener asked directly; scripts acknowledged it but did not resolve it\n  - Full historical background research on candidates (old news articles, public records, career-long voting history, not just recent session votes)\n  - Concrete side-by-side policy comparison of all Democratic primary candidates across the listener's specific races\nRECENT COVERAGE TO AVOID — do NOT reuse these framings, taglines, or anecdotes (they already shipped in the last 5 days):\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again\n\nWrite the full dialogue to `output_file`. Plain text only.",
+  "context": {
+    "target_date": "2026-05-01",
+    "ep_num": 1,
+    "ep_title": "Maryland + More",
+    "segments": [
+      {
+        "key": "state",
+        "label": "Maryland State Legislature",
+        "events": [
+          {
+            "id": 361,
+            "title": "Maryland Democrats hope brand-new state Voting Rights Act holds in face of Supreme Court ruling - Maryland Matters",
+            "type": "news",
+            "level": "state",
+            "description": "<a href=\"https://news.google.com/rss/articles/CBMi0AFBVV95cUxQaGZoOTNTajBPQkpLUU4tWVdwMnhiekxKWUh5aHZMRUlDV3hwQkEzWmtfYzZwRDJMM1lTb1A1V0ZFNzB6MEx2OE9paXpJbXgxUW1CaGhvTjBPVTF4TkhQTHgxSEZ3eHdlM1pvZjFqbldkNjM3UWtEVFpxbmhoMmtzZnMydTQzQ3ktV01iaDQtSU1PeF9CdTIwNnR6cmhRRDJtMU9qSDlMTk03bThvcGo5WUZRejZaLWFzZnhmSlA1VFoxWDV0TzJ6emhiSnZyclpV?oc=5\" target=\"_blank\">Maryland Democrats hope brand-new state Voting Rights Act holds in face of Supreme Court ruling</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Maryland Matte",
+            "summary": "Maryland Democrats created a new state Voting Rights Act to protect voting access, but they're concerned a recent Supreme Court ruling could weaken it. This matters because it directly affects how you and other Marylanders can register and cast votes in future elections.",
+            "date": "2026-04-30",
+            "source_url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQaGZoOTNTajBPQkpLUU4tWVdwMnhiekxKWUh5aHZMRUlDV3hwQkEzWmtfYzZwRDJMM1lTb1A1V0ZFNzB6MEx2OE9paXpJbXgxUW1CaGhvTjBPVTF4TkhQTHgxSEZ3eHdlM1pvZjFqbldkNjM3UWtEVFpxbmhoMmtzZnMydTQzQ3ktV01iaDQtSU1PeF9CdTIwNnR6cmhRRDJtMU9qSDlMTk03bThvcGo5WUZRejZaLWFzZnhmSlA1VFoxWDV0TzJ6emhiSnZyclpV?oc=5",
+            "source_name": "Google News: Maryland legislation",
+            "relevance_score": 0.75,
+            "categories": "[\"election\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "Maryland Democrats hope brand-new state Voting Rights Act holds in face of Supreme Court ruling &nbsp;&nbsp; Maryland Matters",
+            "created_at": "2026-04-30 11:02:45",
+            "politicians": null
+          }
+        ],
+        "intro_focus": "Maryland State Legislature"
+      },
+      {
+        "key": "county",
+        "label": "Montgomery County Council",
+        "events": [
+          {
+            "id": 355,
+            "title": "Juvenile shot, 19-year-old detained for firearm possession at Blake High School, police say",
+            "type": "news",
+            "level": "county",
+            "description": "<p>Incident at Silver Spring school is latest of several involving guns in MCPS schools</p>\n<p>The post <a href=\"https://bethesdamagazine.com/2026/04/29/student-detained-at-blake-high-school-for-firearm-possession-police-say/\">Juvenile shot, 19-year-old detained for firearm possession at Blake High School, police say</a> appeared first on <a href=\"https://bethesdamagazine.com\">Bethesda Magazine</a>.</p>",
+            "summary": "A shooting incident occurred at Blake High School in Silver Spring involving a juvenile victim and a 19-year-old with a firearm, marking another gun-related incident in Montgomery County Public Schools. This directly affects school safety and your sense of security if you have children in MCPS or attend school yourself.",
+            "date": "2026-04-29",
+            "source_url": "https://bethesdamagazine.com/2026/04/29/student-detained-at-blake-high-school-for-firearm-possession-police-say/",
+            "source_name": "Bethesda Magazine",
+            "relevance_score": 0.85,
+            "categories": "[\"police\", \"education\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "Incident at Silver Spring school is latest of several involving guns in MCPS schools \n The post  Juvenile shot, 19-year-old detained for firearm possession at Blake High School, police say  appeared first on  Bethesda Magazine .",
+            "created_at": "2026-04-30 11:02:45",
+            "politicians": null
+          },
+          {
+            "id": 358,
+            "title": "Advocacy group to state: Order MoCo school board to reconsider decision to move Wootton High",
+            "type": "news",
+            "level": "county",
+            "description": "<p>Appeal filed Monday argues MCPS recommendation relied on inaccurate data, didn’t follow school closure rules </p>\n<p>The post <a href=\"https://bethesdamagazine.com/2026/04/29/moco-school-board-reconsider-move-wootton-high/\">Advocacy group to state: Order MoCo school board to reconsider decision to move Wootton High </a> appeared first on <a href=\"https://bethesdamagazine.com\">Bethesda Magazine</a>.</p>",
+            "summary": "An advocacy group has asked the state to force the Montgomery County School Board to reconsider its decision to relocate Wootton High School, claiming the decision used inaccurate data. This directly impacts students, families, and the community around Wootton, affecting school access and property values.",
+            "date": "2026-04-29",
+            "source_url": "https://bethesdamagazine.com/2026/04/29/moco-school-board-reconsider-move-wootton-high/",
+            "source_name": "Bethesda Magazine",
+            "relevance_score": 0.8,
+            "categories": "[\"education\", \"budget\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "Appeal filed Monday argues MCPS recommendation relied on inaccurate data, didn’t follow school closure rules  \n The post  Advocacy group to state: Order MoCo school board to reconsider decision to move Wootton High   appeared first on  Bethesda Magazine .",
+            "created_at": "2026-04-30 11:02:45",
+            "politicians": null
+          }
+        ],
+        "intro_focus": "Montgomery County Council"
+      },
+      {
+        "key": "school",
+        "label": "School Board",
+        "events": [
+          {
+            "id": 365,
+            "title": "Advocacy group to state: Order MoCo school board to reconsider decision to move Wootton High - Bethesda Magazine",
+            "type": "news",
+            "level": "school",
+            "description": "<a href=\"https://news.google.com/rss/articles/CBMikAFBVV95cUxPTnQ1TGc3LWhSZ3NHZkVPUkQxajhjbUl4LXFPNm5NLWVlOW83ZTBQQ2F1SkVsVlpNZ3BXQXQzTjlZTmVoOTJtTW8yTHUySG12a1lFNzAwQ1ZYRHlqWFNMREpzSGxBc2xBMG9kRVJpTlY5U0RZN25pTHBkU05OV0h1bExILVFRRVVhS3EyT1R5LVQ?oc=5\" target=\"_blank\">Advocacy group to state: Order MoCo school board to reconsider decision to move Wootton High</a>&nbsp;&nbsp;<font color=\"#6f6f6f\">Bethesda Magazine</font>",
+            "summary": "An advocacy group is asking the state to order Montgomery County's school board to reconsider its decision to relocate Wootton High School from Rockville to Gaithersburg. Since Rockville is your home, this decision directly impacts your community's access to the school and could affect property values and school transportation.",
+            "date": "2026-04-29",
+            "source_url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPTnQ1TGc3LWhSZ3NHZkVPUkQxajhjbUl4LXFPNm5NLWVlOW83ZTBQQ2F1SkVsVlpNZ3BXQXQzTjlZTmVoOTJtTW8yTHUySG12a1lFNzAwQ1ZYRHlqWFNMREpzSGxBc2xBMG9kRVJpTlY5U0RZN25pTHBkU05OV0h1bExILVFRRVVhS3EyT1R5LVQ?oc=5",
+            "source_name": "Google News: MCPS school board",
+            "relevance_score": 0.85,
+            "categories": "[\"education\", \"budget\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "Advocacy group to state: Order MoCo school board to reconsider decision to move Wootton High &nbsp;&nbsp; Bethesda Magazine",
+            "created_at": "2026-04-30 11:02:45",
+            "politicians": null
+          }
+        ],
+        "intro_focus": "School Board"
+      }
+    ],
+    "avoid_list": [
+      "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3",
+      "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3",
+      "The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2",
+      "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+      "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4",
+      "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite",
+      "Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again"
+    ],
+    "listener_notes": [
+      {
+        "date": "2026-04-30",
+        "note": "I need a deep dive of the new rating system of montgomery county, public school system"
+      },
+      {
+        "date": "2026-04-29",
+        "note": "Fisical displin is good.is Andrew,\nAndrew Friedson the man do fisical restriction?\nWhy they want to close and move wooten high school?\n"
+      },
+      {
+        "date": "2026-04-28",
+        "note": "I agree with non essential spending cut.\nNow focus on who i can do on primary vote in June \n"
+      },
+      {
+        "date": "2026-04-27",
+        "note": "I dont like cramer who vote yes to all education increasing.\nI think the property tax is too high\n\n"
+      },
+      {
+        "date": "2026-04-26",
+        "note": "Not only about recent history of my candidates also search the all.history public record or news acout the candidates \nThe podcast 2 claimed that it will let me know the history of my candidate, but actually never linked any history/ old news to a specific candidate \nFor those candidate already filed their names start to collect their history."
+      },
+      {
+        "date": "2026-04-25",
+        "note": "Dig deeper into all candidates voting history, what is their historical  political viewpoint "
+      },
+      {
+        "date": "2026-04-24",
+        "note": "Who are the candidates of the primary voting i will vote to, i already join the democratsparty? What the policy difference between each candidates ? Who against sanctuary policy on illegal immigration? "
+      },
+      {
+        "date": "2026-04-23",
+        "note": "I want to kown what happened if change my election to join liberty party ? Do i need to attend some assembly and the party start to know me?\n"
+      },
+      {
+        "date": "2026-04-22",
+        "note": "What has synagogues in Max?\n 我希望能有primer election candidates 的专题，一个candidate一期，总结个人历史和执政理念\nI need you to help me figure out which cannidate suit my cificin i don'T hear this question anymorea\nThis Maryland sewage case is be mentioned in multiple days. News and I don't think it's really relevant to the election. So don't give it to me anymore.\nI have heard about teachers couching in previous day. However, my kids is attending a private school called st john's episcopal school, so if you can collect more news about them or their organization and also, i'm very interested in how we can vote on the school meal price increasing\n"
+      },
+      {
+        "date": "2026-04-21",
+        "note": "SAME-DAY note: should be excluded"
+      }
+    ],
+    "ballot_block": "YOUR BALLOT (2026) — confirmed/likely candidates for the listener's districts. The listener's choice is BETWEEN these named people; never tell the listener to go figure out who their candidate is. If a contest has fewer than two known candidates, say so out loud (\"only one filer so far\") instead of fudging.\n  • Governor of Maryland\n      - Wes Moore (D)\n      - Chris Bouchat (R)\n      - Dan Cox (R)\n      - Ed Hale (R)\n      - Hershey (unknown) [withdrawn]\n  • Maryland House of Delegates District 19\n      - Bonnie Cullison (unknown) [withdrawn]\n      - Crutchfield (unknown)\n      - Kramer (unknown)\n      - Stewart (unknown)\n      - Tichy (unknown)\n  • Montgomery County Executive\n      - Evan Glass (unknown)\n      - Friedson (unknown)\n      - Glass (unknown)\n      - Jawando (unknown)\n      - Will Friedson (unknown)",
+    "themes_block": "Listener rollup (2026-04-24..2026-04-30, based on 6 notes):\nSummary: This listener is a first-time Democratic voter in Rockville preparing for the June primary who cares most about knowing exactly who is on their ballot and what those candidates have actually done — voting records, bill history, and documented positions, not summaries or vibes. They have clear policy priors: skepticism toward high property taxes, opposition to increased education spending, openness to non-essential spending cuts and fiscal discipline, and a specific interest in which candidates oppose sanctuary policy on illegal immigration. They have flagged repeatedly that the show promises candidate deep-dives but fails to deliver them in a concrete, candidate-linked way.\nRecurring themes:\n  - Candidate voting records and historical public record — The listener has asked every single day for specific votes, old news, and documented positions tied to named candidates on their actual ballot, not general descriptions.\n  - Property taxes and fiscal discipline — The listener connects education spending votes directly to their property tax burden and has expressed support for fiscal restraint and cutting non-essential spending.\n  - Sanctuary policy and immigration enforcement — The listener wants to know concretely which Democratic primary candidates oppose or support sanctuary-style policies, not just which ones use immigration-friendly language.\n  - June primary ballot clarity — The listener is narrowing focus to actionable primary choices and wants episode content organized around who they can actually vote for in June.\nOpen questions the listener keeps raising:\n  - Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?\n  - Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?\n  - Why does MCPS want to close and move Wootton High School, and what happens next?\n  - What is Kramer's full historical voting record, including old news and public records beyond recent sessions?\n  - What are the documented policy differences between each candidate on my primary ballot?\nTopics they want more coverage of:\n  - Andrew Friedson's specific fiscal record and positions — listener asked directly and has not received a focused answer\n  - Wootton High School closure — listener asked directly; scripts acknowledged it but did not resolve it\n  - Full historical background research on candidates (old news articles, public records, career-long voting history, not just recent session votes)\n  - Concrete side-by-side policy comparison of all Democratic primary candidates across the listener's specific races\nRECENT COVERAGE TO AVOID — do NOT reuse these framings, taglines, or anecdotes (they already shipped in the last 5 days):\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again",
+    "locale": "Rockville, Montgomery County, Maryland",
+    "districts_profile": "  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19"
+  },
+  "created_at": "2026-05-01T07:00:46.728860-04:00",
+  "due_by": ""
+}

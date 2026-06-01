@@ -105,20 +105,15 @@ def review_script(
         {"final_script": str, "notes": str, "changed": bool}
     Falls through to the draft unchanged on any error.
     """
-    # ── Cowork mode: queue a review brief, return draft unchanged ──────────
-    try:
-        from config import Config as _Cfg2
-        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
-    except Exception:
-        cowork_mode = False
-
+    # Cowork-only — direct API path disabled 2026-05-15.
     prior_excerpts = _load_prior_script_excerpts(podcasts_dir, episode_date, days=PRIOR_DAYS)
     notes_block = _load_recent_notes(db_path, episode_date, days=NOTES_DAYS)
     themes_block = _load_latest_themes_block(db_path, episode_date)
 
-    if cowork_mode:
-        from scanner.cowork_bridge import build_review_episode_brief, write_brief
-        out_file = podcasts_dir / f"podcast_{episode_date.isoformat()}_ep{ep_num}.editor.txt"
+    from scanner.cowork_bridge import build_review_episode_brief, write_brief
+    from scanner.notifications import notify
+    out_file = podcasts_dir / f"podcast_{episode_date.isoformat()}_ep{ep_num}.editor.txt"
+    try:
         brief = build_review_episode_brief(
             target_date=episode_date.isoformat(),
             ep_num=ep_num,
@@ -139,11 +134,12 @@ def review_script(
             "verdict": "approved",
             "rewrite_reason": "",
         }
-
-    if not anthropic_key:
+    except Exception as e:
+        notify("editor", f"Failed to queue review brief for ep{ep_num}: {e}",
+               severity="error")
         return {
             "final_script": draft,
-            "notes": "Editor skipped: no API key",
+            "notes": f"Editor queue failed: {e}",
             "changed": False,
             "verdict": "approved",
             "rewrite_reason": "",

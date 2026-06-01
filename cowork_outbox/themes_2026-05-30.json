@@ -1,0 +1,46 @@
+{
+ "brief_id": "themes_2026-05-30",
+ "window_start": "2026-05-24",
+ "window_end": "2026-05-30",
+ "note_count": 7,
+ "summary": "Listener is in the final ~4 weeks before Maryland's June 23, 2026 primary and the through-line is differentiation: he wants the 17 At-Large Council Democrats compared head-to-head, especially on sanctuary policy, MCPS funding/Wootton, and property taxes. He has repeatedly asked for full lifelong records tied to named candidates, not recent-vote snapshots. NOTE: daily_notes are stale \u2014 the newest row is 2026-04-30 \u2014 so these themes carry forward prior asks rather than fresh input. Coverage is now ahead of schedule (every candidate through 06-10 has episodes on disk), so the priority shifts to dossiers+episodes for the first uncovered At-Large names (Silvestre, Khan, Goldberg).",
+ "themes": [
+  "Side-by-side differentiation of the 17 At-Large County Council Democrats | listener's #1 recurring ask: a comparison matrix, not 17 standalone bios",
+  "Which candidates actually oppose vs. defend the sanctuary / ICE-cooperation framework | listener asked directly (04-24) and it is still unanswered for the At-Large field",
+  "Full lifelong voting record & viewpoint per candidate, not just recent votes | listener complained episodes never tied specific old news to a specific candidate (04-25/04-26)",
+  "MCPS funding as line-item votes + the new school-rating methodology and per-school Rockville grades | the lever behind the Wootton High closure/relocation question (04-29/04-30)",
+  "Property-tax burden and non-essential-spending discipline | listener thinks property tax is too high and supports cutting non-essential spend (04-27/04-28)"
+ ],
+ "open_questions": [
+  "Who among my candidates is against sanctuary policy on illegal immigration?",
+  "Why do they want to close and move Wootton High School?",
+  "Is Andrew Friedson actually the fiscal-restraint candidate, measured by line-item votes?",
+  "What are the policy differences between each candidate?",
+  "Deep dive of the new Montgomery County Public School rating system and per-school grades for Rockville schools"
+ ],
+ "underserved_topics": [
+  "The At-Large field beyond the front-runners: Karla Silvestre, Hamza Khan, Scott Goldberg, Fatmata Barrie and the rest have no dossier or episode yet",
+  "Ben Kramer's full voting record on education-funding increases (listener dislikes his yes-to-every-increase pattern, 04-27)",
+  "Per-school MCPS rating/grade data for the specific Rockville schools the listener's household attends",
+  "Non-partisan and down-ballot races the listener still must decide: judicial, Register of Wills, Clerk of Circuit Court, Republican alternatives"
+ ],
+ "avoid_list": [
+  "'Thirty-X days out from the Maryland Democratic primary' cold-open device \u2014 used 2026-05-16/17/18/19 ep1 and again 2026-05-25 Peter James ep1",
+  "'Montgomery County native' framing hook \u2014 used heavily 2026-05-16 Friedson ep1",
+  "'My Seven Black Fathers' / Reid Temple A.M.E. memoir-anchor for anyone other than Jawando \u2014 used 2026-05-19 ep1",
+  "'Anniston, Alabama / Donoho School / Vaughn Stewart Jr as mayor' formative device for anyone other than Vaughn Stewart \u2014 used 2026-05-20 ep1",
+  "'Born in Trenton / adopted as an infant from a teenage mom in a convent' origin device for anyone other than Dawn Luedtke \u2014 used 2026-05-17 ep1",
+  "'First Muslim officer of the Montgomery County Police Department' identity device for anyone other than Sharif Hidayat \u2014 used 2026-05-18 ep1",
+  "'Pre-political biography is thinner in the public record / no Wikipedia entry' candidate qualifier \u2014 used 2026-05-16 ep1",
+  "ICE Out Act / Trust Act / DHS officer screening bill as the immigration framing hook \u2014 used 2026-05-21 Glass ep3/ep4",
+  "'Run the buses, teach the kids, pick up the trash' tagline \u2014 used 2026-05-21 Glass ep1/ep2/ep4",
+  "'Welcome back ... It is Monday May twenty-fifth ... one month from tomorrow' calendar/countdown studio open \u2014 used 2026-05-25 Peter James ep1",
+  "Generic 'Welcome back to the Rockville Primary Briefing, I'm Alex' studio open \u2014 used 2026-05-27 Sayles ep1",
+  "'Brass plaque on Maryland Avenue in Rockville listing the County Executives' cold-open \u2014 used 2026-05-29 Marc Elrich ep1",
+  "'Day two / day three / day four of [Candidate] week' episode-open device \u2014 used heavily 2026-05-29 Marc Elrich set",
+  "Marc-Elrich-specific framings ('teacher and tenant organizer from Takoma Park', 'won by 32 votes', 'lighter than the council, louder than the council') \u2014 reserve for Elrich only, do not reuse for other candidates",
+  "RE-COVERING MARC ELRICH AT ALL \u2014 fully covered 2026-05-29 (4 valid episodes on disk). Gap-bug guard: do not let an unscheduled-gap day re-queue Elrich (it did on both 05-29 and 05-30)."
+ ],
+ "generated_at": "2026-05-31T02:56:25.874155Z",
+ "upserted_into": "weekly_themes"
+}

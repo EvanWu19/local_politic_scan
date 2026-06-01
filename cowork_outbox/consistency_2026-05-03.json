@@ -1,0 +1,51 @@
+{
+  "brief_id": "consistency_2026-05-03",
+  "type": "score_consistency",
+  "generated_at": "2026-05-03T11:30:00-04:00",
+  "window_end": "2026-05-03",
+  "rows_inserted": 0,
+  "rows_to_insert": [],
+  "status": "deferred",
+  "reason": "DB read access (sqlite3 / Python via bash) was unavailable in this Cowork run because the workspace shell sandbox returned 'No space left on device' on every command. The brief requires reading politicians and politician_events rows for 137 politician IDs and writing one new row per politician into consistency_scores. That cannot be done without DB access. Per the project hard rules, no fabrication of vote counts or event counts is permitted, so the scoring is being deferred rather than guessed.",
+  "guidance_for_windows_processor": {
+    "preferred_action": "When the Windows-side cowork-queue processor picks up this .done.json marker, run `.venv\\Scripts\\python main.py series score-consistency --target-date 2026-05-03` (or the equivalent existing CLI) so the scoring is performed against the live politics.db on the Windows side. The Linux-side Cowork agent can write podcast scripts and themes but does not currently have a path to the SQLite file that's safe for INSERTs.",
+    "alternative_action": "If no CLI exists for this scoring run, manually invoke the existing score_consistency processor with politician_ids = brief.context.politician_ids and target_date = 2026-05-03. The brief's politician_ids list is canonical; do not re-derive it.",
+    "do_not_skip": "The listener checks the consistency_scores history to see how the show's read on each politician evolves over time. Skipping a run leaves a gap in that history. Even running the scorer with no new events since the last run produces a same-verdict row that's still useful as a 'no change since last week' signal."
+  },
+  "partial_observation_friedson_id_228": {
+    "politician_id": 228,
+    "politician_name": "Friedson",
+    "office": "Montgomery County Executive (candidate)",
+    "current_seat": "Montgomery County Council District 1",
+    "events_in_brief_context": 1,
+    "events_in_dossier_not_yet_in_db": [
+      "ZTA 25-02 More Housing N.O.W. lead sponsorship — passed 8-3 on 2025-07-22",
+      "Bill 32-25 Trust Act co-sponsorship — passed unanimously Dec 2025",
+      "Bill 3-26 County Values Act co-sponsorship — passed unanimously 2026-03-24",
+      "Bill 2-26 Green Bank funding co-sponsorship — passed 2026-03-18",
+      "Bill 13-25 unlicensed commercial house parties co-lead with Luedtke",
+      "FAITH ZTA sponsorship",
+      "Bill 2-25 affordable housing lead sponsorship — final vote count not surfaced",
+      "Voted no on Elrich-proposed property-tax-rate increases in 2020, 2023, 2025, and 2026 (4 events)",
+      "Voted yes on FY25 and FY26 operating budgets without rate increases (2 events)",
+      "April 28 2026 letter to MCPS / police chief requesting permanent officers in every county high school",
+      "October 28 2025 testimony at MCPS Board of Education calling for full renovation of Wootton rather than relocation",
+      "Public Election Fund opt-out — campaign-finance-structural choice for 2026 cycle"
+    ],
+    "preliminary_provisional_verdict": "consistent",
+    "preliminary_provisional_summary": "Provisional, NOT to be inserted into consistency_scores until the events are also ingested into politician_events. Across the dossier-attested record (~14 events spanning 2020-04 through 2026-04), Friedson is consistent on a small set of stable positions: no on county property-tax-rate increases, yes on operating budgets that fund MCPS without rate increases, yes on every county sanctuary-related bill, yes on transit-corridor housing supply, yes on Green Bank climate finance, more pro-uniformed-presence on schools-policing than Glass or Jawando. No clear shifts identified.",
+    "preliminary_provisional_stable_positions": [
+      {"topic": "county property tax rate", "position": "no on rate increases", "evidence": "4 votes against Elrich-proposed rate increases 2020/2023/2025/2026"},
+      {"topic": "sanctuary policy", "position": "yes on county sanctuary protections", "evidence": "Trust Act 32-25 co-sponsor, County Values Act 3-26 co-sponsor"},
+      {"topic": "transit-corridor housing supply", "position": "yes on supply expansion", "evidence": "ZTA 25-02 lead sponsor, FAITH ZTA sponsor, Bill 2-25 lead sponsor"},
+      {"topic": "schools-policing", "position": "pro-permanent-officer-presence", "evidence": "April 28 2026 letter to Superintendent Taylor"},
+      {"topic": "Wootton facility decision", "position": "renovation over relocation", "evidence": "October 28 2025 BOE testimony"}
+    ],
+    "preliminary_provisional_shifts": [],
+    "fabrication_warning": "The Friedson observations above come from the dossier compiled 2026-04-30 (data/candidate_dossiers/friedson.md). They are NOT to be merged into consistency_scores without first being ingested into the politician_events table. The Windows-side enrich_events processor should pull those dossier line-items into events first, then re-run consistency scoring."
+  },
+  "audit_notes": [
+    "Cowork inbox brief consistency_2026-05-03 was opened, but the score-write step was deferred because DB access was unavailable. The brief is being marked .done.json so the inbox does not stall, with this JSON serving as the audit trail of why no rows were inserted.",
+    "If the Windows-side scorer runs autonomously on the next cron tick, the rows it produces will become the canonical record. This file should be treated as documentation of the deferral, not as the authoritative scoring output."
+  ]
+}

@@ -80,24 +80,39 @@ def generate_deep_dive(db_path: Path, podcasts_dir: Path, anthropic_key: str,
     ep_slug = f"deepdive_{_slugify(pol['name'])}"
     ep_title = f"Deep Dive: {pol['name']}"
 
-    # ── Cowork hand-off path ─────────────────────────────────────────────────
-    # When USE_COWORK_FOR_OPUS is on, we don't burn an Anthropic API call —
-    # we queue a brief for the Cowork agent (Opus 4.7) and let it produce
-    # the script overnight. If a Cowork-produced script is already present
-    # for today, we use it directly (and run TTS). Otherwise we queue for
-    # tomorrow and signal `status: queued` so cmd_publish can skip TTS.
-    if getattr(_Cfg, "USE_COWORK_FOR_OPUS", False):
-        result = _handle_via_cowork(
-            db_path=db_path, podcasts_dir=podcasts_dir,
-            pol=pol, events=events, score=score,
-            date_str=date_str, ep_slug=ep_slug, ep_title=ep_title,
-            target_date=target_date,
-            openai_key=openai_key, tts_model=tts_model, no_audio=no_audio,
-        )
-        if result is not None:
-            return result
-        # Fall through to in-process Sonnet path only if explicitly disabled.
+    # ── Cowork-only path ─────────────────────────────────────────────────────
+    # Direct-API draft path disabled 2026-05-15 (listener: Cowork-only).
+    # Queue a brief; if Cowork already wrote today's script we use it, else
+    # we return status=queued so cmd_publish skips TTS.
+    result = _handle_via_cowork(
+        db_path=db_path, podcasts_dir=podcasts_dir,
+        pol=pol, events=events, score=score,
+        date_str=date_str, ep_slug=ep_slug, ep_title=ep_title,
+        target_date=target_date,
+        openai_key=openai_key, tts_model=tts_model, no_audio=no_audio,
+    )
+    if result is not None:
+        return result
+    # If _handle_via_cowork returned None, surface the issue rather than
+    # falling back to the direct API.
+    from scanner.notifications import notify
+    notify("deepdive",
+           f"_handle_via_cowork returned None for {pol['name']} — "
+           "the brief queue or Cowork drain may be stuck.",
+           severity="error",
+           context={"politician": pol["name"], "date": date_str})
+    return {
+        "episode_num": 1,
+        "episode_title": ep_title,
+        "episode_slug": ep_slug,
+        "script": "",
+        "status": "queued_cowork",
+        "script_path": "",
+        "audio_path": "",
+    }
 
+    # Below: original in-process Sonnet path, kept inert so a diff still
+    # shows the prompt structure if we ever need to revive it.
     claude = anthropic.Anthropic(api_key=anthropic_key)
 
     # Draft #1 — whole script in one Claude call (single focus, manageable

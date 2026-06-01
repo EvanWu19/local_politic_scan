@@ -1,0 +1,27 @@
+{
+  "brief_id": "series_2026-05-05_sharif-hidayat_ep4",
+  "type": "series_episode",
+  "ep_num": 4,
+  "ep_title": "This Race",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-05_series_sharif-hidayat_ep4.txt",
+  "completed_at": "2026-05-05T20:14:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 2900,
+  "head_to_head_split_table_topics": [
+    "Thrive 2050",
+    "Housing mix",
+    "Agricultural reserve",
+    "Upcounty budget-allocation parity",
+    "Closed primary",
+    "SROs in MCPS",
+    "Trust Act / county sanctuary posture",
+    "Behavioral-health crisis response",
+    "Most-recent property-tax-rate decision",
+    "Endorsements"
+  ],
+  "listener_notes_addressed_by_date": ["2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30"],
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 2900,
+  "calibration_gap": -1000
+}

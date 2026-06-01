@@ -1,0 +1,1 @@
+{"brief_id":"consistency_2026-05-16","status":"blocked","completed_at":"2026-05-16T09:32:00Z","output":"cowork_outbox/consistency_2026-05-16.json","reason":"sqlite DB unreachable from Linux sandbox (FUSE-mount issue); brief needs Windows-side re-run to access data/politics.db"}

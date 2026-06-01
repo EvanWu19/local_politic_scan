@@ -1,0 +1,19 @@
+{
+  "candidate_name": "Paul J. Dollahite",
+  "richness_score": 0.35,
+  "estimated_age": null,
+  "estimated_research_hours": 3.5,
+  "has_campaign_site": false,
+  "has_wikipedia": false,
+  "has_ballotpedia": false,
+  "has_legislative_record": false,
+  "has_court_record_search_hits": false,
+  "earliest_news_year": null,
+  "missing_critical_sections": [
+    "demographics",
+    "career",
+    "political_record"
+  ],
+  "notes": "Almost no findable record; likely an office_primer episode for the seat.",
+  "scouted_at": "2026-05-25T02:42:00+00:00"
+}

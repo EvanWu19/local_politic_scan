@@ -1,0 +1,10 @@
+{
+  "brief_id": "consistency_2026-05-17",
+  "status": "degraded",
+  "run_at": "2026-05-18T02:55:00-04:00",
+  "verdict": "deferred",
+  "reason": "sqlite3.OperationalError: unable to open database file (FUSE/sandbox issue). The candidate_series and dossier files are accessible, but data/politics.db cannot be opened from this Linux mount; consistency requires joining politicians x politician_events x events and inserting into consistency_scores. Recommend running this brief Windows-side, where the DB is healthy.",
+  "rows_inserted": 0,
+  "politicians_requested": 138,
+  "next_step_recommended": "Run `python main.py cowork-queue` Windows-side, then `python main.py score-consistency 2026-05-17` from the Windows venv."
+}

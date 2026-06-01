@@ -1,0 +1,52 @@
+{
+  "brief_id": "series_2026-05-20_vaughn-stewart_ep3",
+  "type": "series_episode",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-20_series_vaughn-stewart_ep3.txt",
+  "instructions": "Write Episode 3 ('Political Record') of the 4-episode 专题 series on Vaughn Stewart (Maryland House of Delegates District 19, Democratic, district House D19). Air date: 2026-05-20.\n\nEPISODE 3 SCOPE — Political Record:\nEvery prior political run (won AND lost). Every vote of public record. Sponsored / co-sponsored legislation with status. Endorsements received and given. Controversies, ethics complaints, FEC filings, news investigations — neutrally framed.\n\nMUST COVER (do not skip):\n  • all prior runs for office (won/lost) with dates and margins\n  • voting record by topic with bill numbers + dates\n  • sponsored/co-sponsored bills and their fate\n  • endorsements received and given, with dates\n  • controversies — alleged vs. proven vs. dismissed\n  • stance shifts over time, with the receipts\n\nDOSSIER (READ FIRST): `C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\vaughn-stewart.md` — this is the source of truth for biographical / career / political facts. Cite from it. If a section you need for episode 3 is missing or thin, STOP and write a fresh `candidate_dossier` brief into the inbox for this candidate before writing today's script.\n\nFORMAT:\n  • Two hosts ALEX (presenter) and JORDAN (curious co-host).\n  • Every line starts `ALEX:` or `JORDAN:` — no stage directions,     no markdown, no emoji, no '[laughs]', no asterisks.\n  • LENGTH TARGET — 3900 words (±300; ~30 min at 130 wpm).\n  • Cite specific names, dates, employers, schools, bill numbers,     URLs from the dossier — generalities are why earlier drafts     felt thin.\n\nPM LENGTH CALIBRATION:\n  • No prior scripts to calibrate against. Aim for ~3900 words (~30 min).\n  • Hit the target. If you finish the must-cover list early,     extend the JORDAN follow-up questions and add depth to the     biographical reads — never pad with filler.\n\nAVOID — do not reuse any framing on `context.avoid_list`. The PM agent has flagged these as already-shipped this week:\n  - \"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line — used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3\n  - Evan Glass background-screening DHS bill as the sanctuary-policy example — used in 2026-04-28 ep1 and 2026-04-29 ep3\n  - Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark — used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)\n  - \"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") — used in 2026-04-28 ep1 and revisited 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1 and ep4\n  - Beltsville Agricultural Research Center closure as a District 19 candidate-record hook — used in 2026-04-27 ep4\n  - Listener's own frustration about promised deep-dives not delivering, narrated back to the listener — has shipped across at least five episodes; do not use as a framing device again\n\nLISTENER POSITIONING:\n  • Locale: Rockville, Montgomery County, Maryland.\n  • Their districts:\n  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19\n  • The listener is a registered Democrat in Rockville, MD,     primary on June 23, 2026. Speak as though we already know     their districts; never tell them to 'look up their ballot'.\n  • If any item from `context.listener_notes` ties into this     candidate, address it by name in the dialogue.\n\nWrite the full dialogue to `output_file`. Plain text only. If the dossier doesn't have the facts you need, do NOT invent — have a host say on-air 'we don't have a public record of X yet' and move on.",
+  "context": {
+    "candidate_name": "Vaughn Stewart",
+    "office": "Maryland House of Delegates District 19",
+    "party": "Democratic",
+    "district": "House D19",
+    "target_date": "2026-05-20",
+    "ep_num": 3,
+    "ep_title": "Political Record",
+    "ep_scope": "Every prior political run (won AND lost). Every vote of public record. Sponsored / co-sponsored legislation with status. Endorsements received and given. Controversies, ethics complaints, FEC filings, news investigations — neutrally framed.",
+    "must_cover": [
+      "all prior runs for office (won/lost) with dates and margins",
+      "voting record by topic with bill numbers + dates",
+      "sponsored/co-sponsored bills and their fate",
+      "endorsements received and given, with dates",
+      "controversies — alleged vs. proven vs. dismissed",
+      "stance shifts over time, with the receipts"
+    ],
+    "dossier_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\vaughn-stewart.md",
+    "avoid_list": [
+      "\"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line — used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3",
+      "Evan Glass background-screening DHS bill as the sanctuary-policy example — used in 2026-04-28 ep1 and 2026-04-29 ep3",
+      "Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark — used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)",
+      "\"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+      "ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") — used in 2026-04-28 ep1 and revisited 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1 and ep4",
+      "Beltsville Agricultural Research Center closure as a District 19 candidate-record hook — used in 2026-04-27 ep4",
+      "Listener's own frustration about promised deep-dives not delivering, narrated back to the listener — has shipped across at least five episodes; do not use as a framing device again"
+    ],
+    "listener_notes": [],
+    "locale": "Rockville, Montgomery County, Maryland",
+    "districts_profile": "  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19",
+    "length_calibration": {
+      "target_words": 3900,
+      "target_minutes": 30,
+      "recent_avg_words": 0,
+      "recent_min": 0,
+      "recent_max": 0,
+      "trend": [],
+      "gap_words": 3900,
+      "calibration_note": "No prior scripts to calibrate against. Aim for ~3900 words (~30 min)."
+    }
+  },
+  "created_at": "2026-05-20T07:00:51.773749-04:00",
+  "due_by": ""
+}

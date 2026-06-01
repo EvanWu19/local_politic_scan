@@ -1,0 +1,191 @@
+ALEX: Welcome back. May 15th, 2026. Episode Two of our four-part series on J. D. Kumar, the Democratic candidate for U.S. House Maryland District Eight. Yesterday, Episode One, we walked through the origins side of his biography. New Delhi, Queens, Montgomery County, single-parent home, two undergraduate degrees from the University of Maryland in 1993, fluent Spanish, study at UNAM in Mexico, ambiguous coursework at the London School of Economics. We said clearly that the candidate's mainstream press footprint is unusually thin, that his own campaign website at votejdk.com is the dominant biographical source, and that we are flagging every claim that we could not independently verify. Same rules apply today. Today is Career. Jordan, what is on the must-cover list for an Episode Two?
+
+JORDAN: Every job held, with employer and dates. Military service if any. Boards, nonprofits, volunteer leadership. Public statements outside politics, like op-eds, books, podcast guest spots. Social-media history back to earliest archived posts. Court records — PACER for federal, Maryland Judiciary Case Search for state — if any. And the publicly disclosed financial picture.
+
+ALEX: That is the list. So let's start with what J. D. Kumar himself says about his career, and let's mark the gaps as we go.
+
+JORDAN: Stated occupation right now.
+
+ALEX: As of his Ballotpedia candidate entry, J. D. Kumar describes himself as an International Business Development Consultant. That is the phrase that appears on Ballotpedia and that is consistent with his campaign website. He also calls himself, on the About page, an, quote, aspiring diversified business development executive. End quote. So consulting is the current bucket, and the language is more aspirational than firm-specific.
+
+JORDAN: There is no LinkedIn link on the campaign website. Did we find a LinkedIn profile for him.
+
+ALEX: We did not find a LinkedIn profile that we could attribute to him with confidence. The name J. D. Kumar is moderately common, so we did not want to point a listener to the wrong account. So the practical answer is, we could not locate his LinkedIn for this dossier.
+
+JORDAN: OK. Move to the big career claim.
+
+ALEX: The big career claim is the early 1990s job. Direct quote from the About page on votejdk.com. Quote, after college, as the second U.S.A. American and sixth employee, I helped to build a multi-billions of dollars global telecoms industry model company sector from a small office in Rockville and Potomac, Maryland, to almost one thousand employees in twenty countries, more than half here, became a founding member. End quote. So here is what the candidate is telling the listener. Right after college, in or around 1993, he was the second American citizen at a telecoms startup with six employees, headquartered in Rockville and Potomac. He says the company grew to nearly a thousand people across twenty countries, with more than half of those employees based in the United States. He says he was a founding member.
+
+JORDAN: That is a very specific kind of claim. The company is not named.
+
+ALEX: The company is not named. That is the central gap in his entire professional biography. We have a vivid story about the size, the geography, the head count, the timing, and his role. We do not have the name of the firm. Without the firm's name, the claim is, by design, hard to verify.
+
+JORDAN: Why does it matter that we have the name.
+
+ALEX: Two reasons. First, it determines whether what the candidate is saying maps onto a real company that anyone can look up — a Hughes Network Systems, a Comsat, a Nextel, an MCI, an Iridium, a WorldCom. The Rockville and Potomac corridor in the 1990s had several telecoms employers of that scale. Second, the founding-member, sixth-employee, two-Americans-on-the-payroll detail describes a company that almost certainly grew via international ownership or international expansion. That, in turn, determines what kind of business the candidate was doing — was it a satellite-services firm, was it a wireless-licensing firm, was it a network-infrastructure firm. We do not know. We cannot rule any of them in or out. The candidate has chosen, for whatever reason, to describe the company without naming it.
+
+JORDAN: Let me sit with the Rockville and Potomac telecoms corridor for a second, because I want listeners who did not live through that era to have a picture in their head.
+
+ALEX: Please.
+
+JORDAN: In the early 1990s, the I-270 corridor through Rockville, Bethesda, Potomac, and Gaithersburg was one of the country's densest concentrations of satellite and wireless companies. Hughes Network Systems had a big presence. Comsat — short for Communications Satellite Corporation, federally chartered in 1962 — was anchored in Bethesda. Iridium, the satellite-constellation venture, was being built out of the broader Washington corridor. MCI Communications, before the WorldCom merger, was headquartered in D.C. but had significant offices in Maryland. There were also a number of much smaller startups doing international long-distance, call routing, prepaid calling cards, wireless licensing in emerging markets. Most of those smaller firms are now gone, absorbed, or rebranded.
+
+ALEX: And the phrase the candidate uses — sixth employee, second American — describes a kind of startup very common in that era. A foreign-funded or foreign-parented telecoms company that opened a U.S. office in Montgomery County to access the federal regulatory ecosystem and the broader Washington-area engineering talent pool. Maryland was, and is, a state with significant satellite and aerospace industry, plus proximity to the Federal Communications Commission and the State Department, which made it attractive for international telecoms companies.
+
+JORDAN: So the candidate's story is structurally plausible.
+
+ALEX: Structurally plausible. We are saying that out loud because it matters. We are not saying he is wrong. We are saying the story he tells maps onto the kind of company that existed in the Rockville-Potomac corridor in the early 1990s. What we cannot do is tell the listener which company it was. That is a fact about the disclosure, not a judgment about the candidate.
+
+JORDAN: One more piece of the career claim. He says, quote, the employees me, we mentored leveraged this experience for post-graduate studies in top schools and now work for billions and trillions of dollars valuation advanced technology economic sector companies. End quote. So he is also claiming that, after the telecoms scale-up, his colleagues went on to top-tier graduate programs and into big tech.
+
+ALEX: That is the claim. Without the names of the colleagues, again, the claim is general. It could describe many engineering- and operations-heavy startups of that era. We are repeating what the website says and we are flagging what the website does not say.
+
+JORDAN: Is it possible he is under a non-disclosure that prevents him from naming the firm.
+
+ALEX: It is possible. He does not say so on the website. But it is possible. We are not going to invent a reason on his behalf. We are going to say what is true: the firm is not named, and that is unusual for a candidate's central career claim.
+
+JORDAN: All right. Beyond that telecoms claim, what else does the website tell us about his career.
+
+ALEX: It tells us he is currently doing international business development consulting work. It does not name his clients. It does not name his firm or his consulting brand. The home page contains a passage about, quote, working with North Sea consortiums to fund innovations, end quote, in the hydroelectric sector. He does not name the consortiums. He says he has been authoring policy proposals through, quote, JDK and NSA AI modules — SPFM, TGRP, KYZA, KYZB. End quote. Those are acronyms unique to the campaign site. The phrase, quote, NSA AI, end quote, is not a public reference we can decode, and the campaign site does not explain it.
+
+JORDAN: That is a passage that takes some reading.
+
+ALEX: It does. Listeners, you can go to votejdk.com and read it yourselves. We are not going to paraphrase it in a way that distorts it.
+
+JORDAN: Childhood jobs.
+
+ALEX: The candidate states he started work at age ten. He lists, quote, weather-challenging labor-intensive construction trades, retail, restaurant, franchise food jobs. End quote. He says he, quote, ascended quickly to managerial positions. End quote. He gives no employer names and no dates. He frames it as a work-ethic story.
+
+JORDAN: That is the early years.
+
+ALEX: That is the early years.
+
+JORDAN: Military service.
+
+ALEX: The candidate does not state any personal military service. He says his father served. He does not list his own. So on the basis of his own statement, no, he is not a veteran. We have no third-party source contradicting that.
+
+JORDAN: Boards and nonprofits.
+
+ALEX: The website does not list board memberships. The website does not list named nonprofits. There is one passage on the home page where he says he, quote, has discussed his ideas regarding education at Montgomery County, Maryland Government council meetings. End quote. That implies he has testified or commented publicly at the county level. We could not locate the testimony in the publicly available Montgomery County Council video archive in time for this dossier. So we have his claim. We do not have a clip.
+
+JORDAN: Volunteer leadership.
+
+ALEX: He says he volunteered for, quote, the campaigns of Presidents WJC Clinton, BHO Obama, and HRC Clinton, end quote — meaning Bill Clinton, Barack Obama, and Hillary Clinton. He says he, quote, helped several U.S.A. America national campaigns win and contributed to successful VP selections. End quote. Those are the volunteer roles he names. He does not specify dates, geographic assignment, or campaign roles. He does not specify which vice-presidential selections.
+
+JORDAN: That last claim is significant. The Democratic Party held nominating conventions in 1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020, and 2024. VP selections in those cycles were Al Gore, Joe Lieberman, John Edwards, Joe Biden, Tim Kaine, Kamala Harris, and Tim Walz. The candidate does not say which of those he helped pick.
+
+ALEX: He does not. And without specifics, we cannot evaluate the claim. We are going to treat it the way we treat everything else this candidate self-states without a third-party corroboration. It is on the record. It is unverified. We are reporting it that way.
+
+JORDAN: Public statements outside politics. Op-eds. Books. Podcast guest spots.
+
+ALEX: We could not locate published op-eds by J. D. Kumar. We could not locate any books by him. We could not locate podcast guest spots. The candidate's public-statement archive, for our purposes, is votejdk.com and the linked social handles.
+
+JORDAN: Social media history. What is the earliest archived post.
+
+ALEX: The candidate uses the username votejdk on Facebook, YouTube, X, Instagram, and Bluesky. Those accounts appear to be campaign accounts. Earliest archived posts on those handles appear to be from the campaign period, which is roughly late 2025 and early 2026. We did not locate personal social-media accounts predating the campaign that we could attribute to him with high confidence.
+
+JORDAN: Court records.
+
+ALEX: PACER, which is the federal court records system, did not surface any case involving J. D. Kumar that we could attribute to this candidate with high confidence. Same with the Maryland Judiciary Case Search, which is name-based. The name is moderately common, so we are not declaring a clean record on that basis. We are saying we did not find a hit we could match to him.
+
+JORDAN: Professional licensure.
+
+ALEX: He does not claim a licensed profession on the website. No bar admission. No CPA. No professional engineer license is described. He describes himself as a business-development consultant, which is not a licensed field. So nothing surfaces there.
+
+JORDAN: Publicly disclosed financial picture.
+
+ALEX: This is the part of his career where the gap is largest. As a non-incumbent U.S. House candidate, J. D. Kumar would be required to file a personal financial disclosure once he meets the thresholds set by the Ethics in Government Act, and his campaign committee, if he registers one with the Federal Election Commission, would file quarterly reports once he passes the five-thousand-dollar threshold for receipts or expenditures.
+
+JORDAN: Five thousand dollars is the FEC threshold.
+
+ALEX: Five thousand dollars in either contributions raised or expenditures. Under that threshold, a federal candidate is not required to register a principal campaign committee or file quarterly reports. Above it, registration is required within fifteen days.
+
+JORDAN: And we could not locate a Kumar-for-Congress filing with the FEC.
+
+ALEX: We could not locate a high-profile committee filing in time for this dossier. We also note that on his own website, the campaign content carries the line, quote, this content and website is produced independently and paid for by J. D. Kumar, candidate, Democrat, for U.S. Congress, House of Representatives, Maryland District Eight, and not authorized by any candidate or candidate's committee. End quote. That is unusual phrasing. It reads as a personal expenditure rather than a committee-authorized campaign. For listeners, the practical implication is that he may not have built a formal campaign committee around himself in the way an incumbent or experienced candidate typically does.
+
+JORDAN: For the listener who is wondering what that means for, say, getting on the ballot or appearing in a candidate forum — what does it mean?
+
+ALEX: Getting on the ballot is a separate process. To get on the Maryland Democratic primary ballot for U.S. House, a candidate files a Certificate of Candidacy with the Maryland State Board of Elections and pays the filing fee, or submits the required number of voter signatures in lieu of the fee. J. D. Kumar has done that step. He is on the SBE candidate list. That is independent of FEC registration. So whether or not he has a registered FEC committee, he is on the June twenty-third ballot.
+
+JORDAN: But for forums and endorsements?
+
+ALEX: For forums and endorsements, candidates without a structured committee typically have a harder time. Major civic forums often require a committee contact for invitations. County Democratic clubs typically endorse candidates who have completed full questionnaires. We did not locate Kumar in any county Democratic club endorsement list that we surfaced for this dossier. We also did not locate him in any major union endorsement list, any environmental group endorsement list, or any reproductive rights group endorsement list for the 2026 MD-8 primary. That is consistent with a candidate who has a personal expenditure profile rather than a formal campaign machine.
+
+JORDAN: Net worth.
+
+ALEX: We do not have a net-worth figure for J. D. Kumar. The House clerk's office maintains the public personal-finance database for sitting members and major candidates who cross the disclosure threshold; we could not locate a Form A filing for him in that database in time for this dossier. So on net worth, on disclosed conflicts of interest, on home ownership status, and on business interests — none of that has been disclosed in a place we could find. We do not know.
+
+JORDAN: That is a significant gap.
+
+ALEX: It is. For a U.S. House candidate, in particular, listeners can reasonably expect to see disclosed assets, disclosed liabilities, and any stock holdings of public concern. We do not have those. We are going to come back to this in Episode Four when we compare the four MD-8 Democratic primary candidates side by side.
+
+JORDAN: I want to put one more frame around the financial disclosure piece, because not every listener knows the rules.
+
+ALEX: Walk us through them.
+
+JORDAN: For U.S. House candidates, the Ethics in Government Act requires personal financial disclosure once a candidate exceeds the five-thousand-dollar fundraising or expenditure threshold. The disclosure is filed with the Clerk of the House and is publicly available. It lists assets, liabilities, agreements, outside income, and certain spousal information. Once a member is seated, the disclosure becomes annual. So a sitting incumbent like Jamie Raskin has a multi-year paper trail of disclosures going back to 2016. A first-time candidate who has not crossed the threshold does not.
+
+ALEX: And that gets us to the structural question. J. D. Kumar is running against a five-term incumbent in a D-plus-thirty seat. In that kind of race, the incumbent typically has overwhelming fundraising advantages, name recognition advantages, and institutional backing — county Democratic clubs, union endorsements, party-aligned PACs. The challenger's most realistic path to attention is either grassroots organizing or earned media. We did not see evidence in our research that the Kumar campaign has built a grassroots field organization, and we have not seen earned media coverage in the major Maryland outlets. So the disclosure gap fits a broader pattern: this is a candidacy that is operating largely outside the institutional machinery that usually produces the disclosure record we expect.
+
+JORDAN: That is a way of saying — the gap is consistent with the campaign's overall scale, not necessarily a sign of evasion.
+
+ALEX: That is a fair way to put it. It is also why, when we get to Episode Four and we ask, what would it take for this candidate to win, the disclosure question circles back in. A primary win against a five-term incumbent in MD-8 would almost certainly require enough fundraising to cross the threshold, and crossing the threshold triggers the disclosure. So the financial-picture question is, in a sense, deferred — it would resolve itself if the campaign scaled.
+
+JORDAN: I want to dwell on one part of the website for a minute, because we owe the listener an accurate account of what the candidate is saying.
+
+ALEX: Go ahead.
+
+JORDAN: The candidate spends a substantial portion of votejdk.com using self-coined acronyms — TPST, ZCPC, GYGR, BEBCW, EIMC, REAJHG, LACAILUS PCG, AFAB, MBN, MJMN, SPFM, TGRP, KYZA, KYZB. Most of those are explained in his definitions section on the site. Some of them — and we are not going to soften this — describe ethnic, racial, and immigrant groups in ways that several mainstream civil-rights frameworks would identify as racially charged, in the way that the listener would notice if they read the site themselves.
+
+ALEX: We are going to come back to that in Episode Three when we are dealing with stated political positions. For now, in Episode Two, the relevant point is this. The candidate has chosen to build a public identity through one long policy document that uses a coined vocabulary. That is a stylistic and substantive choice he is making. The listener should read it directly. We are not going to summarize it in a way that flattens its rhetoric, and we are not going to ignore it.
+
+JORDAN: Books. Has he written any.
+
+ALEX: We did not locate any books by J. D. Kumar.
+
+JORDAN: Conferences. Speaking circuits.
+
+ALEX: We did not locate any conference talk or speaking-circuit appearance.
+
+JORDAN: Charity work.
+
+ALEX: We did not locate any disclosed charity board work or nonprofit-leadership role.
+
+JORDAN: So Episode Two leaves us, frankly, with one big claim, and one big silence.
+
+ALEX: That is the honest summary. The big claim is the Rockville-Potomac telecoms career — sixth employee, two Americans on the payroll, scale-up to a thousand people in twenty countries, founding-member status. The big silence is that we have no employer name attached to that claim, no LinkedIn profile, no professional press release, no industry conference appearance, no acquisition announcement that lists him by name. The career story sits, in its entirety, on his own self-description.
+
+JORDAN: And the financial picture is also silent.
+
+ALEX: Also silent. No personal financial disclosure surfaced. No FEC committee report surfaced. The campaign content carries the personal-expenditure flag. We have no net-worth figure, no asset disclosure, no conflicts of interest disclosure.
+
+JORDAN: What is a fair takeaway for the listener.
+
+ALEX: I think the fair takeaway is this. If you are a Rockville voter and you are weighing whether J. D. Kumar should represent you in Congress, his career claim is the central one to evaluate. It is the one that, if you could verify it, would tell you he has run something operationally large, has international experience, and has built a coalition of people across cultures and time zones. That would be a relevant qualification. He is asking you to take that claim mostly on his word. You may decide that is enough; you may decide that is not enough. That is for you to weigh. Our job is to tell you what we have and what we do not. We have his statement of the claim. We do not have the firm's name.
+
+JORDAN: One more thought before we wrap. The two American citizens on the founding team — assuming the claim is accurate — would have been visible in some way. Either through immigration paperwork associated with the foreign principals, through Maryland corporation filings, through commercial real-estate leases in Rockville or Potomac, through the Federal Communications Commission licensee database if the firm held licenses, or through trade-press coverage in Communications Daily, Telecommunications Reports, or Wireless Week — all of which were active publications in the mid-1990s.
+
+ALEX: None of which we could put J. D. Kumar's name in front of. That is worth saying plainly. We searched. We did not find. That is not the same as proving he was not there. It is a statement about how visible the work was to the outside world. And in a campaign for federal office, the listener can fairly ask: if the central job you held for a decade left no public trail, how should I weigh that?
+
+JORDAN: We are not asking the listener to resolve that question for us. We are asking the listener to consider it.
+
+ALEX: Right. Now let me, before we go to Episode Three, pull one more thread that connects to a listener priority we have been carrying for weeks.
+
+JORDAN: Which is.
+
+ALEX: Which is the listener's recurring ask about career-long voting history and historical background research, not just recent session votes. This is a candidate who, structurally, has no voting record to comb. So when we get to Episode Three tomorrow, we will not be giving you ten bill numbers and ten roll-call dates. We will be giving you ten stated policy positions, and we will be evaluating each one against, A, what the website itself says, B, what is typical for Democratic primary candidates in Maryland, and C, what would happen if this position became actual legislation. That is the closest we can get to a track record for a first-time federal candidate.
+
+JORDAN: And to the listener question about Andrew Friedson's fiscal record, Ben Kramer's voting record, and the Wootton High School closure — those are the right questions, and they are going to be answered most directly in their own dedicated series. Friedson's week is scheduled for the first week of June. Kramer's is the day before that. Wootton is a school-system question; we will pick it up in the office-primer track when we get to the MCPS-adjacent seats.
+
+ALEX: Tomorrow is Episode Three, Political Record.
+
+JORDAN: For a candidate who has never held office, Political Record is, by necessity, a slightly different episode. There is no roll-call to comb through. There are no sponsored bills. There are no endorsements he gave from a seat of power. So Episode Three is going to be about his stated political positions — the two hundred and fifty billion dollar district plan, the five trillion dollar national civil-rights plan, the K-through-ten education proposal, the Zero Confinement Policy Concept, the immigration enforcement framework, the hydroelectric expansion proposal — and about the rhetorical register he has chosen to use on his website. We are going to quote it accurately. We are going to evaluate where it lands in the policy landscape. We are going to note where it lines up with and where it cuts against the listener's stated priorities.
+
+ALEX: One more reminder before we close. We are still under the rule for this candidate that, when we do not have a public record of something, we say so. Tomorrow we will have to apply that rule to several of his policy claims, where the website tells us what he wants but does not tell us how he would do it.
+
+JORDAN: That is the work of Episode Three. We will pick it up there. The primary is June 23rd. Early voting begins June 11th and runs through June 18th. You are voting in MD-8 for U.S. House. The Democratic primary ballot for MD-8 includes Jamie Raskin, J. D. Kumar, Stephen Alan Leon, and Boris Kabel Velasquez. We will get into that lineup in Episode Four.
+
+ALEX: Take care.
+
+JORDAN: Take care.

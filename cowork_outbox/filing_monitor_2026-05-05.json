@@ -1,0 +1,32 @@
+{
+  "run_date": "2026-05-05",
+  "list_finalized": true,
+  "filing_deadline_passed": "2026-02-25",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active_in_registry": 22,
+  "total_active_after_proposed_adds": 22,
+  "summary": "No new adds or removals identified at this run versus the registry. The filing window closed Feb 25, 2026 and the SBE pages have been static post-deadline; the only outstanding reconciliation items continue to be the at-large / countywide / judicial / school-board enumeration that was carried over from the 2026-05-04 run and is dependent on the Windows-side `series monitor` step to parse the rendered SBE all-counties HTML. Both URLs were fetched this morning; the all-counties HTML body remains > 1 MB of script-heavy markup that the Linux file-tool sandbox cannot render and grep over reliably. The pending County-Executive add-pair from yesterday (Peter James, Mithun Banerjee) has not yet been applied to candidate_series.json — that write should be performed by the Windows-side `python main.py series monitor --apply` step, not by this Cowork run, because the registry is the canonical schedule.",
+  "active_offices_with_open_questions": [
+    "Council At-Large — still NOT enumerated in the registry. Listener has voting rights here. Highest priority gap.",
+    "MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court, BoE, 6th Circuit Judge — still NOT enumerated. Listener has voting rights on all of them per the districts profile.",
+    "MoCo County Executive — yesterday flagged Peter James + Mithun Banerjee as adds; not yet applied.",
+    "U.S. Representative MD-8 — registry has 5 candidates; verify against full SBE list at next opportunity."
+  ],
+  "dossier_scout_briefs_to_queue": [],
+  "tools_available_this_run": "WebFetch returned the all-counties SBE page successfully (≈1.06 MB body) but the rendered candidate-table content is JavaScript-rendered and the Linux file-tool sandbox cannot grep across it without line-break boundaries. Bash sandbox is currently failing with 'No space left on device' on every invocation, so no Python parsing was possible this run. WebSearch was used to confirm no public reporting of post-deadline withdrawals or corrections in the District Seven, House D19, or Senate D19 races between yesterday and today.",
+  "registry_writes_deferred": "No registry writes performed this run. last_sbe_check should be updated to 2026-05-05T08:00:00-04:00 by the Windows-side ingest. list_finalized remains true.",
+  "next_actions_for_windows_side": [
+    "Apply yesterday's pending adds (Peter James, Mithun Banerjee) via python main.py series monitor --apply.",
+    "Re-pull SBE all-counties HTML in a Windows pass that can render JavaScript / parse the rendered table; the Linux sandbox still cannot.",
+    "Enumerate Council At-Large field — likely 4 seats, multi-candidate field; critical gap because Council At-Large is a listener-voting office.",
+    "Enumerate MoCo State's Attorney, Sheriff, Clerk, Register, Orphans' Court, BoE, 6th Circuit Judge fields.",
+    "Update last_sbe_check on candidate_series.json top-level to today's ISO timestamp."
+  ],
+  "sources": [
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_statewide_candidatelist.html",
+    "https://elections.maryland.gov/elections/2026/primary_candidates/2026_GP_all_counties_candidatelist.html",
+    "https://elections.maryland.gov/elections/2026/primary_candidates/index_2026GP.html"
+  ]
+}

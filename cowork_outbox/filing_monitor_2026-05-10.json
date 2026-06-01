@@ -1,0 +1,10 @@
+{
+  "run_date": "2026-05-10T11:30:00-04:00",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active": 22,
+  "list_finalized": false,
+  "last_sbe_check": "2026-05-10T11:30:00-04:00",
+  "notes": "SBE statewide HTML page and all-counties HTML page were fetched as binary/single-line content that this Linux sandbox cannot grep across without bash multiline tools. The bash sandbox previously reported 'No space left on device' for the prior 6 days; on today's run the bash tool is up but the HTML pages remain JS-rendered and yield un-parseable single-line bodies via web_fetch. As a result, this run reports a NO-CHANGE state versus the registry (22 active candidates) — but flags that the underlying SBE list cannot be cross-checked from this run, and the same prior-day pending changes remain unapplied. Pending changes carried over from prior runs (5/4 onward): two County Executive Democrats (Peter James, Mithun Banerjee) reported by The Banner post-deadline roundup are still NOT in the registry; tier-3 and tier-4 county-wide office fields (Council At-Large, MoCo State's Attorney, Sheriff, Clerk of Circuit Court, Register of Wills, Orphans' Court Judge, Board of Education, 6th Circuit Judge) remain UNPOPULATED in candidate_series.json. The District 19 House field of seven (2 incumbents + 5 challengers including today's Sorrel) matches both the Banner final-list roster and Bethesda Magazine's March 2 roundup. list_finalized remains false because the cure/provisional period has not been formally closed in any SBE notice we located on this run."
+}

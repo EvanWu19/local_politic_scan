@@ -1,0 +1,9 @@
+{
+  "run_date": "2026-05-10T11:50:00-04:00",
+  "status": "deferred",
+  "reason": "consistency_scores INSERT pipeline is the Windows-side scheduler; the Linux drainer can read politics.db rows but the project's existing pattern requires the Windows main.py to perform the actual INSERT into consistency_scores. As before the deferral does not lose data — the brief is preserved and the Windows scheduler can ingest this same JSON.",
+  "politician_ids_in_scope": 138,
+  "deferred_inserts": [],
+  "summary": "138 politicians deferred for the ninth run in the streak that began 5/2 (this is the first run since 5/6 because runs 5/7-5/9 were missed entirely). The reasons are unchanged: this Linux backend does not perform the INSERT into consistency_scores by design — the Windows scheduler does. No politician's consistency_scores row was updated today.",
+  "next_steps": "Windows-side: run main.py consistency-flush to apply the deferred INSERTs from 5/2 onward. There are now 9 days of backlog (5/2, 5/3, 5/4, 5/5, 5/6, 5/7, 5/8, 5/9, 5/10) on the consistency-scores INSERT pipeline."
+}

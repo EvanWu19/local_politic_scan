@@ -1,0 +1,8 @@
+REJECTED per INVARIANTS — NEVER BREAK rule #1:
+"NEVER generate `author_episode` or `deepdive` podcast briefs. ALL podcast output must be `series_episode` format for the day's scheduled candidate."
+
+Additional reason: Andrew Friedson was already fully covered in his 4-episode series on 2026-05-16 (per project memory and prior incident on 2026-05-19 when a deepdive_andrew_friedson was generated and flagged as duplicate coverage).
+
+The brief was marked .error.json without producing a script. The Windows-side cowork-queue should stop generating deep_dive_script briefs entirely; see scanner/podcast.py for the block.
+
+No output_file was written.

@@ -1,0 +1,98 @@
+{
+  "brief_id": "dossier_2026-05-26_andrew-friedson",
+  "type": "candidate_dossier",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\andrew-friedson.md",
+  "instructions": "Build a DEEP candidate dossier for Andrew Friedson (County Council District 1, Democrat, district 1). The current draft of these dossiers has been too thin to support a single-candidate deep-dive episode — it covers a few recent votes and stops. The listener has asked for the *life* of the candidate, not just a roll-call list.\n\nStep 1 — RESOLVE THE PERSON.\n  • Web-search to disambiguate. The name 'Andrew Friedson' may be     common; pin down the specific person running for this office in     this district. Cross-check with the campaign filing, the office     they're running for, the district, and party.\n  • Determine year of birth (or best estimate). This sets the     look-back window for step 3.\n\nStep 2 — BIOGRAPHICAL FOUNDATION.\nBuild these sections from web research, citing every fact:\n  A. DEMOGRAPHICS — birth year & age, place of birth, current      residence, family (spouse, children if publicly disclosed),      race/ethnicity if publicly self-identified, religion if      publicly self-identified, languages spoken.\n  B. SOCIOECONOMIC — net worth & income (from public financial      disclosures, FEC filings, state ethics filings), home      ownership status if public, major business interests,      stock holdings, any disclosed conflicts of interest.\n  C. EDUCATION — every school attended (high school, college,      graduate), degrees earned with years, notable academic      awards or unfinished programs, any honorary degrees.\n  D. PROFESSIONAL HISTORY — every job held, in reverse chronology,      with start/end years and employer. For each role, one line on      what they actually did. Include military service, nonprofit      work, volunteer leadership, board memberships. Fill gaps      where possible — a five-year unaccounted-for stretch is itself      a finding worth noting.\n\nStep 3 — DEEP NEWS HISTORY.\nOnce you know their age, search news, social media, archived web pages, court records, professional licensure boards, podcast interviews, op-eds, and academic publications across a window of **(candidate_age − 20) years, minimum 10 years**. So a 40-year-old → 20 years back; a 30-year-old → 10 years back; a 28-year-old → 10 years back (minimum); a 65-year-old → 45 years back; an 80-year-old → 60 years back. The window deliberately skips childhood and early teens (nothing useful below age 20). Don't just sample recent press releases. Use these starting points:\n  • Google News with date-range filter (set after: tbs=cdr)\n  • news.google.com archive\n  • web.archive.org for the candidate's own site / employer pages\n  • Their LinkedIn, X/Twitter back to earliest posts\n  • Local newspapers' archives (Bethesda Magazine, Maryland Matters,     Washington Post, WTOP) — many are free or cached\n  • Court records (PACER for federal, Maryland Judiciary Case     Search for state)\n  • Charity filings (ProPublica Nonprofit Explorer)\n  • Academic citations (Google Scholar)\n  • For Maryland legislators: mgaleg.maryland.gov full bill history\n  • For Montgomery County officials: county council legislative DB\n  • For federal: congress.gov + GovTrack legacy data\nSurface anything substantive you find — early career controversies, switch in party affiliation, prior runs for office (won AND lost), endorsements they collected and gave, organizations they joined or founded, public statements that have aged interestingly.\n\nStep 4 — POLITICAL TRACK RECORD (if they've held office).\n  • Voting record by topic — table with bill numbers, dates,     direction (yes/no/abstain), brief description.\n  • Public statements & policy positions — quoted, with links and     dates. Show evolution where positions shifted.\n  • Sponsored / co-sponsored legislation — with status (passed /     failed / committee / introduced).\n  • Endorsements received and given — list with dates.\n\nStep 5 — CONTROVERSIES & NOTABLE PRESS.\nNeutral framing. If something is alleged, say so; if proven, say so; if dismissed, say so. Include ethics complaints, lawsuits, FEC complaints, news investigations.\n\nStep 6 — STANCE ON LISTENER-FLAGGED TOPICS:\n  Pre-political biographies of incumbents (Friedson, Glass, Jawando), Judicial branch races (Circuit Court Judge, Orphans' Court), Register of Wills / Clerk of Circuit Court — almost no coverage, MoCo Board of Education candidates beyond at-large slate, Republican alternative views on countywide races (the listener votes D primary, but wants to know what's on the general ballot), What is Ben Kramer's full historical voting record back to 2007 on consumer protection, judiciary, immigration, and education funding?, Is Andrew Friedson actually the fiscal-restraint candidate when measured by individual line-item votes?, Why is MCPS proposing to close/relocate Wootton High School and what happens next on the timeline?, Among the five+ Council-At-Large Democrats, which one (if any) actually opposes the existing sanctuary framework?, What is the new MCPS rating methodology and how is each Rockville school graded under it?\nFor each topic give: (a) public statements with quotes/links, (b) any votes that bear on it, (c) clear bottom-line assessment (supports / opposes / mixed / unclear).\n\nStep 7 — OPEN QUESTIONS. What couldn't you find? Name the gaps explicitly so the next deep-dive episode can flag them as \"we don't know yet.\"\n\nOUTPUT.\n  • Format: Markdown to `output_file`.\n  • Length target: 1800–3500 words (was 800–1500 before this     upgrade — the prior length wasn't enough to support 30     minutes of dialogue).\n  • Cite every non-obvious claim with a URL. Inline footnotes or     bracketed [src: URL] are fine.\n  • If a fact CAN'T be sourced after honest searching, say so.     NEVER fabricate dates, employers, schools, family details,     quotes, vote counts, or bill numbers.",
+  "context": {
+    "candidate_name": "Andrew Friedson",
+    "office": "County Council District 1",
+    "party": "Democrat",
+    "district": "1",
+    "listener_focus": [
+      "Pre-political biographies of incumbents (Friedson, Glass, Jawando)",
+      "Judicial branch races (Circuit Court Judge, Orphans' Court)",
+      "Register of Wills / Clerk of Circuit Court — almost no coverage",
+      "MoCo Board of Education candidates beyond at-large slate",
+      "Republican alternative views on countywide races (the listener votes D primary, but wants to know what's on the general ballot)",
+      "What is Ben Kramer's full historical voting record back to 2007 on consumer protection, judiciary, immigration, and education funding?",
+      "Is Andrew Friedson actually the fiscal-restraint candidate when measured by individual line-item votes?",
+      "Why is MCPS proposing to close/relocate Wootton High School and what happens next on the timeline?",
+      "Among the five+ Council-At-Large Democrats, which one (if any) actually opposes the existing sanctuary framework?",
+      "What is the new MCPS rating methodology and how is each Rockville school graded under it?"
+    ],
+    "known_events": [
+      {
+        "id": 205,
+        "title": "District 1 council candidates debate housing, fiscal policy at Bethesda forum",
+        "summary": "Four candidates (three Democrats, one Republican) are running for a Montgomery County Council seat in District 1 and debated their positions on housing and fiscal (money/budget) policy. This election does not affect your district, but shows how local races are unfolding.",
+        "source_url": "https://bethesdamagazine.com/2026/04/20/district-1-council-candidates-debate-housing-fiscal-policy-bethesda-forum/",
+        "date": "2026-04-20",
+        "level": "county",
+        "role": "Montgomery County Councilmember, District 1",
+        "stance": "vacating seat"
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "source_url": "https://www2.montgomerycountymd.gov/mcgportalapps/Press_Detail.aspx?Item_ID=48563&Dept=1",
+        "date": "2026-04-16",
+        "level": "county",
+        "role": "Montgomery County Councilmember",
+        "stance": "Addresses public safety concerns regarding vandalism and arson"
+      },
+      {
+        "id": 31,
+        "title": "Democratic candidates for Montgomery County’s top job make pitches at forum",
+        "summary": "Five Democratic candidates are running for Montgomery County executive and holding public forums to introduce themselves. This directly affects Rockville voters, who live in Montgomery County and will vote in this election for their county's top leader.",
+        "source_url": "https://marylandmatters.org/2026/04/16/democratic-candidates-for-montgomery-countys-top-job-make-pitches-at-forum/",
+        "date": "2026-04-16",
+        "level": "state",
+        "role": "Candidate for Montgomery County Executive",
+        "stance": "Running in Democratic primary"
+      },
+      {
+        "id": 31,
+        "title": "Democratic candidates for Montgomery County’s top job make pitches at forum",
+        "summary": "Five Democratic candidates are running for Montgomery County executive and holding public forums to introduce themselves. This directly affects Rockville voters, who live in Montgomery County and will vote in this election for their county's top leader.",
+        "source_url": "https://marylandmatters.org/2026/04/16/democratic-candidates-for-montgomery-countys-top-job-make-pitches-at-forum/",
+        "date": "2026-04-16",
+        "level": "state",
+        "role": "Democratic Candidate for Montgomery County Executive",
+        "stance": "Running for office"
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "source_url": "https://www2.montgomerycountymd.gov/mcgportalapps/Press_Detail.aspx?Item_ID=48563&Dept=1",
+        "date": "2026-04-16",
+        "level": "county",
+        "role": "Montgomery County Councilmember (District 7)",
+        "stance": "Addressing public safety concerns"
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "source_url": "https://www2.montgomerycountymd.gov/mcgportalapps/Press_Detail.aspx?Item_ID=48563&Dept=1",
+        "date": "2026-04-16",
+        "level": "county",
+        "role": "Montgomery County Councilmember, District 7",
+        "stance": "Responding to local public safety incident"
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "source_url": "https://www2.montgomerycountymd.gov/mcgportalapps/Press_Detail.aspx?Item_ID=48563&Dept=1",
+        "date": "2026-04-16",
+        "level": "county",
+        "role": "Councilmember",
+        "stance": "Commenting on public safety incident"
+      }
+    ]
+  },
+  "created_at": "2026-05-26T23:45:02.491412-04:00",
+  "due_by": ""
+}

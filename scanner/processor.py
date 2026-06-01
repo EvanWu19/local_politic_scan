@@ -20,7 +20,15 @@ from config import Config as _Cfg
 
 log = logging.getLogger(__name__)
 
-MODEL = "claude-haiku-4-5-20251001"   # Fast + cheap for daily batch processing
+import os as _os
+# Upgraded to Opus 4.7 on 2026-05-15 for better relevance scoring and
+# local-impact tagging. Two env vars provide a graceful fallback:
+#   PROCESSOR_MODEL          → overrides the default outright
+#   PROCESSOR_TAG_MODEL      → cheaper model for the level/name pass only
+# (Listener asked for Opus everywhere; this keeps the seam in case cost
+#  becomes a problem.)
+MODEL = _os.getenv("PROCESSOR_MODEL", "claude-opus-4-7")
+TAG_MODEL = _os.getenv("PROCESSOR_TAG_MODEL", MODEL)
 
 _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "the configured locale"
 _FED_KW = ", ".join(_Cfg.FEDERAL_KEYWORDS[:12]) if _Cfg.FEDERAL_KEYWORDS else "budget, healthcare, education, housing, transportation"
@@ -67,13 +75,10 @@ def process_batch(api_key: str, events: List[Dict],
 
     When False, falls back to the in-process Anthropic batch path.
     """
-    try:
-        from config import Config as _Cfg2
-        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
-    except Exception:
-        cowork_mode = False
-
-    if cowork_mode:
+    # Cowork is the only path now. The `api_key` arg is kept for backwards
+    # compatibility with callers (main.py, scan.py) but ignored.
+    from config import Config as _Cfg2
+    if True:  # was: if cowork_mode
         from datetime import date
         from pathlib import Path
         from scanner.cowork_bridge import build_enrich_events_brief, write_brief
@@ -134,18 +139,17 @@ def process_batch(api_key: str, events: List[Dict],
             e.setdefault("_pending_cowork", True)
         return events
 
-    if not api_key:
-        log.warning("No ANTHROPIC_API_KEY — skipping AI enrichment")
-        return events
-
-    client = _make_client(api_key)
-    enriched = []
-
-    for i in range(0, len(events), batch_size):
-        batch = events[i: i + batch_size]
-        enriched.extend(_process_batch(client, batch))
-
-    return enriched
+    # Direct-API fallback removed 2026-05-15 — every enrichment goes through
+    # a Cowork brief (drained by drain-cowork-inbox). If you somehow reach
+    # this line, surface it as a notification rather than silently calling
+    # the Anthropic API.
+    from scanner.notifications import notify
+    notify("processor",
+           "Reached the disabled direct-API fallback. The Cowork branch "
+           "above should have handled this — check USE_COWORK_FOR_AI.",
+           severity="error",
+           context={"event_count": len(events)})
+    return events
 
 
 def _process_batch(client: anthropic.Anthropic, events: List[Dict]) -> List[Dict]:

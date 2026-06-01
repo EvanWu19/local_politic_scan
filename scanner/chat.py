@@ -98,14 +98,9 @@ def handle_message(db_path: Path, knowledge_dir: Path,
         update_conversation_title, get_recent_events,
     )
 
-    # ── Cowork mode short-circuit ────────────────────────────────────────────
-    try:
-        from config import Config as _Cfg2
-        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
-    except Exception:
-        cowork_mode = False
-
-    client = None if cowork_mode else anthropic.Anthropic(api_key=anthropic_key)
+    # Cowork-only — direct API path disabled 2026-05-15.
+    cowork_mode = True
+    client = None
 
     # ── 1. Ensure conversation exists ────────────────────────────────────────
     if conversation_id is None:
@@ -155,32 +150,18 @@ def handle_message(db_path: Path, knowledge_dir: Path,
             "queued_for_cowork": True,
         }
 
-    # ── 4. Build message history for Claude ──────────────────────────────────
-    history = [
-        {"role": m["role"], "content": m["content"]}
-        for m in conv.get("messages", [])
-    ]
-    # Add the new user message we just stored
-    history.append({"role": "user", "content": user_message})
-
-    # ── 5. Call Claude ───────────────────────────────────────────────────────
-    try:
-        resp = client.messages.create(
-            model=chat_model,
-            max_tokens=1500,
-            system=[
-                {"type": "text", "text": CHAT_SYSTEM,
-                 "cache_control": {"type": "ephemeral"}},
-                {"type": "text",
-                 "text": f"## Today's digest context (top {len(events)} stories)\n\n{context_text}",
-                 "cache_control": {"type": "ephemeral"}},
-            ],
-            messages=history,
-        )
-        reply = resp.content[0].text
-    except Exception as e:
-        log.exception("Chat API error")
-        reply = f"Sorry, I hit an error: `{e}`. Try again in a moment."
+    # ── Direct-API path disabled — this code is unreachable in production.
+    #   Kept inert so callers don't break and so a future maintainer can
+    #   compare prompt structure if they re-enable the API path.
+    from scanner.notifications import notify
+    notify("chat",
+           "Reached the disabled direct-API fallback. Cowork branch above "
+           "should have returned. Check USE_COWORK_FOR_AI.", severity="error")
+    history = []  # noqa: F841 — kept to preserve symbol for tooling
+    reply = (
+        "Cowork-only mode: this branch should not have run. A notification "
+        "has been recorded for you to investigate."
+    )
 
     # ── 6. Save assistant reply ──────────────────────────────────────────────
     add_message(db_path, conversation_id, "assistant", reply)

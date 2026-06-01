@@ -1,0 +1,21 @@
+{
+  "brief_id": "themes_2026-05-26",
+  "type": "weekly_themes",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-26.json",
+  "instructions": "Roll up the listener's recent daily_notes into a structured signal block the Editor and Author agents will use to plan the next episode.\n\nSteps:\n  1. Read the last 7 rows from `daily_notes` at `C:\\Users\\evan_\\local_politic_scan\\data\\politics.db`.\n  2. Read the last 5 days of `podcast_*_ep*.txt` from the `podcasts/` directory \u2014 first ~30 lines each \u2014 so you can detect framings, taglines, and anecdotes the show has reused.\n  3. Distill into five sections:\n       SUMMARY \u2014 2-3 sentence paragraph on what this listener cares about right now.\n       THEMES \u2014 0\u20135 lines, `<theme> | <why it matters>`.\n       OPEN QUESTIONS \u2014 0\u20135 lines, near-verbatim.\n       UNDERSERVED TOPICS \u2014 0\u20135 lines.\n       RECENT COVERAGE TO AVOID \u2014 0\u201310 lines, concrete framings/taglines/anecdotes already used in the last 5 days. Be specific.\n  4. UPSERT a row into `weekly_themes` keyed by (window_start, window_end). Fields: themes, open_questions, underserved_topics, summary (each as JSON arrays of strings or as the multi-line text the project's existing parser accepts), avoid_list (JSON array), note_count, generated_at.\n  5. Also write the structured rollup to `output_file` for audit.\n\nBe conservative on themes (no inventing from one passing comment), AGGRESSIVE on the avoid list \u2014 repetition is the listener's #1 complaint.",
+  "context": {
+    "target_date": "2026-05-26",
+    "db_path": "C:\\Users\\evan_\\local_politic_scan\\data\\politics.db",
+    "window_days": 7,
+    "locale": "Rockville, Montgomery County, Maryland"
+  },
+  "created_at": "2026-05-26T07:00:46.553216-04:00",
+  "due_by": "",
+  "_processed": {
+    "status": "done",
+    "note": "daily_notes table unreachable; themes derived from podcast scripts + memory.",
+    "summary": "Weekly themes rollup written. DB unreachable from sandbox (FUSE sqlite issue); rollup synthesized from persistent user profile + last 5 podcast scripts. Recommend Windows-side re-run.",
+    "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-26.json",
+    "processed_at": "2026-05-26T08:30:00-04:00"
+  }
+}

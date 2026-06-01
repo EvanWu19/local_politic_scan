@@ -143,6 +143,92 @@ def _next_upcoming_candidate(from_date: date,
     return future[0]
 
 
+def _candidate_has_complete_series(candidate_name: str, podcasts_dir) -> bool:
+    """Return True if all 4 series episodes exist as MP3s for this candidate.
+
+    Used to filter out already-covered candidates from the deepdive queue so
+    the nightly cowork-queue step never re-queues a Friedson-style deepdive
+    for a candidate whose series is already fully recorded.
+    """
+    from pathlib import Path
+    import re
+    slug = re.sub(r"[^a-z0-9]+", "-", candidate_name.lower()).strip("-")
+    podcasts_dir = Path(podcasts_dir)
+    return any(podcasts_dir.glob(f"podcast_*_series_{slug}_ep4.mp3"))
+
+
+def _airing_dates_for_candidate(candidate_name: str, podcasts_dir) -> List[str]:
+    """Return ISO dates on which this candidate has a *complete* (all 4
+    episodes) series airing on disk. Empty list = not fully aired anywhere.
+
+    Shared by the entry-block cascade in ``queue_today_series`` and the
+    existing in-flow dedup guard so both code paths use one definition of
+    "already aired in full" — file-size-filtered to avoid counting empty
+    or .partial leftovers as real airings.
+    """
+    from pathlib import Path
+    import re as _re
+    if not candidate_name:
+        return []
+    slug = _slug(candidate_name)
+    podcasts_dir = Path(podcasts_dir)
+    airings: Dict[str, set] = {}
+    for p in podcasts_dir.glob(f"podcast_*_series_{slug}_ep*.mp3"):
+        m = _re.search(r"podcast_(\d{4}-\d{2}-\d{2})_series_.+_ep(\d+)\.mp3$", p.name)
+        if not m:
+            continue
+        try:
+            if p.stat().st_size < 1024:
+                continue
+        except OSError:
+            continue
+        airings.setdefault(m.group(1), set()).add(int(m.group(2)))
+    return sorted(d for d, eps in airings.items() if eps >= {1, 2, 3, 4})
+
+
+def _next_unaired_candidate(from_date: date,
+                              reg: Optional[Dict[str, Any]] = None,
+                              podcasts_dir=None
+                              ) -> Optional[Dict[str, Any]]:
+    """Walk the future schedule and return the first candidate whose
+    ``scheduled_date > from_date`` AND who does NOT already have a
+    complete series on disk.
+
+    Bug fix (2026-05-25): the old `_next_upcoming_candidate` was
+    single-shot. If the soonest future candidate had already aired (e.g.
+    Vaughn Stewart got pulled forward to May 20 even though his registry
+    slot was July 22), the dedup-guard refused the airing and the function
+    silently returned ``already_aired`` — producing zero MP3s for every
+    day until the registry was edited. This walks past already-aired
+    entries instead.
+    """
+    if podcasts_dir is None:
+        try:
+            from config import Config as _Cfg
+            podcasts_dir = _Cfg.PODCASTS_DIR
+        except Exception:
+            from pathlib import Path
+            podcasts_dir = Path("podcasts")
+    reg = reg or load_registry()
+    iso = from_date.isoformat()
+    future = [
+        c for c in reg.get("candidates", [])
+        if c.get("scheduled_date") and c.get("scheduled_date") > iso
+           and c.get("dossier_status") != "withdrawn"
+    ]
+    future.sort(key=lambda c: c["scheduled_date"])
+    for c in future:
+        if _airing_dates_for_candidate(c.get("name", ""), podcasts_dir):
+            log.info(
+                "series: skipping %s (scheduled %s) in forward-lookup — "
+                "already aired in full",
+                c.get("name"), c.get("scheduled_date"),
+            )
+            continue
+        return c
+    return None
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Pool-supply tracking + pool-exhausted closing brief
 # ──────────────────────────────────────────────────────────────────────────────
@@ -914,23 +1000,44 @@ def queue_today_series_v2(target_date: Optional[date] = None,
     target_date = target_date or date.today()
     reg = load_registry()
     cand = candidate_for_date(target_date, reg)
+
+    # CASCADE FIX (2026-05-25): if today's scheduled candidate has already
+    # aired in full (Vaughn Stewart May 20 → registry still says July 22),
+    # demote to forward-lookup so we don't return ``already_aired`` and
+    # produce nothing. The legacy in-flow dedup-guard below remains as a
+    # belt-and-suspenders check; this earlier cascade just prevents the
+    # silent-fail mode.
+    from config import Config as _Cfg
+    _pd = _Cfg.PODCASTS_DIR
+    if cand and _airing_dates_for_candidate(cand.get("name", ""), _pd):
+        log.warning(
+            "series: today's scheduled %s already aired — cascading to "
+            "next unaired future candidate",
+            cand.get("name"),
+        )
+        cand = None
+
     if not cand:
         # PERMANENT RULE (2026-05-19): never silently fall through to the
         # retired news format. If today has no scheduled candidate, find
-        # the next future candidate and air their series early. Only if the
-        # entire forward schedule is empty do we surface an error.
-        cand = _next_upcoming_candidate(target_date, reg)
+        # the next future candidate and air their series early. The
+        # forward-lookup is now ``_next_unaired_candidate`` which walks
+        # past entries that already have a complete on-disk series — fix
+        # for the May 22–25 silent-fail (only Stewart was future, but he
+        # already aired May 20, so the day produced nothing).
+        cand = _next_unaired_candidate(target_date, reg, _pd)
         if not cand:
             # POOL-EXHAUSTED HANDLING (2026-05-20): registry is empty of
-            # future candidates. Don't crash silently or just log — queue
-            # a special `podcast_closing` brief so the drain produces a
+            # future candidates (or every remaining future entry has
+            # already aired). Don't crash silently or just log — queue a
+            # special `podcast_closing` brief so the drain produces a
             # short ~90-second closing episode acknowledging that the
             # series has covered everyone currently on file. Future
             # additions to the registry will resume normal series queueing.
             _queue_closing_brief(target_date)
             log.error(
                 "series: no candidate scheduled for %s and no future "
-                "candidates — queued podcast_closing brief instead",
+                "unaired candidates — queued podcast_closing brief instead",
                 target_date,
             )
             return {
@@ -939,7 +1046,7 @@ def queue_today_series_v2(target_date: Optional[date] = None,
                 "closing_brief_queued": True,
             }
         log.warning(
-            "series: no candidate scheduled for %s — using next scheduled: "
+            "series: no candidate scheduled for %s — using next unaired: "
             "%s (originally %s)",
             target_date, cand["name"], cand.get("scheduled_date"),
         )

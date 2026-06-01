@@ -1,0 +1,153 @@
+{
+  "brief_id": "deepdive_2026-05-19_andrew-friedson",
+  "type": "deep_dive_script",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-19_deepdive_andrew_friedson.txt",
+  "instructions": "Write a ~30-minute single-candidate deep-dive podcast on Andrew Friedson. Two hosts: ALEX (presenter) and JORDAN (curious first-time voter from Rockville, MD). Every line begins ALEX: or JORDAN: — no stage directions, no markdown.\n\nCover, in this order:\n  1. Who they are and which seat the listener is voting on.\n  2. Their actual voting record by topic — quote bill numbers and cite the dossier. Do NOT speak in generalities; if the dossier has a vote, name it.\n  3. Where their stated positions and votes have been stable, where they've shifted, and which votes the listener-flagged topics turn on (sanctuary policy, school funding, property tax, etc.).\n  4. What's contested in the upcoming primary and how this candidate differs from the others.\n  5. A 'what would change in Rockville if they win' grounded close.\n\nAVOID re-using any framing on this list:\n  - \"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line — used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3\n  - Evan Glass background-screening DHS bill as the sanctuary-policy example — used in 2026-04-28 ep1 and 2026-04-29 ep3\n  - Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark — used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)\n  - \"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") — used in 2026-04-28 ep1 and revisited 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1 and ep4\n  - Beltsville Agricultural Research Center closure as a District 19 candidate-record hook — used in 2026-04-27 ep4\n  - Listener's own frustration about promised deep-dives not delivering, narrated back to the listener — has shipped across at least five episodes; do not use as a framing device again\n\nIf the dossier is missing a fact you'd want to cite, say so on-air ('we don't have a record of how they voted on X yet'), don't invent.",
+  "context": {
+    "candidate_name": "Andrew Friedson",
+    "target_date": "2026-05-19",
+    "politician_row": {
+      "id": 7,
+      "name": "Andrew Friedson",
+      "office": "County Council District 1",
+      "party": "Democrat",
+      "district": "1",
+      "level": "county",
+      "bio": ""
+    },
+    "events": [
+      {
+        "id": 205,
+        "title": "District 1 council candidates debate housing, fiscal policy at Bethesda forum",
+        "summary": "Four candidates (three Democrats, one Republican) are running for a Montgomery County Council seat in District 1 and debated their positions on housing and fiscal (money/budget) policy. This election does not affect your district, but shows how local races are unfolding.",
+        "date": "2026-04-20",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"election\", \"housing\"]",
+        "role": "Montgomery County Councilmember, District 1",
+        "stance": "vacating seat",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Montgomery County Councilmember",
+        "stance": "Addresses public safety concerns regarding vandalism and arson",
+        "notes": ""
+      },
+      {
+        "id": 31,
+        "title": "Democratic candidates for Montgomery County’s top job make pitches at forum",
+        "summary": "Five Democratic candidates are running for Montgomery County executive and holding public forums to introduce themselves. This directly affects Rockville voters, who live in Montgomery County and will vote in this election for their county's top leader.",
+        "date": "2026-04-16",
+        "level": "state",
+        "type": "news",
+        "categories": "[\"election\", \"budget\"]",
+        "role": "Candidate for Montgomery County Executive",
+        "stance": "Running in Democratic primary",
+        "notes": ""
+      },
+      {
+        "id": 31,
+        "title": "Democratic candidates for Montgomery County’s top job make pitches at forum",
+        "summary": "Five Democratic candidates are running for Montgomery County executive and holding public forums to introduce themselves. This directly affects Rockville voters, who live in Montgomery County and will vote in this election for their county's top leader.",
+        "date": "2026-04-16",
+        "level": "state",
+        "type": "news",
+        "categories": "[\"election\", \"budget\"]",
+        "role": "Democratic Candidate for Montgomery County Executive",
+        "stance": "Running for office",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Montgomery County Councilmember (District 7)",
+        "stance": "Addressing public safety concerns",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Montgomery County Councilmember, District 7",
+        "stance": "Responding to local public safety incident",
+        "notes": ""
+      },
+      {
+        "id": 104,
+        "title": "Councilmember Andrew Friedson's Statement on Recent Arrest in Connection to Bradley Hills Vandalism and Arson",
+        "summary": "",
+        "date": "2026-04-16",
+        "level": "county",
+        "type": "news",
+        "categories": "[\"police\"]",
+        "role": "Councilmember",
+        "stance": "Commenting on public safety incident",
+        "notes": ""
+      }
+    ],
+    "consistency": {
+      "id": 922,
+      "politician_id": 7,
+      "politician_name": "Andrew Friedson",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-20",
+      "event_count": 7,
+      "score": 0.85,
+      "verdict": "consistent",
+      "summary": "Andrew Friedson (County Council District 1, Democrat) has 7 linked events across 5 topic area(s): voting_rights, utilities_climate, housing, fiscal_budget, healthcare. Stable positions on 2 topic(s). ",
+      "stable_positions": [
+        {
+          "topic": "voting_rights",
+          "position": "vacating seat",
+          "evidence_event_ids": [
+            31,
+            31,
+            205
+          ]
+        },
+        {
+          "topic": "utilities_climate",
+          "position": "running for office",
+          "evidence_event_ids": [
+            31,
+            31
+          ]
+        }
+      ],
+      "shifts": [],
+      "generated_at": "2026-05-19T02:55:35.653075"
+    },
+    "listener_notes": [],
+    "avoid_list": [
+      "\"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line — used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3",
+      "Evan Glass background-screening DHS bill as the sanctuary-policy example — used in 2026-04-28 ep1 and 2026-04-29 ep3",
+      "Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark — used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)",
+      "\"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+      "ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") — used in 2026-04-28 ep1 and revisited 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1 and ep4",
+      "Beltsville Agricultural Research Center closure as a District 19 candidate-record hook — used in 2026-04-27 ep4",
+      "Listener's own frustration about promised deep-dives not delivering, narrated back to the listener — has shipped across at least five episodes; do not use as a framing device again"
+    ],
+    "dossier_path": null
+  },
+  "created_at": "2026-05-19T07:00:54.145661-04:00",
+  "due_by": ""
+}

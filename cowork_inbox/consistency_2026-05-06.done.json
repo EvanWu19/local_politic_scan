@@ -1,0 +1,10 @@
+{
+  "brief_id": "consistency_2026-05-06",
+  "type": "score_consistency",
+  "status": "done",
+  "completed_at": "2026-05-06T09:15:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-06.json",
+  "rows_inserted": 0,
+  "verdict": "deferred",
+  "notes": "Bash sandbox failing with 'No space left on device' so politics.db cannot be opened from this Cowork run. Same deferral pattern as 5/3, 5/4, 5/5. Windows-side `python main.py score-consistency --date 2026-05-06` should pick up the 138-id queue."
+}

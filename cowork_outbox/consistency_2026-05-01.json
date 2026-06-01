@@ -1,0 +1,3202 @@
+{
+  "brief_id": "consistency_2026-05-01",
+  "type": "score_consistency",
+  "generated_at": "2026-05-01T11:00:00-04:00",
+  "politicians_processed": 138,
+  "consistent": 46,
+  "mixed": 0,
+  "inconsistent": 0,
+  "insufficient": 92,
+  "db_writeback_sql_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-01.sql",
+  "note_on_db_write": "consistency_scores table on the live DB is currently disk-malformed (failed PRAGMA integrity_check on 2026-05-01). Inserts above will replay clean once the table is rebuilt. Other tables (events, politicians, weekly_themes, etc.) are intact.",
+  "rows": [
+    {
+      "politician_id": 7,
+      "politician_name": "Andrew Friedson",
+      "office": "County Council District 1",
+      "party": "Democrat",
+      "level": "county",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-20",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 4 topic(s): Public safety & policing, Elections & campaigns, Budget & spending, Housing & zoning. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Public safety & policing",
+          "position": "neutral",
+          "evidence_event_ids": [
+            104,
+            104,
+            104,
+            104
+          ]
+        },
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            31,
+            31,
+            205
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            31,
+            31
+          ]
+        },
+        {
+          "topic": "Housing & zoning",
+          "position": "neutral",
+          "evidence_event_ids": [
+            205
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 5,
+      "politician_name": "Aruna Miller",
+      "office": "Lt. Governor of Maryland",
+      "party": "Democrat",
+      "level": "state",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-24",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 3 topic(s): Taxes & fiscal policy, Budget & spending, Business & economy. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "neutral",
+          "evidence_event_ids": [
+            241,
+            241
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            241,
+            241
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "neutral",
+          "evidence_event_ids": [
+            294,
+            294
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 34,
+      "politician_name": "2",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 25,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 12 topic(s): Business & economy, Budget & spending, Taxes & fiscal policy, Education / school funding. No clearly opposing stances over the 25-event window.",
+      "stable_positions": [
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            1,
+            5,
+            18
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            1,
+            5,
+            9,
+            19
+          ]
+        },
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "support",
+          "evidence_event_ids": [
+            2,
+            13,
+            17
+          ]
+        },
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            3,
+            6,
+            12,
+            14,
+            19,
+            21,
+            24
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            3,
+            10,
+            15,
+            17,
+            20,
+            21,
+            22,
+            23,
+            25
+          ]
+        },
+        {
+          "topic": "Transportation",
+          "position": "support",
+          "evidence_event_ids": [
+            4,
+            8,
+            18
+          ]
+        },
+        {
+          "topic": "Health & healthcare",
+          "position": "support",
+          "evidence_event_ids": [
+            7
+          ]
+        },
+        {
+          "topic": "Public safety & policing",
+          "position": "support",
+          "evidence_event_ids": [
+            8,
+            11,
+            12,
+            16
+          ]
+        },
+        {
+          "topic": "local",
+          "position": "support",
+          "evidence_event_ids": [
+            9
+          ]
+        },
+        {
+          "topic": "Elections & campaigns",
+          "position": "support",
+          "evidence_event_ids": [
+            10
+          ]
+        },
+        {
+          "topic": "Public safety (fire/EMS)",
+          "position": "support",
+          "evidence_event_ids": [
+            13
+          ]
+        },
+        {
+          "topic": "school",
+          "position": "support",
+          "evidence_event_ids": [
+            24
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 212,
+      "politician_name": "Adrian Boafo",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            261,
+            261,
+            261,
+            261,
+            261
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 94,
+      "politician_name": "Ama Frimpong",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-04-18",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 3 topic(s): Environment & climate, Public safety & policing, Other. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Environment & climate",
+          "position": "oppose",
+          "evidence_event_ids": [
+            35
+          ]
+        },
+        {
+          "topic": "Public safety & policing",
+          "position": "oppose",
+          "evidence_event_ids": [
+            35
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "neutral",
+          "evidence_event_ids": [
+            159,
+            159
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 214,
+      "politician_name": "Arthur Ellis",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            261,
+            261,
+            261,
+            261,
+            261
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 114,
+      "politician_name": "Bill Ferguson",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-15",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 5 topic(s): Budget & spending, Business & economy, Health & healthcare, Taxes & fiscal policy. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            66,
+            67,
+            37
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "neutral",
+          "evidence_event_ids": [
+            66
+          ]
+        },
+        {
+          "topic": "Health & healthcare",
+          "position": "neutral",
+          "evidence_event_ids": [
+            67
+          ]
+        },
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "neutral",
+          "evidence_event_ids": [
+            37
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "neutral",
+          "evidence_event_ids": [
+            37
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 91,
+      "politician_name": "Carey Wright",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-20",
+      "window_end": "2026-04-20",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Education / school funding, Budget & spending. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Education / school funding",
+          "position": "neutral",
+          "evidence_event_ids": [
+            183,
+            183,
+            195,
+            183,
+            195
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            195,
+            195
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 137,
+      "politician_name": "Chris Van Hollen",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-28",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 4 topic(s): Environment & climate, Public safety (fire/EMS), Housing & zoning, Budget & spending. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Environment & climate",
+          "position": "neutral",
+          "evidence_event_ids": [
+            202,
+            202
+          ]
+        },
+        {
+          "topic": "Public safety (fire/EMS)",
+          "position": "neutral",
+          "evidence_event_ids": [
+            202,
+            202
+          ]
+        },
+        {
+          "topic": "Housing & zoning",
+          "position": "neutral",
+          "evidence_event_ids": [
+            332
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            332
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 66,
+      "politician_name": "Delegate Addison",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 11,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Other. No clearly opposing stances over the 11-event window.",
+      "stable_positions": [
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            25,
+            25,
+            25,
+            25,
+            25,
+            25,
+            25,
+            25,
+            25,
+            25,
+            25
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 63,
+      "politician_name": "Delegate Allen",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Education / school funding, Other. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            21,
+            21,
+            21,
+            21,
+            21
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            21,
+            21,
+            21,
+            21,
+            21
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 62,
+      "politician_name": "Delegate Amprey",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Other. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            20,
+            20,
+            20,
+            20,
+            20
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 60,
+      "politician_name": "Delegate Cardin",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Taxes & fiscal policy, Other. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "support",
+          "evidence_event_ids": [
+            17,
+            17,
+            17,
+            17,
+            17
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            17,
+            17,
+            17,
+            17,
+            17
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 46,
+      "politician_name": "Delegate Crosby",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Business & economy, Budget & spending. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 50,
+      "politician_name": "Delegate Fair",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Business & economy, Budget & spending. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 55,
+      "politician_name": "Delegate Foley",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 8,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 3 topic(s): Other, Elections & campaigns, Education / school funding. No clearly opposing stances over the 8-event window.",
+      "stable_positions": [
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            10,
+            10,
+            10,
+            10
+          ]
+        },
+        {
+          "topic": "Elections & campaigns",
+          "position": "support",
+          "evidence_event_ids": [
+            10,
+            10,
+            10,
+            10
+          ]
+        },
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            14,
+            14,
+            14,
+            14
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 47,
+      "politician_name": "Delegate Griffith",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 11,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 3 topic(s): Taxes & fiscal policy, Public safety & policing, Education / school funding. No clearly opposing stances over the 11-event window.",
+      "stable_positions": [
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "support",
+          "evidence_event_ids": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ]
+        },
+        {
+          "topic": "Public safety & policing",
+          "position": "support",
+          "evidence_event_ids": [
+            12,
+            12,
+            12,
+            12
+          ]
+        },
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            12,
+            12,
+            12,
+            12
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 52,
+      "politician_name": "Delegate Guzzone",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Health & healthcare. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Health & healthcare",
+          "position": "support",
+          "evidence_event_ids": [
+            7,
+            7,
+            7,
+            7,
+            7,
+            7,
+            7
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 51,
+      "politician_name": "Delegate Kerr",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Education / school funding. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            6,
+            6,
+            6,
+            6,
+            6,
+            6,
+            6
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 54,
+      "politician_name": "Delegate Lopez",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): local, Budget & spending. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "local",
+          "position": "support",
+          "evidence_event_ids": [
+            9,
+            9,
+            9,
+            9,
+            9
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            9,
+            9,
+            9,
+            9,
+            9
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 65,
+      "politician_name": "Delegate Metzgar",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Education / school funding, school. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            24,
+            24,
+            24,
+            24,
+            24
+          ]
+        },
+        {
+          "topic": "school",
+          "position": "support",
+          "evidence_event_ids": [
+            24,
+            24,
+            24,
+            24,
+            24
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 49,
+      "politician_name": "Delegate Miller",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Transportation. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Transportation",
+          "position": "support",
+          "evidence_event_ids": [
+            4,
+            4,
+            4,
+            4,
+            4,
+            4,
+            4
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 58,
+      "politician_name": "Delegate Morgan, M.",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Other. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            15,
+            15,
+            15,
+            15
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 59,
+      "politician_name": "Delegate Phillips",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Public safety & policing. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Public safety & policing",
+          "position": "support",
+          "evidence_event_ids": [
+            16,
+            16,
+            16,
+            16
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 48,
+      "politician_name": "Delegate Schindler",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 12,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Education / school funding, Other. No clearly opposing stances over the 12-event window.",
+      "stable_positions": [
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            3,
+            3,
+            3,
+            3,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            3,
+            22,
+            3,
+            22,
+            3,
+            22,
+            3,
+            22,
+            3,
+            22,
+            3,
+            3
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 56,
+      "politician_name": "Delegate Simmons",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Public safety & policing. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Public safety & policing",
+          "position": "support",
+          "evidence_event_ids": [
+            11,
+            11,
+            11,
+            11
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 53,
+      "politician_name": "Delegate Stewart",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Public safety & policing, Transportation. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Public safety & policing",
+          "position": "support",
+          "evidence_event_ids": [
+            8,
+            8,
+            8,
+            8,
+            8,
+            8,
+            8
+          ]
+        },
+        {
+          "topic": "Transportation",
+          "position": "support",
+          "evidence_event_ids": [
+            8,
+            8,
+            8,
+            8,
+            8,
+            8,
+            8
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 61,
+      "politician_name": "Delegate Toles",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Education / school funding, Budget & spending. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            19,
+            19,
+            19,
+            19,
+            19
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            19,
+            19,
+            19,
+            19,
+            19
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 57,
+      "politician_name": "Delegate Vogel",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 9,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 4 topic(s): Taxes & fiscal policy, Public safety (fire/EMS), Transportation, Business & economy. No clearly opposing stances over the 9-event window.",
+      "stable_positions": [
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "support",
+          "evidence_event_ids": [
+            13,
+            13,
+            13,
+            13
+          ]
+        },
+        {
+          "topic": "Public safety (fire/EMS)",
+          "position": "support",
+          "evidence_event_ids": [
+            13,
+            13,
+            13,
+            13
+          ]
+        },
+        {
+          "topic": "Transportation",
+          "position": "support",
+          "evidence_event_ids": [
+            18,
+            18,
+            18,
+            18,
+            18
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            18,
+            18,
+            18,
+            18,
+            18
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 64,
+      "politician_name": "Delegate Woods",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-05-01",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Other. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Other",
+          "position": "support",
+          "evidence_event_ids": [
+            23,
+            23,
+            23,
+            23,
+            23
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 103,
+      "politician_name": "Donald Trump",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-04-29",
+      "event_count": 13,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 8 topic(s): Taxes & fiscal policy, Budget & spending, Business & economy, Health & healthcare. No clearly opposing stances over the 13-event window.",
+      "stable_positions": [
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "neutral",
+          "evidence_event_ids": [
+            34,
+            196,
+            196
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            133,
+            133,
+            132,
+            132,
+            242,
+            242
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            133,
+            133,
+            196,
+            196,
+            219
+          ]
+        },
+        {
+          "topic": "Health & healthcare",
+          "position": "neutral",
+          "evidence_event_ids": [
+            132,
+            132
+          ]
+        },
+        {
+          "topic": "Trade & tariffs",
+          "position": "neutral",
+          "evidence_event_ids": [
+            196,
+            196
+          ]
+        },
+        {
+          "topic": "Public safety & policing",
+          "position": "neutral",
+          "evidence_event_ids": [
+            251
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "neutral",
+          "evidence_event_ids": [
+            251,
+            319,
+            319
+          ]
+        },
+        {
+          "topic": "Education / school funding",
+          "position": "neutral",
+          "evidence_event_ids": [
+            242,
+            242
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 99,
+      "politician_name": "Harry Dunn",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-24",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            164,
+            164,
+            164,
+            261,
+            261,
+            261,
+            261
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 93,
+      "politician_name": "Lucille Walker",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-18",
+      "window_end": "2026-04-18",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 3 topic(s): Budget & spending, Business & economy, Environment & climate. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            158,
+            158,
+            158
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "neutral",
+          "evidence_event_ids": [
+            158,
+            158,
+            158
+          ]
+        },
+        {
+          "topic": "Environment & climate",
+          "position": "neutral",
+          "evidence_event_ids": [
+            158,
+            158,
+            158
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 121,
+      "politician_name": "Maryland General Assembly",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-13",
+      "window_end": "2026-04-15",
+      "event_count": 7,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 5 topic(s): Business & economy, Environment & climate, Public safety & policing, Budget & spending. No clearly opposing stances over the 7-event window.",
+      "stable_positions": [
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            85,
+            70,
+            66,
+            66
+          ]
+        },
+        {
+          "topic": "Environment & climate",
+          "position": "support",
+          "evidence_event_ids": [
+            85
+          ]
+        },
+        {
+          "topic": "Public safety & policing",
+          "position": "neutral",
+          "evidence_event_ids": [
+            78,
+            73
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            78,
+            70,
+            66,
+            66
+          ]
+        },
+        {
+          "topic": "Other",
+          "position": "neutral",
+          "evidence_event_ids": [
+            176,
+            73
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 244,
+      "politician_name": "McClain Delaney",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            287,
+            287,
+            287
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 206,
+      "politician_name": "Montgomery County Council",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-28",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Other, Public safety & policing. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Other",
+          "position": "neutral",
+          "evidence_event_ids": [
+            107,
+            106,
+            152
+          ]
+        },
+        {
+          "topic": "Public safety & policing",
+          "position": "neutral",
+          "evidence_event_ids": [
+            327
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 134,
+      "politician_name": "Montgomery County Council Public Safety Committee",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-17",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Public safety & policing, Public safety (fire/EMS). No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Public safety & policing",
+          "position": "neutral",
+          "evidence_event_ids": [
+            105,
+            153,
+            153
+          ]
+        },
+        {
+          "topic": "Public safety (fire/EMS)",
+          "position": "neutral",
+          "evidence_event_ids": [
+            105
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 89,
+      "politician_name": "Natali Fani-Gonz\u00e1lez",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-02",
+      "window_end": "2026-04-17",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 4 topic(s): Immigration & visas, Budget & spending, Education / school funding, Taxes & fiscal policy. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Immigration & visas",
+          "position": "neutral",
+          "evidence_event_ids": [
+            121,
+            122,
+            119
+          ]
+        },
+        {
+          "topic": "Budget & spending",
+          "position": "support",
+          "evidence_event_ids": [
+            154
+          ]
+        },
+        {
+          "topic": "Education / school funding",
+          "position": "support",
+          "evidence_event_ids": [
+            154
+          ]
+        },
+        {
+          "topic": "Taxes & fiscal policy",
+          "position": "support",
+          "evidence_event_ids": [
+            154
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 209,
+      "politician_name": "Nicole Williams",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            261,
+            261,
+            261,
+            261,
+            261
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 241,
+      "politician_name": "Pamela Beidle",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-25",
+      "window_end": "2026-04-25",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            280,
+            280,
+            280,
+            280
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 155,
+      "politician_name": "Robert F. Kennedy Jr.",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-21",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Health & healthcare. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Health & healthcare",
+          "position": "support",
+          "evidence_event_ids": [
+            222,
+            222,
+            222
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 219,
+      "politician_name": "Serena McIlwain",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-24",
+      "event_count": 5,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 3 topic(s): Budget & spending, Environment & climate, Business & economy. No clearly opposing stances over the 5-event window.",
+      "stable_positions": [
+        {
+          "topic": "Budget & spending",
+          "position": "neutral",
+          "evidence_event_ids": [
+            265,
+            265,
+            265,
+            265
+          ]
+        },
+        {
+          "topic": "Environment & climate",
+          "position": "support",
+          "evidence_event_ids": [
+            265,
+            265,
+            265,
+            265,
+            285
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            265,
+            265,
+            265,
+            265,
+            285
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 98,
+      "politician_name": "Steny Hoyer",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-24",
+      "event_count": 8,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 8-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            164,
+            164,
+            261,
+            261,
+            261,
+            261,
+            261,
+            261
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 218,
+      "politician_name": "Todd Blanche",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 3,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 2 topic(s): Health & healthcare, Business & economy. No clearly opposing stances over the 3-event window.",
+      "stable_positions": [
+        {
+          "topic": "Health & healthcare",
+          "position": "support",
+          "evidence_event_ids": [
+            264,
+            264,
+            264
+          ]
+        },
+        {
+          "topic": "Business & economy",
+          "position": "support",
+          "evidence_event_ids": [
+            264,
+            264,
+            264
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 217,
+      "politician_name": "Vanessa Atterbeary",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 6,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 6-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            262,
+            262,
+            262,
+            262,
+            262,
+            262
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 215,
+      "politician_name": "Wala Blegay",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 4,
+      "score": 1.0,
+      "verdict": "consistent",
+      "summary": "Stances appear consistent across 1 topic(s): Elections & campaigns. No clearly opposing stances over the 4-event window.",
+      "stable_positions": [
+        {
+          "topic": "Elections & campaigns",
+          "position": "neutral",
+          "evidence_event_ids": [
+            261,
+            261,
+            261,
+            261
+          ]
+        }
+      ],
+      "shifts": []
+    },
+    {
+      "politician_id": 108,
+      "politician_name": "Evan Glass",
+      "office": "Montgomery County Executive",
+      "party": "unknown",
+      "level": "county",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Evan Glass; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 228,
+      "politician_name": "Friedson",
+      "office": "Montgomery County Executive",
+      "party": "unknown",
+      "level": "county",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Friedson; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 284,
+      "politician_name": "Glass",
+      "office": "Montgomery County Executive",
+      "party": "unknown",
+      "level": "county",
+      "window_start": "2026-04-27",
+      "window_end": "2026-04-27",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Glass; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 117,
+      "politician_name": "Jawando",
+      "office": "Montgomery County Executive",
+      "party": "unknown",
+      "level": "county",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-17",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Jawando; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 1,
+      "politician_name": "David Trone",
+      "office": "U.S. Representative",
+      "party": "Democrat",
+      "level": "federal",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for David Trone; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 4,
+      "politician_name": "Wes Moore",
+      "office": "Governor of Maryland",
+      "party": "D",
+      "level": "state",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Wes Moore; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 136,
+      "politician_name": "Aaron Penman",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-18",
+      "window_end": "2026-04-18",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Aaron Penman; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 120,
+      "politician_name": "Adrienne A. Mandel-Melnyk",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Adrienne A. Mandel-Melnyk; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 226,
+      "politician_name": "Balcombe",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Balcombe; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 299,
+      "politician_name": "Ben Alsobrooks",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-28",
+      "window_end": "2026-04-28",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Ben Alsobrooks; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 283,
+      "politician_name": "Brian Frosh",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-28",
+      "window_end": "2026-04-28",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Brian Frosh; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 179,
+      "politician_name": "Brooke Lierman",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Brooke Lierman; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 105,
+      "politician_name": "Brooke Rollins",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Brooke Rollins; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 116,
+      "politician_name": "Caylin Young",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Caylin Young; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 314,
+      "politician_name": "Charles Sydnor III",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Charles Sydnor III; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 259,
+      "politician_name": "Congressional Democrats",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Congressional Democrats; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 159,
+      "politician_name": "Contreras-Donello",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-21",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Contreras-Donello; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 242,
+      "politician_name": "Cory McCray",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-25",
+      "window_end": "2026-04-25",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Cory McCray; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 224,
+      "politician_name": "Cullison",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Cullison; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 113,
+      "politician_name": "Daryl Jones",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-04-15",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Daryl Jones; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 313,
+      "politician_name": "Debra Davis",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Debra Davis; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 318,
+      "politician_name": "Delegate Wims",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-29",
+      "window_end": "2026-04-29",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Delegate Wims; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 157,
+      "politician_name": "Democratic leaders",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-20",
+      "window_end": "2026-04-20",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Democratic leaders; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 182,
+      "politician_name": "Democratic leaders in Maryland legislature",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-20",
+      "window_end": "2026-04-20",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Democratic leaders in Maryland legislature; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 178,
+      "politician_name": "Dereck Davis",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Dereck Davis; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 154,
+      "politician_name": "Dr. Mehmet Oz",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-21",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Dr. Mehmet Oz; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 257,
+      "politician_name": "Ella English",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Ella English; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 207,
+      "politician_name": "Elldwnia 'Ella' English",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Elldwnia 'Ella' English; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 210,
+      "politician_name": "Ellis Colvin",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Ellis Colvin; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 118,
+      "politician_name": "Fani-Gonz\u00e1lez",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-17",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Fani-Gonz\u00e1lez; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 138,
+      "politician_name": "Ferguson",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Ferguson; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 319,
+      "politician_name": "Governor Wes Moore",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Governor Wes Moore; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 315,
+      "politician_name": "Greg Wims",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Greg Wims; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 162,
+      "politician_name": "House Speaker Pe\u00f1a-Melnyk",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for House Speaker Pe\u00f1a-Melnyk; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 104,
+      "politician_name": "JD Vance",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-17",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for JD Vance; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 211,
+      "politician_name": "James Makle Jr.",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for James Makle Jr.; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 208,
+      "politician_name": "Jerry Lightfoot",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Jerry Lightfoot; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 135,
+      "politician_name": "Joe Biden",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-20",
+      "window_end": "2026-04-20",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Joe Biden; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 115,
+      "politician_name": "Joseline Pe\u00f1a-Melnyk",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Joseline Pe\u00f1a-Melnyk; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 90,
+      "politician_name": "Joshua Michael",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-20",
+      "window_end": "2026-04-20",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Joshua Michael; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 101,
+      "politician_name": "Justin Fairfax",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-17",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Justin Fairfax; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 111,
+      "politician_name": "Katie Curran O'Malley",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-04-15",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Katie Curran O'Malley; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 225,
+      "politician_name": "King",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for King; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 96,
+      "politician_name": "Kristi Noem",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-18",
+      "window_end": "2026-04-18",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Kristi Noem; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 229,
+      "politician_name": "Leul Dawit",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Leul Dawit; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 227,
+      "politician_name": "Luedtke",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Luedtke; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 92,
+      "politician_name": "Mahasin El Amin",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-20",
+      "window_end": "2026-04-20",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Mahasin El Amin; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 95,
+      "politician_name": "Markwayne Mullin",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-18",
+      "window_end": "2026-04-18",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Markwayne Mullin; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 102,
+      "politician_name": "Mary Moriarty",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-17",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Mary Moriarty; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 141,
+      "politician_name": "Maryland Association of Counties",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland Association of Counties; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 165,
+      "politician_name": "Maryland Democrats",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-13",
+      "window_end": "2026-04-13",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland Democrats; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 223,
+      "politician_name": "Maryland Department of Health",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Maryland Department of Health; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 221,
+      "politician_name": "Maryland Department of the Environment",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Maryland Department of the Environment; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 185,
+      "politician_name": "Maryland General Assembly members",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland General Assembly members; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 122,
+      "politician_name": "Maryland Legislature",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland Legislature; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 140,
+      "politician_name": "Maryland Senate",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-10",
+      "window_end": "2026-04-10",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland Senate; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 296,
+      "politician_name": "Maryland State Board of Education",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-29",
+      "window_end": "2026-04-29",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland State Board of Education; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 163,
+      "politician_name": "Maryland State House",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland State House; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 164,
+      "politician_name": "Maryland State Senate",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-10",
+      "window_end": "2026-04-10",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland State Senate; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 222,
+      "politician_name": "Maryland State Senate and House members",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland State Senate and House members; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 184,
+      "politician_name": "Maryland legislature members",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Maryland legislature members; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 317,
+      "politician_name": "Maxwell Uy",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Maxwell Uy; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 180,
+      "politician_name": "Mazie Hirono",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Mazie Hirono; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 312,
+      "politician_name": "Meena Seshamani",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Meena Seshamani; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 181,
+      "politician_name": "Mehmet Oz",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-21",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Mehmet Oz; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 112,
+      "politician_name": "Michelle Daugherty Siri",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-15",
+      "window_end": "2026-04-15",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Michelle Daugherty Siri; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 297,
+      "politician_name": "Mike Griffith",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-29",
+      "window_end": "2026-04-29",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Mike Griffith; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 107,
+      "politician_name": "Mithun Banerjee",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Mithun Banerjee; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 300,
+      "politician_name": "Montgomery County Council Members",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Montgomery County Council Members; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 166,
+      "politician_name": "Montgomery County Public Schools",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-19",
+      "window_end": "2026-04-19",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Montgomery County Public Schools; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 183,
+      "politician_name": "Multiple Democratic candidates",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Multiple Democratic candidates; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 160,
+      "politician_name": "Multiple Democratic candidates for Montgomery County Executive",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Multiple Democratic candidates for Montgomery County Executive; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 258,
+      "politician_name": "Multiple Maryland State Senators and House Delegates",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Multiple Maryland State Senators and House Delegates; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 156,
+      "politician_name": "Mustafa Kasubhai",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-21",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Mustafa Kasubhai; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 158,
+      "politician_name": "Nancy King",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-21",
+      "window_end": "2026-04-21",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Nancy King; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 109,
+      "politician_name": "Peter James",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Peter James; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 139,
+      "politician_name": "Pe\u00f1a-Melnyk",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Pe\u00f1a-Melnyk; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 100,
+      "politician_name": "Quincy Bar",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-17",
+      "window_end": "2026-04-17",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Quincy Bar; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 213,
+      "politician_name": "Quincy Bareebe",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Quincy Bareebe; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 153,
+      "politician_name": "Ralph Tyler",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Ralph Tyler; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 97,
+      "politician_name": "Raphael Warnock",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-18",
+      "window_end": "2026-04-18",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Raphael Warnock; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 243,
+      "politician_name": "Rick Kessler",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Rick Kessler; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 316,
+      "politician_name": "Ron DeSantis",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-05-01",
+      "window_end": "2026-05-01",
+      "event_count": 0,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 0 tracked event(s) for Ron DeSantis; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 216,
+      "politician_name": "Sam Kursban",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Sam Kursban; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 161,
+      "politician_name": "Senate President Ferguson",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-14",
+      "window_end": "2026-04-14",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Senate President Ferguson; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 245,
+      "politician_name": "Trone",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-24",
+      "window_end": "2026-04-24",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Trone; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 260,
+      "politician_name": "Trump Administration",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-22",
+      "window_end": "2026-04-22",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Trump Administration; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 220,
+      "politician_name": "U.S. Senate Republicans",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-23",
+      "window_end": "2026-04-23",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for U.S. Senate Republicans; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 119,
+      "politician_name": "Unknown Democratic Candidates",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Unknown Democratic Candidates; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 110,
+      "politician_name": "Vincent DeMarco",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Vincent DeMarco; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 106,
+      "politician_name": "Will Jawando",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-16",
+      "window_end": "2026-04-16",
+      "event_count": 2,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 2 tracked event(s) for Will Jawando; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    },
+    {
+      "politician_id": 298,
+      "politician_name": "Wims",
+      "office": "",
+      "party": "",
+      "level": "unknown",
+      "window_start": "2026-04-29",
+      "window_end": "2026-04-29",
+      "event_count": 1,
+      "score": 0.0,
+      "verdict": "insufficient",
+      "summary": "Only 1 tracked event(s) for Wims; need at least 3 to score consistency.",
+      "stable_positions": [],
+      "shifts": []
+    }
+  ]
+}

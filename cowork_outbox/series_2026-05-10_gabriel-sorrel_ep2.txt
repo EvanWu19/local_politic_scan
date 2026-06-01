@@ -1,0 +1,89 @@
+ALEX: Welcome back to the show. This is episode two of our four-part series on Gabriel Sorrel, Democrat, running for one of three seats representing District 19 in the Maryland House of Delegates. Today is May 10, 2026, and the primary is June 23. Episode one was Origins. Today is Career.
+
+JORDAN: Yesterday we went through what we know about the candidate's life before he started showing up in the working world, and we had to spend a lot of time naming what we don't have on the public record — no birth year, no place of birth, no high school, no campus or graduation year for his University of Maryland computer science degree. Today is the easier episode for him in the sense that his career is the part of his life that has the longest paper trail.
+
+ALEX: Easier in some ways. Software engineering doesn't generate the kind of news coverage that, say, an attorney's record at WilmerHale generates, where the firm files a brief that gets picked up in the news. But there are LinkedIn entries, ZoomInfo employment-history pages, employer-name confirmations, and the structural detail that Sorrel has worked his entire visible career in the Washington-Baltimore corridor, mostly for Maryland-headquartered or DC-headquartered employers, and that — combined with his nearly twenty years living in Gaithersburg — is the most specific deep-roots claim his campaign biography makes. So today we are going to walk that career.
+
+JORDAN: Where do we start?
+
+ALEX: We start at the most distinct point in his career, which is his decade-plus tenure at Oil Price Information Service. OPIS. The publicly visible profile summary describes him as having spent, quote, over a decade as a senior software engineer at OPIS. That is the longest single employment stint in his visible record. And OPIS is unusual enough that it is worth pausing to explain it.
+
+JORDAN: Walk me through what OPIS does.
+
+ALEX: OPIS publishes price-discovery data for global energy markets. If you are a refinery, a gas station chain, an airline buying jet fuel, a logistics company hedging diesel, a utility buying natural gas in spot markets — you subscribe to OPIS data. They publish daily and intra-day price benchmarks for refined fuels, biofuels, NGLs, natural gas, marine bunkers, and a number of related niche markets. It is a quiet business. It is also a Gaithersburg-headquartered business — the company was founded in Lakewood, New Jersey in 1977 and moved its headquarters to Gaithersburg over the years. So a senior software engineer at OPIS, working in Gaithersburg, is a perfectly congruent piece of biography for the candidate.
+
+JORDAN: And what would a senior software engineer at OPIS actually be doing day to day?
+
+ALEX: At a price-discovery and data-publishing company, the engineering work is in the ingestion side and the publishing side. You are taking in price submissions from market participants, normalizing them, applying methodology rules, generating benchmarks, and then publishing them out through a website, an API, and bulk data feeds to subscribers. You are also building the back-office tools that the human pricing journalists use to do their actual work. That is the kind of engineering — back-end, data-heavy, latency-sensitive but not millisecond-trading-fast — that the LinkedIn profile description matches. His listed skill set includes C-sharp, ASP-dot-NET-Core, SQL Server, Azure, JavaScript, Web API, Object-Oriented Design, Dependency Injection, and Domain-Driven Design. That is a mainstream Microsoft-stack senior-developer skillset. It is the skillset of someone who has been building enterprise software in the same general technology family for twenty years.
+
+JORDAN: OPIS is now part of a larger structure, isn't it?
+
+ALEX: It is. OPIS was sold by its founding family to UCG, then UCG sold it to S-and-P Global, and then S-and-P Global sold its commodity-data business — which includes OPIS — onward as part of the larger Platts portfolio shuffle. The current corporate parent is part of News Corp through the 2022 sale of S-and-P Global Commodity Insights' Oil Price Information Service business. So the candidate spent the bulk of his OPIS tenure inside an organization that was changing corporate parents. And that — combined with the campaign-website line about, quote, if you've worked in a large corporation you know how wasteful, frustrating, and dehumanizing they can become — is plausibly an experience-anchored description rather than an abstract one.
+
+JORDAN: Then he moves to CoStar Group.
+
+ALEX: Right. CoStar Group, NASDAQ ticker CSGP, headquartered in Washington, DC. Most listeners know CoStar through one of its consumer brands, which include LoopNet and Apartments-dot-com. CoStar's enterprise business is commercial-real-estate data — building inventories, lease comps, sales comps, occupancy figures, ownership chains. They are the dominant player in that data segment, having grown by acquisition over a long period. A senior software engineer at CoStar is doing analogous work to OPIS work — taking in messy real-world data, structuring it, publishing it through web and API products to subscribers.
+
+JORDAN: Why move from OPIS to CoStar?
+
+ALEX: We do not have his stated reason on the public record. The most likely structural reason for someone in his position is salary and growth — a senior engineer at a single mid-sized data-publisher will plateau in compensation, and moving to a larger publicly traded data company is a typical path to a step change in pay and a broader scope of work.
+
+JORDAN: And then to Angi.
+
+ALEX: Angi, NASDAQ-traded as a subsidiary of IAC. Angi is the home-services marketplace — formerly Angie's List, now combined with HomeAdvisor under the Angi brand. It is a different kind of business than OPIS or CoStar. It is consumer-facing rather than business-to-business. It is two-sided marketplace rather than data-publishing. Doing senior-engineering work at Angi means thinking about service-provider matching, customer reviews, fraud and quality control, and the consumer experience of finding a contractor.
+
+JORDAN: That is three different industries — energy data, real-estate data, consumer marketplace — under three different stack architectures, but the candidate has stayed in the same broad C-sharp-and-Azure ecosystem the whole time.
+
+ALEX: Right. He has not been a Silicon Valley startup engineer. He has not jumped to crypto. He has not chased AI hype. He has been a Microsoft-stack senior developer through three jobs that share a Washington-area-data-company culture and an enterprise-grade reliability mandate. That is an unusual long-arc career for a candidate to bring into the Maryland General Assembly, and it is a useful frame to keep in mind when reading his policy planks. We are going to come back to this on episode three because his Climate-and-Energy plank — the one that says, quote, demand large corporations replacing human workers with AI adopt four-day work weeks without reduction in pay — is written by someone who has lived inside the kind of enterprise software organization where AI tooling is being introduced into engineering workflows right now.
+
+JORDAN: Let me back up. You said "long-arc career." How long is the arc?
+
+ALEX: At least fifteen years, probably closer to twenty. The OPIS decade-plus, plus the CoStar tenure, plus the current Angi role, plus a likely entry-level role before OPIS that we have not been able to pin down. Open question on the dossier — what did he do before OPIS? We do not know. But the math says he has been a working senior software engineer for the entire stretch of his life since college.
+
+JORDAN: That brings us to his civic and political work in parallel with the day job. The 2018 Central Committee run is the headline.
+
+ALEX: It is the only prior campaign on the public record. And we should be specific about what the Central Committee is and what running for it means. The Montgomery County Democratic Central Committee, MCDCC, is the elected governing body of the county Democratic Party. It is split between male and female at-large seats — a numerical-parity arrangement that is being challenged in some other counties on legal grounds, but which was the structure in 2018 when Sorrel ran. There were four male at-large seats up for election in that 2018 primary. Sorrel was one of ten candidates competing for those four seats. He finished fifth, with approximately ten percent of the vote.
+
+JORDAN: One slot out of the money.
+
+ALEX: One slot out of the money. The top four candidates won seats. The fifth-place finisher did not. Sorrel was that fifth-place finisher. That is a perfectly respectable performance for a first-time candidate in a crowded field, and it is the kind of outcome that, in the language of campaign professionals, builds name recognition for a future race. The 2018 to 2026 gap is eight years, which is consistent with someone who concluded that the Central Committee was not the right entry point and waited for an open General Assembly seat to come up.
+
+JORDAN: Why did he run in 2018? What was the platform?
+
+ALEX: We do not have a preserved 2018 platform statement from him in the public record. There is no archived 2018 campaign website that we have been able to find. There is no 2018 Bethesda Magazine candidate-questionnaire response that we have located. The 2018 Central Committee primary did not generate stand-alone profile coverage of every candidate, and Sorrel was not one of the candidates who got a profile.
+
+JORDAN: That is itself a finding. It means we cannot tell from the public record whether his 2018 politics were the same as his 2026 politics — whether the Resist branding, the anti-private-equity language, the proposal for a state domestic extremism task force, are positions he has held continuously or positions he has arrived at more recently in response to the 2024 federal election outcome.
+
+ALEX: That is a real and specific limitation. Open question seven on the dossier — was the 2018 platform the same? We don't know. The candidate could clear that up by publishing his archived 2018 materials, or by simply saying so on the campaign trail. As of May 10, 2026, the public record is silent.
+
+JORDAN: His other recurring civic affiliation is LGBTQ Democrats of Montgomery County. He says on his About page he was, quote, an active member, end quote, for, quote, several years.
+
+ALEX: LGBTQ Democrats of Montgomery County is a recognized affiliated club of the Montgomery County Democratic Central Committee. It is one of a network of caucus-style clubs that organize voter contact, host candidate forums, issue endorsements, and feed volunteer energy into county campaigns. Active membership is a meaningful credential in the sense that it indicates the candidate has spent meeting time, weekend canvass time, or fundraising time inside the county-Democratic-Party ecosystem.
+
+JORDAN: Is he himself LGBTQ-identified, or an ally member?
+
+ALEX: We do not know from the public record. We have flagged this as open question three. The campaign website does not say. There are some candidates who lead the public introduction with their identity. There are others who do not, and we should not infer one way or the other in the absence of a self-identification.
+
+JORDAN: Anything else on civic and volunteer work?
+
+ALEX: Not in the sources reviewed. There is no record of him on a county board, on a county commission, on a state task force, on a school board, on a planning commission, on a transit advisory committee, on a redistricting commission. He has not been an appointed civic figure. He has not been a paid lobbyist. He has not been the executive director of a nonprofit. The civic record is the 2018 Central Committee run and the LGBTQ Democrats club membership, full stop.
+
+JORDAN: That is an unusually thin civic record for a Maryland legislative candidate.
+
+ALEX: It is. By comparison, the candidates we have already covered in this series — Crutchfield with her Merit System Protection Board chair experience, Dawn Luedtke with her four-portfolio Attorney General's Office career, Stewart with his Anniston Star byline year and his federal clerkship year and his WilmerHale tenure — those are all long civic-or-public-sector resumes. Sorrel does not have one. He has been a private-sector software engineer who joined his county party's LGBTQ club and ran for Central Committee once and lost.
+
+JORDAN: This is where the listener has to make a value judgment, and we should be honest that we are not making it for them. There is a school of thought that says good legislators come up through civic ladder work — they served on the planning commission, then ran for school board, then ran for delegate, then ran for senator. There is another school of thought that says the legislative branch benefits from outsiders who have lived inside the structures their laws are going to govern. A senior software engineer who has spent twenty years inside enterprise data companies has lived inside the kind of business structure that, for example, Maryland's data-privacy laws are trying to regulate. Those are different theories of representation, and the answer to which one is right is a question only the voter can answer.
+
+ALEX: We can sketch what the candidate himself would say to that question, because his Principles page essentially answers it. He writes, quote, if you've worked in a large corporation you know how wasteful, frustrating, and dehumanizing they can become as the company grows in size — why then are such giant corps given such support? End quote. And he goes on to argue that, quote, small and medium businesses are where the private sector best serves the interests of our communities. End quote. So he is positioning his career inside large corporations as a credentialing experience, not a disqualifying one. He has seen the inside of the large enterprises he wants to regulate, and he is asking the voter to trust that experience to inform his legislative work.
+
+JORDAN: That is, candidly, a reasonable framing. Whether it persuades is up to the voter.
+
+ALEX: One more thing about his career to put on the record before we close. The public-record indicator we have for his current household financial picture is the 2026 Maryland State Board of Elections pre-primary financial report, due May 26, which had not yet been filed at the time we recorded this episode. That report will be the first authoritative public statement on his cash on hand, total receipts, the donor-list demographic, and any in-kind contributions including spousal contributions. Until that report is filed and we can read it, we are guessing about his fundraising. The campaign-launch-to-mid-May window is the period in which most of the other District 19 challengers — Tichy, Dasgupta, Johnson, Stone — would already have raised four-figure to mid-five-figure totals.
+
+JORDAN: And we will read his report on the day it lands and update.
+
+ALEX: We will. We're also flagging a structural conflict-of-interest item on the dossier, not because it is a problem but because it should be on the record up front. He works for Angi, which is owned by IAC. He worked for CoStar, which is publicly traded. He has typical-employee-grade equity exposure to those companies — restricted stock units, an employee stock purchase plan, possibly options. None of that is an active conflict at the moment because he is not in office and not voting on legislation that affects either company. But once he is sworn in, if he is sworn in, the General Assembly's annual Statement of Financial Interest filing will require him to disclose holdings, and any bills before his committee that affect those specific companies — for example, data-privacy legislation that affects Angi's business model — would be a question for the legislature's ethics counsel.
+
+JORDAN: That is a clean place to leave it for episode two. Tomorrow on episode three we go into the policy platform — the Resist agenda, the five policy clusters, and where each cluster sits relative to the District 19 incumbent slate. Then on episode four we put all seven candidates side by side and answer the listener's standing question about what is actually being chosen between when you fill in the District 19 House box on June 23.
+
+ALEX: Thanks for listening. Tomorrow.

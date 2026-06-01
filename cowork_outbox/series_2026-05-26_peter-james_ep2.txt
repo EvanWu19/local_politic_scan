@@ -1,0 +1,131 @@
+ALEX: Welcome back. This is episode two of our four-part series on Peter James, Democratic candidate for Montgomery County Executive in the June twenty-third primary. We are twenty-eight days from polls closing.
+
+JORDAN: Episode one was the human being and his early years. Today is the career. Two real anchors and a lot of texture in between. The two anchors are Crystal Clear Automation, which he founded in twenty-fifteen and still runs as CEO, and First Fruits Farms, a nonprofit he says he also runs. Plus the Germantown Kiwanis presidency. Plus a Silicon Valley career that, as we said yesterday, is self-described and not independently sourced.
+
+ALEX: We will go in order. First the verifiable Silicon Valley fragments. Then the Maryland LLC. Then the nonprofit. Then the civic role. Then the financial picture and the public statements outside politics.
+
+JORDAN: One housekeeping piece carried over from yesterday. The professional gap between the late nineteen-nineties and twenty-fifteen is real. About fifteen years. We do not have a documented employer in that window. We will not pretend to fill it in.
+
+ALEX: Silicon Valley first. The candidate has stated, in the Montgomery for All twenty-twenty-six questionnaire and in the Baltimore Banner voter guide, that he spent the first twenty years of his career consulting in Silicon Valley, working with, in his words, over two hundred Inc. one hundred and Fortune five hundred companies. He has not named those clients. He has not named the firm he was at. The press has not surfaced a Silicon Valley firm name attached to him.
+
+JORDAN: There is one specific employer line on his Ballotpedia entry. Cost evaluation system coordinator at Intel Corporation. No dates. No division. No city. Intel in the nineteen eighties had its main campus in Santa Clara, manufacturing facilities in New Mexico and Oregon, and offices in Folsom and Hillsboro. We do not know which of those was the workplace.
+
+ALEX: A cost evaluation system, for the listener who has not worked in chip manufacturing, is the kind of internal tool a fabrication operation needs to estimate the per-unit cost of running a process step. It is a back-office discipline, related to industrial engineering, accounting, and operations research. A young employee in that role at Intel in the early-to-mid nineteen eighties would have been learning how a hardware-manufacturing supply chain prices itself. That is a piece of professional formation that, if real, would help explain his comfort with the cost-per-mile transit numbers he throws around in the twenty-twenty-six platform.
+
+JORDAN: We are reasoning about what the role would have implied for his formation. We are not asserting we know what he did at Intel. We do not.
+
+ALEX: The other Silicon-Valley-era career line that Ballotpedia carries — and we mentioned it yesterday — is "issuer of Just Money." The phrase is opaque. We have searched. We have not found a clean public description of Just Money. It could have been a community-currency project, an alternative-banking initiative, a publication, a software brand. The Ballotpedia entry does not elaborate, and the candidate's own campaign materials, on peter4moco-dot-com and the predecessor sites, do not elaborate either.
+
+JORDAN: That is not a small thing to leave on the page unexplained. "Issuer" is a financial word. It implies he was the originator of some kind of monetary or quasi-monetary instrument. We will flag it again in episode four. If the campaign wants to clarify, they can.
+
+ALEX: Twenty-fifteen is the firm pivot. He registers Crystal Clear Automation, LLC, in Maryland. The corporate filings are on OpenCorporates under the Maryland Secretary of State entity W-one-nine-seven-eight-six-eight-one-three. The business address is in Germantown. The principal place of business floats between Germantown and Gaithersburg on different filings, which is consistent with a small home-based operation that has moved equipment or files between two upcounty addresses.
+
+JORDAN: The company describes itself, in the candidate's own words on his campaign sites and in the Banner voter guide, as a family-owned AI and robotics R-and-D company. The product line — and this is the part where the company and the platform start to overlap — is wide. Autonomous mowers. Autonomous weeding machines. Delivery robots. Cleaning robots. Mobile robotic platforms. An array of what he calls manufacturing robots. And a specialty product pitched to Maryland grape growers under the brand name Grape Whisperer, which the Maryland Grape Growers Association featured on its member-pages site as an autonomous-vineyard system.
+
+ALEX: The Grape Whisperer pitch is the rare piece of independent confirmation we have on the company's commercial activity. It is on a third-party industry-association page. So we have at least one published external link between the company and a customer-facing industry segment. We do not have revenue. We do not have unit sales. We do not have a customer roster beyond the grape-growers angle.
+
+JORDAN: The company is privately held. There is no IPO. There is no SEC filing. There is no public balance sheet. The headcount is not publicly stated. The candidate has described it as family-owned, which suggests the workforce is small — possibly just him, possibly him and one or two relatives, possibly slightly larger. We do not have a number.
+
+ALEX: This matters because the platform he runs on is, in important parts, his company's product list reframed as County Executive policy. The autonomous-vehicle elevated guideway transit plan that we will spend episode three on is a policy version of what his company sells. The robotic affordable-housing construction plan is also adjacent to what the company sells.
+
+JORDAN: There is no public-record statement from him acknowledging that overlap. There is no recusal commitment. The campaign has not addressed whether, as County Executive, he would refrain from contracting with companies in his own commercial space, or how Crystal Clear Automation's product line would be insulated from his official decisions. That is a conflict-of-interest disclosure gap we flagged in the dossier and will flag again in episode four.
+
+ALEX: First Fruits Farms. This is a Maryland nonprofit he founded. The campaign material describes it as an open-source robotic farm using local renewable energy, positioned as a more environmentally sustainable model than conventional row-crop agriculture. The phrase "open-source" is doing a lot of work in that description — it might mean the design files for the farm are publicly available, or it might mean the operation is meant to be replicable by others, or both.
+
+JORDAN: We have not retrieved the Maryland nonprofit registration. We have not retrieved an IRS Form nine-ninety for it. We do not know the budget. We do not know the staff. We do not know the acreage. We do not know whether the nonprofit has filed for federal tax-exempt status under section five-zero-one-c-three, in which case the financial picture would be public, or under a different category, in which case it might not be.
+
+ALEX: That is one of the items we wish we had pulled forward into the dossier and have flagged for next research pass. A real listener-facing description of First Fruits Farms with budget and operational scale would help triangulate how seriously to take the candidate's claim that the model can scale.
+
+JORDAN: Germantown Kiwanis. He has been described in surfaced materials as the president of the Germantown Kiwanis Club. The Kiwanis is an international service organization with local clubs across the country; the Germantown chapter is part of the Capital District. We do not have the dates of his presidency. We do not have the length of the term. We do not have a record of what the club did under his leadership.
+
+ALEX: This is the one civic role outside his own company and his own nonprofit that we have documented. It is meaningful in the sense that local-service-club presidencies are a real, traceable form of civic engagement. They are also, depending on the chapter, more or less active. We cannot say whether Germantown Kiwanis under his presidency was an active or a dormant chapter.
+
+JORDAN: No military service is on the public record. No academic appointments are on the public record. No professional licenses — the engineering boards of Maryland do not list him as a registered professional engineer, which is consistent with his self-description as a self-trained cybernetician rather than a credentialed engineer. He is not a member of the Maryland bar; we have not found a record of any other professional licensure.
+
+ALEX: Public statements outside politics. Books — none we have surfaced. Op-eds — none we have surfaced, though we cannot rule out small-circulation op-eds we did not find. Magazine essays — none. Television appearances outside campaign coverage — none. Podcast guest spots outside campaign coverage — none.
+
+JORDAN: He has a campaign-era media footprint that is appropriate for his current run. The April twenty-twenty-six interview with WJLA Seven News in Washington is the most visible piece. The Banner voter guide. The Bethesda Magazine candidacy stories from twenty-twenty-two and twenty-twenty-six. The April sixteenth candidate forum at which he spoke. The Maryland Matters and WTOP forum coverage. All of those are about the campaign.
+
+ALEX: Social media. He has a campaign Twitter or X account that is publicly accessible — handle on his current campaign site. We do not have a clean archive of his earliest posts on the platform, but the campaign content is current and consistent with his stated platform. He has a LinkedIn presence — we have not pulled a deep archive of it for this run. He has not been observed maintaining a long-form blog or a Substack newsletter.
+
+JORDAN: That is meaningful in a different way. Most of the candidates in this race have a multi-year written record online — blog posts, position papers, Substack pieces, op-eds — that lets you watch their thinking change. With Peter James, the documented public-writing record is thinner. Most of what we have from him in his own words is on the candidate-questionnaire pages and his campaign sites.
+
+ALEX: Court records. We have surfaced none. No criminal charges, no indictments, no civil lawsuits naming him personally as defendant, no liens against the LLC, no bankruptcy filings against him personally or his company. Federal court — PACER would be the source — we have not surfaced anything. Maryland state courts — we have not surfaced anything in the searchable case-search system tied to his name and his Gaithersburg residence.
+
+JORDAN: We should be precise. The absence of surfaced cases is not equivalent to a guarantee that there are no cases. It is a statement that a reasonable search turns up nothing. A more granular records pull would be the next step if a story emerges.
+
+ALEX: Federal Election Commission filings. He has run for federal office three times — twenty-zero-eight in Maryland-four, twenty-twelve in Maryland-six, twenty-twenty in Maryland-six. Each of those runs would have generated a campaign committee with quarterly FEC reports. The FEC's online database is where those reports live. We have not pulled them for this run. They are the kind of artifact a future research pass should pull — they would tell us his donor base for the federal candidacies and whether any reports were late or amended.
+
+JORDAN: Maryland State Board of Elections campaign-finance records exist for his twenty-twenty-two and twenty-twenty-six County Executive runs. We have not pulled the entity report for this run. Those records would tell us his donor base for the Maryland campaigns, his fundraising totals, and whether the campaign has cured any reporting issues.
+
+ALEX: We do know, from the Bethesda Magazine coverage and the Banner voter guide, that the press consistently describes him as outside the top fundraising tier in the twenty-twenty-six County Executive race. The "heavy hitters" by fundraising and endorsements are Friedson, Glass, and Jawando. James and Mithun Banerjee are described as outside that tier. The specific dollar figures we have not put in this episode because we have not pulled the campaign-finance reports.
+
+JORDAN: Net worth. Not publicly disclosed. There is no Maryland State Ethics Commission disclosure that we have surfaced for him personally. Candidates for County Executive are required to file financial disclosure with the Montgomery County Ethics Commission upon election, but the filing rules for candidates pre-election are more limited. We have not retrieved an ethics commission filing for his twenty-twenty-two run, when he would have been subject to whatever the candidate-level rules at that time were.
+
+ALEX: Home ownership. He has been described as resident in Gaithersburg for at least eighteen years on a continuous basis. That long a tenure is consistent with home ownership but is not on its own evidence of it. We have not pulled a Maryland Land Records search for his address. That would be the next step on the home-ownership question. The Land Records database is searchable; the question is whether the record holds his name or a family-trust name.
+
+JORDAN: Income. He describes himself as a small-business owner whose income would be hurt by a county property-tax increase. That is the only self-description of his income that we have surfaced.
+
+ALEX: Stock holdings. None disclosed. The company is privately held, so the equity in his own company is illiquid and not in a publicly traded position. He has not disclosed a brokerage portfolio.
+
+JORDAN: Disclosed conflicts of interest. None disclosed. As we said earlier, the candidate's own business operates in a product category that overlaps with several planks of his platform. He has not been observed publicly addressing that overlap. That is a transparency gap, not a documented conflict — but it is a gap.
+
+ALEX: Two more pieces before we close. The first is the question of how the candidate spends his time. He has not held elected office. He runs a small company. He runs a small nonprofit. He is president, on undated terms, of a service club. He has campaigned for office five times in eighteen years. The picture you get of his life pattern is that he is a serial candidate who runs a small commercial operation in parallel.
+
+JORDAN: That is not an evaluative claim. It is a structural one. A County Executive campaign is full-time work in the last six months. Whether his commercial operation goes on hold during the run, whether the nonprofit operates on its own management, whether his family carries those responsibilities — we do not know.
+
+ALEX: The second piece is the public-speaking footprint outside the campaign. We have not surfaced him on any major Maryland or national podcast outside the campaign cycle. We have not surfaced him at major industry conferences. The grape-growers piece is the closest thing we have to an industry-facing appearance, and even that is a member-page feature on the association's website, not a documented panel appearance.
+
+JORDAN: For comparison, the candidates in his bracket who have a clearly documented public-speaking and writing record outside the campaign cycle — Friedson with his council testimony, Jawando with his memoir tour, Glass with his ten-plus years of council deliverables, Banerjee with his startup-event appearances — have a thicker outside-of-campaigns public record. Peter James, on the evidence we have, does not.
+
+ALEX: That has implications for how to evaluate him. The case for him is that he is the candidate with a real technology-industry background, founder of a real Maryland AI-and-robotics company, with a coherent set of automation-led policy ideas. The skeptical view is that the company is small, the platform overlaps with the company's product list, and the documented record outside the campaigns is thin.
+
+JORDAN: We will weigh those in episode four. For episode two, the documented career picture is this. Twenty self-described Silicon Valley years with one named employer, Intel, and one opaque project, Just Money. Fifteen unaccounted-for years. Eleven years running Crystal Clear Automation in Germantown. An undated tenure leading First Fruits Farms. An undated tenure as president of Germantown Kiwanis. No military service. No professional licensure. No book, no op-ed collection, no podcast catalogue. Clean court record on what we have surfaced. Campaign-finance reports exist but have not been pulled for today.
+
+ALEX: That sets up episode three, which is the political record. Three congressional runs as a Republican or Independent. A twenty-twenty-two Democratic primary run for County Executive. A twenty-twenty-six Democratic primary run for County Executive. The platform, in detail. Party-affiliation history. Endorsements received and given. Controversies. The full record.
+
+JORDAN: Tomorrow morning, twenty-seven days out.
+
+ALEX: Same place.
+
+JORDAN: Before we wrap, I want to pull on three threads that are worth a little more time. The Grape Whisperer product. The Kiwanis presidency. And the question of how a small-business owner becomes a serial candidate.
+
+ALEX: The Grape Whisperer first. This is the product line Crystal Clear Automation has marketed to Maryland grape growers, and it is the rare piece of his commercial operation that has a third-party industry-association endorsement on the public web. The pitch, as best we can tell from the Maryland Grape Growers Association member-pages feature, is an autonomous-vineyard system. The implication is that the system handles row-by-row vineyard tasks — pruning, weeding, possibly canopy management — using mobile robotic platforms.
+
+JORDAN: Maryland has a small but growing wine industry. The state has about a hundred licensed wineries, several of them in Montgomery, Frederick, and the Eastern Shore. Vineyard labor is one of the hard cost lines for a small Maryland winery. A genuinely working autonomous-vineyard system would be a real product. The candidate's company is targeting a real niche.
+
+ALEX: We have not seen a price list. We have not seen a customer list. We have not seen a deployment count. We do not know whether a single Maryland vineyard has bought the Grape Whisperer system or whether the pitch is in the demonstration stage. The Maryland Grape Growers Association feature does not address that.
+
+JORDAN: It is consistent with a small R-and-D firm in late-stage prototype mode, pitching its system to potential customers. It could also be a small R-and-D firm with several deployed systems and a confidential customer list. We cannot tell from the public record which.
+
+ALEX: That epistemic gap — what is the actual commercial scale of Crystal Clear Automation — is one of the things a serious due-diligence review of the candidate would close. The Maryland Department of Assessments and Taxation filings, the LLC's federal employer identification number activity, the Maryland Department of Labor unemployment-insurance filings if the company has employees on payroll — those are all data sources that would help size the company.
+
+JORDAN: We have not pulled them for this episode. The dossier flags them as items the next research pass should pull.
+
+ALEX: The Kiwanis presidency. Kiwanis as a service organization was founded in nineteen-fifteen in Detroit. Its local clubs across the country focus on children-and-youth service projects — school supply drives, scholarships, reading programs, small-grant philanthropy. Germantown is one of the active Maryland chapters. The Capital District of Kiwanis, of which it is a part, holds annual conferences and runs charitable initiatives.
+
+JORDAN: A Kiwanis chapter president is typically a one-year role, sometimes two-year, that involves chairing club meetings, coordinating service projects, representing the club at the district level. It is real volunteer leadership. It is also a structurally limited role. The dollar amounts a typical Kiwanis chapter moves in a year are in the low five figures, not the low six figures.
+
+ALEX: So when the candidate's biography lists him as president of Germantown Kiwanis, you should hold it as a real civic credential, but one in the same category as president of a parent-teacher association, not in the same category as a board chair at a regional charity. He has the credential. We do not know the year. We do not know what the chapter did under his leadership.
+
+JORDAN: Third thread. The serial-candidate question. He has been on the ballot or off-the-ballot-after-disqualification five times in eighteen years. Twenty-zero-eight, twenty-twelve, twenty-twenty, twenty-twenty-two, twenty-twenty-six. That is a candidacy roughly every four years. It is not the pattern of a person who runs once and walks away.
+
+ALEX: Two readings of that. One reading is that he is sincerely policy-motivated, has a worldview he wants to advance, and is willing to keep running on it whether the campaigns are likely to succeed or not. The other reading is that the campaigning itself is the activity, partly for civic-engagement reasons, partly for visibility reasons, partly for personal reasons we cannot speak to.
+
+JORDAN: He has not, in surfaced material, addressed the why-keep-running question in a way that gives us a clean read. He has framed each individual run in terms of the issues of the cycle. The aggregate pattern across cycles he has not interpreted on the public record.
+
+ALEX: Two more career-adjacent items to put on the table before we close. The first is honorary degrees and awards. None on the record. The second is academic publications. None on the record. The independent-study work in biophysics, dissipative structures, and brain anatomy and function that he described in episode one — that is described as self-study, not as work submitted to peer-reviewed journals. We have not surfaced a publication record for him.
+
+JORDAN: That is in contrast to the academic posture some candidates take in this kind of race. Friedson has the council testimony record. Aruna Miller has the Lieutenant Governor record. Brooke Lierman has the Comptroller record. Banerjee has the engineering credential. Peter James's analogous credential is his self-description and his company. He does not, on the surfaced record, have an analogous external validator in the academic or professional-licensure track.
+
+ALEX: We have to be careful with that observation. A lot of people who run very strong companies do not have peer-reviewed publication records. A lot of working engineers do not hold professional-engineer licenses. So the absence of those is not an indictment. It is a description of what is and is not on the page.
+
+JORDAN: One additional career fact that lives in the gray zone between profession and politics. He has used several different domain names across his cycles. The current campaign domain is peter-four-moco-dot-com. The predecessor sites from his earlier runs have been at different domains. The historical sites have, in some periods, been archived and, in other periods, taken down. We are not going to read out the domain strings — we will say only that the campaign-site history shows continuity of branding and self-presentation across cycles, with the small-business-owner-and-engineer framing constant.
+
+ALEX: So to package the episode for the listener. Documented career picture across his adult life. Twenty years of self-described Silicon Valley consulting in the eighties and nineties, with Intel as the only named employer and Just Money as an unexplained project. A fifteen-year gap. Eleven years running a small AI-and-robotics company in Germantown with at least one third-party-documented product line in the Maryland wine industry. An undated nonprofit, First Fruits Farms, focused on robotic small-scale agriculture. An undated Germantown Kiwanis presidency. No military service. No professional licensure. No publication record. Clean court record on what we have surfaced. Campaign-finance records exist and we have not pulled them.
+
+JORDAN: That is the career as the public record describes it. Episode three picks up the political record. The actual votes never cast and positions taken across five candidacies.
+
+ALEX: Tomorrow morning.
+
+JORDAN: Same place.

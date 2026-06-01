@@ -36,7 +36,11 @@ _LOCALE = ", ".join(p for p in [_Cfg.CITY, _Cfg.COUNTY, _Cfg.STATE] if p) or "th
 
 MIN_EVENTS = 3        # below this, we record verdict=insufficient and skip Claude
 MAX_EVENTS = 60       # cap context size — most-recent first
-DEFAULT_MODEL = "claude-sonnet-4-6"   # judgment work — distinguishing real position shifts from rhetorical drift
+import os as _os
+# Upgraded sonnet-4-6 → opus-4-7 on 2026-05-15. Analyst work is judgment-
+# heavy — distinguishing real position shifts from rhetorical drift — and
+# benefits the most from the stronger reasoning. Override via env var.
+DEFAULT_MODEL = _os.getenv("ANALYST_MODEL", "claude-opus-4-7")
 
 ANALYST_SYSTEM = f"""You are a Data Analyst working for a daily local-politics
 podcast aimed at a first-time voter in {_LOCALE}. Your job is to assess how
@@ -109,21 +113,19 @@ def analyze_all(db_path: Path, anthropic_key: str,
 
     When False, falls back to the per-politician Anthropic API path.
     """
+    # Cowork is mandatory — no direct-API fallback. The `anthropic_key`
+    # parameter is kept in the signature so existing callers don't break,
+    # but it is ignored.
+    from datetime import date
+    from scanner.cowork_bridge import build_consistency_brief, write_brief
+    from scanner.database import list_politicians
+    from scanner.notifications import notify
+    pols = list_politicians(db_path, level=level, min_events=1)
+    ids = [int(p["id"]) for p in pols if p.get("id")]
+    if not ids:
+        log.info("analyst: no politicians to score")
+        return []
     try:
-        from config import Config as _Cfg2
-        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
-    except Exception:
-        cowork_mode = False
-
-    if cowork_mode:
-        from datetime import date
-        from scanner.cowork_bridge import build_consistency_brief, write_brief
-        from scanner.database import list_politicians
-        pols = list_politicians(db_path, level=level, min_events=1)
-        ids = [int(p["id"]) for p in pols if p.get("id")]
-        if not ids:
-            log.info("analyst: no politicians to score (Cowork mode)")
-            return []
         brief = build_consistency_brief(
             target_date=date.today().isoformat(),
             db_path=db_path,
@@ -133,31 +135,11 @@ def analyze_all(db_path: Path, anthropic_key: str,
         write_brief(brief)
         log.info("analyst: queued score_consistency brief for %d politician(s) "
                  "— Cowork inserts rows overnight.", len(ids))
-        return []
-
-    if not anthropic_key:
-        log.warning("Analyst: no anthropic_key, skipping")
-        return []
-
-    from scanner.database import list_politicians
-    pols = list_politicians(db_path, level=level, min_events=1)
-    saved: List[Dict] = []
-    for p in pols:
-        try:
-            row = analyze_one(
-                db_path=db_path,
-                anthropic_key=anthropic_key,
-                politician_id=p["id"],
-                politician_name=p["name"],
-                min_events=min_events,
-                model=model,
-            )
-        except Exception as e:
-            log.error("Analyst failed for %s: %s", p.get("name"), e)
-            continue
-        if row:
-            saved.append(row)
-    return saved
+    except Exception as e:
+        notify("analyst", f"Failed to queue consistency brief: {e}",
+               severity="error")
+        raise
+    return []
 
 
 def analyze_one(db_path: Path, anthropic_key: str, politician_id: int,
@@ -199,19 +181,30 @@ def analyze_one(db_path: Path, anthropic_key: str, politician_id: int,
         )
         return get_latest_consistency_score(db_path, politician_id)
 
-    user_prompt = _build_user_prompt(pol_meta, events)
+    # Cowork-only path — queue a per-politician brief and return without
+    # blocking. The drain task will insert the consistency row on its next
+    # pass. Direct Anthropic API calls are no longer allowed in this role.
     try:
-        client = anthropic.Anthropic(api_key=anthropic_key)
-        resp = client.messages.create(
-            model=model,
-            max_tokens=2500,
-            system=ANALYST_SYSTEM,
-            messages=[{"role": "user", "content": user_prompt}],
+        from datetime import date as _date
+        from scanner.cowork_bridge import build_consistency_brief, write_brief
+        brief = build_consistency_brief(
+            target_date=_date.today().isoformat(),
+            db_path=db_path,
+            politician_ids=[politician_id],
+            locale=_LOCALE,
         )
-        raw = resp.content[0].text.strip()
+        write_brief(brief)
+        log.info("Analyst: queued single-politician consistency brief for %s",
+                 politician_name)
     except Exception as e:
-        log.error("Analyst Claude call failed for %s: %s", politician_name, e)
+        from scanner.notifications import notify
+        notify("analyst", f"Failed to queue brief for {politician_name}: {e}",
+               severity="error")
         return None
+    return None  # caller re-reads consistency_scores after drain
+    # Unreachable below — kept so a code grep still finds the parse path
+    # if we ever want to re-enable the direct API path in development.
+    raw = ""
 
     parsed = _parse_analyst_output(raw)
     if parsed is None:

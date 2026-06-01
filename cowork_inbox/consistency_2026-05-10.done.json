@@ -1,0 +1,10 @@
+{
+  "brief_id": "consistency_2026-05-10",
+  "type": "score_consistency",
+  "status": "deferred",
+  "completed_at": "2026-05-10T14:51:59Z",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-10.json",
+  "politician_ids_in_scope": 138,
+  "rows_inserted": 0,
+  "notes": "9th-day deferral in the streak that began 5/2 — INSERT pipeline lives Windows-side by design. Backlog now spans 5/2-5/10 inclusive."
+}

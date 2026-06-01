@@ -1,0 +1,22 @@
+{
+  "brief_id": "series_2026-05-04_dawn-luedtke_ep4",
+  "type": "series_episode",
+  "ep_num": 4,
+  "ep_title": "This Race",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-04_series_dawn-luedtke_ep4.txt",
+  "completed_at": "2026-05-04T20:14:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3650,
+  "must_cover_status": {
+    "seat_term": "Council D7, four-year term beginning first Monday in December 2026 (Dec 7); seat created in post-2020 redistricting; Luedtke first ever D7 incumbent",
+    "every_other_candidate_one_paragraph": "Luedtke (incumbent paragraph) + Hidayat (former MoCo cop, three-time prior candidate, up-county-equity message); Republican Maldonado waiting in November",
+    "3_5_substantive_disagreements": "(1) up-county equity in capital plan, (2) policing posture, (3) establishment optics + cash, (4) sanctuary-policy posture (Luedtke yes, Hidayat unknown)",
+    "listener_topics_in_this_race": "sanctuary (Luedtke yes / Hidayat unknown / framework not contested by either Dem); school funding (yes / unspecified-redirect); Wootton (Council does not vote, both candidates have no published position); property tax (neither marquee anti-tax candidate); MCPS rating system (BoE not Council)",
+    "what_changes_if_luedtke_wins": "5 concrete continuities — Public Safety committee continuity / immigration-framework continuity / budget-yes continuity / silence on Wootton+MCPS-grading / continued Eric-Luedtke-Moore-administration optics"
+  },
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "ends_with_required_question": "yes — 'what concretely changes if Dawn Luedtke wins her second term' addressed in penultimate segment",
+  "calibration_target": 3900,
+  "calibration_actual": 3650,
+  "calibration_gap": -250
+}

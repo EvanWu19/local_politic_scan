@@ -1,0 +1,29 @@
+{
+  "brief_id": "series_2026-05-04_dawn-luedtke_ep3",
+  "type": "series_episode",
+  "ep_num": 3,
+  "ep_title": "Political Record",
+  "deliverable_path": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-04_series_dawn-luedtke_ep3.txt",
+  "completed_at": "2026-05-04T20:13:00-04:00",
+  "format": "ALEX/JORDAN dialogue, plain text, no stage directions",
+  "approx_word_count": 3850,
+  "must_cover_status": {
+    "all_prior_runs": "one — 2022 Council D7 Dem primary 35.76% / general 66.98% vs Maldonado",
+    "voting_record_by_topic": "Immigration (Trust Act yes / sponsored ICE-Out def. amendment / co-introducer Uplifting Victims Act); Public Safety (Bill 32-23 with documented evolution / Dec 2023 behavioral health bill); Reproductive Health (Albornoz employer-inquiry ban co-introducer); Budget (FY26 unanimous yes); Schools (FY26 capital plan yes — Crown $20M)",
+    "sponsored_cosponsored_bills_fate": "5-row table covered including Bill 32-23 Oct 24 2023 / Trust Act Feb 2026 / private detention center ban April 21 2026 / Mask-ban April 28 2026 / Uplifting Victims 2025",
+    "endorsements": "Feb 17 2026 'avalanche' Montgomery Perspective; specific labor enumeration deferred — flagged as open question 6",
+    "controversies": "Bill 32-23 documented evolution under Silver Spring Justice Coalition + NAACP pressure; Eric Luedtke optics conflict — neither produced documented ethics finding",
+    "stance_shifts": "Bill 32-23 repeal-then-restructure path; broader prosecutor-clerk-to-immigration-protection-co-sponsor evolution"
+  },
+  "listener_questions_answered_by_name": {
+    "wootton_high_school": "Set proper institutional chronology — March 26 2026 BoE 7-1 vote; April 27 2026 parents appeal to State BoE pending; Council does not vote on attendance boundaries; FY26 capital plan funded $20M to Crown (the receiving facility) but no separate Wootton relocation appropriation; Luedtke has no public position on the move in the record — said so on-air",
+    "mcps_grading_system": "New 2025-26 secondary grading regulation (avg of marking-period percentage grades / traditional rounding / modified 50% rule / 10% summative weight) is BoE policy not Council policy; Luedtke has no public position in the record — said so on-air",
+    "sanctuary_policy_litmus_test": "Luedtke documented YES on framework; Hidayat unknown; framing answered plainly without re-using avoid_list framings",
+    "andrew_friedson_fiscal": "Cross-referenced to Friedson dossier; FY26 budget unanimous so no daylight on headline number",
+    "ben_kramer_voting_record": "Cross-referenced to forthcoming Kramer dossier; not in this race"
+  },
+  "avoid_list_compliance": "all 10 PM-flagged framings avoided",
+  "calibration_target": 3900,
+  "calibration_actual": 3850,
+  "calibration_gap": -50
+}

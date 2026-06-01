@@ -1,0 +1,10 @@
+{
+  "brief_id": "themes_2026-05-04",
+  "type": "weekly_themes",
+  "status": "done",
+  "completed_at": "2026-05-04T20:16:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-04.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-04.json",
+  "deferred_db_writes": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_writes_2026-05-04.sql",
+  "notes": "Weekly themes rollup written for window 2026-04-28 to 2026-05-04 (7 daily_notes). Five themes, six open questions, six underserved topics, thirteen-item avoid_list. UPSERT into weekly_themes table deferred — bash sandbox 'No space left on device' on every invocation prevented opening politics.db. Apply themes_writes_2026-05-04.sql on the Windows side once the live server's WAL contention permits."
+}

@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-05-17T02:57:06.361482",
+  "window_start": "2026-05-10",
+  "window_end": "2026-05-16",
+  "note_count": null,
+  "summary": "Listener is a first-time Rockville Democratic primary voter for June 23, 2026. As of today (2026-05-16) the SBE candidate list is finalized \u2014 40+ Democratic primary decisions on the ballot. The Friedson deep dive shipped today, directly addressing the listener's three highest-priority recurring asks (sanctuary policy, fiscal record, Wootton). The new highest-value work is per-candidate deep dives on the remaining four Democratic candidates for County Executive (Banerjee, Glass, James, Jawando), the seventeen-name At-Large field (especially Elrich and Silvestre), and Kramer's career-long Senate record. Side-by-side policy comparison across the listener's ballot is now possible and is the deliverable to build toward.",
+  "themes": [
+    "Per-candidate, bills-and-votes treatment for every Democrat on the listener's ballot \u2014 gating constraint is 38 days to primary, 22 unique races, 60+ candidates total once tier-3/tier-4 fields are included.",
+    "Side-by-side policy comparison across MoCo Executive primary candidates on listener's three flagged topics (sanctuary, fiscal/property tax, Wootton).",
+    "Treatment of Council At-Large field as the highest-leverage race on the ballot (17 candidates for 4 slots; most-open race in a decade) \u2014 needs structural overview plus per-candidate work prioritized by Elrich (former county exec), Silvestre (sitting BoE president), Sayles (incumbent), Fani-Gonz\u00e1lez (incumbent).",
+    "Kramer career-long Senate voting record as a multi-episode deep dive (D19 Senate is uncontested \u2014 the listener's yes-or-skip vote is informed by the historical record, not the absence of a primary opponent).",
+    "MoCo capital-budget mechanism as the executive's only direct lever on Wootton \u2014 needs revisiting whenever a county-exec candidate's school position is discussed."
+  ],
+  "open_questions": [
+    "Glass and Jawando deep dives (each with explicit Wootton, sanctuary, fiscal-record positions documented).",
+    "Mithun Banerjee and Peter James biographies and policy positions \u2014 currently no public record we have surfaced.",
+    "Kramer's career-long voting record beyond recent sessions (multi-episode treatment).",
+    "Where the five Circuit Court judicial candidates differ in judicial philosophy or sitting-vs-challenger status.",
+    "Per-candidate research on the lower-profile At-Large names (Barrie, Caballero, Chowdhury, Gassaway, Goldberg, Khan, Losak, McNulty, Pope, Selvam, Solomon, True, Vergagni, Wali)."
+  ],
+  "underserved_topics": [
+    "FY27 county budget gap and how each MoCo Executive candidate proposes to close it in named dollar terms and named program cuts.",
+    "Sheriff race between Will Milam and Maxwell Cornelius Uy \u2014 neither has been covered.",
+    "Register of Wills race (Bowser/Dollahite/Ebel) \u2014 function of the office plus candidate backgrounds.",
+    "Down-ballot judicial race (Sixth Judicial Circuit, 5 candidates for 4 slots) \u2014 judicial-selection process explained for first-time voter.",
+    "Wootton High School position from Glass, Jawando, Banerjee, and James \u2014 only Friedson is on the record."
+  ],
+  "avoid_list": [
+    "The 'four for four against Elrich property-tax increases (2020, 2023, 2025, 2026)' Friedson framing \u2014 used as the central fiscal-discipline summary in the 2026-05-16 deepdive_friedson and ep1; do not repeat verbatim in subsequent Friedson references or in other county-executive deep dives.",
+    "The 'October 28 2025 Wootton testimony / Crown relocation / Rockville Mayor Monique Ashton and Adam Van Grack credited' Friedson-on-Wootton framing \u2014 used in the 2026-05-16 deepdive_friedson. For Glass/Jawando/James/Banerjee Wootton coverage, lead from their own records, not by contrasting against this Friedson framing.",
+    "The April 28 2026 'permanent police officers in every high school' Friedson letter as the lead public-safety hook \u2014 used in the 2026-05-16 deepdive_friedson and ep1. Re-using as a primary frame in upcoming Glass or Jawando episodes would feel like Friedson-centric coverage. Use it as comparison context only.",
+    "The 'ballot is officially final / 40-plus candidate decisions / top-to-bottom ballot read' framing \u2014 used in 2026-05-16 ep1 (filing_monitor finalized the list this morning). Do not lead future episodes with a 'the ballot just got final' reveal \u2014 it has now been disclosed.",
+    "The 'seventeen At-Large candidates competing for four seats \u2014 most open At-Large race in a decade \u2014 Jawando and Glass moved out, Elrich moved in' At-Large structural framing \u2014 used in 2026-05-16 ep1 and ep2. Do not re-narrate the seat structure; assume the listener heard it. Move directly to per-candidate substance in subsequent At-Large coverage.",
+    "The CASA-endorses-Ferguson hook used to connect state Senate leadership to county-level Trust Act / County Values Act \u2014 used in 2026-05-16 ep2. Find a different connective tissue when the next state-senate leadership story comes through.",
+    "Kanaiyah's Law foster-care framing introduced in 2026-05-16 ep3 in the Moore bill-signing roundup \u2014 do not lead another episode with Kanaiyah's Law specifically; deeper child-welfare coverage should come from a different angle (e.g., MoCo Health and Human Services implementation).",
+    "The framing 'a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration' as a setup line \u2014 overused",
+    "The Evan Glass DHS-screening bill as the concrete sanctuary-policy example \u2014 already used twice",
+    "The ICE mask-ban ordinance as the sanctuary-policy benchmark \u2014 already used",
+    "'Two stories, properly worked through' / 'two stories, not spreading thin across six' framing \u2014 already used",
+    "Governor Moore's 'Leave No One Behind' slogan vs disability service cuts \u2014 already used twice",
+    "The ACA marketplace quiet-downgrade story for Marylanders \u2014 already used twice",
+    "Maryland's 90-day part-time legislature explanation \u2014 already used twice",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing \u2014 already used three times",
+    "Beltsville Agricultural Research Center closure as a District 19 candidate-record hook \u2014 already used twice",
+    "Narrating the listener's own frustration about promised deep-dives back to them \u2014 already used in 5+ episodes"
+  ]
+}

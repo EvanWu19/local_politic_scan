@@ -1,0 +1,57 @@
+{
+  "brief_id": "themes_2026-05-01",
+  "type": "weekly_themes",
+  "window_start": "2026-04-25",
+  "window_end": "2026-05-01",
+  "note_count": 7,
+  "summary": "This listener is a first-time Democratic primary voter in Rockville (MD-08, Legislative District 19, Council District 7). What they want above everything else is concrete, candidate-by-candidate research tied to documented votes and historical public record — not vibes, summaries, or descriptions of issues in the abstract. Their policy priors are clear: skeptical of high property taxes, opposed to reflexive education-spending increases, supportive of fiscal discipline and non-essential spending cuts, specifically interested in which Democratic candidates oppose sanctuary policy on illegal immigration, and pointed about the Wootton High School relocation that affects their own home district. Their kids attend St. John's Episcopal in Rockville, so MCPS coverage should not assume their family is inside MCPS.",
+  "themes": [
+    "Concrete candidate voting records and historical public record — the listener has asked, in some form, in nearly every daily note: name the candidate, name the bill, name the vote, link it back. Generic 'they support housing' is failing them.",
+    "Property taxes and fiscal discipline — listener directly criticized Cramer for voting yes on every education increase and asked whether Andrew Friedson is the fiscal-restraint candidate. Property tax is treated as the real-world consequence of education-spending votes.",
+    "Sanctuary policy and immigration enforcement — listener wants concrete votes/positions, not language. Has been asking since 2026-04-24 and the show has answered with the same Glass-DHS-screening framing twice already.",
+    "Wootton High School closure — affects the listener's own area. Asked directly on 2026-04-29; show has acknowledged but not resolved.",
+    "Side-by-side, candidate-vs-candidate comparison on the listener's actual primary ballot — not background spotlights on legislators they cannot vote for."
+  ],
+  "open_questions": [
+    "Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration? (asked 2026-04-24, partially answered with Glass DHS screening framing — needs to move past that)",
+    "Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline? (asked 2026-04-29)",
+    "Why does MCPS want to close and move Wootton High School, and what happens next? (asked 2026-04-29)",
+    "What is Kramer's full historical voting record, including old news and public records beyond recent sessions? (implied 2026-04-26 + 2026-04-25 + 2026-04-27 'I don't like Cramer')",
+    "What are the documented policy differences between each candidate on my primary ballot, side-by-side? (asked 2026-04-24)"
+  ],
+  "underserved_topics": [
+    "Andrew Friedson's specific fiscal record and votes — asked directly, never centrally addressed in an episode (we now have a dossier; use it).",
+    "Wootton High School relocation — mentioned but not resolved; need the timeline, the appeal, what the County Executive can actually do, and where each candidate stands.",
+    "The new Montgomery County Public Schools rating system (asked 2026-04-30) — not yet covered.",
+    "Long-arc historical record of candidates: pre-Council careers, prior elected positions, old news clippings, not just the last legislative session.",
+    "Concrete head-to-head policy grid for County Executive (Friedson vs. Glass vs. Jawando) and House District 19 (Crutchfield vs. Kramer vs. Stewart vs. Tichy)."
+  ],
+  "avoid_list": [
+    "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" — used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3.",
+    "The Evan Glass bill requiring background screening for DHS agents joining MoCo police, used as the canonical sanctuary-policy example — used in 2026-04-28 ep1 and 2026-04-29 ep3.",
+    "The ICE agent mask-ban ordinance as the sanctuary-policy benchmark — used in 2026-04-29 ep2.",
+    "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-opening device — used in 2026-04-29 ep1.",
+    "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite.",
+    "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders quietly downgrading their health insurance plans\") — used in 2026-04-28 ep1 and 2026-04-29 ep3.",
+    "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite.",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4.",
+    "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite.",
+    "Listener's own frustration about promised candidate deep-dives not delivering, narrated back at them — has now appeared in at least five episodes; do not narrate this complaint as a framing device again. Just deliver.",
+    "Opening with \"Welcome to Rockville Politics Today\" + an immediate two-item agenda preview — every episode this week has used this exact pattern; vary the cold open.",
+    "The standing line \"you've got Glass, Jawando, and Friedson — all three are currently County Councilmembers\" recited at the top of every county-exec mention — the listener already knows this; cite it once per episode and move into the votes.",
+    "Generic \"the County Executive proposes the budget; the council still votes on it\" civics interlude — used in nearly every deepdive this week."
+  ],
+  "listener_candidate_interest": [
+    "Andrew Friedson",
+    "Kramer",
+    "Cramer",
+    "Crutchfield",
+    "Stewart",
+    "Tichy",
+    "Will Jawando",
+    "Evan Glass"
+  ],
+  "generated_at": "2026-05-01T11:00:00-04:00",
+  "db_writeback_sql_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-01.sql",
+  "note_on_db_write": "Direct DB write was attempted from the Cowork side but the live DB has WAL contention (windows server holds the file open). The accompanying .sql file is an idempotent UPSERT keyed on (week_start, week_end) that the next Windows-side cmd_publish run will apply automatically when it touches weekly_themes."
+}

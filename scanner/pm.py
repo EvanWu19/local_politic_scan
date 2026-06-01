@@ -99,16 +99,11 @@ def generate_weekly_themes(
     Roll up daily_notes in [window_end - window_days + 1 .. window_end].
     Returns the saved rollup dict, or None if not enough notes / no key.
     """
-    # ── Cowork mode: queue a brief, return None ────────────────────────────
+    # Cowork-only — direct API path disabled 2026-05-15.
+    from scanner.cowork_bridge import build_themes_brief, write_brief
+    from scanner.notifications import notify
+    window_end = window_end or date.today()
     try:
-        from config import Config as _Cfg2
-        cowork_mode = bool(getattr(_Cfg2, "USE_COWORK_FOR_AI", False))
-    except Exception:
-        cowork_mode = False
-
-    if cowork_mode:
-        from scanner.cowork_bridge import build_themes_brief, write_brief
-        window_end = window_end or date.today()
         brief = build_themes_brief(
             target_date=window_end.isoformat(),
             db_path=db_path,
@@ -117,11 +112,11 @@ def generate_weekly_themes(
         )
         write_brief(brief)
         log.info("pm: queued weekly_themes brief — Cowork upserts row overnight.")
-        return None
-
-    if not anthropic_key:
-        log.warning("PM agent: no anthropic_key, skipping")
-        return None
+    except Exception as e:
+        notify("pm", f"Failed to queue weekly_themes brief: {e}",
+               severity="error")
+        raise
+    return None
 
     window_end = window_end or date.today()
     window_start = window_end - timedelta(days=window_days - 1)

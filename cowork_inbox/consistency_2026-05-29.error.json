@@ -1,0 +1,6 @@
+{
+  "brief_id": "consistency_2026-05-29",
+  "status": "error",
+  "error": "politics.db inaccessible from this scheduled-run environment (sqlite3 reports database disk image is malformed when copied; Windows file-lock or path-permission issue). Re-queue for next drain that runs from a Windows session.",
+  "processed_at": "2026-05-30T03:03:06"
+}

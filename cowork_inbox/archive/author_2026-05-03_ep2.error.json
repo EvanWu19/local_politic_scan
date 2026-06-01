@@ -1,0 +1,160 @@
+{
+  "brief_id": "author_2026-05-03_ep2",
+  "type": "author_episode",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-03_ep2.txt",
+  "instructions": "Write a ~30-minute episode 2 of the daily local-politics podcast for 2026-05-03. Topic: 'Maryland'.\n\nFORMAT:\n  • Two hosts ALEX (presenter) and JORDAN (curious co-host).\n  • Every line starts `ALEX:` or `JORDAN:` — no stage directions, no markdown, no emoji, no '[laughs]', no asterisks.\n  • LENGTH TARGET — 3900 words (±300; ~30 min at 130 wpm).\n  • Cover the segments in `context.segments` in order. Each segment is a topic + a list of events (title, summary, url, date, level, politicians, role/stance). Cite specific votes and dates from the events — generalities are why prior drafts felt repetitive.\n\nPM LENGTH CALIBRATION (read this before drafting):\n  • Recent shipped word counts: 2551w · 1586w · 2873w · 4541w · 3118w.\n  • You have been running short by ~967 words (~7 min). Target is 3900 words (~30 min); recent avg is 2933. EXTEND segments — deeper candidate-history reads, more JORDAN pushback, more specific votes/dates. Do NOT pad with filler.\n  • Hit the target. If you finish all the segments early, EXTEND     the candidate-history reads and the JORDAN pushbacks rather     than wrap; if a segment is bleeding length, tighten it without     losing specific citations.\n\nAVOID — do not reuse any framing on `context.avoid_list`. The PM agent has flagged these as already-shipped this week:\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again\n\nLISTENER POSITIONING:\n  • The listener is a first-time voter in the configured locale.\n  • Locale: Rockville, Montgomery County, Maryland.\n  • Their districts:\n  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19\n  • NEVER tell them to 'figure out who their candidate is', 'look up their district', or 'find out who's on their ballot'. The tool owns that work.\n  • The listener's recent daily_notes (in `context.listener_notes`) are direct asks — address at least ONE of them by name in this episode.\n\nBALLOT CONTEXT (already-known races):\nYOUR BALLOT (2026) — confirmed/likely candidates for the listener's districts. The listener's choice is BETWEEN these named people; never tell the listener to go figure out who their candidate is. If a contest has fewer than two known candidates, say so out loud (\"only one filer so far\") instead of fudging.\n  • Governor of Maryland\n      - Wes Moore (D)\n      - Chris Bouchat (R)\n      - Dan Cox (R)\n      - Ed Hale (R)\n      - Hershey (unknown) [withdrawn]\n  • Maryland House of Delegates District 19\n      - Bonnie Cullison (unknown) [withdrawn]\n      - Crutchfield (unknown)\n      - Kramer (unknown)\n      - Stewart (unknown)\n      - Tichy (unknown)\n  • Montgomery County Executive\n      - Evan Glass (unknown)\n      - Friedson (unknown)\n      - Glass (unknown)\n      - Jawando (unknown)\n      - Will Friedson (unknown)\n\nPM SIGNAL BLOCK (what the listener cares about right now):\nListener rollup (2026-04-24..2026-04-30, based on 6 notes):\nSummary: This listener is a first-time Democratic voter in Rockville preparing for the June primary who cares most about knowing exactly who is on their ballot and what those candidates have actually done — voting records, bill history, and documented positions, not summaries or vibes. They have clear policy priors: skepticism toward high property taxes, opposition to increased education spending, openness to non-essential spending cuts and fiscal discipline, and a specific interest in which candidates oppose sanctuary policy on illegal immigration. They have flagged repeatedly that the show promises candidate deep-dives but fails to deliver them in a concrete, candidate-linked way.\nRecurring themes:\n  - Candidate voting records and historical public record — The listener has asked every single day for specific votes, old news, and documented positions tied to named candidates on their actual ballot, not general descriptions.\n  - Property taxes and fiscal discipline — The listener connects education spending votes directly to their property tax burden and has expressed support for fiscal restraint and cutting non-essential spending.\n  - Sanctuary policy and immigration enforcement — The listener wants to know concretely which Democratic primary candidates oppose or support sanctuary-style policies, not just which ones use immigration-friendly language.\n  - June primary ballot clarity — The listener is narrowing focus to actionable primary choices and wants episode content organized around who they can actually vote for in June.\nOpen questions the listener keeps raising:\n  - Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?\n  - Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?\n  - Why does MCPS want to close and move Wootton High School, and what happens next?\n  - What is Kramer's full historical voting record, including old news and public records beyond recent sessions?\n  - What are the documented policy differences between each candidate on my primary ballot?\nTopics they want more coverage of:\n  - Andrew Friedson's specific fiscal record and positions — listener asked directly and has not received a focused answer\n  - Wootton High School closure — listener asked directly; scripts acknowledged it but did not resolve it\n  - Full historical background research on candidates (old news articles, public records, career-long voting history, not just recent session votes)\n  - Concrete side-by-side policy comparison of all Democratic primary candidates across the listener's specific races\nRECENT COVERAGE TO AVOID — do NOT reuse these framings, taglines, or anecdotes (they already shipped in the last 5 days):\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again\n\nWrite the full dialogue to `output_file`. Plain text only.",
+  "context": {
+    "target_date": "2026-05-03",
+    "ep_num": 2,
+    "ep_title": "Maryland",
+    "segments": [
+      {
+        "key": "state",
+        "label": "Maryland State Legislature",
+        "events": [
+          {
+            "id": 395,
+            "title": "Democrats renew calls for US Supreme Court overhaul after voting rights decision",
+            "type": "news",
+            "level": "state",
+            "description": "Democrats are renewing calls to overhaul the Supreme Court in the wake of Wednesday's ruling gutting the Voting Rights Act, but it's likely to remain only a dream, as chances of real structural change are almost zero as long as President Donald Trump is in office.",
+            "summary": "",
+            "date": "2026-05-02",
+            "source_url": "https://marylandmatters.org/2026/05/01/repub/democrats-renew-calls-for-us-supreme-court-overhaul-after-voting-rights-decision/",
+            "source_name": "Maryland Matters",
+            "relevance_score": 0.0,
+            "categories": "[\"state\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "The U.S. Supreme Court, pictured April 9, 2026. Some progressives are seeking to restructure the court after seeing decisions in recent years they believe have provided political support to President Donald Trump and Republicans. (Photo by Ashley Murray/States Newsroom)    After the U.S. Supreme Court severely weakened the federal Voting Rights Act in an April 29 decision, a furious U.S. House Minority Leader Hakeem Jeffries condemned what he called an “illegitimate” conservative majority on the court. \n “This isn’t even the Roberts Court,” Jeffries said, referring to Chief Justice John Roberts. “It’s the Trump Court.” \n Democrats are renewing their calls to overhaul the Supreme Court in the wake of the court’s decision, which  empowers states to gerrymander  congressional maps in ways that will break apart districts where a majority of residents are Black, Hispanic or belong to other minority groups.  \n The momentous opinion overturned the reasoning behind decades of court cases that relied on the 1965 Voting Rights Act, a law born of efforts to stamp out Jim Crow voting laws in the South, to protect these majority-minority districts. \n For years, critics of the court, where conservatives enjoy a 6-3 majority, have pushed for changes. Those efforts often center on expanding the size of the court to dilute the influence of the majority or imposing term limits on the justices, though other ideas, like narrowing the kinds of cases the court can consider, have also been discusse",
+            "created_at": "2026-05-02 11:00:36",
+            "politicians": null
+          },
+          {
+            "id": 396,
+            "title": "‘Let’s do this for her’: Annapolis man biking across US to honor friend with ALS",
+            "type": "news",
+            "level": "state",
+            "description": "Rex Houlihan arrived at BWI Airport earlier this week with a one-way ticket to the West Coast. He's making the return leg on his bike, a 12-state, 4,000 mile journey to raise funds for ALS research, after a friend was diagnosed with the incurable disease.",
+            "summary": "",
+            "date": "2026-05-02",
+            "source_url": "https://marylandmatters.org/2026/05/01/lets-do-this-for-her-annapolis-man-biking-across-us-to-honor-friend-with-als/",
+            "source_name": "Maryland Matters",
+            "relevance_score": 0.0,
+            "categories": "[\"state\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "The planned coast-to-coast bike ride will raise funds for research into ALS, which Laura Olds was diagnosed with in 2023. (Photo courtesy Coast 2 Coast 4 ALS)    By  José Umaña  \n Rex Houlihan arrived at Baltimore-Washington International Thurgood Marshall Airport earlier this week with a one-way ticket to the West Coast. He&#8217;s making the return leg of the trip on his bike. \n Starting Friday, Houlihan, 62, along with four others began cycling across the country from the Olympic Peninsula in La Push, Washington, with the goal of ending at Dewey Beach, Delaware, 4,000 miles and 12 states later. \n Along the way, they&#8217;ll be raising funds for ALS research in honor of a close friend, Laura Olds, who was diagnosed with the incurable disease in 2023. The idea sprang up at the Sailor Oyster Bar in Annapolis in 2023 after Olds learned about her diagnosis with ALS – also known as Lou Gehrig’s disease – which attacks nerve cells that control muscles throughout the body. \n “She can no longer do the things she loved,” Houlihan told WTOP. “Let’s do this for her.” \n     Laura’s story \n\n\t\n Laura Olds was known as the healthy one among her friends. She lived an active lifestyle for years, taking yoga classes, enjoying dancing and playing tennis. But her husband, Todd Olds, noticed Laura began slurring her speech, and in March 2023 she got her diagnosis. \n   Laura Olds pictured at the beach, prior to her 2023 ALS diagnosis. (Photo courtesy Coast 2 Coast 4 ALS)  \n Since then, Laura, n",
+            "created_at": "2026-05-02 11:00:36",
+            "politicians": null
+          },
+          {
+            "id": 371,
+            "title": "Frost puts a chill on the spring and summer selling season for farmers in Maryland",
+            "type": "news",
+            "level": "state",
+            "description": "The frost that coated the Mid-Atlantic on April 21 is making for a bleak season ahead for Maryland vintners and farmers, who experienced heavy losses of their early crops, said one Montgomery County farmer.",
+            "summary": "",
+            "date": "2026-05-01",
+            "source_url": "https://marylandmatters.org/briefs/frost-puts-a-chill-on-the-spring-and-summer-selling-season-for-farmers-in-maryland/",
+            "source_name": "Maryland Matters",
+            "relevance_score": 0.0,
+            "categories": "[\"state\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "Early crops in Maryland may have been hit hard by last week's frost, one farmer says. (Photo by  Margaret Burlingham/Stock.adobe.com) .    By  Kate Ryan  \n The frost that coated the Mid-Atlantic on April 21 is making for a bleak season ahead for vintners and farmers who experienced losses of up to 90% of their crops. \n “There’s no way to sugarcoat it, on the grape side of our business anyway, pretty much 100% of any living tissue was frosted off on that morning of the 21st,” Robert Butz, of Windridge Vineyard in Darnestown, told reporters Wednesday. \n Butz said that since Windridge expanded from growing grapes to moving into wine production, his farm can blunt some of the effect of the April frost. \n “In the early days of growing grapes, I was a grape grower, I didn’t produce any wine,” he said, adding that an event like the one that hit the region earlier this month, “I would have lost all my income on grapes for the year.” \n     \n                 \n         \n             \n                  \n                 GET THE MORNING HEADLINES. \n             \n             \n                 SUBSCRIBE \n             \n         \n         \n             \n\n\t\n But thanks to planning and past harvests, Butz said, “We’ve been preparing for this over the years, and we do have some inventory,” but he added, “That’s going to set us all back and we’ll be working for the next five years to climb out of this event.” \n However, Butz said, his business wasn’t hit as hard as many of his neighboring farms ",
+            "created_at": "2026-05-01 11:00:45",
+            "politicians": null
+          },
+          {
+            "id": 372,
+            "title": "Study: 2.5 million people lost food aid in months after passage of GOP megabill",
+            "type": "news",
+            "level": "state",
+            "description": "At least 2.5 million low-income people lost SNAP food assistance under the One, Big Beautiful Bill that added new requirements for the nation’s largest nutrition program and shifted hundreds of millions of dollars in costs to the states, a recent report says.",
+            "summary": "",
+            "date": "2026-05-01",
+            "source_url": "https://marylandmatters.org/2026/05/01/study-2-5-million-people-lost-food-aid-in-months-after-passage-of-gop-megabill/",
+            "source_name": "Maryland Matters",
+            "relevance_score": 0.0,
+            "categories": "[\"state\"]",
+            "bill_number": null,
+            "status": "",
+            "raw_content": "The entrance to a Big Lots store in Portland, Oregon. (Stock photo by hapabapa/Getty Images)    At least 2.5 million low-income people quickly lost help affording groceries under a Republican-passed law that added new requirements for the nation’s largest nutrition program and shifted hundreds of millions of dollars in costs from the federal government to states, according to a study by the Center on Budget and Policy Priorities. \n It said some 6% of the 41 million Americans enrolled in the Supplemental Nutrition Assistance Program, or SNAP, when President Donald Trump signed the One Big Beautiful Bill Act on July 4, 2025, were no longer receiving benefits by the end of the year. \n The left-leaning think tank’s report was based on U.S. Department of Agriculture and state agency data from July to December 2025. \n      \n Arizona was the largest outlier in the data, with a whopping 47% of people in the program — about 424,000 Arizonans — losing benefits in 2025, according to the think tank, which cited more recent state agency data in addition to last year’s USDA numbers. In Maryland, SNAP rolls fell by about 35,000 people, or 5.27%. \n Full-year 2025 data from the USDA, which operates the federal side of SNAP, shows an even bigger drop of 3.4 million people, or roughly 8% of the program’s total, CBPP said. SNAP is federally funded and administered by states, though that cost-share will change under the law. \n In an email, a USDA spokesperson applauded the drop in SNAP participat",
+            "created_at": "2026-05-01 11:00:45",
+            "politicians": null
+          }
+        ],
+        "intro_focus": "Maryland State Legislature"
+      }
+    ],
+    "avoid_list": [
+      "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3",
+      "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3",
+      "The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2",
+      "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+      "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4",
+      "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite",
+      "Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again"
+    ],
+    "listener_notes": [
+      {
+        "date": "2026-04-30",
+        "note": "I need a deep dive of the new rating system of montgomery county, public school system"
+      },
+      {
+        "date": "2026-04-29",
+        "note": "Fisical displin is good.is Andrew,\nAndrew Friedson the man do fisical restriction?\nWhy they want to close and move wooten high school?\n"
+      },
+      {
+        "date": "2026-04-28",
+        "note": "I agree with non essential spending cut.\nNow focus on who i can do on primary vote in June \n"
+      },
+      {
+        "date": "2026-04-27",
+        "note": "I dont like cramer who vote yes to all education increasing.\nI think the property tax is too high\n\n"
+      },
+      {
+        "date": "2026-04-26",
+        "note": "Not only about recent history of my candidates also search the all.history public record or news acout the candidates \nThe podcast 2 claimed that it will let me know the history of my candidate, but actually never linked any history/ old news to a specific candidate \nFor those candidate already filed their names start to collect their history."
+      },
+      {
+        "date": "2026-04-25",
+        "note": "Dig deeper into all candidates voting history, what is their historical  political viewpoint "
+      },
+      {
+        "date": "2026-04-24",
+        "note": "Who are the candidates of the primary voting i will vote to, i already join the democratsparty? What the policy difference between each candidates ? Who against sanctuary policy on illegal immigration? "
+      },
+      {
+        "date": "2026-04-23",
+        "note": "I want to kown what happened if change my election to join liberty party ? Do i need to attend some assembly and the party start to know me?\n"
+      }
+    ],
+    "ballot_block": "YOUR BALLOT (2026) — confirmed/likely candidates for the listener's districts. The listener's choice is BETWEEN these named people; never tell the listener to go figure out who their candidate is. If a contest has fewer than two known candidates, say so out loud (\"only one filer so far\") instead of fudging.\n  • Governor of Maryland\n      - Wes Moore (D)\n      - Chris Bouchat (R)\n      - Dan Cox (R)\n      - Ed Hale (R)\n      - Hershey (unknown) [withdrawn]\n  • Maryland House of Delegates District 19\n      - Bonnie Cullison (unknown) [withdrawn]\n      - Crutchfield (unknown)\n      - Kramer (unknown)\n      - Stewart (unknown)\n      - Tichy (unknown)\n  • Montgomery County Executive\n      - Evan Glass (unknown)\n      - Friedson (unknown)\n      - Glass (unknown)\n      - Jawando (unknown)\n      - Will Friedson (unknown)",
+    "themes_block": "Listener rollup (2026-04-24..2026-04-30, based on 6 notes):\nSummary: This listener is a first-time Democratic voter in Rockville preparing for the June primary who cares most about knowing exactly who is on their ballot and what those candidates have actually done — voting records, bill history, and documented positions, not summaries or vibes. They have clear policy priors: skepticism toward high property taxes, opposition to increased education spending, openness to non-essential spending cuts and fiscal discipline, and a specific interest in which candidates oppose sanctuary policy on illegal immigration. They have flagged repeatedly that the show promises candidate deep-dives but fails to deliver them in a concrete, candidate-linked way.\nRecurring themes:\n  - Candidate voting records and historical public record — The listener has asked every single day for specific votes, old news, and documented positions tied to named candidates on their actual ballot, not general descriptions.\n  - Property taxes and fiscal discipline — The listener connects education spending votes directly to their property tax burden and has expressed support for fiscal restraint and cutting non-essential spending.\n  - Sanctuary policy and immigration enforcement — The listener wants to know concretely which Democratic primary candidates oppose or support sanctuary-style policies, not just which ones use immigration-friendly language.\n  - June primary ballot clarity — The listener is narrowing focus to actionable primary choices and wants episode content organized around who they can actually vote for in June.\nOpen questions the listener keeps raising:\n  - Who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration?\n  - Is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline?\n  - Why does MCPS want to close and move Wootton High School, and what happens next?\n  - What is Kramer's full historical voting record, including old news and public records beyond recent sessions?\n  - What are the documented policy differences between each candidate on my primary ballot?\nTopics they want more coverage of:\n  - Andrew Friedson's specific fiscal record and positions — listener asked directly and has not received a focused answer\n  - Wootton High School closure — listener asked directly; scripts acknowledged it but did not resolve it\n  - Full historical background research on candidates (old news articles, public records, career-long voting history, not just recent session votes)\n  - Concrete side-by-side policy comparison of all Democratic primary candidates across the listener's specific races\nRECENT COVERAGE TO AVOID — do NOT reuse these framings, taglines, or anecdotes (they already shipped in the last 5 days):\n  - The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3\n  - The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3\n  - The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2\n  - \"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite\n  - The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4\n  - The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite\n  - Listener's own frustration about promised candidate deep-dives not delivering — the show has now narrated this complaint back to the listener across at least five episodes; do not repeat it as a framing device again",
+    "locale": "Rockville, Montgomery County, Maryland",
+    "districts_profile": "  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19",
+    "length_calibration": {
+      "target_words": 3900,
+      "target_minutes": 30,
+      "recent_avg_words": 2933,
+      "recent_min": 1586,
+      "recent_max": 4541,
+      "trend": [
+        2551,
+        1586,
+        2873,
+        4541,
+        3118
+      ],
+      "gap_words": 967,
+      "calibration_note": "You have been running short by ~967 words (~7 min). Target is 3900 words (~30 min); recent avg is 2933. EXTEND segments — deeper candidate-history reads, more JORDAN pushback, more specific votes/dates. Do NOT pad with filler."
+    }
+  },
+  "created_at": "2026-05-03T09:44:25.525780-04:00",
+  "due_by": ""
+}

@@ -1,0 +1,8 @@
+{
+  "brief_id": "deepdive_2026-05-23_andrew-friedson",
+  "type": "deep_dive_script",
+  "status": "rejected",
+  "rejected_at": "2026-05-24T02:40:57.869442",
+  "reason": "INVARIANT #1 violation \u2014 deepdive/author_episode briefs are forbidden. All podcast output must be series_episode format. Andrew Friedson was already fully covered in his 4-episode series airing 2026-05-16 (see candidate_dossiers/andrew-friedson.md and podcasts/podcast_2026-05-16_series_andrew-friedson_ep1-4.txt). This deepdive brief appears to be the unscheduled-gap legacy daily author fallback that fires when no series_episode is queued for the date. The correct action when no candidate is scheduled is to skip podcast generation, not fall back to deepdive.",
+  "recommendation": "Disable the legacy daily author/deepdive fallback in main.py. On dates with no pending series candidate, queue an office_primer for an upcoming ballot decision or simply skip. As of 2026-05-23, today's scheduled candidate Sunil Dasgupta is fully done (all 4 eps aired 2026-05-08) and the next pending candidate is Dana Gassaway on 2026-05-31 \u2014 the system should be silent for the week, not invent deepdives."
+}

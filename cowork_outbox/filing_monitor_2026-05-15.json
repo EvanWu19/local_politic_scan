@@ -1,0 +1,13 @@
+{
+  "run_date": "2026-05-15T22:55:00-04:00",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active": 22,
+  "list_finalized": false,
+  "notes": "Cross-checked Maryland SBE statewide and local lists against data/candidate_series.json. MD-8 Democratic primary (relevant): J. D. Kumar, Stephen Alan Leon, Jamie Raskin, Boris Kabel Velasquez — all 4 present in registry. Governor Dem: Wes Moore, Eric S. Felber — both present. AG Dem: Anthony G. Brown — present. Comptroller Dem: Brooke Elizabeth Lierman — present. Aruna Miller appears as Wes Moore's LG running mate, not a separate primary candidate (registry has her flagged separately; consider de-duplication on next reschedule). Marc Lande in registry but no Marc Lande on SBE MD-8 Dem list — recommend verifying source; not auto-withdrawing without listener confirmation. SBE filing window appears closed (filing date 02/24/2026 was last cutoff) but final certification of list and any cure period status not stated on the page; list_finalized stays false until SBE explicitly publishes a certified list.",
+  "review_actions": [
+    "Verify Marc Lande registry entry — appears not on current SBE MD-8 Democratic list as parsed; may be a state senate or other candidate misfiled into MD-8 in our registry.",
+    "Verify Aruna Miller registry entry — she is Wes Moore's Lt. Governor running mate, not an independent primary candidate."
+  ]
+}

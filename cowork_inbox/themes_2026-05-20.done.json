@@ -1,0 +1,10 @@
+{
+  "brief_id": "themes_2026-05-20",
+  "processed_at": "2026-05-20T22:50:00-04:00",
+  "status": "done",
+  "action": "themes_rollup_written",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-20.json",
+  "method_note": "Built from podcast script openings 2026-05-16 through 2026-05-20 (last 5 days of aired episodes) plus the listener's standing-priority list. daily_notes table from data/politics.db was unreachable from the Linux drain sandbox due to the same FUSE/sqlite mount blocker that the project memory flags; recommend a Windows-side re-run that ingests daily_notes if the listener has added new notes since the prior themes rollup.",
+  "db_upsert_status": "not_attempted_due_to_db_blocker",
+  "windows_side_followup": "python main.py themes 2026-05-20 — re-run on Windows so the weekly_themes table is updated with the same content already written to cowork_outbox/themes_2026-05-20.json"
+}

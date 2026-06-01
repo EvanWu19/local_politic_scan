@@ -1,0 +1,49 @@
+{
+  "brief_id": "themes_2026-05-02",
+  "window_start": "2026-04-26",
+  "window_end": "2026-05-02",
+  "note_count": 7,
+  "themes": [
+    "MCPS school rating system overhaul | Listener asked April 30 for a deep dive on the new state rating system replacing the one-to-four-star model — work has begun but no launch date is published.",
+    "Andrew Friedson's actual fiscal record | Listener has now asked twice (April 27, April 29) whether Friedson really is the fiscal-discipline candidate or just framed that way; needs roll-call evidence, not reputation.",
+    "Wootton High School relocation | Listener has asked April 29 (and earlier) why MCPS wants to close and move Wootton; episodes 4/30 ep1 and 5/01 ep2 covered process but the full timeline of the Crown decision is still owed.",
+    "Property-tax-vs-MCPS funding trade-off | Listener has flagged property tax as too high (April 27) and supports cutting non-essential spending (April 28); maps directly to the Friedson/Elrich budget feud.",
+    "Historical voting record for filed candidates | Listener restated April 26 that the show is shallow on candidate history; for filed names (Friedson, Glass, Jawando, Kramer, Crutchfield, Stewart, Tichy, Cox, Bouchat, Hale, Moore) we owe career-long sourcing not just last-session votes."
+  ],
+  "open_questions": [
+    "What does the new MCPS school rating system actually measure, and how would it have changed the rating of schools in cluster 005 (Wootton)?",
+    "Is Andrew Friedson actually the fiscal-restriction candidate — what is his roll-call record on county property-tax increases in 2020, 2023, 2025, 2026?",
+    "Why did MCPS choose Crown over a Wootton renovation, and what authority would a County Executive have to revisit that decision?",
+    "What is Kramer's full historical voting record on education funding — every annual budget vote with the count?",
+    "Side-by-side policy comparison of the three Democratic County Executive candidates (Friedson / Jawando / Glass) on tax, housing, immigration, school funding, and policing."
+  ],
+  "underserved_topics": [
+    "Career-long voting history for each filed candidate (not just current-session activity).",
+    "Old news / public record search for District 19 Delegate filers (Crutchfield, Kramer, Stewart, Tichy) — listener has had names but no biographies for two weeks.",
+    "Concrete cost-side breakdown of MCPS supplemental requests vs the county's own tax-rate ceiling (the math the property-tax skeptic wants to see).",
+    "How the new MCPS rating methodology will categorize Wootton, Whitman, Churchill, and other Council District 1 / District 7 schools.",
+    "Republican gubernatorial primary mechanics — listener has the names (Cox, Bouchat, Hale) but no policy comparison, even though they are not voting in it."
+  ],
+  "summary": "This listener is a first-time Democratic primary voter in Rockville (Montgomery County, MD-19, Council District 7) seven weeks out from the June 23 primary. They want concrete, candidate-linked voting records — bill numbers, dates, roll-call counts — not vibes. Their fixed priors are visible: skepticism toward property-tax increases, opposition to MCPS spending hikes when they show up on the tax bill, support for non-essential spending cuts, deep skepticism of Kramer's all-yes pattern on education funding, and a now-resolved demand to know which Democratic candidates oppose sanctuary policy on illegal immigration. The newest ask is a deep dive on the new MCPS school rating system.",
+  "avoid_list": [
+    "The framing \"a listener asked us last week/earlier this week which Democratic primary candidates actually oppose sanctuary policy on illegal immigration\" used as a setup line — appears verbatim or near-verbatim in both 2026-04-28 ep1 and 2026-04-29 ep3",
+    "The Evan Glass bill requiring background screening for DHS agents joining Montgomery County police — introduced and framed as the concrete sanctuary-policy example in 2026-04-28 ep1 and again in 2026-04-29 ep3",
+    "The ICE agent mask-ban ordinance passed by the Montgomery County Council — covered as the sanctuary-policy benchmark in 2026-04-29 ep2",
+    "\"Two stories, properly worked through\" / \"two stories, not spreading thin across six\" as an episode-framing device — used in 2026-04-29 ep1",
+    "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability services cuts — used in 2026-04-27 ep1 and ep1.rewrite",
+    "The ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading their health insurance plans\") — introduced in 2026-04-28 ep1 and revisited in 2026-04-29 ep3",
+    "Maryland's 90-day part-time legislature explanation (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") — used in 2026-04-26 ep3 and ep3.rewrite",
+    "The wave of 25 Maryland lawmakers retiring or running for other offices framing — used in 2026-04-26 ep1, ep1.rewrite, and ep4",
+    "The Beltsville Agricultural Research Center closure story as a District 19 candidate-record hook — used in 2026-04-27 ep4 and ep4.rewrite",
+    "Listener's own frustration about promised candidate deep-dives not delivering — narrated back across at least five episodes; do not repeat as a framing device again",
+    "The Friedson April 28 letter calling for permanent police in every MoCo high school sent two days before the Blake High shooting — covered in 2026-04-30 ep1 and 2026-05-01 ep1; do not re-tell as \"spooky timing\" again",
+    "The Maryland Voting Rights Act of 2026 vs Louisiana v. Callais Supreme Court timing — explained from scratch in 2026-04-30 ep2, 2026-05-01 ep1 and ep3; do not re-explain the federal Section 2 backstory",
+    "JORDAN saying \"we did not actually answer Wootton on Wednesday\" / \"we do not just sound different, we vote different\" as the episode-opening accountability beat — used in 2026-05-01 ep1",
+    "The Comptroller Brooke Lierman healthcare-workforce 427,000-jobs report — covered in 2026-05-01 ep3; do not re-cite the headline number",
+    "Direct enumeration of the listener's assigned district numbers (LD-19, MD-8, Council District 7, Precinct 08-008, etc.) used as a credibility flex inside the script — these are configuration, not content"
+  ],
+  "listener_candidate_interest": [
+    "Friedson",
+    "Kramer"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "brief_id": "themes_2026-05-06",
+  "type": "weekly_themes",
+  "status": "done",
+  "completed_at": "2026-05-06T09:10:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-06.json",
+  "window_start": "2026-04-30",
+  "window_end": "2026-05-06",
+  "note_count": 6,
+  "notes": "Themes carried over from prior week with three Crutchfield-specific additions to the avoid_list (HB 147 walkthrough, 'first Black women' 2019 swearing-in framing, Gulfstream + GD corporate-counsel sequence). Open questions added: Crutchfield Chicago HS (unresolved), Crutchfield spouse name + widowhood date (unresolved), Crutchfield 2025-26 committee move motivation (unresolved). Underserved topics updated to put Sen. Ben Kramer next in queue per project closing-line, with Stewart and the open-seat field after. weekly_themes DB upsert deferred to Windows-side ingest because bash sandbox is broken this run."
+}

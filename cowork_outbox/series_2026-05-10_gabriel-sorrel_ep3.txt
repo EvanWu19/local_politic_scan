@@ -1,0 +1,89 @@
+ALEX: Welcome back. Episode three of four on Gabriel Sorrel, candidate in the District 19 Democratic primary for Maryland House of Delegates. We have done Origins. We have done Career. Today is what we have been calling, across this series, Political Record. For Sorrel, that title needs an asterisk, because his political record consists of one losing 2018 Central Committee primary and a campaign website. So today is going to be more about the Resist platform than about a roll-call history, because the roll-call history does not exist.
+
+JORDAN: That asterisk is the right way to start. Let me say it directly. Gabriel Sorrel has never held public office. He has never cast a vote on any legislation. He has never sponsored a bill, never co-sponsored a bill, never testified to a committee on the public record that we have located. So when the listener has been asking us, week after week, for full historical voting records on the candidates on the ballot, the honest answer for Sorrel is — there isn't one. The thing we can do instead is take his published platform seriously, plank by plank, and tell the listener what each plank would mean if enacted, and where each plank sits relative to the rest of the District 19 field.
+
+ALEX: His platform website is mdresist.com, and the policy detail lives at mdresist.com slash policies-dot-html. The platform is structured into five clusters — Affordability, Climate Change and Energy Security, Food and Medicine, Education and Children's Safety, and Protecting Our Communities and Democracy. We will walk each of the five.
+
+JORDAN: Start with Affordability.
+
+ALEX: Three planks under Affordability. Plank one — quote, prevent private equity groups from buying up doctors offices, nursing homes, and other healthcare facilities then forcing them to reduce staff or increase prices, end quote. He pairs that with a, quote, study into market consolidation in Maryland and the impact it has on affordability, end quote.
+
+JORDAN: That is a real Maryland legislative debate. Private-equity acquisition of physician practices and dialysis chains has been a topic of national attention. There has been state-level legislation proposed in Maryland on health care market oversight. So a delegate who arrives in Annapolis with this as a stated priority would be operating inside an existing legislative conversation, not inventing one from scratch.
+
+ALEX: Plank two — quote, ban the use of personal data for setting prices or micro-targeting advertisements, and allow consumers to sue for data breaches of their data, end quote. This is a state-level data-privacy plank. Maryland has the Maryland Online Data Privacy Act, which took effect October 1, 2025. So the question for a future delegate Sorrel is whether to push extensions of that act — for example a private right of action, which the existing 2025 act does not give consumers.
+
+JORDAN: That private-right-of-action question is one of the most contested data-privacy items in state legislatures across the country. Industry lobbyists fight it hard. Several other states' privacy laws stop short of giving individuals the right to sue, leaving enforcement to the state attorney general. Sorrel is putting himself on the consumers-can-sue side of that fight by writing this plank into his platform.
+
+ALEX: Plank three — quote, establish community land trusts to keep housing affordable and prevent speculation, end quote, plus, quote, frameworks for tenant cooperatives and allow renters an opportunity to purchase their homes like in DC, end quote. The DC reference is to TOPA, the Tenant Opportunity to Purchase Act, which has existed in DC since 1980 and gives tenants a right of first refusal when their building is sold. Maryland does not have an analogous statewide statute. There is a Tenant Opportunity to Purchase law in some Maryland jurisdictions, but a statewide framework would be a significant new undertaking.
+
+JORDAN: Now Climate Change and Energy Security. Four planks here.
+
+ALEX: Plank one — dedicate one percent of Maryland land to solar farms, with state loans tied to worker buyout programs. The one-percent number is specific and quotable. Maryland's total land area is about six thousand three hundred square miles. One percent of that is sixty-three square miles. That is a meaningful land-use commitment. The buyout-program tie-in — meaning the state would lend to energy companies that, in exchange, agree to eventual employee ownership — is not a current Maryland program. It would be a substantial expansion of the state's economic-development toolkit.
+
+JORDAN: Plank two — work-from-home eligibility for remote-capable corporate jobs. He frames this as a transit-emissions and work-life-balance plank, which is two arguments for one policy. There is some state-level precedent for this in California and other West Coast states; Maryland does not currently have a statewide remote-work-eligibility mandate.
+
+ALEX: Plank three — and this one is distinctive — quote, demand large corporations replacing human workers with AI adopt four-day work weeks without reduction in pay, end quote. He pairs this with incentives to spend the extra free day at restaurants, clubs, and shared spaces. As of May 2026 there is no state in the country with a four-day-workweek mandate tied to AI displacement. Some private companies have voluntarily adopted four-day weeks; that is a different policy lever. This plank is genuinely novel and would put Maryland out ahead of any other state if it became law.
+
+JORDAN: That is the kind of plank that, if Sorrel won, would be the headline plank of his first term. It would also be the plank that gets the most pushback from the business community. We should be clear about that for the listener — this is not a Blueprint-funding plank where there is broad Democratic consensus and the fight is just over money. This is a structural change in how labor relations work in Maryland.
+
+ALEX: Plank four — expand the Maryland Department of the Environment with hires drawn from former EPA officials, and task it with continuing the federal monitoring functions the EPA has shed under the current federal administration. This is a plank that takes the federal-state-shift framing of the website and operationalizes it into one specific agency.
+
+JORDAN: Now Food and Medicine. Four planks.
+
+ALEX: Plank one — strengthen Maryland Department of Health oversight in light of the FDA's degradation, with a precautionary-principle approach modeled on Canada and the EU. Plank two — partner with Johns Hopkins and the University of Maryland for public-health surveillance, particularly wastewater monitoring and vaccine review. Plank three — ban phthalates, PFAS, and other harmful chemicals from consumer products, and demand that companies develop end-of-life recycling or environmentally safe disposal pathways. Plank four — partnership between the Department of Agriculture and state groceries to build stockpiles of essential foods.
+
+JORDAN: The PFAS plank intersects with existing Maryland legislation. Maryland already has phased PFAS bans in firefighting foam and some consumer products. The Sorrel plank would generalize that.
+
+ALEX: Now Education and Children's Safety. Four planks.
+
+ALEX: Plank one — fund the Blueprint for Maryland's Future, particularly the early-childhood education component. Plank two — ensure not just teachers but all educational support professionals are paid fairly, and have the right to strike over unsafe conditions. Plank three — increased mental-health funding in schools with explicit attention to preventing students falling into, quote, toxic online environments espousing misogynist, anti-semitic, or homophobic beliefs, end quote. Plank four — replicate the Montgomery County Anti-Hate Task Force statewide, with mandatory LGBTQ-plus and religious-literacy training for educational staff.
+
+JORDAN: The right-to-strike plank is significant. Maryland public-employee labor law has limits on the right to strike. A delegate plank that says support staff have the right to strike over unsafe conditions would be a real fight in Annapolis.
+
+ALEX: Then the fifth cluster, Protecting Our Communities and Democracy. Four planks.
+
+ALEX: Plank one — establish freedom from violence and harassment as an, quote, affirmative duty, end quote, of the state, with all laws to be interpreted to ensure protection. Plank two — create a state domestic task force to assume responsibilities, quote, abandoned by the FBI and DOJ, end quote, identifying and investigating extremist threats with emphasis on White Supremacy and neo-Nazi movements. Plank three — ban facial recognition and other biometric surveillance by both local government and workplaces, and forbid upload of recordings to centralized cloud storage that can be, quote, easily accessed by third parties like ICE, end quote. Plank four — task the Maryland Comptroller with building a state-and-federal tax-filing website using employer-provided data.
+
+JORDAN: That is the cluster where his platform diverges most from the Maryland Democratic mainstream. The state-domestic-extremism task force is unusual. The biometric-surveillance ban with the explicit ICE callout is unusual. The framing of, quote, even rebel against unjust authorities, end quote, on the homepage is unusual. We should say something honest here about how those planks land with a Rockville Democratic primary voter.
+
+ALEX: They land in a polarized way. There is a slice of the Democratic primary electorate, including some of the listener-base our podcast knows from the daily-notes file, that has been asking for years for state Democrats to be more aggressive in pushing back on federal authority. The Sorrel platform is the most explicit form of that posture in the District 19 race. There is another slice of the primary electorate that wants its delegate to be effective on the things the delegate can actually do — Blueprint funding, transit, housing — and is wary of platform planks that read as confrontation theater. The voter has to weigh which slice they are in.
+
+JORDAN: Now the listener has been asking us for a clear answer on a few specific questions. Let me run through them for Sorrel.
+
+ALEX: Question one — who among the Democratic primary candidates actually opposes sanctuary policy on illegal immigration? The answer for Sorrel is, not him. The biometric-surveillance plank with the explicit no-uploading-to-cloud-where-ICE-can-read-it line is the opposite of an anti-sanctuary posture. He is in the more-aggressive-state-protection camp.
+
+JORDAN: Question two — is Andrew Friedson the candidate who stands for fiscal restriction and spending discipline? Friedson is not in the District 19 House race. Friedson is running for County Executive. We have a separate dossier in the queue for Friedson. For Sorrel-vs-Friedson on fiscal posture, they are opposites. Sorrel is unmistakably a market-intervention-and-state-spending candidate. The Affordability cluster, the Climate cluster, the Food cluster — they all assume substantial new state appropriations or substantial new state agency capacity.
+
+ALEX: Question three — why does MCPS want to close and move Wootton High School, and what happens next? That is a Board of Ed decision, not a General Assembly decision. We covered the chronology in detail in the Crutchfield series. Sorrel has not made a public statement on Wootton specifically. As a delegate he could file legislation tightening or loosening the criteria MCPS must use for school closure decisions, but he has not introduced any such legislation because he is not in office.
+
+JORDAN: Question four — what is Kramer's full historical voting record? Kramer is the District 19 senator, not Sorrel. We have a separate dossier coming for Kramer. The Sorrel-vs-Kramer angle to flag is that Sorrel is not on the Kramer-Crutchfield-Stewart slate. The slate is the three incumbents. Sorrel is running on his own. Whether his independence from Kramer is a deliberate distancing or simply a function of being a non-incumbent, we cannot tell from the campaign materials.
+
+ALEX: Question five — concrete side-by-side policy comparison of all Democratic primary candidates across the listener's specific races. Episode four does that for District 19 House.
+
+JORDAN: All right. Let me ask you, taking the platform as a whole — if Sorrel showed up in Annapolis on January 13, 2027, freshman delegate, sworn in, freshman office, a single committee assignment, what does the first session look like for him?
+
+ALEX: Realistically, freshman delegates do not pass headline legislation in their first session. They are still learning the calendar, the committee culture, the bill-drafting process, the leadership relationships. So the four-day-workweek-for-AI plank, the state-domestic-extremism-task-force plank, the statewide Anti-Hate Task Force replication plank — those would be introduced as bills, would get hearings if his committee chair allowed, would generate testimony from advocacy groups and from industry, and would almost certainly not become law in his first year. They would build the legislative record he runs on for re-election.
+
+JORDAN: What he would actually shape, in a first session, is more likely to be amendments to existing bills — Blueprint funding, MDE expansion, data-privacy refinement — rather than original headline legislation.
+
+ALEX: Right. And the structural question for the voter is not whether Sorrel can pass his entire platform in year one — no first-term delegate can — but whether his platform is the one the voter wants pushed onto the agenda in Annapolis at all. The answer to that is a values question, and we are not going to give you the answer.
+
+JORDAN: A few words on what the platform does NOT mention, because absences can matter as much as presences.
+
+ALEX: Sorrel's platform does not have a specific transit plank. Maryland's transit policy is a major District 19 concern given the Purple Line, the Red Line discussion, the Brunswick Line MARC service, and the Metro extension conversations. He does not specifically address any of those in his policy planks. He does have the work-from-home plank framed as a transit-emissions reduction, but that is not a transit-investment plank. So a District 19 voter who is single-issue on Purple Line completion or Brunswick Line frequency will not find a specific commitment in his platform.
+
+JORDAN: He does not have a specific public-safety plank beyond the state-extremism task force. Police staffing, sentencing reform, state's-attorney resourcing — those are not in the Resist platform.
+
+ALEX: He does not have a specific judicial-nominations plank. Some progressive Maryland Democrats have pushed for changes in how circuit-court judges are appointed and confirmed; Sorrel's platform does not engage that question.
+
+JORDAN: He does have planks on Blueprint funding and on educational support staff pay, but he does not have a specific MCPS-attendance-boundaries plank or an explicit Wootton-question plank, which the listener has been asking about for weeks. We flagged that under the listener-flagged-topics section of the dossier.
+
+ALEX: Anything else missing that should be flagged?
+
+JORDAN: He does not have a specific health-care-coverage plank — beyond the private-equity-acquisition restriction. So the ACA-marketplace question that we covered in earlier episodes is not addressed in his platform.
+
+ALEX: All right. To close episode three, the honest summary is — the candidate has no voting record because he has never held office, but he has published a more-detailed-than-usual policy platform that lets the voter assess what he would push for in Annapolis. The platform is unmistakably to the left of the Maryland Democratic mainstream on at least three axes — biometric-surveillance bans tied to ICE-data-sharing, a state extremism task force, and the AI-displacement four-day workweek. The platform is silent on transit specifics, Wootton specifically, and judicial nominations.
+
+JORDAN: Episode four tomorrow does the side-by-side. Crutchfield versus Stewart versus Tichy versus Dasgupta versus Johnson versus Stone versus Sorrel, on the questions our listener has been asking. We will lay out the differences plank by plank and let you take the comparison to your June 23 ballot.
+
+ALEX: Thanks for listening. Tomorrow.

@@ -1,0 +1,18 @@
+{
+  "candidate_name": "Josie Caballero",
+  "richness_score": 0.45,
+  "estimated_age": null,
+  "estimated_research_hours": 2.5,
+  "has_campaign_site": true,
+  "has_wikipedia": false,
+  "has_ballotpedia": true,
+  "has_legislative_record": false,
+  "has_court_record_search_hits": false,
+  "earliest_news_year": 2021,
+  "missing_critical_sections": [
+    "education",
+    "career"
+  ],
+  "notes": "First-time candidate, MoCo At-Large. Veterans / LGBTQ advocacy background. Thin record outside campaign site.",
+  "scouted_at": "2026-05-25T02:42:00+00:00"
+}

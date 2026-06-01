@@ -1,0 +1,20 @@
+{
+  "candidate_name": "Lelia B. True",
+  "richness_score": 0.3,
+  "estimated_age": null,
+  "estimated_research_hours": 4.0,
+  "has_campaign_site": false,
+  "has_wikipedia": false,
+  "has_ballotpedia": false,
+  "has_legislative_record": false,
+  "has_court_record_search_hits": false,
+  "earliest_news_year": null,
+  "missing_critical_sections": [
+    "demographics",
+    "education",
+    "career",
+    "political_record"
+  ],
+  "notes": "Almost no findable public record; first-time candidate. Episode 4 should switch to office_primer; Ep1-3 risk being thin too.",
+  "scouted_at": "2026-05-25T02:42:00+00:00"
+}

@@ -1,0 +1,10 @@
+=== LIVE fetch_mcps_boarddocs: 10 items in 35.6s ===
+  2026-06-04 | https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DN3S9Z71AAA2
+  2026-05-27 | https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DUFH324673AD
+  2026-05-26 | https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DU7RN46EBEEE
+  2026-05-21 | https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DN3SDZ723596
+  2026-05-19 | https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DSBM5R5996FA
+=== goto URL resolution ===
+  200 len=38013 keyword=True https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DN3S9Z71AAA2
+  200 len=38029 keyword=True https://go.boarddocs.com/mabe/mcpsmd/Board.nsf/goto?open&id=DUFH324673AD
+=== HTML scraper: 0 items in 1.6s ===

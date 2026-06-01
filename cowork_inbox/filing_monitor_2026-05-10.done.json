@@ -1,0 +1,12 @@
+{
+  "brief_id": "filing_monitor_2026-05-10",
+  "type": "filing_monitor",
+  "status": "done",
+  "completed_at": "2026-05-10T14:51:59Z",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-10.json",
+  "added": [],
+  "removed": [],
+  "total_active": 22,
+  "list_finalized": false,
+  "notes": "No-change run vs registry. SBE HTML pages still un-parseable from Linux web_fetch (JS-rendered single-line bodies). Carry-over flags unchanged: 2 County-Executive Dems (Peter James, Mithun Banerjee) still not in registry; tier-3/4 county-wide office fields still empty. registry-write deferred to Windows side."
+}

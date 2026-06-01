@@ -1,0 +1,12 @@
+{
+  "brief_id": "themes_2026-05-22",
+  "processed_at": "2026-05-23T02:42:04-04:00",
+  "status": "done_partial",
+  "output_file_written": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\themes_2026-05-22.json",
+  "db_upsert_status": "deferred \u2014 sqlite blocker; see windows_side_followup in output file",
+  "podcasts_scanned_count": 20,
+  "themes_count": 5,
+  "open_questions_count": 5,
+  "underserved_topics_count": 5,
+  "avoid_list_count": 15
+}

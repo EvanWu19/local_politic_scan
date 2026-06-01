@@ -6,3 +6,6 @@ feedparser>=6.0.0
 python-dotenv>=1.0.0
 lxml>=5.0.0
 schedule>=1.2.0
+trafilatura>=1.8.0   # full-text article extraction (OSS plan, item 3)
+googlenewsdecoder>=0.1.7   # resolve Google News rss/articles links to publisher URLs
+civic-scraper>=0.3.0   # optional: Legistar/Granicus council source (OSS plan, item 2)

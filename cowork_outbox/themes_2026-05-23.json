@@ -1,0 +1,54 @@
+{
+  "brief_id": "themes_2026-05-23",
+  "type": "weekly_themes",
+  "status": "partial",
+  "generated_at": "2026-05-24T02:48:20.003528",
+  "window_start": "2026-05-16",
+  "window_end": "2026-05-23",
+  "note_count": null,
+  "partial_reason": "daily_notes table not readable from FUSE sandbox; podcast-derived sections only. The avoid_list is complete and is what the Editor agent most needs.",
+  "summary": [
+    "Listener is in week three of the 4-eps-per-candidate June 23 primary deep-dive arc. Coverage in the last 7 days: Sharif Hidayat (D7 challenger, 5/18), Will Jawando (Exec, 5/19), Vaughn Stewart (D19 House, 5/20), Evan Glass (Exec, 5/21). Today (5/23) the scheduled candidate Sunil Dasgupta is fully done and no new series_episode brief should be produced \u2014 system-side bug attempted to queue a deepdive_friedson fallback which was rejected per INVARIANT #1.",
+    "Listener's recurring focus this window remains: sanctuary policy on undocumented immigration, Friedson's fiscal-restraint record line-by-line, Wootton High School closure timeline & procedural path, Ben Kramer's full historical record back to 2007, and side-by-side ballot matrix across the listener's actual ballot lines (Exec, At-Large, D7, MD-8, House D19, Senate D19, MCPS-related state-level votes)."
+  ],
+  "themes": [
+    "Housing supply vs rent stability \u2014 Friedson's More Housing N.O.W. vs Jawando's 6% rent cap is now the canonical contrast | Listener wants this distilled into a one-line voter heuristic.",
+    "Up-county vs down-county equity \u2014 Hidayat's 'red-headed stepchildren' framing for District 7 has been repeated; the Stewart episodes parallel it for District 19 | Useful organizing frame for the listener's MoCo geography",
+    "Sanctuary policy stance discovery \u2014 Stewart Ep3 explicitly took up the question; Hidayat Ep4 contrasted candidates on sanctuary; still no candidate has been identified who *opposes* the existing sanctuary framework | Listener's open question, restated weekly",
+    "Honest-uncertainty framing ('we don't have a public record of X') \u2014 being used as a feature of the show, listener has not flagged complaint | Keep but vary phrasing",
+    "First-time-candidate vs incumbent framing \u2014 Hidayat (challenger, no votes) vs Luedtke (incumbent, votes); explicitly relevant to D7 race"
+  ],
+  "open_questions": [
+    "Which of the five Exec Democrats actually opposes the existing sanctuary framework (still not answered).",
+    "Where do Banerjee and James (the two newcomers to the Exec race) stand on the housing-supply vs rent-cap split \u2014 have not been covered yet.",
+    "Ben Kramer's full historical voting record back to 2007 (listener priority but Kramer scheduled 5/30; still pending).",
+    "Wootton High School Board-vote timeline and the new MCPS rating methodology Rockville-school grades (no candidate has been covered who has a public Wootton position).",
+    "Friedson line-item fiscal record beyond More Housing N.O.W. \u2014 listener still wants this proven, not just claimed."
+  ],
+  "underserved_topics": [
+    "Tier-3 ballot lines (State's Attorney John McCarthy, Sheriff, Clerk, Register of Wills) \u2014 not yet covered.",
+    "Sixth Judicial Circuit judge race (5 candidates: Burrell, Del Pino, Dietrich, McQueen, Pierre) \u2014 not yet covered.",
+    "At-Large Council field (17 names incl. Marc Elrich dropping down and BoE President Karla Silvestre) \u2014 Dana Gassaway up first on 5/31.",
+    "MCPS-specific votes by line item \u2014 repeatedly named as listener priority, no episode has done a focused line-item walk."
+  ],
+  "avoid_list": [
+    "Opening 'Welcome back to the local politic scan' \u2014 used 5/19, 5/20, 5/21; rotate.",
+    "Opening 'Good morning, and welcome to the show. Today is <date>, we are <N> days out from the Maryland Democratic primary' \u2014 used 5/18, 5/19; rotate the days-out phrasing.",
+    "'red-headed stepchildren up here' \u2014 Hidayat quote, used in Hidayat Ep3 AND Ep4; do not lead an episode with this again.",
+    "'We have not read the memoir for this episode' / 'we are not going to invent' / 'we should not pretend' \u2014 honest-uncertainty pattern used heavily 5/19, 5/20, 5/21; keep the substance, rotate the exact wording.",
+    "'The June 23 winner effectively wins the seat \u2014 District N, like every Council district in Montgomery County, is heavily Democratic in November' \u2014 verbatim used 5/18 Ep4; substitute different phrasing for the safe-seat point.",
+    "'thirty-six days out' / 'thirty-five days out' / 'thirty-four days out' framing \u2014 too repetitive when stacked; vary with date arithmetic phrasing.",
+    "Friedson vs Jawando 'supply-side vs rent-cap' setup as the headline housing contrast \u2014 used in Jawando Ep4 5/19 AND Stewart Ep3 sanctuary aside 5/20; if used again, frame as 'we said earlier' rather than fresh discovery.",
+    "'CROWN Act \u2014 Creating a Respectful and Open Workplace for Natural Hair' full acronym expansion \u2014 used in Jawando Ep3 5/19; abbreviate on re-mention.",
+    "'private K-12 school called the Donoho School' \u2014 Stewart-specific, used 5/20; should not recur unless directly relevant.",
+    "Episode-opening 'Episode N of four on <name>. Today's title is <title>' \u2014 formulaic; rotate sentence structure for variety.",
+    "'A method note before we start' / 'A housekeeping note' / 'One thing flagged' \u2014 same self-conscious framing recurring across 5/19, 5/20, 5/21 cold opens; consolidate.",
+    "Father-was-Mayor-of-Anniston anecdote (Stewart Ep1, 5/20) \u2014 used as the surprise hook; do not re-deploy as a hook in Stewart Ep4 if it airs."
+  ],
+  "next_actions_for_editor": [
+    "When Banerjee and James episodes air (currently scheduled mid-late June), insist on placing them on the Friedson-vs-Jawando housing axis explicitly so the listener has a 5-way comparison, not just a Friedson-Jawando binary.",
+    "When Kramer airs (5/30), enforce the listener-explicit ask: full historical voting record back to 2007, NOT just recent sessions. Dossier brief for Kramer needs to be flagged for early/extra research time.",
+    "For the May 23 \u2192 May 30 gap (no contested candidate scheduled), consider queuing an office_primer for State's Attorney or the Sixth Circuit judge race instead of letting the legacy deepdive fallback re-fire.",
+    "Build a single 'sanctuary positions, ranked' segment once enough candidates have been covered to populate one \u2014 the listener has asked this question on every weekly themes pull so far."
+  ]
+}

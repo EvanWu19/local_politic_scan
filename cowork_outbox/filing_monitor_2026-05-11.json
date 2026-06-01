@@ -1,0 +1,9 @@
+{
+  "run_date": "2026-05-11T07:30:00-04:00",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active": 22,
+  "list_finalized": false,
+  "notes": "SBE statewide and all-counties HTML pages remain JS-rendered single-line bodies un-parseable from this Linux web_fetch path; same constraint reported every drain run since 5/2. No net change inferred versus registry. Carry-over flags unchanged from 5/10 log: (1) 2 County-Executive Dems Peter James + Mithun Banerjee per prior Banner roundup still NOT in registry; (2) tier-3/4 county-wide office fields (Council At-Large, MoCo State's Attorney, Sheriff, Clerk, Register, Orphans, BoE, 6th Circuit Judge) still UNPOPULATED in candidate_series.json. Recommend the Windows side fetch the rendered SBE pages via a headless-browser snapshot and pass the parsed table back to a future drain run."
+}

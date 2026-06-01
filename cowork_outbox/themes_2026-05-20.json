@@ -1,0 +1,49 @@
+{
+  "brief_id": "themes_2026-05-20",
+  "generated_at": "2026-05-20T22:50:00-04:00",
+  "window_start": "2026-05-14",
+  "window_end": "2026-05-20",
+  "source_method": "podcast scripts 2026-05-16 through 2026-05-20 read for recurring framings; daily_notes table unreadable from drain sandbox due to FUSE/sqlite mount blocker — recommend Windows-side re-run for daily_notes ingest",
+  "note_count_estimated": null,
+  "summary": "Listener is in the final five-week window before the June 23 Democratic primary and is consuming the four-episode-per-candidate series as scheduled. Their decision-relevant questions remain the same recurring cluster: sanctuary policy posture across the actual ballot, Andrew Friedson's fiscal record at line-item depth (not yes/no), Wootton High School's closure-and-replacement timeline, Ben Kramer's career-long voting record (still pending), and a clean side-by-side comparison across every Democratic candidate they will actually be choosing among.",
+  "themes": [
+    "Side-by-side comparison fatigue | Listener wants every series episode to land them somewhere new on the comparison matrix across their ballot's seven District 19 House candidates, five County Executive candidates, three Lt. Governor candidates, and the at-large Council slate. Each candidate's series should END with a refreshed matrix delta, not start from scratch.",
+    "Sanctuary policy as a deciding-priority filter | Listener has flagged this question across at least eight prior episodes and is using it as a yes/no candidate-elimination test. The honest answer for District 19 House (no one in the seven-name field opposes sanctuary on the record) is the kind of definitive answer they have asked for; do that for County Exec next.",
+    "Career-long context, not last-six-months snapshots | Listener has repeatedly asked for pre-political biography and older news, not just recent roll calls. The Stewart, Jawando, and Luedtke series have hit this. The Friedson series should still get a deeper pre-2018 pull. Kramer dossier (when it lands) needs 2007-forward voting record, not just recent sessions.",
+    "MCPS-policy granularity | Wootton closure-and-replacement, the new MCPS rating system mechanics, and how individual Rockville schools score on it. None of the current state-legislator candidates can decide a single MCPS capital project; the listener seems to want that explained on-air rather than implied.",
+    "Quiet differentiation > slate-coordination headline | The Kramer/Crutchfield/Stewart 'coordinated team' framing has become a recurring exposition. Listener cares more about substantive differences within slates than about the fact of a slate."
+  ],
+  "open_questions": [
+    "Who, on the listener's actual ballot, opposes sanctuary policy? (Stewart series said: in D19 House, no one. Same question still open for County Exec primary, statewide AG primary, and state senate D19 — Kramer.)",
+    "Is Andrew Friedson actually the fiscal-restraint candidate, or is the framing campaign-positioning? Need line-item Council vote pull, not budget-final yes/no.",
+    "What is the Wootton High School replacement timeline, who votes on it, and how did those Board of Education members get elected? Listener has asked this in different wordings at least four times.",
+    "What is Ben Kramer's career-long voting record from 2007 forward on consumer protection, judiciary, immigration, and education funding? Listener has asked specifically for old votes, not the last two sessions.",
+    "How does the new MCPS school rating system work mechanically, and what scores did Rockville-area schools (Wootton, Richard Montgomery, Rockville HS, the elementary feeders) receive?"
+  ],
+  "underserved_topics": [
+    "Ben Kramer career-long voting record (2007–2018 state house, 2018–2026 state senate) — flagged for the Kramer series, not yet aired",
+    "MCPS school rating mechanics and individual Rockville-school scores — not covered in any aired episode this window",
+    "Wootton replacement project CIP P652115 timeline, Board of Ed vote schedule, and Capital Budget interaction — touched only in passing in the Stewart and Friedson series",
+    "Tier-3 ballot decisions (State's Attorney, Clerk, Register of Wills, Sheriff) — listener has not yet received any deep-dive on these",
+    "Tier-4 Sixth Judicial Circuit judges (5 candidates on the listener's ballot) — no episode yet"
+  ],
+  "avoid_list": [
+    "'Good morning, and welcome to the show. Today is [DATE], we are [N] days out from the Maryland Democratic primary, and we are starting a [four-part series / four-part deep-dive series].' — load-bearing opener used verbatim in 2026-05-16 ep1, 05-17 ep1, 05-18 ep1, 05-19 ep1. Vary it.",
+    "'Today is Episode One. The title is Origins.' — recurring transition used in every ep1 in the window. Vary the transition or omit.",
+    "'A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy' — flagged on multiple prior episodes; do not use as setup line again",
+    "Evan Glass background-screening DHS bill as the sanctuary-policy example — overused",
+    "Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark — may be referenced descriptively but NOT as the framing hook",
+    "'Two stories, properly worked through' / 'not spreading thin across six' as an episode-framing device",
+    "Governor Moore's 'Leave No One Behind' slogan contrasted with disability service cuts",
+    "ACA marketplace quiet-downgrade story ('thousands of Marylanders have been quietly downgrading')",
+    "Maryland's 90-day part-time legislature explainer ('they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners')",
+    "Wave of 25 Maryland lawmakers retiring or running for other offices framing",
+    "Beltsville Agricultural Research Center closure as a District 19 candidate-record hook",
+    "Listener's own frustration about promised deep-dives not delivering, narrated back to the listener — has shipped across at least five episodes; do not use as a framing device again",
+    "Friedson 'Montgomery County native, raised in MCPS, asking to fund the schools he attended' framing — used in 2026-05-16 ep1; do not reuse as an opening pivot",
+    "Luedtke 'Trenton, New Jersey / teenage mom / convent / adopted' origin reveal — used in 2026-05-17 ep1; do not foreground again",
+    "Hidayat 'single Daily Signal / Heritage Foundation source disclosed up front' framing — used in 2026-05-18 ep1; vary the source-disclosure framing",
+    "Jawando 'Wikipedia brother-of-Wes-Moore claim flagged but not used' framing — used in 2026-05-19 ep1; do not narrate the unverified-claim discovery again",
+    "'Five Democrats running for the Montgomery County Executive nomination, alongside Friedson, Banerjee, Glass, James, Jawando' as the exposition framing — used in 2026-05-16 and 2026-05-19; vary or omit when starting a non-Exec series"
+  ]
+}

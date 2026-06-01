@@ -1,0 +1,11 @@
+{
+  "brief_id": "consistency_2026-05-02",
+  "processed_at": "2026-05-02T22:55:00Z",
+  "politician_count": 138,
+  "rows_inserted": 138,
+  "verdicts": {
+    "inconsistent": 27,
+    "insufficient": 89,
+    "consistent": 22
+  }
+}

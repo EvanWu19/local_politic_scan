@@ -1,0 +1,8 @@
+{
+  "brief_id": "dossier_2026-05-22_adrienne-a-mandel-melnyk",
+  "type": "candidate_dossier",
+  "status": "rejected",
+  "rejected_at": "2026-05-24T02:42:21.558216",
+  "reason": "Adrienne Mandel was a Maryland State Delegate from District 19 (1995\u20132007) \u2014 long retired, not a 2026 candidate. The \"Melnyk\" suffix may indicate confused name merge. Not on registry.",
+  "recommendation": "Fix brief generator in main.py to (1) check candidate name against data/candidate_series.json registry before queuing a dossier brief, (2) drop any name from known_events that doesn't resolve to a registered ballot candidate. Better yet \u2014 only queue dossier briefs for names that appear in the upcoming-7-days slice of the registry schedule. This run produced 11 wasted dossier briefs on out-of-jurisdiction names harvested from news events."
+}

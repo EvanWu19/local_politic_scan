@@ -1,0 +1,13 @@
+{
+  "brief_id": "consistency_2026-05-13",
+  "status": "error",
+  "run_date": "2026-05-13T15:15:00Z",
+  "error": "Unable to open data/politics.db from the Linux drain environment. The database file is well-formed but was last written with SQLite 3.50.0 (the Windows-side library), and the Linux drain runs with system SQLite 3.37.2 (Python's bundled). The version mismatch causes 'database disk image is malformed' when read here. NO consistency rows were computed this run.",
+  "impact": "No new consistency_scores rows inserted for any of the 137 politician_ids in the brief. The listener's consistency dashboard, if it reads consistency_scores, will reflect the most recent prior run instead of today's.",
+  "politician_ids_skipped_count": 137,
+  "remediation_options": [
+    "Upgrade the drain environment's SQLite to ≥ 3.45 (matches the version that wrote the file).",
+    "Have the Windows side compute consistency in-process and write to politics.db directly, leaving only the cowork_inbox marker for audit.",
+    "Export the relevant tables to JSON on the Windows side before the drain, so the drain side can score without touching the live DB."
+  ]
+}

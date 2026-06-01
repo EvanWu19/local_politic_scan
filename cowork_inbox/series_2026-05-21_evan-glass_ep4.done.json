@@ -1,0 +1,55 @@
+{
+  "brief_id": "series_2026-05-21_evan-glass_ep4",
+  "type": "series_episode",
+  "output_file": "C:\\Users\\evan_\\local_politic_scan\\podcasts\\podcast_2026-05-21_series_evan-glass_ep4.txt",
+  "instructions": "Write Episode 4 ('This Race') of the 4-episode \u4e13\u9898 series on Evan Glass (Montgomery County Executive, Democratic, district MoCo). Air date: 2026-05-21.\n\nEPISODE 4 SCOPE \u2014 This Race:\nWhat's actually on the ballot for this seat in June 2026: who the opponents are, what each is saying they'll do, where they differ, what's at stake for a Rockville voter. End with: 'if {candidate} wins, what changes in your daily life?'\n\nMUST COVER (do not skip):\n  \u2022 the seat being contested + when the term starts\n  \u2022 every other candidate filed in the same primary, in one paragraph each\n  \u2022 the 3-5 substantive policy disagreements among them\n  \u2022 what listener-flagged topics (sanctuary policy, school funding, property tax, etc) come down to in this race\n  \u2022 what concretely changes for the listener if THIS candidate wins\n\nDOSSIER (READ FIRST): `C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\evan-glass.md` \u2014 this is the source of truth for biographical / career / political facts. Cite from it. If a section you need for episode 4 is missing or thin, STOP and write a fresh `candidate_dossier` brief into the inbox for this candidate before writing today's script.\n\nFORMAT:\n  \u2022 Two hosts ALEX (presenter) and JORDAN (curious co-host).\n  \u2022 Every line starts `ALEX:` or `JORDAN:` \u2014 no stage directions,     no markdown, no emoji, no '[laughs]', no asterisks.\n  \u2022 LENGTH TARGET \u2014 3900 words (\u00b1300; ~30 min at 130 wpm).\n  \u2022 Cite specific names, dates, employers, schools, bill numbers,     URLs from the dossier \u2014 generalities are why earlier drafts     felt thin.\n\nPM LENGTH CALIBRATION:\n  \u2022 No prior scripts to calibrate against. Aim for ~3900 words (~30 min).\n  \u2022 Hit the target. If you finish the must-cover list early,     extend the JORDAN follow-up questions and add depth to the     biographical reads \u2014 never pad with filler.\n\nAVOID \u2014 do not reuse any framing on `context.avoid_list`. The PM agent has flagged these as already-shipped this week:\n  - \"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line \u2014 used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3\n  - Evan Glass background-screening DHS bill as the sanctuary-policy example \u2014 used in 2026-04-28 ep1 and 2026-04-29 ep3\n  - Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark \u2014 used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)\n  - \"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device \u2014 used in 2026-04-29 ep1\n  - Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts \u2014 used in 2026-04-27 ep1 and ep1.rewrite\n  - ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") \u2014 used in 2026-04-28 ep1 and revisited 2026-04-29 ep3\n  - Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") \u2014 used in 2026-04-26 ep3\n  - The wave of 25 Maryland lawmakers retiring or running for other offices framing \u2014 used in 2026-04-26 ep1 and ep4\n  - Beltsville Agricultural Research Center closure as a District 19 candidate-record hook \u2014 used in 2026-04-27 ep4\n  - Listener's own frustration about promised deep-dives not delivering, narrated back to the listener \u2014 has shipped across at least five episodes; do not use as a framing device again\n\nLISTENER POSITIONING:\n  \u2022 Locale: Rockville, Montgomery County, Maryland.\n  \u2022 Their districts:\n  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19\n  \u2022 The listener is a registered Democrat in Rockville, MD,     primary on June 23, 2026. Speak as though we already know     their districts; never tell them to 'look up their ballot'.\n  \u2022 If any item from `context.listener_notes` ties into this     candidate, address it by name in the dialogue.\n\nWrite the full dialogue to `output_file`. Plain text only. If the dossier doesn't have the facts you need, do NOT invent \u2014 have a host say on-air 'we don't have a public record of X yet' and move on.",
+  "context": {
+    "candidate_name": "Evan Glass",
+    "office": "Montgomery County Executive",
+    "party": "Democratic",
+    "district": "MoCo",
+    "target_date": "2026-05-21",
+    "ep_num": 4,
+    "ep_title": "This Race",
+    "ep_scope": "What's actually on the ballot for this seat in June 2026: who the opponents are, what each is saying they'll do, where they differ, what's at stake for a Rockville voter. End with: 'if {candidate} wins, what changes in your daily life?'",
+    "must_cover": [
+      "the seat being contested + when the term starts",
+      "every other candidate filed in the same primary, in one paragraph each",
+      "the 3-5 substantive policy disagreements among them",
+      "what listener-flagged topics (sanctuary policy, school funding, property tax, etc) come down to in this race",
+      "what concretely changes for the listener if THIS candidate wins"
+    ],
+    "dossier_path": "C:\\Users\\evan_\\local_politic_scan\\data\\candidate_dossiers\\evan-glass.md",
+    "avoid_list": [
+      "\"A listener asked us last week which Democratic primary candidates actually oppose sanctuary policy\" as a setup line \u2014 used verbatim in 2026-04-28 ep1 and 2026-04-29 ep3",
+      "Evan Glass background-screening DHS bill as the sanctuary-policy example \u2014 used in 2026-04-28 ep1 and 2026-04-29 ep3",
+      "Montgomery County Council ICE-agent mask-ban ordinance as the sanctuary benchmark \u2014 used in 2026-04-29 ep2 (may be referenced descriptively but NOT as the framing hook)",
+      "\"Two stories, properly worked through\" / \"not spreading thin across six\" as an episode-framing device \u2014 used in 2026-04-29 ep1",
+      "Governor Moore's \"Leave No One Behind\" slogan contrasted with disability service cuts \u2014 used in 2026-04-27 ep1 and ep1.rewrite",
+      "ACA marketplace quiet-downgrade story (\"thousands of Marylanders have been quietly downgrading\") \u2014 used in 2026-04-28 ep1 and revisited 2026-04-29 ep3",
+      "Maryland's 90-day part-time legislature explainer (\"they meet in Annapolis for ninety days, the rest of the time they're lawyers, teachers, small business owners\") \u2014 used in 2026-04-26 ep3",
+      "The wave of 25 Maryland lawmakers retiring or running for other offices framing \u2014 used in 2026-04-26 ep1 and ep4",
+      "Beltsville Agricultural Research Center closure as a District 19 candidate-record hook \u2014 used in 2026-04-27 ep4",
+      "Listener's own frustration about promised deep-dives not delivering, narrated back to the listener \u2014 has shipped across at least five episodes; do not use as a framing device again"
+    ],
+    "listener_notes": [],
+    "locale": "Rockville, Montgomery County, Maryland",
+    "districts_profile": "  - U.S. Congressional District: MD-8\n  - MD Legislative District: 19\n  - MD State Senate District: 19\n  - MD House of Delegates District: 19\n  - Senatorial District: 19\n  - County Councilmanic District: 7\n  - Election District: 8\n  - Precinct: 08-008\n  - Circuit Court District: 6\n  - Appellate Circuit Court: 7\n  - School District: 005\n  - Party Central Committee: MCC19",
+    "length_calibration": {
+      "target_words": 3900,
+      "target_minutes": 30,
+      "recent_avg_words": 0,
+      "recent_min": 0,
+      "recent_max": 0,
+      "trend": [],
+      "gap_words": 3900,
+      "calibration_note": "No prior scripts to calibrate against. Aim for ~3900 words (~30 min)."
+    }
+  },
+  "created_at": "2026-05-21T07:01:09.539207-04:00",
+  "due_by": "",
+  "processed_at": "2026-05-21T10:00:00-04:00",
+  "status": "done",
+  "output_artifact": "podcasts/podcast_2026-05-21_series_evan-glass_ep4.txt",
+  "word_count": 3620
+}

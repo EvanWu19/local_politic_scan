@@ -1,0 +1,12 @@
+{
+  "brief_id": "filing_monitor_2026-05-14",
+  "run_date": "2026-05-14T07:01:12-04:00",
+  "added": [],
+  "removed": [],
+  "renamed": [],
+  "total_active": null,
+  "list_finalized": false,
+  "last_sbe_check_attempted": "2026-05-14",
+  "last_sbe_check_succeeded": null,
+  "notes": "Could not reach the Maryland SBE statewide and local candidate-list HTML pages during this run because the runtime fetcher rejected the URLs (not in the provenance set for this session). The registry was not modified. No diff was computable from this run. Action: retry next run after a successful WebSearch result has surfaced the SBE URLs into provenance, or fetch via the project's own scanner module (scanner/) which has its own outbound HTTP path. As of this run, the local registry remains at its prior state; no candidates were added or marked withdrawn."
+}

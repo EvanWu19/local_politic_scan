@@ -1,0 +1,12 @@
+{
+  "brief_id": "filing_monitor_2026-05-06",
+  "type": "filing_monitor",
+  "status": "done",
+  "completed_at": "2026-05-06T09:05:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\filing_monitor_2026-05-06.json",
+  "added_count": 0,
+  "removed_count": 0,
+  "total_active_in_registry": 22,
+  "list_finalized": true,
+  "notes": "Linux bash sandbox failing this run; SBE CSV/HTML fetched via WebFetch but bodies exceed sandbox grep boundaries. No diff applied to candidate_series.json from this Cowork run; registry writes deferred to Windows-side ingest. WebSearch confirmed the slate filing (Kramer, Crutchfield, Stewart 2026-02-03) and the open-seat field reporting (Tichy filed; Dasgupta, Jennison considering). Outstanding registry gaps unchanged from prior runs: Council At-Large; MoCo countywide non-district offices; judicial; BoE."
+}

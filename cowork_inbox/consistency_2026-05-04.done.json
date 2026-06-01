@@ -1,0 +1,11 @@
+{
+  "brief_id": "consistency_2026-05-04",
+  "type": "score_consistency",
+  "status": "done",
+  "completed_at": "2026-05-04T20:17:00-04:00",
+  "deliverable": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-04.json",
+  "outbox_mirror": "C:\\Users\\evan_\\local_politic_scan\\cowork_outbox\\consistency_2026-05-04.json",
+  "rows_inserted": 0,
+  "verdict": "deferred",
+  "notes": "Scoring 138 politicians requires reading politicians + politician_events + events tables. Bash sandbox unavailable this run, so politics.db could not be opened. Per the spec the deferral is documented in the output JSON; no fabricated verdicts. Re-run python main.py score-consistency --date 2026-05-04 from the Windows side."
+}

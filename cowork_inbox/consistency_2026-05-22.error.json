@@ -1,0 +1,10 @@
+{
+  "brief_id": "consistency_2026-05-22",
+  "processed_at": "2026-05-23T02:42:04-04:00",
+  "status": "error",
+  "error_class": "db_blocker",
+  "error_message": "sqlite3.OperationalError: unable to open database file at data/politics.db inside the Linux FUSE sandbox. Copying to /tmp returns 'database disk image is malformed'. The DB image is fine on Windows \u2014 same intermittent FUSE-mount blocker flagged in 2026-05-20's consistency.error.json and in project memory.",
+  "scope_attempted": "138 politician_ids requested in brief context; none scored. (No 'insufficient' rows written either \u2014 the brief explicitly requires DB reads to make the verdict.)",
+  "drain_decision": "Skip rather than write fabricated consistency rows. The only honest stance is no-write-without-DB-read.",
+  "windows_side_followup": "Re-run consistency scoring Windows-side where sqlite opens normally: `python main.py pm consistency 2026-05-22` (or whatever the project's command is). The brief itself does not need to be re-queued; only the score action."
+}

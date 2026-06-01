@@ -1,0 +1,41 @@
+{
+  "target_date": "2026-05-25",
+  "window_days": 7,
+  "locale": "Rockville, Montgomery County, Maryland",
+  "source_method": "podcast-script analysis only — DB-side daily_notes unreachable from sandbox; carry-forward from the 2026-05-19/20 runs plus this drain's audit of 2026-05-20 through 2026-05-25 ep1 scripts",
+  "summary": "The listener is in the final 30-day window before the June 23 Democratic primary and the show is making its way through the County Executive field at one candidate per day. The major outstanding listener questions are: (a) which candidate, if any, opposes the existing sanctuary framework — answer so far across the field has been 'none on the Executive line' — (b) whether Friedson's fiscal-restraint brand survives a vote-by-vote audit, (c) the Wootton-to-Crown relocation timeline and which candidates have publicly engaged it, and (d) the new MCPS rating methodology and its application to Rockville schools.",
+  "themes": [
+    "sanctuary_policy_opposition_search | listener keeps asking which D primary candidate opposes the existing sanctuary framework — every covered Exec candidate so far either supports or strengthens it",
+    "friedson_fiscal_audit | listener wants a roll-call-level read on Friedson's anti-tax-increase brand — partially delivered in his 2026-05-16 series, needs follow-up on FY27 specifically",
+    "wootton_crown_relocation | listener-flagged in nearly every brief; only Friedson has publicly testified (2025-10-28); other Exec candidates have not engaged it directly",
+    "mcps_governance_structural | Peter James's 2026-05-25 series surfaces a structural MCPS overhaul plank that no other candidate is proposing — meaningful enough to be its own future episode",
+    "tier_two_outsider_candidates | James and Banerjee are the two outsider Exec candidates; Banerjee dossier still pending, needed before the primary"
+  ],
+  "avoid_framings": [
+    "'Thirty-X days out from the Maryland Democratic primary' — used 2026-05-16 through 2026-05-23 ep1; refresh language for the final-month run",
+    "'Montgomery County native' framing hook — used heavily on Friedson 2026-05-16 ep1",
+    "'My Seven Black Fathers' / Reid Temple AME as memoir-anchor for anyone other than Jawando",
+    "'Anniston, Alabama / Donoho School / Vaughn Stewart Junior as mayor' formative-experience device for anyone other than Vaughn Stewart",
+    "'Born in Trenton / adopted as an infant from a teenage mom in a convent' for anyone other than Dawn Luedtke",
+    "'First Muslim officer of MCPD' identity-formation device for anyone other than Sharif Hidayat",
+    "'Pre-political biography is thinner in the public record / no Wikipedia entry adds independent verification' as candidate-specific qualifier",
+    "'ICE Out Act / Trust Act / DHS officer screening bill' as the immigration-record framing hook",
+    "'Run the buses, teach the kids, pick up the trash' tagline (used in Glass ep1/ep2/ep4)",
+    "'Welcome back to the local politic scan' identical-opening device used 2026-05-21 Glass ep1 — vary the cold-open across candidates",
+    "'The dossier this time came in genuinely substantial' meta-commentary about dossier quality — fine occasionally but starting to repeat",
+    "'recon-level placeholder dossier' meta-commentary as opening — fine occasionally but used Aaron Penman 2026-05-22 ep1"
+  ],
+  "upcoming_slot_list": [
+    "2026-05-26: per registry, schedule has been disrupted by the 5/25 rescheduler bug; recommend Windows-side rerun of scout-results + reschedule + today --date 2026-05-26 before next drain",
+    "2026-05-27 through 2026-06-22: 27-day window; remaining tier-1 ballot candidates still without series — Mithun Banerjee (Exec), Karla Silvestre (At-Large), Marc Elrich (At-Large drop-down from Exec), several Sixth Judicial Circuit judges, State's Attorney candidates, Sheriff candidates, Register of Wills candidates"
+  ],
+  "listener_priority_status": {
+    "sanctuary_opposition_search": "OPEN — no Exec candidate covered so far opposes the framework",
+    "friedson_fiscal_audit": "PARTIALLY DELIVERED — needs FY27-specific roll-call follow-up",
+    "wootton_relocation_timeline": "OPEN — only Friedson has on-record testimony; Glass/Jawando/Banerjee/James positions not on the record",
+    "ben_kramer_voting_record": "OPEN — Kramer is on the listener's State Senate D19 line; no series yet",
+    "side_by_side_policy_comparison": "PARTIAL — Exec line is now ~80% covered; lower-ballot offices not yet built out",
+    "old_news_career_long_context": "ON TRACK — recent series episodes have leaned into pre-2020 biography per the upgraded dossier brief"
+  },
+  "notes": "DB-side daily_notes write deferred to Windows side. Theme rollup written from podcast-script audit + carry-forward only."
+}

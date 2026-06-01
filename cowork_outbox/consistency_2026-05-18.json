@@ -1,0 +1,973 @@
+{
+  "generated_at": "2026-05-19T02:55:35.758084",
+  "politicians_scored": 138,
+  "insufficient_count": 88,
+  "rows": [
+    {
+      "politician_id": 7,
+      "name": "Andrew Friedson",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 108,
+      "name": "Evan Glass",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 228,
+      "name": "Friedson",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 284,
+      "name": "Glass",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 117,
+      "name": "Jawando",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 1,
+      "name": "David Trone",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 5,
+      "name": "Aruna Miller",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 4,
+      "name": "Wes Moore",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 23
+    },
+    {
+      "politician_id": 34,
+      "name": "2",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 25
+    },
+    {
+      "politician_id": 136,
+      "name": "Aaron Penman",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 212,
+      "name": "Adrian Boafo",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 120,
+      "name": "Adrienne A. Mandel-Melnyk",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 94,
+      "name": "Ama Frimpong",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 214,
+      "name": "Arthur Ellis",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 226,
+      "name": "Balcombe",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 299,
+      "name": "Ben Alsobrooks",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 114,
+      "name": "Bill Ferguson",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 283,
+      "name": "Brian Frosh",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 179,
+      "name": "Brooke Lierman",
+      "verdict": "mixed",
+      "score": 0.5,
+      "event_count": 4
+    },
+    {
+      "politician_id": 105,
+      "name": "Brooke Rollins",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 91,
+      "name": "Carey Wright",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 116,
+      "name": "Caylin Young",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 314,
+      "name": "Charles Sydnor III",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 137,
+      "name": "Chris Van Hollen",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 259,
+      "name": "Congressional Democrats",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 159,
+      "name": "Contreras-Donello",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 242,
+      "name": "Cory McCray",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 224,
+      "name": "Cullison",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 113,
+      "name": "Daryl Jones",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 313,
+      "name": "Debra Davis",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 66,
+      "name": "Delegate Addison",
+      "verdict": "mixed",
+      "score": 0.5,
+      "event_count": 11
+    },
+    {
+      "politician_id": 63,
+      "name": "Delegate Allen",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 62,
+      "name": "Delegate Amprey",
+      "verdict": "mixed",
+      "score": 0.5,
+      "event_count": 5
+    },
+    {
+      "politician_id": 60,
+      "name": "Delegate Cardin",
+      "verdict": "mixed",
+      "score": 0.5,
+      "event_count": 5
+    },
+    {
+      "politician_id": 46,
+      "name": "Delegate Crosby",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 50,
+      "name": "Delegate Fair",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 55,
+      "name": "Delegate Foley",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 8
+    },
+    {
+      "politician_id": 47,
+      "name": "Delegate Griffith",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 11
+    },
+    {
+      "politician_id": 52,
+      "name": "Delegate Guzzone",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 51,
+      "name": "Delegate Kerr",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 54,
+      "name": "Delegate Lopez",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 65,
+      "name": "Delegate Metzgar",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 49,
+      "name": "Delegate Miller",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 58,
+      "name": "Delegate Morgan, M.",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 59,
+      "name": "Delegate Phillips",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 48,
+      "name": "Delegate Schindler",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 12
+    },
+    {
+      "politician_id": 56,
+      "name": "Delegate Simmons",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 53,
+      "name": "Delegate Stewart",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 61,
+      "name": "Delegate Toles",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 57,
+      "name": "Delegate Vogel",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 9
+    },
+    {
+      "politician_id": 318,
+      "name": "Delegate Wims",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 64,
+      "name": "Delegate Woods",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 157,
+      "name": "Democratic leaders",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 182,
+      "name": "Democratic leaders in Maryland legislature",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 178,
+      "name": "Dereck Davis",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 103,
+      "name": "Donald Trump",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 13
+    },
+    {
+      "politician_id": 154,
+      "name": "Dr. Mehmet Oz",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 257,
+      "name": "Ella English",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 207,
+      "name": "Elldwnia 'Ella' English",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 210,
+      "name": "Ellis Colvin",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 118,
+      "name": "Fani-Gonz\u00e1lez",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 138,
+      "name": "Ferguson",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 319,
+      "name": "Governor Wes Moore",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 315,
+      "name": "Greg Wims",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 99,
+      "name": "Harry Dunn",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 162,
+      "name": "House Speaker Pe\u00f1a-Melnyk",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 104,
+      "name": "JD Vance",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 211,
+      "name": "James Makle Jr.",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 208,
+      "name": "Jerry Lightfoot",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 135,
+      "name": "Joe Biden",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 115,
+      "name": "Joseline Pe\u00f1a-Melnyk",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 90,
+      "name": "Joshua Michael",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 101,
+      "name": "Justin Fairfax",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 111,
+      "name": "Katie Curran O'Malley",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 225,
+      "name": "King",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 96,
+      "name": "Kristi Noem",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 229,
+      "name": "Leul Dawit",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 6
+    },
+    {
+      "politician_id": 93,
+      "name": "Lucille Walker",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 227,
+      "name": "Luedtke",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 92,
+      "name": "Mahasin El Amin",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 95,
+      "name": "Markwayne Mullin",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 102,
+      "name": "Mary Moriarty",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 141,
+      "name": "Maryland Association of Counties",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 165,
+      "name": "Maryland Democrats",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 223,
+      "name": "Maryland Department of Health",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 221,
+      "name": "Maryland Department of the Environment",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 121,
+      "name": "Maryland General Assembly",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 7
+    },
+    {
+      "politician_id": 185,
+      "name": "Maryland General Assembly members",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 122,
+      "name": "Maryland Legislature",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 140,
+      "name": "Maryland Senate",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 296,
+      "name": "Maryland State Board of Education",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 163,
+      "name": "Maryland State House",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 164,
+      "name": "Maryland State Senate",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 222,
+      "name": "Maryland State Senate and House members",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 184,
+      "name": "Maryland legislature members",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 317,
+      "name": "Maxwell Uy",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 180,
+      "name": "Mazie Hirono",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 244,
+      "name": "McClain Delaney",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 312,
+      "name": "Meena Seshamani",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 181,
+      "name": "Mehmet Oz",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 112,
+      "name": "Michelle Daugherty Siri",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 297,
+      "name": "Mike Griffith",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 107,
+      "name": "Mithun Banerjee",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 206,
+      "name": "Montgomery County Council",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 300,
+      "name": "Montgomery County Council Members",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 134,
+      "name": "Montgomery County Council Public Safety Committee",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 166,
+      "name": "Montgomery County Public Schools",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 183,
+      "name": "Multiple Democratic candidates",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 160,
+      "name": "Multiple Democratic candidates for Montgomery County Executive",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 258,
+      "name": "Multiple Maryland State Senators and House Delegates",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 156,
+      "name": "Mustafa Kasubhai",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 158,
+      "name": "Nancy King",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 89,
+      "name": "Natali Fani-Gonz\u00e1lez",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 209,
+      "name": "Nicole Williams",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 5
+    },
+    {
+      "politician_id": 241,
+      "name": "Pamela Beidle",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 109,
+      "name": "Peter James",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 139,
+      "name": "Pe\u00f1a-Melnyk",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 100,
+      "name": "Quincy Bar",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 213,
+      "name": "Quincy Bareebe",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 153,
+      "name": "Ralph Tyler",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 97,
+      "name": "Raphael Warnock",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 243,
+      "name": "Rick Kessler",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 155,
+      "name": "Robert F. Kennedy Jr.",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 316,
+      "name": "Ron DeSantis",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 216,
+      "name": "Sam Kursban",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 161,
+      "name": "Senate President Ferguson",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 219,
+      "name": "Serena McIlwain",
+      "verdict": "mixed",
+      "score": 0.5,
+      "event_count": 5
+    },
+    {
+      "politician_id": 98,
+      "name": "Steny Hoyer",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 8
+    },
+    {
+      "politician_id": 218,
+      "name": "Todd Blanche",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 3
+    },
+    {
+      "politician_id": 245,
+      "name": "Trone",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 260,
+      "name": "Trump Administration",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 220,
+      "name": "U.S. Senate Republicans",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 119,
+      "name": "Unknown Democratic Candidates",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 217,
+      "name": "Vanessa Atterbeary",
+      "verdict": "mixed",
+      "score": 0.5,
+      "event_count": 6
+    },
+    {
+      "politician_id": 110,
+      "name": "Vincent DeMarco",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    },
+    {
+      "politician_id": 215,
+      "name": "Wala Blegay",
+      "verdict": "consistent",
+      "score": 0.85,
+      "event_count": 4
+    },
+    {
+      "politician_id": 106,
+      "name": "Will Jawando",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 2
+    },
+    {
+      "politician_id": 298,
+      "name": "Wims",
+      "verdict": "insufficient",
+      "score": 0.0,
+      "event_count": 1
+    }
+  ]
+}
