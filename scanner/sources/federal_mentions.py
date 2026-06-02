@@ -84,7 +84,11 @@ def fetch_federal_mentions(api_key: str, terms: List[str],
         "offsetMark": "*",
         "sorts": [{"field": "publishdate", "sortOrder": "DESC"}],
         "historical": False,
-        "resultLevel": "granule",
+        # GovInfo /search rejects "granule" (400: valid values are
+        # package/default). "default" returns the most granular matching level
+        # — for CREC that's the individual speech granule, which carries the
+        # granuleId we need to build a per-speech /app/details/{pkg}/{gran} URL.
+        "resultLevel": "default",
     }
     try:
         r = requests.post(f"{GOVINFO_SEARCH}?api_key={api_key}", json=body, timeout=20)

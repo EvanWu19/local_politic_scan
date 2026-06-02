@@ -115,6 +115,18 @@ def cmd_fetch(args):
         errors.append(f"federal: {e}")
         print(f"✗ {e}")
 
+    # OSS item 5 — GovInfo Congressional Record mentions of the listener's area
+    try:
+        print("  [2.5] Federal mentions (GovInfo)…", end=" ", flush=True)
+        from scanner.sources.federal_mentions import fetch_federal_mentions
+        mentions = fetch_federal_mentions(cfg.GOVINFO_API_KEY, cfg.GOVINFO_TERMS,
+                                          days_back=cfg.SCAN_DAYS_BACK)
+        print(f"✓ {len(mentions)} items")
+        all_raw.extend(mentions)
+    except Exception as e:
+        errors.append(f"federal_mentions: {e}")
+        print(f"✗ {e}")
+
     try:
         print(f"  [2/6] {cfg.STATE or 'State'} bills (OpenStates)…", end=" ", flush=True)
         state_bills = fetch_state_bills(cfg.OPENSTATES_API_KEY,
@@ -149,6 +161,13 @@ def cmd_fetch(args):
         errors.append(f"local_hearings: {e}")
         print(f"✗ {e}")
 
+    # OSS item 2 — Montgomery County Council via Legistar (no-op unless configured)
+    try:
+        from scanner.sources.civic import fetch_legistar_meetings
+        all_raw.extend(fetch_legistar_meetings())
+    except Exception as e:
+        errors.append(f"civic_legistar: {e}")
+
     try:
         print("  [4/6] MCPS school board…", end=" ", flush=True)
         mcps = fetch_mcps_board(cfg.MAX_ITEMS_PER_SOURCE)
@@ -179,6 +198,15 @@ def cmd_fetch(args):
 
     total_found = len(all_raw)
     print(f"\nTotal fetched: {total_found} items\n")
+
+    # OSS item 4 — flag bills/news naming a tracked candidate (auto-spotlight)
+    try:
+        from scanner.sources.candidate_linking import tag_events_with_candidates
+        from scanner.series import all_candidate_names
+        n = tag_events_with_candidates(all_raw, [x for x in all_candidate_names() if x])
+        print(f"  Candidate-linking: tagged {n} event(s)")
+    except Exception as e:
+        errors.append(f"candidate_linking: {e}")
 
     # ── AI enrichment
     if cfg.ANTHROPIC_API_KEY:
