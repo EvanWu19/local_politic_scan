@@ -93,6 +93,7 @@ def queue_dossier_briefs(
 
     for cand in candidates[:max_briefs]:
         events = _load_events_for_candidate(db_path, cand["id"])
+        finance_block = _finance_block_for(cand)
         brief = build_dossier_brief(
             candidate_name=cand["name"],
             office=cand.get("office", "") or "",
@@ -102,6 +103,7 @@ def queue_dossier_briefs(
             listener_focus=listener_focus,
             output_dir=output_dir,
             today=today.isoformat(),
+            finance_block=finance_block,
         )
         write_brief(brief)
         queued.append(cand["name"])
@@ -333,6 +335,32 @@ def _names_with_recent_consistency(db_path: Path, today: date,
     finally:
         con.close()
     return [r["name"] for r in rows]
+
+
+def _is_federal_office(office: str) -> bool:
+    """Heuristic: does this office sit at the federal level (FEC-covered)?"""
+    o = (office or "").lower()
+    return any(t in o for t in ("u.s.", "us house", "us senate", "congress",
+                                "senate", "representative", "president"))
+
+
+def _finance_block_for(cand: Dict[str, Any]) -> str:
+    """OSS item 6 — look up SBE (local) then openFEC (federal) campaign finance
+    for this candidate and render a Markdown block. '' on no data; never raises."""
+    try:
+        from scanner.sources.campaign_finance import (
+            finance_summary, format_finance_block,
+        )
+        fin = finance_summary(
+            cand["name"],
+            federal=_is_federal_office(cand.get("office", "") or ""),
+            fec_api_key=getattr(_Cfg, "FEC_API_KEY", "") or "",
+        )  # SBE_FINANCE_CSV is read from Config inside finance_summary
+        return format_finance_block(fin)
+    except Exception as e:
+        log.warning("dossier: finance lookup for %s failed (non-fatal): %s",
+                    cand.get("name"), e)
+        return ""
 
 
 def _load_events_for_candidate(db_path: Path, pol_id: int,

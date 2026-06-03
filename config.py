@@ -160,7 +160,15 @@ class Config:
     SBE_FINANCE_CSV = os.getenv("SBE_FINANCE_CSV", "")
     # Legistar client slug for civic-scraper, e.g. "montgomerycountymd" (item 2).
     # Empty disables the Legistar source (RSS/HTML fetchers are unaffected).
+    # NOTE: Montgomery County Council's Legistar instance is frozen at 2023-02
+    # (they migrated to Granicus). Live council meetings now come from the
+    # Granicus settings below; CIVIC_LEGISTAR_CLIENT is kept for other bodies.
     CIVIC_LEGISTAR_CLIENT = os.getenv("CIVIC_LEGISTAR_CLIENT", "")
+    # Granicus ViewPublisher source for the county council (item 2). MoCo Council
+    # publishes current agendas at <client>.granicus.com, view_id=<view>.
+    # Empty client disables the source.
+    CIVIC_GRANICUS_CLIENT = os.getenv("CIVIC_GRANICUS_CLIENT", "montgomerycountymd")
+    CIVIC_GRANICUS_VIEW = os.getenv("CIVIC_GRANICUS_VIEW", "169")
 
     # ── Paths ──────────────────────────────────────────────────────────────────
     DB_PATH = BASE_DIR / "data" / "politics.db"

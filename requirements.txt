@@ -8,4 +8,7 @@ lxml>=5.0.0
 schedule>=1.2.0
 trafilatura>=1.8.0   # full-text article extraction (OSS plan, item 3)
 googlenewsdecoder>=0.1.7   # resolve Google News rss/articles links to publisher URLs
-civic-scraper>=0.3.0   # optional: Legistar/Granicus council source (OSS plan, item 2)
+# civic-scraper>=0.3.0   # OSS item 2: evaluated but NOT used — its Legistar
+#   class reads MoCo's stale 2023 instance and its Granicus class crashes on
+#   MoCo's 2-part RSS titles. scanner/sources/civic.py reads the Granicus
+#   ViewPublisher RSS directly via feedparser (already required above) instead.

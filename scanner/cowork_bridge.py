@@ -190,6 +190,7 @@ def build_dossier_brief(
     listener_focus: List[str],
     output_dir: Path,
     today: str,
+    finance_block: str = "",
 ) -> Brief:
     slug = _slugify(candidate_name)
     output_file = output_dir / f"{slug}.md"
@@ -293,6 +294,12 @@ def build_dossier_brief(
         "    NEVER fabricate dates, employers, schools, family details, "
         "    quotes, vote counts, or bill numbers."
     )
+    if finance_block:
+        instructions += (
+            "\n\nKNOWN CAMPAIGN-FINANCE DATA (from public filings — use as a "
+            "starting point for Step 2B, and verify/extend with your own "
+            "research):" + finance_block
+        )
     return Brief(
         brief_id=f"dossier_{today}_{slug}",
         type="candidate_dossier",
@@ -305,6 +312,7 @@ def build_dossier_brief(
             "district": district,
             "listener_focus": listener_focus,
             "known_events": known_events[:30],
+            "finance_block": finance_block,
         },
     )
 
