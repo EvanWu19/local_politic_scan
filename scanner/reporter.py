@@ -289,17 +289,38 @@ def generate(events: List[Dict], politician_summaries: List[Dict],
 # ── HTML renderer ──────────────────────────────────────────────────────────────
 
 def _load_candidate_spotlight(report_date: date) -> Dict:
-    """Look up the registry entry scheduled for `report_date` and assemble
-    the data the spotlight panel needs (dossier excerpt + per-episode file
-    state). Returns {} when no candidate is scheduled or the registry is
-    missing — `_render_html` then renders no panel."""
+    """Single-candidate spotlight — first scheduled entry only. Kept for
+    compatibility; page rendering uses `_load_candidate_spotlights` (plural)
+    since the 2026-06-12 multi-per-day schedule."""
     try:
-        from scanner.series import candidate_for_date, _slug
+        from scanner.series import candidate_for_date
     except Exception:
         return {}
-
     cand = candidate_for_date(report_date)
     if not cand:
+        return {}
+    return _build_spotlight(cand, report_date)
+
+
+def _load_candidate_spotlights(report_date: date) -> List[Dict]:
+    """One spotlight dict per candidate scheduled for `report_date`
+    (2026-06-12: up to 5/day air in the pre-primary crunch; the old
+    single-candidate loader made the page show just the first one)."""
+    try:
+        from scanner.series import candidates_for_date
+    except Exception:
+        spot = _load_candidate_spotlight(report_date)
+        return [spot] if spot else []
+    return [s for s in (_build_spotlight(c, report_date)
+                        for c in candidates_for_date(report_date)) if s]
+
+
+def _build_spotlight(cand: Dict, report_date: date) -> Dict:
+    """Assemble the spotlight data (dossier excerpt + per-episode file
+    state) for one registry entry. Returns {} on import failure."""
+    try:
+        from scanner.series import _slug
+    except Exception:
         return {}
 
     # Full dossier text (no truncation). The renderer formats it into a
@@ -383,39 +404,52 @@ _SRC_RE = re.compile(r"\[src:\s*(https?://[^\]\s]+)\s*\]")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*", re.DOTALL)
 
 
-def _render_spotlight_header(spot: Dict) -> str:
-    """Top-of-page header card: name, office/party/district subline, badges.
-    Returns '' when no candidate is scheduled for the report date.
-    The dossier body is rendered separately by `_render_dossier_body()` and
-    placed lower on the page."""
-    if not spot:
+def _render_spotlight_header(spots) -> str:
+    """Top-of-page header card. Accepts one spot dict OR a list of them
+    (2026-06-12: up to 5 candidates air per day in the pre-primary crunch,
+    so the panel now lists every candidate scheduled for the report date).
+    Returns '' when no candidate is scheduled.
+    The dossier bodies are rendered separately by `_render_dossier_body()`
+    and placed lower on the page."""
+    if not spots:
         return ""
-    cand = spot["candidate"]
-    name   = _html.escape(cand.get("name", "Unknown"))
-    office = _html.escape(cand.get("office", ""))
-    party  = _html.escape(cand.get("party", "") or "")
-    dist   = _html.escape(cand.get("district", "") or "")
+    if isinstance(spots, dict):
+        spots = [spots]
 
-    badges = []
-    if cand.get("incumbent"):
-        badges.append('<span class="spot-badge spot-badge-inc">Incumbent</span>')
-    else:
-        badges.append('<span class="spot-badge">Challenger</span>')
-    if cand.get("uncontested"):
-        badges.append('<span class="spot-badge spot-badge-warn">Uncontested</span>')
-    tier = cand.get("tier")
-    if tier:
-        badges.append(f'<span class="spot-badge">Tier&nbsp;{tier}</span>')
+    blocks = []
+    for i, spot in enumerate(spots):
+        cand = spot["candidate"]
+        name   = _html.escape(cand.get("name", "Unknown"))
+        office = _html.escape(cand.get("office", ""))
+        party  = _html.escape(cand.get("party", "") or "")
+        dist   = _html.escape(cand.get("district", "") or "")
 
-    sub_bits = [b for b in (office, party, dist) if b]
-    subline = "&nbsp;·&nbsp;".join(sub_bits)
+        badges = []
+        if cand.get("incumbent"):
+            badges.append('<span class="spot-badge spot-badge-inc">Incumbent</span>')
+        else:
+            badges.append('<span class="spot-badge">Challenger</span>')
+        if cand.get("uncontested"):
+            badges.append('<span class="spot-badge spot-badge-warn">Uncontested</span>')
+        tier = cand.get("tier")
+        if tier:
+            badges.append(f'<span class="spot-badge">Tier&nbsp;{tier}</span>')
 
-    return f"""
-<div class="spot-panel">
-  <h2>🎙️ Today's Candidate Spotlight</h2>
+        sub_bits = [b for b in (office, party, dist) if b]
+        subline = "&nbsp;·&nbsp;".join(sub_bits)
+        sep = ('<div style="border-top:1px solid rgba(255,255,255,.25);'
+               'margin:14px 0 12px;"></div>' if i else "")
+        blocks.append(f"""{sep}
   <div class="spot-name">{name}</div>
   <div class="spot-sub">{subline}</div>
-  <div class="spot-badges">{"".join(badges)}</div>
+  <div class="spot-badges">{"".join(badges)}</div>""")
+
+    title = ("🎙️ Today's Candidate Spotlight" if len(spots) == 1
+             else f"🎙️ Today's Candidate Spotlights ({len(spots)})")
+    return f"""
+<div class="spot-panel">
+  <h2>{title}</h2>
+  {"".join(blocks)}
 </div>
 """
 
@@ -636,9 +670,9 @@ def _render_html(report_date: date, by_level: Dict[str, List[Dict]],
     locale = _LOCALE
     chat_sidebar = _CHAT_SIDEBAR.replace("DATE_ISO", date_iso)
     podcast_player = _PODCAST_PLAYER_JS.replace("DATE_ISO", date_iso)
-    _spot = _load_candidate_spotlight(report_date)
-    spotlight_header = _render_spotlight_header(_spot)
-    dossier_body     = _render_dossier_body(_spot)
+    _spots = _load_candidate_spotlights(report_date)
+    spotlight_header = _render_spotlight_header(_spots)
+    dossier_body     = "".join(_render_dossier_body(s) for s in _spots)
 
     sections_html = ""
     for level, label in LEVEL_LABELS.items():

@@ -106,15 +106,42 @@ def save_registry(reg: Dict[str, Any], path: Optional[Path] = None) -> None:
 # ──────────────────────────────────────────────────────────────────────────────
 
 def candidate_for_date(target_date: date,
-                        reg: Optional[Dict[str, Any]] = None
+                        reg: Optional[Dict[str, Any]] = None,
+                        *, skip_processed: bool = False
                         ) -> Optional[Dict[str, Any]]:
-    """Return the registry entry scheduled for `target_date`, or None."""
+    """Return the registry entry scheduled for `target_date`, or None.
+
+    With ``skip_processed=True`` (multi-per-day mode, 2026-06-11), entries
+    whose episodes are ALL already queued/done are skipped, so repeated
+    calls walk through every candidate sharing the same scheduled_date.
+    """
     reg = reg or load_registry()
     iso = target_date.isoformat()
     for c in reg.get("candidates", []):
         if c.get("scheduled_date") == iso and c.get("dossier_status") != "withdrawn":
+            if skip_processed:
+                eps = c.get("episodes", [])
+                if eps and all(e.get("status") in ("queued", "done") for e in eps):
+                    continue
             return c
     return None
+
+
+def candidates_for_date(target_date: date,
+                         reg: Optional[Dict[str, Any]] = None
+                         ) -> List[Dict[str, Any]]:
+    """ALL registry entries scheduled for `target_date` (2026-06-12).
+
+    The pre-primary crunch schedules up to 5 candidates per day; callers
+    that present "today's candidate" to the listener (reporter spotlight,
+    status pages) should use this instead of `candidate_for_date`, which
+    returns only the first match.
+    """
+    reg = reg or load_registry()
+    iso = target_date.isoformat()
+    return [c for c in reg.get("candidates", [])
+            if c.get("scheduled_date") == iso
+            and c.get("dossier_status") != "withdrawn"]
 
 
 def _next_upcoming_candidate(from_date: date,
@@ -999,7 +1026,11 @@ def queue_today_series_v2(target_date: Optional[date] = None,
 
     target_date = target_date or date.today()
     reg = load_registry()
-    cand = candidate_for_date(target_date, reg)
+    # skip_processed=True (2026-06-11): with the 3-per-day pre-primary
+    # schedule, several candidates share one scheduled_date. Skipping
+    # already-queued entries lets queue_today_series_multi walk the day's
+    # whole slate instead of re-picking the first candidate forever.
+    cand = candidate_for_date(target_date, reg, skip_processed=True)
 
     # CASCADE FIX (2026-05-25): if today's scheduled candidate has already
     # aired in full (Vaughn Stewart May 20 → registry still says July 22),
@@ -1285,4 +1316,68 @@ def queue_today_series_v2(target_date: Optional[date] = None,
 # `queue_today_series` body above is preserved for any caller that explicitly
 # wants the "always biography" mode; the v2 wrapper is the default.
 _queue_today_series_legacy = queue_today_series
-queue_today_series = queue_today_series_v2
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Multi-per-day queueing (2026-06-11 pre-primary crunch)
+# ──────────────────────────────────────────────────────────────────────────────
+
+_MAX_SERIES_PER_DAY = 6
+
+
+def queue_today_series_multi(target_date: Optional[date] = None,
+                               podcasts_dir: Optional[Path] = None,
+                               dossier_dir: Optional[Path] = None,
+                               db_path: Optional[Path] = None,
+                               ) -> Dict[str, Any]:
+    """Queue EVERY candidate scheduled for `target_date`, not just the first.
+
+    Added 2026-06-11 after reconciling the registry against the scanned
+    official ballot: 36 uncovered candidates remained with only 12 days to
+    the Jun 23 primary, so the schedule now assigns 3 candidates per day.
+    Each pass re-reads the registry; `candidate_for_date(skip_processed=
+    True)` (inside v2) advances past candidates whose episodes were queued
+    by an earlier pass. Iteration beyond the first pass is gated on another
+    *same-date* unprocessed candidate existing, so the v2 forward-lookup
+    fallback (which pulls future candidates early) can fire at most once.
+
+    Returns a dict shaped like the v2 result for cmd_publish compatibility;
+    when several candidates were queued, `candidate` is comma-joined and a
+    `multi` list carries the per-candidate results.
+    """
+    target_date = target_date or date.today()
+    iso = target_date.isoformat()
+    results: List[Dict[str, Any]] = []
+    for i in range(_MAX_SERIES_PER_DAY):
+        if i > 0:
+            nxt = candidate_for_date(target_date, load_registry(),
+                                      skip_processed=True)
+            if nxt is None:
+                break
+        res = queue_today_series_v2(target_date, podcasts_dir,
+                                     dossier_dir, db_path)
+        results.append(res)
+        if res.get("status") != "queued":
+            break
+    if not results:
+        return {"status": "no_candidate", "date": iso}
+    out = dict(results[0])
+    queued = [r for r in results if r.get("status") == "queued"]
+    if len(queued) > 1:
+        out["candidate"] = ", ".join(r.get("candidate", "?") for r in queued)
+        out["office"] = "; ".join(r.get("office", "") for r in queued)
+        # v2 episode entries are dicts ({num, type, path}); legacy entries
+        # are bare ints. Aggregate on the episode number either way.
+        out["episodes_queued"] = sorted(
+            {n.get("num") if isinstance(n, dict) else n
+             for r in queued for n in r.get("episodes_queued", [])})
+        out["multi"] = [
+            {"candidate": r.get("candidate"), "status": r.get("status"),
+             "episodes_queued": r.get("episodes_queued")} for r in results
+        ]
+        log.info("series: multi-queue for %s — %d candidates: %s",
+                 iso, len(queued), out["candidate"])
+    return out
+
+
+queue_today_series = queue_today_series_multi
