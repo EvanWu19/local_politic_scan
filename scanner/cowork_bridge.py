@@ -940,6 +940,20 @@ def build_series_episode_brief(
         "  • If any item from `context.listener_notes` ties into this "
         "    candidate, address it by name in the dialogue.\n\n"
 
+        "RETURNING-LISTENER RULE (2026-06-12, direct listener feedback — "
+        "repeated boilerplate is their #1 complaint after duplicates):\n"
+        "  • The listener has heard 30+ episodes of this series. NEVER "
+        "    re-explain show basics: why the Maryland primary matters, "
+        "    that the primary is June 23, how vote-for-N works (e.g. "
+        "    'you can vote for up to 4 in Council At-Large'), early-voting "
+        "    logistics, mail ballots, or what this office does in general "
+        "    (that is the office primer's job, covered once per office).\n"
+        "  • A one-sentence callback is fine ('as we covered in the "
+        "    Elrich episode'); a multi-paragraph re-explainer is not.\n"
+        "  • Every minute of re-explained civics is a minute of candidate "
+        "    research the listener loses. Spend the words on THIS "
+        "    candidate's record instead.\n\n"
+
         "Write the full dialogue to `output_file`. Plain text only. "
         "If the dossier doesn't have the facts you need, do NOT invent — "
         "have a host say on-air 'we don't have a public record of X yet' "
@@ -1193,11 +1207,31 @@ def build_office_primer_brief(
         "If any item from `context.listener_notes` ties into this office, "
         "address it by name.\n\n"
 
+        "REPEAT-OFFICE RULE (2026-06-12 — with several thin candidates "
+        "sharing one race, multiple primers for the SAME office can land "
+        "in the same day or week; the listener must never hear the seat "
+        "explained twice):\n"
+        "  • BEFORE writing, check `podcasts/` for an earlier office_primer "
+        "    episode covering this same office (any candidate, any date in "
+        "    the past 14 days).\n"
+        "  • If one exists, compress sections 1-3 (powers/history/why it "
+        "    matters) to under 150 words TOTAL with an on-air callback "
+        "    ('we walked through what this seat does in yesterday's "
+        "    episode'), and spend the full length on sections 4-5: the "
+        "    field, and what distinguishes THIS candidate from the rivals "
+        "    already profiled.\n\n"
+
         "Plain-text dialogue to `output_file`. Cite sources for the office "
         "powers section (constitutional / statutory references)."
     )
+    # COLLISION FIX (2026-06-12): two same-office candidates can get primer
+    # swaps on the same date (Leon + Velasquez ep4, both MD-8, 06-12). An
+    # office-only brief_id made the second write_brief(replace=True) silently
+    # overwrite the first, so one candidate's ep4 was never produced. Key the
+    # id by the candidate slug embedded in output_file as well.
+    _cand_part = Path(output_file).stem.split("_series_")[-1]  # "<slug>_ep<n>"
     return Brief(
-        brief_id=f"office_primer_{target_date}_{_slugify(office)}_ep{ep_num}",
+        brief_id=f"office_primer_{target_date}_{_slugify(office)}_{_cand_part}",
         type="office_primer",
         output_file=str(output_file),
         instructions=instructions,
