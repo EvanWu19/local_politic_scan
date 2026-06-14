@@ -41,17 +41,26 @@ when they air, and what's done. It looks like::
       ]
     }
 
-Daily flow
-----------
-1. ``cmd_publish`` (07:00 Windows) calls ``queue_today_series()`` which:
-     a. Looks up today's candidate by ``scheduled_date``.
+Daily flow (same-date delivery — SERIES_LOOKAHEAD_DAYS=1)
+--------------------------------------------------------
+The queue is *day-ahead*: the evening before a candidate's air date we queue
+their briefs so the overnight drain writes the scripts and the next morning's
+TTS pass publishes them on the air date itself (date D's audio ready the
+morning of D, not D+1).
+
+1. ``series queue-next`` (22:15 Windows) — and the day's ``cmd_publish`` as a
+   redundant catch-up — call ``queue_today_series(today + SERIES_LOOKAHEAD_DAYS)``:
+     a. Looks up *tomorrow's* candidate(s) by ``scheduled_date``.
      b. Queues a fresh `candidate_dossier` brief if needed.
      c. Queues 4 `series_episode` briefs.
      d. Marks each episode status='queued'.
 2. The Cowork drain task (22:30 nightly) processes the inbox: dossier first,
    then 4 episodes. Marks them 'done' when written.
-3. ``cmd_tts_publish`` (07:00 next morning) renders MP3s for any
-   newly-written episodes.
+3. ``cmd_tts_publish`` (07:00 next morning — the air date) renders MP3s for the
+   freshly-written episodes, so they publish on the day they're scheduled.
+
+Set SERIES_LOOKAHEAD_DAYS=0 to revert to the legacy same-day-queue /
+next-day-publish behaviour.
 
 Monitor flow
 ------------
@@ -125,6 +134,24 @@ def candidate_for_date(target_date: date,
                     continue
             return c
     return None
+
+
+def has_unqueued_for_date(target_date: date,
+                          reg: Optional[Dict[str, Any]] = None) -> bool:
+    """True iff at least one candidate is scheduled for `target_date` and
+    still has an episode that isn't queued/done.
+
+    Day-ahead callers (the 22:15 ``series queue-next`` task and the daily
+    publish step) gate on this so they NEVER trip the ``queue_today_series_v2``
+    forward-lookup. That fallback intentionally pulls the next *future*
+    candidate forward to fill an empty day — correct for the legacy same-day
+    model, but wrong when we deliberately queue tomorrow: a re-run on a date
+    that's already fully queued would otherwise drag the day-after's slate in
+    early (and mis-date its briefs to the target date). When this returns
+    False the date is either empty or already done, so the day-ahead queue is
+    a clean no-op.
+    """
+    return candidate_for_date(target_date, reg, skip_processed=True) is not None
 
 
 def candidates_for_date(target_date: date,

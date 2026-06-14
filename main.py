@@ -381,19 +381,40 @@ def cmd_publish(args):
     from scanner.series import REGISTRY_PATH as series_registry
     if series_registry.exists():
         try:
-            from scanner.series import queue_today_series, queue_filing_monitor
-            target = date.today()
-            if getattr(args, "date", None):
+            from scanner.series import (queue_today_series, queue_filing_monitor,
+                                         has_unqueued_for_date)
+            # Day-ahead queue: target the air date SERIES_LOOKAHEAD_DAYS out
+            # (default tomorrow) so tonight's Cowork drain writes the scripts
+            # and the next morning's TTS pass publishes them on their air date.
+            # An explicit --date still overrides with no offset.
+            target = date.today() + timedelta(days=cfg.SERIES_LOOKAHEAD_DAYS)
+            explicit_date = bool(getattr(args, "date", None))
+            if explicit_date:
                 target = datetime.strptime(args.date, "%Y-%m-%d").date()
-            result = queue_today_series(target_date=target)
+            # Guard against the v2 forward-lookup: only queue when an exact-date
+            # candidate still needs queueing. Otherwise a re-run on an already-
+            # queued day would drag the next day's slate in early. (Explicit
+            # --date keeps the legacy behaviour, incl. the pull-forward fill.)
+            if not explicit_date and not has_unqueued_for_date(target):
+                print(f"📡  Series 专题 — nothing to queue for {target.isoformat()} "
+                      f"(no unqueued candidate scheduled).")
+                result = {"status": "skipped"}
+            else:
+                result = queue_today_series(target_date=target)
             if result["status"] == "queued":
-                print(f"📡  Series 专题 — today: {result['candidate']} "
+                print(f"📡  Series 专题 — queued for {target.isoformat()}: {result['candidate']} "
                       f"({result['office']})")
                 print(f"   Dossier queued : {result['dossier_queued']}")
                 print(f"   Episodes queued: ep{', ep'.join(str(n) for n in result['episodes_queued'])}")
-                series_handled = True
+            elif result["status"] == "skipped":
+                pass  # day-ahead target already fully queued; message already printed
             else:
-                print(f"📡  No series candidate scheduled for {target.isoformat()}.")
+                print(f"📡  Series 专题 — nothing new to queue for {target.isoformat()} "
+                      f"(status: {result['status']}).")
+            # Registry exists → we're in series mode. The legacy daily news
+            # podcast is retired (PERMANENT RULE 2026-05-19), so never fall
+            # through to it regardless of which series branch we took.
+            series_handled = True
             # Always queue the daily filing-list monitor brief while the
             # registry is not finalized. Cowork drains it overnight and
             # appends any newly-filed candidates.
@@ -1084,6 +1105,37 @@ def cmd_series(args):
         print(f"    Dossier    : {'queued' if result['dossier_queued'] else 'already on disk'}")
         print(f"    Episodes   : queued ep{', ep'.join(str(n) for n in result['episodes_queued'])}")
         print(f"    → All briefs in: {cfg.COWORK_INBOX_DIR}")
+    elif sub == "queue-next":
+        # Day-ahead evening queue (scheduled ~22:00, before the overnight
+        # drain): push the next air date's series briefs into the inbox now so
+        # the drain writes the scripts tonight and tomorrow's TTS pass publishes
+        # them on their air date. Default target is today + SERIES_LOOKAHEAD_DAYS.
+        from scanner.series import (queue_today_series, queue_filing_monitor,
+                                     load_registry, has_unqueued_for_date)
+        target = date.today() + timedelta(days=cfg.SERIES_LOOKAHEAD_DAYS)
+        if getattr(args, "date", None):
+            target = datetime.strptime(args.date, "%Y-%m-%d").date()
+        # Only queue exact-date candidates; never trip the v2 forward-lookup
+        # (which would pull the day-after's slate forward on a re-run).
+        if not has_unqueued_for_date(target):
+            print(f"(nothing to queue for {target.isoformat()} — "
+                  f"no unqueued candidate scheduled)")
+            result = {"status": "skipped"}
+        else:
+            result = queue_today_series(target_date=target)
+        if result["status"] in ("no_candidate", "skipped"):
+            pass
+        else:
+            print(f"\n📡  Series queue (day-ahead) — {result['date']} · {result['candidate']}")
+            print(f"    Episodes : queued ep{', ep'.join(str(n) for n in result['episodes_queued'])}")
+            print(f"    → All briefs in: {cfg.COWORK_INBOX_DIR}")
+        # Keep the filing-list monitor flowing while the ballot isn't final.
+        try:
+            if not load_registry().get("list_finalized"):
+                queue_filing_monitor()
+                print("    ✓ Filing-list monitor brief queued.")
+        except Exception as e:
+            log.debug("filing monitor queue failed: %s", e)
     elif sub == "queue":
         from scanner.series import find_candidate, queue_today_series, save_registry, load_registry
         name = " ".join(args.name) if isinstance(args.name, list) else args.name
@@ -1133,7 +1185,7 @@ def cmd_series(args):
         from scanner.series import status_summary
         print(status_summary())
     else:
-        print("Usage: python main.py series {today|queue NAME|status|scout|scout-results|reschedule|monitor|reconcile}")
+        print("Usage: python main.py series {today|queue-next|queue NAME|status|scout|scout-results|reschedule|monitor|reconcile}")
 
 
 def cmd_dossier(args):
@@ -1259,11 +1311,17 @@ def cmd_weekly_review(args):
 
 def cmd_setup(args):
     """Register Windows scheduled tasks: morning publish, evening fetch,
-    and (optional) always-on web server.
+    evening day-ahead series queue, and (optional) always-on web server.
 
     The split matters: yesterday's audience note can only influence
     today's podcast if the Collector runs LAST and the Author uses the
     previous day's data. See feedback_tool_positioning_and_pipeline.
+
+    Same-date delivery (SERIES_LOOKAHEAD_DAYS=1): the evening series-queue
+    task (22:15, after fetch and just before the overnight Cowork drain)
+    queues *tomorrow's* candidates, so the drain writes their scripts
+    tonight and the next morning's TTS pass publishes them on their air
+    date — date D's audio is ready the morning of D, not D+1.
     """
     python_exe = sys.executable
     script = str(Path(__file__).resolve())
@@ -1299,18 +1357,35 @@ def cmd_setup(args):
     else:
         print(f"      ✗  Failed: {r.stderr}")
 
+    # ── Task 3: evening day-ahead series queue at 22:15 (after fetch, before
+    #    the overnight Cowork drain). Queues tomorrow's candidates so their
+    #    scripts are drained tonight and published on their air date.
+    seriesq_task = "LocalPoliticsSeriesQueue"
+    seriesq_log = str(Path(__file__).parent / "series_queue.log")
+    seriesq_cmd = (
+        f'schtasks /create /tn "{seriesq_task}" /tr '
+        f'"{python_exe} {script} series queue-next >> {seriesq_log} 2>&1" '
+        f'/sc daily /st 22:15 /f'
+    )
+    print(f"[3/4] Creating evening series-queue task '{seriesq_task}'…")
+    r = subprocess.run(seriesq_cmd, shell=True, capture_output=True, text=True)
+    if r.returncode == 0:
+        print(f"      ✅  Runs daily at 22:15 (queues tomorrow → same-date publish) · logs → {seriesq_log}")
+    else:
+        print(f"      ✗  Failed: {r.stderr}")
+
     # ── Clean up the old single-shot scan task if it's still there
     subprocess.run('schtasks /delete /tn "LocalPoliticsScan" /f',
                    shell=True, capture_output=True, text=True)
 
-    # ── Task 3: web server auto-start via Startup folder (no admin needed) ──
+    # ── Task 4: web server auto-start via Startup folder (no admin needed) ──
     if args.no_server:
         print("\n(Skipping web server auto-start — run `python main.py serve` manually.)")
         return
 
     startup_dir = Path(os.environ["APPDATA"]) / "Microsoft/Windows/Start Menu/Programs/Startup"
     launcher_bat = startup_dir / "LocalPoliticsServer.bat"
-    print(f"\n[3/3] Creating auto-start launcher at:\n      {launcher_bat}")
+    print(f"\n[4/4] Creating auto-start launcher at:\n      {launcher_bat}")
     script_dir = Path(__file__).parent
     bat_content = (
         f"@echo off\r\n"
@@ -1434,6 +1509,9 @@ def main():
     sr_sub = sr.add_subparsers(dest="series_cmd")
     sr_today = sr_sub.add_parser("today", help="Queue today's scheduled candidate")
     sr_today.add_argument("--date", help="Override target date (YYYY-MM-DD)")
+    sr_next = sr_sub.add_parser("queue-next",
+        help="Day-ahead evening queue: queue today+SERIES_LOOKAHEAD_DAYS (default tomorrow)")
+    sr_next.add_argument("--date", help="Override target date (YYYY-MM-DD)")
     sr_queue = sr_sub.add_parser("queue", help="Force-queue a named candidate")
     sr_queue.add_argument("name", nargs="+", help="Candidate name (partial match OK)")
     sr_queue.add_argument("--date", help="Air date (YYYY-MM-DD; default today)")
