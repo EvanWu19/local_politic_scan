@@ -97,6 +97,16 @@ class Config:
     PODCAST_SCRIPT_MODEL = "claude-sonnet-4-6"   # Author / Editor / deep-dive default
     PODCASTS_DIR = BASE_DIR / "podcasts"
 
+    # Day-ahead series scheduling. The daily pipeline queues the candidates
+    # whose air date is SERIES_LOOKAHEAD_DAYS in the future, so the overnight
+    # Cowork drain writes their scripts and the *next* morning's TTS pass
+    # renders the audio in time for that air date. With the default of 1, a
+    # candidate scheduled for date D is queued the evening of D-1, drained
+    # overnight, and published the morning of D — same-date delivery. Set to 0
+    # to revert to the legacy same-day-queue / next-day-publish behaviour
+    # (where date D's audio only appeared on D+1).
+    SERIES_LOOKAHEAD_DAYS = int(os.getenv("SERIES_LOOKAHEAD_DAYS", "1"))
+
     # ── Cowork hand-off ────────────────────────────────────────────────────────
     # When True, the Opus-grade work (candidate dossiers, single-candidate deep
     # dives, editor rewrite escalations) is queued as a brief in cowork_inbox/
